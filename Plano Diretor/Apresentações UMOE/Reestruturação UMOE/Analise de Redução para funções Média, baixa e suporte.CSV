@@ -1,0 +1,93 @@
+?? ANÁLISE PARA TOMADA DE DECISÃO - FUNÇÕES MÉDIA, BAIXA E SUPORTE;;;;;;;;;;;
+Funções com menor impacto em TCH/ATR - Prioridade para análise de redução de custos;;;;;;;;;;;
+;;;;;;;;;;;
+?? SETOR AGRÍCOLA - FUNÇÕES PASSÍVEIS DE REDUÇÃO;;;;;;;;;;;
+Coord.;Área;Função;Qtde;Vinc. Equip.;Categoria;Peso TCH;Peso ATR;Peso Comb.;Criticidade;Red. Prop.;Obs/Justificativa
+Devanir;Parcerias/Fornec;Coordenação;1;Não;Administrativo;0%;0%;0%;Baixa;0;Área administrativa
+Elias;Adm / Tratos;Coordenação;1;Não;Administrativo;0%;0%;0%;Baixa;0;
+Elias;Adm / Tratos;Gestor;2;Não;Administrativo;0%;0%;0%;Baixa;0;
+Elias;Adm / Tratos;Trainee;1;Não;Administrativo;0%;0%;0%;Baixa;1;Formação líderes
+Elias;Corretivos;Líder;5;Não;Calcário/Gesso;2%;0%;2%;Média;1;Peso menor
+Everton;Controle Agrícola;Analista PL;1;Não;Administrativo;0%;0%;0%;Baixa;0;
+Everton;Controle Agrícola;Analista Sr;1;Não;Administrativo;0%;0%;0%;Baixa;1;Reestruturação
+Everton;Controle Agrícola;Analista Custo;1;Não;Administrativo;0%;0%;0%;Baixa;0;
+Everton;Controle Agrícola;Assistente;3;Não;Administrativo;0%;0%;0%;Baixa;0;
+Everton;Controle Agrícola;Coordenação;1;Não;Administrativo;0%;0%;0%;Baixa;0;
+Flávio;Brigada;Auxiliar Agrícola;9;Não;Proteção;2%;0%;2%;Média;9;Risco fogo
+Flávio;Brigada;Líder Brigada;1;Não;Proteção;2%;0%;2%;Média;1;Risco fogo
+Helena;Adm;Administrador;1;Não;Administrativo;0%;0%;0%;Baixa;1;Baixa produtiv.
+Helena;Adm;Coordenação;1;Não;Administrativo;0%;0%;0%;Baixa;0;
+Helena;Adm;Eng. Planejamento;1;Não;Administrativo;0%;0%;0%;Baixa;0;Planejamento
+Helena;Pragas Aérea;Auxiliar Agrícola;5;Não;Inseticidas Solo;2%;0%;2%;Média;5;Perdas Qualid.
+Helena;Pragas Aérea;Líder Praga;1;Não;Inseticidas Solo;2%;0%;2%;Média;1;Perdas Qualid.
+Helena;Pragas Solo;Auxiliar Agrícola;6;Não;Inseticidas Solo;2%;0%;2%;Média;6;Perdas Qualid.
+Helena;Pragas Solo;Líder Praga;1;Não;Inseticidas Solo;2%;0%;2%;Média;1;Perdas Qualid.
+Laércio;COA;Controlador;7;Não;Administrativo;0%;0%;0%;Baixa;3;Sem acomp PPT
+Laércio;COA;Gestor;1;Não;Administrativo;0%;0%;0%;Baixa;0;
+Laércio;Logística;Coordenação;1;Não;Administrativo;0%;0%;0%;Baixa;0;Suporte
+Laércio;Logística;Gestor;3;Não;Administrativo;0%;0%;0%;Baixa;0;Suporte
+Pedro;Geotecnologia;Analista Precisão;1;Não;Administrativo;0%;0%;0%;Baixa;0;Tecnologias
+Pedro;Geotecnologia;Analista Geomática;6;Não;Administrativo;0%;0%;0%;Baixa;0;Tecnologias
+Pedro;Geotecnologia;Assistente;1;Não;Administrativo;0%;0%;0%;Baixa;1;Tecnologias
+Pedro;Topografia;Auxiliar Agrícola;1;Não;Administrativo;0%;0%;0%;Baixa;0;
+Pedro;Topografia;Coordenação;1;Não;Administrativo;0%;0%;0%;Baixa;0;
+Pedro;Topografia;Topografo JR;1;Não;Administrativo;0%;0%;0%;Baixa;0;
+Pedro;Topografia;Topografo SR;1;Não;Administrativo;0%;0%;0%;Baixa;0;
+Rogério;Adm Preparo/Plantio;Coordenação;1;Não;Administrativo;0%;0%;0%;Baixa;0;
+;;;;;;;;;;;
+?? RESUMO AGRÍCOLA;;;;;;;;;;;
+Criticidade;Qtde Funções;HC Total;Redução Proposta;% do Setor;Recomendação;;;;;;
+Baixa;21;40;7;5,30%;? PRIORIZAR redução;;;;;;
+Média;10;29;24;3,80%;?? Avaliar impacto;;;;;;
+;;;;;;;;;;;
+;;;;;;;;;;;
+?? SETOR MANUTENÇÃO/AUTOMOTIVA - FUNÇÕES PASSÍVEIS DE REDUÇÃO;;;;;;;;;;;
+Coord.;Área;Função;Qtde;Vinc. Equip.;Categoria;Peso TCH;Peso ATR;Peso Comb.;Criticidade;Red. Prop.;Obs/Justificativa
+Paulo;Adm;Coordenação;1;Não;Administrativo;0%;0%;0%;Baixa;0;
+Luiz Jr.;Adm;Coordenação;1;Não;Administrativo;0%;0%;0%;Baixa;0;
+Hugo;Adm;Coordenação;1;Não;Administrativo;0%;0%;0%;Baixa;0;
+Adriano;Adm;Coordenação;1;Não;Administrativo;0%;0%;0%;Baixa;0;
+Hugo;Caminhões;Líder;3;Não;Logística;0%;0%;1%;Média;1;Turno C
+Hugo;Sala Hidr/Elétrica;Aux. Manutenção;4;Não;Suporte;0%;0%;1%;Média;1;Formação
+Hugo;Tratores;Líder;1;Não;Tratores;0%;0%;1%;Média;0;
+Hugo;Tratores;Aux. Manutenção;2;Não;Tratores;0%;0%;1%;Média;0;
+Adriano;Lavador/Lubrificação;Lavador;4;Não;Suporte;0%;0%;1%;Média;1;
+Adriano;Manutenção Civil;Oficial Manut.;2;Não;Suporte;0%;0%;1%;Média;1;
+Adriano;Manutenção Civil;Aux. Manutenção;1;Não;Suporte;0%;0%;1%;Média;1;
+Adriano;Engenharia;Eng. Confiabilidade;1;Não;Administrativo;0%;0%;0%;Baixa;0;
+Adriano;Engenharia;Trainee;1;Não;Administrativo;0%;0%;0%;Baixa;1;Fim projeto
+Adriano;PCM;Assistente 2201;4;Não;Administrativo;0%;0%;0%;Baixa;1;
+Adriano;PCM;Assist. Ferrament.;2;Não;Administrativo;0%;0%;0%;Baixa;0;
+Adriano;PCM;PCM;7;Não;Administrativo;0%;0%;0%;Baixa;0;
+;;;;;;;;;;;
+?? RESUMO MANUTENÇÃO/AUTOMOTIVA;;;;;;;;;;;
+Criticidade;Qtde Funções;HC Total;Redução Proposta;% do Setor;Recomendação;;;;;;
+Baixa;9;19;2;8,90%;? PRIORIZAR redução;;;;;;
+Média/Suporte;7;17;5;8,00%;?? Avaliar impacto;;;;;;
+;;;;;;;;;;;
+;;;;;;;;;;;
+?? QUADRO CONSOLIDADO - TOMADA DE DECISÃO;;;;;;;;;;;
+Setor;Criticidade;HC Total;Red. Proposta;Red. Recomend.;Economia Est.;Risco;Decisão;;;;
+Agrícola;Baixa;40;7;7;R$ 350.000;?? Mínimo;? APROVAR;;;;
+Agrícola;Média;29;24;10;R$ 480.000;?? Baixo;?? AVALIAR;;;;
+Manutenção;Baixa;19;2;2;R$ 95.000;?? Mínimo;? APROVAR;;;;
+Manutenção;Média/Suporte;17;5;3;R$ 150.000;?? Baixo;?? AVALIAR;;;;
+TOTAL;;105;38;22;R$ 1.075.000;;;;;;
+;;;;;;;;;;;
+;;;;;;;;;;;
+?? RECOMENDAÇÕES PARA O CONSELHO;;;;;;;;;;;
+;;;;;;;;;;;
+? APROVAR SEM RESTRIÇÕES (9 posições - R$ 445.000);;;;;;;;;;;
+   • Trainees (formação concluída);;;;;;;;;;;
+   • Funções administrativas duplicadas;;;;;;;;;;;
+   • Assistentes em áreas com automação;;;;;;;;;;;
+;;;;;;;;;;;
+?? AVALIAR CASO A CASO (13 posições - R$ 630.000);;;;;;;;;;;
+   • Brigada: manter estrutura mínima (risco de fogo no canavial);;;;;;;;;;;
+   • Pragas: avaliar sazonalidade e impacto TCH;;;;;;;;;;;
+   • Suporte: verificar possibilidade de terceirização;;;;;;;;;;;
+;;;;;;;;;;;
+?? NÃO REDUZIR (Funções Críticas e Alta - 76% do quadro);;;;;;;;;;;
+   • Operadores de equipamentos (colhedoras, tratores, transbordos);;;;;;;;;;;
+   • Mecânicos de frente de colheita;;;;;;;;;;;
+   • Irrigação, Adubação, Herbicidas - impacto direto TCH/ATR;;;;;;;;;;;

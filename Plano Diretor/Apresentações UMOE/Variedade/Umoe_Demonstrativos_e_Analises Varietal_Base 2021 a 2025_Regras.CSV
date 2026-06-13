@@ -1,0 +1,12 @@
+ITEM;REGRA
+Base considerada;Aba BASE do arquivo Ranking UMOE.xlsb
+Safras incluídas;22122, 22223, 22324, 22425, 22526
+Cortes incluídos;1, 2, 3, 4, 5, 6 e 7
+TAH;? KG_ACUCAR / 1000 / ? AREA_CTT
+TCH;? TON_CANA / ? AREA_CTT
+ATR;? KG_ACUCAR / ? TON_CANA
+Zeros na horizontal;Mantidos quando não existe dado para a combinação
+Média;AVERAGEIF, ignorando zeros
+Ordenação;Maior para menor pela média
+Fazenda usada;DE_UPNIVEL1
+Restrição agronômica do usuário;RB975242 não recomendada no mapa ideal por estria vermelha em Sandovalina

@@ -1,0 +1,48 @@
+Indicador;Un. Medida;2025/26;2026/27
+;;REAL;META
+;;;
+Toneladas Colhida Própria;Ton.;2.263.599;2.253.414
+COLHEDORAS;;;
+Colheita - Colhedora;%;89%;92%
+CRM Colhedoras;R$;8.505.381;6.440.299
+Colhedoras;qtde;21;18
+Idade Média;Anos;5,1;3
+MTBF - Colhedoras;Hrs;24,09;30
+MTTR - Colhedoras;Hrs;2,75;2,2
+RMC - Quantidade de Colhedoras;RMC;553;627
+RMC - Quantidade HC;RMC;593;703
+Manutenção Linear;qtde;7;10
+Aderência Lubrifição;%;91%;92%
+Aderência Troca de Óleo;%;92%;95%
+Aderência Preventiva;%;73%;90%
+Média Horas Trabalhadas - Colhedoras;Hrs;2.761;3.150
+Consumo Óleo Diesel (L/Ton) - Colh.;L/ton;0,91;0,85
+Consumo Óleo Diesel (L/Hrs) - Colh.;L/Hrs;36,3;36
+Consumo Óleo Hidraúlico (L/Ton) - Colh.;L/ton;0,014;0,012
+Consumo Faquinha - Colhedoras ;Ton./Faca;134;155
+Consumo Facão - Colhedoras ;Ton./Facão;412;480
+Custo Reparo e Manut. Por Equipamento CD - Anual;R$/Epqto;405.018;357.794
+Custo Reparo e Manut. Por Equipamento CD - Mensal;R$/Mês;33.752;29.816
+Custo Reparo e Manut. Por Equipamento CD - Mensal;R$/Hrs;146,7;126,8
+Custo Reparo e Manut. Por Equipamento CD - Anual;R$/Ton.;3,8;2,8
+TRATORES;;;
+Disponibilidade Tratores;%;90%;91%
+CRM Tratores;R$;4.690.243;3.775.374
+Tratores CCT;qtde;41;35
+Idade Média;Anos;6;5,1
+MTBF - Tratores CCT;Hrs;59,51;100
+MTTR - Tratores CCT;Hrs;7,49;5,2
+Manutenção Linear;qtde;10;12
+Aderência Lubrifição;%;91%;92%
+Aderência Troca de Óleo;%;92%;95%
+Aderência Preventiva;%;10%;90%
+Consumo Óleo Diesel (L/Ton) - Tratores CCT;L/ton;0,49;0,45
+Consumo Óleo Diesel (L/Hrs) - Tratores CCT;L/Hrs;9,2;9
+Custo Reparo e Manut. Por Equipamento Trat. CCT - Anual;R$/Epqto;114.396;107.868
+Custo Reparo e Manut. Por Equipamento Trat. CCT - Mensal;R$/Epqto;9.533;8.989
+Custo Reparo e Manut. Por Equipamento Trat. CCT - Mensal;R$/Hrs;40,2;34
+Custo Reparo e Manut. Por Equipamento Trat. CCT - Anual;R$/Ton.;2,07;1,7
+TRANSBORDOS;;;
+Disponibilidade Transbordo;%;97%;97%
+Idade Média;Anos;11,7;12,7
+CRM Transbordo;R$;922.383;1.036.118

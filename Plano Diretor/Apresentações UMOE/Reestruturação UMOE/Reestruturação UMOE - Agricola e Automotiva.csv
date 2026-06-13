@@ -1,0 +1,56 @@
+;;;;;;;;;Impacto de Volume de cana;;;Impacto Receita Etanol ~ (MR$);;;ATR;138,66
+;;Area;Iniciativa;Custos evitado;Impacto;Impacto Produção BP ;Impacto Financeiro da produção;Hectares;Baixo;Médio;Alto;Baixo;Médio;Alto;Yield;0,64
+;;AGR;BIOL MICROGEO; 3.223.175 ;"? Menor risco de impacto na produtividade em relação a tratamentos básicos (herbicida, adubos e inseticidas);
+? Tratamento com objetivo de longo prazo podendo ser retomado no ano/corte seguinte;";Sim;2 a 4 t/ha.;15.742 ;31.484 ;47.226 ;62.968 ; R$ 6.649.638,42 ; R$ 9.974.457,63 ; R$ 13.299.276,83 ;Preço - Litro;2,38
+;;AGR;FERT 34.17.00 UREIA PROTEGIDA; 1.609.650 ;"? Substituição de Mineral por Composto em áreas >= 3º Corte de vinhaça referente aos meses de JUL-NOV;
+? O adubo mineral possui arranque inicial mais rápido, no entanto a torta contém matéria orgânica que contribui nos periodos mais secos em conjunto com a aplicação de vinhaça;
+? Caso seja observado o desenvolvimento menor da cultura, é possível aplicar ureia com avião R$ 350,00/ha (avião + insumo) afim de recuperar possível baixo desenvolvimento;";Sim;1,5 a 6 t/ha.;4.500 ;6.750 ;16.875 ;27.000 ; R$ 1.425.646,66 ; R$ 3.564.116,64 ; R$ 5.702.586,62 ;;
+;;AGR;CORR CALCAREO DOLOMITICO; 1.134.000 ;"? Aplicação ""dobrada"" na formação, garante o fornecimento de Ca e Mg por um período maior no ciclo.
+? Aplicando a dose direta com base na análise é possível fazer a aplicação no ano seguinte visando minimizar os impactos na produtividade;";Sim;5 t/ha.;4.200 ;7.000 ;14.000 ;21.000 ; R$ 1.478.448,38 ; R$ 2.956.896,77 ; R$ 4.435.345,15 ;;
+;;AGR;CORR DOLOGESSO 70%; 297.894 ;"? Áreas de baixo TCH, redução do fornecimento de Ca,Mg e S, auxilia na formação de perfilho e arranque inicial da cultura;
+? Em solos acidos com falta de Ca, as raizes não aprofundam no perfil do solo, explorando um volume menor de solo, ficando susceptivel a veranicos e também a uma menor absorção de nutrientes;";Sim;"2 a 4 t/ha.
+1 a 2 kg ATR";1.124 ;3.372 ;4.497 ;5.621 ; R$ 712.272,08 ; R$ 949.696,10 ; R$ 1.187.120,13 ;;
+;;AGR;SERV. ENLEIRAMENTO; 94.705 ;"? Aumento de cigarrinha, sphenophorus e atraso na brotação;
+? Identificado aumento na infesfetação é possível aplicar Actara R$ 156,40 + R$ 56,00 avião para controle;";Sim;3 a 4 t/ha.;1.412 ;4.237 ;4.943 ;5.649 ; R$ 894.824,55 ; R$ 1.043.961,97 ; R$ 1.193.099,40 ;;
+;;AGR;NEMATICIDA BIOLOGICO EVENWICHT KRACHT; 889.600 ;"? 13.900 ha com adubo + inseticida + micronutrientes;
+? 1.100 ha apenas com adubo;
+? Risco de ataque das pragas (nematóide, migdolus, sphenophorus e cigarrinha);
+? Biológicos possui resistência a seca e fixação de nitrogênio;
+? Bioestimulante, redução na fase inicial da brotação;
+? Micros (Boro, Zinco e Manganes), diminuindo perfilhamento, e construção de sacarose para conversão em ATR;";Sim;"2 a 4 TCH      
+1 a 2 kg ATR";13.900 ;41.700 ;55.600 ;69.500 ; R$ 8.807.328,23 ; R$ 11.743.104,31 ; R$ 14.678.880,38 ;;
+;;AGR;BIOL BIOASIS B ARYABHATTAI BIOTROP; 431.456 ;;Sim;;13.900 ;;;;;;;;
+;;AGR;BIOL INOC BIOMAX AZUM; 93.895 ;;Sim;;13.900 ;;;;;;;;
+;;AGR;FERT EXPERTGROW EXT ALGAS ADAMA; 252.424 ;;Sim;;13.900 ;;;;;;;;
+;;AGR;FERTILIZANTE EUROMAN MANGANES19 EUROFORTE; 18.480 ;;Sim;;1.100 ;;;;;;;;
+;;AGR;FOLI EURO BORO; 31.170 ;;Sim;;1.100 ;;;;;;;;
+;;AGR;FOLI EURO ZINCO 53; 69.366 ;;Sim;;1.100 ;;;;;;;;
+;;AGR;SERV. APLIC. FUNGICIDA; 392.000 ;"? Aplicação otimizada em associação com o controle de Broca;
+? Pode haver incompatibilidade entre os produtos reduzindo a eficiência de controle dos insumos, podendo ocorrer o aumento da infestação de pragas e fungos;";Sim;2 TCH;7.000 ;4.667 ;9.333 ;14.000 ; R$ 985.632,26 ; R$ 1.971.264,51 ; R$ 2.956.896,77 ;;
+;;AGR;AGRICOLA - Licença do BI; 5.000 ;;NA;;;;;;;;;;
+;;AGR;AGRICOLA - Retirar Despesas de Viagens Agricola; 120.000 ;;NA;;;;;;;;;;
+;;AGR;AUTOMOTIVA - Reestruturação do PCM; 60.000 ;;NA;;;;;;;;;;
+;;AGR;GEOTECNOLOGIA - Contrato do Bene; 26.000 ;Manter o mesmo valor de 2025;NA;;;;;;;;;;
+;;AGR;GEOTECNOLOGIA - Retirar licença RTX tratores plantio; 20.000 ;;NA;;;;;;;;;;
+;;AGR;LOGÍSTICA - Redução das  IT dos pranchas; 25.000 ;Faremos a IT de apenas 3 pranchas;NA;;;;;;;;;;
+;;AGR;TI AGRICOLA - Integração Solinftec Web Service; 30.000 ;;NA;;;;;;;;;;
+;;AGR;TI AGRICOLA - Solinftec nuvem; 184.000 ;;NA;;;;;;;;;;
+;;AGR;TOPOGRAFIA - Licença FME; 16.000 ;Atualização a cada 2 anos;NA;;;;;;;;;;
+;;AGR;TRANSP PESSOAL - Retirar km do onibus Lay off; 85.000 ;Fazer treinamento na usina e utilizar os onibus administrativos;NA;;;;;;;;;;
+;;AGR;TRANSP PESSOAL - Retirar Micro onibus da muda ; 218.000 ;Trocar apenas com um onibus no periodo de junho a setembro 2026;NA;;;;;;;;;;
+;;AGR;TRANSP PESSOAL - Retirar Van da irrigação LM da Meiosi; 239.000 ;troca de turno carro leve;NA;;;;;;;;;;
+;;AGR;TRANSP TORTA - Terceiro transporte de torta; 54.000 ;Retirar 4% do reajuste;NA;;;;;;;;;;
+;;AUT;- Redução 1 CAM Fetirrigação - Impacto no atendimento (1 CM Oficina Fertirrig./Irrig.); 75.000 ;;NA;;;;;;;;;;
+;;AUT;- Redução 1 CAM Colheita Muda ; 65.000 ;;NA;;;;;;;;;;
+;;AUT;- Redução 1 Veículos leves - Entrega de Peças PPT; 35.000 ;;NA;;;;;;;;;;
+;;AUT;- Redução 8% Serviços Terceiros - M.Obra Orçado 2.128.154; 170.252 ;;NA;;;;;;;;;;
+;;AUT;- Redução 8% Gastos Pneus - Orçado 1948745 - Estrategia compra Carcaça Usada; 155.900 ;;NA;;;;;;;;;;
+;;AUT;- Redução 5% Consumo de produtos do lavador; 25.000 ;;NA;;;;;;;;;;
+;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;
+;;;; 10.145.966 ;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;
