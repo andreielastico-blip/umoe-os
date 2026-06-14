@@ -1,0 +1,69 @@
+{
+    "meta": "UMOE OS 8.0 — CHI Snapshot",
+    "data_ref": "20260613",
+    "gerado_em": "2026-06-14 18:00:53",
+    "fonte_csv": "SOLINFTEC_20260613.csv",
+    "total_eventos": 280,
+    "chi_total_reais": 18129.58,
+    "chi_controlavel_reais": 9695.27,
+    "chi_incontrolavel_reais": 8434.31,
+    "semaforo_geral": "🔴 VERMELHO",
+    "causas": [
+        {
+            "causa_raiz": "Chuva / Clima",
+            "horas_paradas": 102.983,
+            "chi_reais": 8434.31,
+            "controlavel": false,
+            "semaforo": "🔴 VERMELHO"
+        },
+        {
+            "causa_raiz": "Manutenção Corretiva",
+            "horas_paradas": 52.767,
+            "chi_reais": 4321.58,
+            "controlavel": true,
+            "semaforo": "🟡 AMARELO"
+        },
+        {
+            "causa_raiz": "Pátio / Usina",
+            "horas_paradas": 25.967,
+            "chi_reais": 2126.67,
+            "controlavel": true,
+            "semaforo": "🟡 AMARELO"
+        },
+        {
+            "causa_raiz": "Hilo Travamento",
+            "horas_paradas": 10.833,
+            "chi_reais": 887.26,
+            "controlavel": true,
+            "semaforo": "🟢 VERDE"
+        },
+        {
+            "causa_raiz": "Manutenção Preventiva",
+            "horas_paradas": 8.45,
+            "chi_reais": 692.05,
+            "controlavel": true,
+            "semaforo": "🟢 VERDE"
+        },
+        {
+            "causa_raiz": "Troca de Turno",
+            "horas_paradas": 7.767,
+            "chi_reais": 636.1,
+            "controlavel": true,
+            "semaforo": "🟢 VERDE"
+        },
+        {
+            "causa_raiz": "Combustível / Insumo",
+            "horas_paradas": 7.25,
+            "chi_reais": 593.77,
+            "controlavel": true,
+            "semaforo": "🟢 VERDE"
+        },
+        {
+            "causa_raiz": "T.Carregamento",
+            "horas_paradas": 5.346,
+            "chi_reais": 437.84,
+            "controlavel": true,
+            "semaforo": "🟢 VERDE"
+        }
+    ]
+}

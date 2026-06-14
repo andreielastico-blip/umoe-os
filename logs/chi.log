@@ -1,0 +1,8 @@
+[2026-06-14 17:19:54] data=2026-06-13 | arquivo=SOLINFTEC_20260613.csv | CHI total=R$16218 | CHI ctrl=R$7786 | eventos=280
+2026-06-14 17:22:24 | Automação 6 implantada | chi-engine.py criado | SSoT atualizada | CSV demo gerado
+2026-06-14 18:00:53 [INFO] === CHI Engine iniciado ===
+2026-06-14 18:00:53 [INFO] CSV: /sessions/intelligent-inspiring-wozniak/mnt/umoe-os/UMOE-OS-8.0/Solinftec/SOLINFTEC_20260613.csv
+2026-06-14 18:00:53 [INFO] CHI total: R$ 18,129.58 | Causas: 8 | Eventos: 280
+2026-06-14 18:00:53 [INFO] JSON salvo: /sessions/intelligent-inspiring-wozniak/mnt/umoe-os/UMOE-OS-8.0/99-SSoT/umoe-chi-snapshot.json
+2026-06-14 18:00:53 [INFO] PDF salvo: /sessions/intelligent-inspiring-wozniak/mnt/umoe-os/UMOE-OS-8.0/Relatorios/UMOE_CHI_20260613.pdf
+2026-06-14 18:00:53 [INFO] === CHI Engine encerrado ===

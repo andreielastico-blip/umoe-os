@@ -8,3 +8,10 @@
 [2026-06-14 11:10:06] [INFO]  * branch            main       -> FETCH_HEAD
 [2026-06-14 11:10:06] [INFO] Already up to date.
 [2026-06-14 11:10:06] [INFO] Alteracoes detectadas. Commitando...
+[2026-06-14 11:10:06] [INFO] [main 8e42546] UMOE OS 8.0 - Auto-sync 2026-06-14 11:10:06
+[2026-06-14 11:10:06] [INFO]  2 files changed, 578 insertions(+)
+[2026-06-14 11:10:06] [INFO]  create mode 100644 logs/sync.log
+[2026-06-14 11:10:06] [INFO] To https://github.com/andreielastico-blip/umoe-os.git
+[2026-06-14 11:10:06] [INFO]    29707c9..8e42546  main -> main
+[2026-06-14 11:10:06] [OK] Push realizado com sucesso! Commit: UMOE OS 8.0 - Auto-sync 2026-06-14 11:10:06
+[2026-06-14 11:10:06] [OK] === Sync concluido com sucesso em 2026-06-14 11:10:06 ===
