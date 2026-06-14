@@ -1,0 +1,10 @@
+[2026-06-14 11:10:06] [INFO] === UMOE OS 8.0 - Sync iniciado ===
+[2026-06-14 11:10:06] [OK] Git encontrado: git version 2.54.0.windows.1
+[2026-06-14 11:10:06] [OK] Repositorio encontrado: C:\Users\andrei.elastico\umoe-os
+[2026-06-14 11:10:06] [INFO] Diretorio de trabalho: C:\Users\andrei.elastico\umoe-os
+[2026-06-14 11:10:06] [INFO] Nenhuma skill nova encontrada.
+[2026-06-14 11:10:06] [INFO] Puxando atualizacoes do GitHub...
+[2026-06-14 11:10:06] [INFO] From https://github.com/andreielastico-blip/umoe-os
+[2026-06-14 11:10:06] [INFO]  * branch            main       -> FETCH_HEAD
+[2026-06-14 11:10:06] [INFO] Already up to date.
+[2026-06-14 11:10:06] [INFO] Alteracoes detectadas. Commitando...
