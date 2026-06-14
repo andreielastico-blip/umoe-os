@@ -1,4 +1,4 @@
-﻿# SINGLE SOURCE OF TRUTH - UMOE OS 8.0
+# SINGLE SOURCE OF TRUTH - UMOE OS 8.0
 ## Plano de Moagem Oficial — Safra 2026/27
 ## Ultima atualizacao: 14/06/2026 | Fonte: Plano Moagem + Ativo Biologico SF2627
 
