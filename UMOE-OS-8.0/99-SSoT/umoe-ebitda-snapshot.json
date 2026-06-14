@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-14T19:22:09.808485",
+  "timestamp": "2026-06-14T19:27:37.721956",
   "safra": "2026/27",
   "periodo": "Mar-14Jun/2026",
   "umoe_regras": [
@@ -30,10 +30,16 @@
     "total_acumulado": 59.396
   },
   "ebitda_M": {
+    "ebitda_parcial": true,
+    "custos_apenas_agricolas": true,
+    "nota_auditoria": "EBITDA 62.69% reflete apenas custos agricolas. Faltam custos industriais, G&A e depreciacao. NAO usar para apresentacao ao Conselho sem Opex total.",
     "ebitda_acumulado": 99.794,
     "margem_pct": 62.69,
     "ebitda_projetado_safra": 349.683,
-    "margem_projetada_pct": 62.69
+    "margem_projetada_pct": 62.69,
+    "ebitda_ajustado_estimado_M": 28.159,
+    "ebitda_ajustado_margem_pct": 17.69,
+    "nota_ajuste": "Ajuste estimado com custo industrial de 45% da receita (benchmark setor sucroenergético — PECEGE/DATAGRO). Substituir pelo Opex industrial real da Controladoria."
   },
   "vpl": {
     "vpl_M": 312.621,

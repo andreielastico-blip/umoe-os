@@ -1115,16 +1115,18 @@ Detalhe unitário R$/t (acumulado):
 ---
 
 ## EBITDA ENGINE — SNAPSHOT AUTOMATICO
-### Gerado em: 2026-06-14 19:22 | ebitda-engine.py v1.0
+### Gerado em: 2026-06-14 19:27 | ebitda-engine.py v1.1
 
 | Indicador | Valor Acumulado | Projecao Safra |
 |-----------|----------------|----------------|
 | Receita total | R$ 159.19 M | R$ 557.81 M |
-| Custos operacionais | R$ 59.40 M | -- |
-| EBITDA | R$ 99.79 M | R$ 349.68 M |
-| Margem EBITDA | 62.7% | 62.7% |
+| Custos operac. agricolas | R$ 59.40 M | -- |
+| EBITDA agricola parcial | R$ 99.79 M (62.7%) | R$ 349.68 M |
+| EBITDA ajustado* | R$ 28.16 M (17.7%) | -- |
 | VPL (WACC 18,30%) | R$ 312.62 M | -- |
 
-> UMOE-067: Receita energia calculada com R$ 250/MWh ESTIMATIVA — aguarda contrato ACR/spot.
-> UMOE-066: ATR sempre ponderado pelas toneladas reais — 126.49 kg/t acumulado.
+> *EBITDA ajustado: benchmark industrial 45% receita (PECEGE/DATAGRO) — substituir por Opex real.
+> ATENCAO: EBITDA agricola parcial — faltam custos industriais, G&A e depreciacao.
+> NAO usar para apresentacao ao Conselho sem Opex total.
+> UMOE-067: Energia R$ 250/MWh ESTIMATIVA | UMOE-066: ATR 126.49 kg/t ponderado real.
 
