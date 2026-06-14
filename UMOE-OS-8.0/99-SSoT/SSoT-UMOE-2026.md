@@ -1111,3 +1111,20 @@ Detalhe unitário R$/t (acumulado):
 - Todos os centros de formação tiveram efeito preço FAVORÁVEL (insumos mais baratos)
 - CCT foi o único com preço desfavorável (+R$0,3/t — residual)
 - O desvio de custo é operacional (produtividade e volume), não de preço de mercado
+
+---
+
+## EBITDA ENGINE — SNAPSHOT AUTOMATICO
+### Gerado em: 2026-06-14 19:22 | ebitda-engine.py v1.0
+
+| Indicador | Valor Acumulado | Projecao Safra |
+|-----------|----------------|----------------|
+| Receita total | R$ 159.19 M | R$ 557.81 M |
+| Custos operacionais | R$ 59.40 M | -- |
+| EBITDA | R$ 99.79 M | R$ 349.68 M |
+| Margem EBITDA | 62.7% | 62.7% |
+| VPL (WACC 18,30%) | R$ 312.62 M | -- |
+
+> UMOE-067: Receita energia calculada com R$ 250/MWh ESTIMATIVA — aguarda contrato ACR/spot.
+> UMOE-066: ATR sempre ponderado pelas toneladas reais — 126.49 kg/t acumulado.
+

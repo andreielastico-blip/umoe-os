@@ -1,0 +1,55 @@
+{
+  "timestamp": "2026-06-14T19:22:09.808485",
+  "safra": "2026/27",
+  "periodo": "Mar-14Jun/2026",
+  "umoe_regras": [
+    "UMOE-066",
+    "UMOE-067"
+  ],
+  "operacional": {
+    "moagem_real_t": 730995.0,
+    "meta_moagem_safra_t": 2768000,
+    "gap_moagem_t": -387147.0,
+    "gap_moagem_pct": -73.59,
+    "atr_ponderado_real_kgt": 126.49
+  },
+  "receita_M": {
+    "real_acumulado_ssot": 159.19,
+    "calculado_parametros": 170.446,
+    "etanol_calc": 158.9,
+    "energia_calc_UMOE067_estimativa": 11.546,
+    "atr_equivalente_UMOE066": 95.237,
+    "projecao_safra_completa": 557.81,
+    "plano_original_safra": 645.52,
+    "gap_vs_plano": -87.71
+  },
+  "custos_M": {
+    "cct_total": 21.851,
+    "formacao_total": 23.335,
+    "tratos_soca": 14.21,
+    "total_acumulado": 59.396
+  },
+  "ebitda_M": {
+    "ebitda_acumulado": 99.794,
+    "margem_pct": 62.69,
+    "ebitda_projetado_safra": 349.683,
+    "margem_projetada_pct": 62.69
+  },
+  "vpl": {
+    "vpl_M": 312.621,
+    "wacc_pct": 18.3,
+    "tma_pct": 21.0,
+    "horizonte_meses": 8,
+    "nota": "VPL simplificado — EBITDA projetado descontado a WACC. Para analise CAPEX usar fluxo completo aprovado pela Controladoria."
+  },
+  "parametros_utilizados": {
+    "preco_etanol_R_litro": 2.5,
+    "eficiencia_etanol_l_t": 86.95,
+    "preco_energia_R_MWh": 250.0,
+    "eficiencia_energia_kWh_t": 63.18,
+    "preco_atr_CONSECANA_R_kg": 1.03,
+    "wacc_pct": 18.3,
+    "tma_pct": 21.0,
+    "flag_energia_estimativa": true
+  }
+}
