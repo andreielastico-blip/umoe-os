@@ -1,0 +1,135 @@
+name: UMOE BI Auto-Update
+
+on:
+  schedule:
+    # Roda segunda a sexta, 06:00 BRT (09:00 UTC)
+    - cron: '0 9 * * 1-5'
+  push:
+    branches: [main]
+    paths:
+      - 'UMOE-OS-8.0/01-AGENTE-AUTONOMO/**.py'
+      - 'config/**.json'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Modo de execucao'
+        required: false
+        default: 'full'
+        type: choice
+        options: [full, bi-only, push-only]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  update-bi:
+    runs-on: ubuntu-latest
+    name: Gerar BI Enterprise
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install openpyxl pyxlsb pdfplumber requests python-dotenv --quiet
+
+      - name: Run BI Enterprise (dados historicos)
+        run: |
+          python UMOE-OS-8.0/01-AGENTE-AUTONOMO/umoe-bi-enterprise.py
+        env:
+          PBI_TENANT_ID: ${{ secrets.PBI_TENANT_ID }}
+          PBI_CLIENT_ID: ${{ secrets.PBI_CLIENT_ID }}
+          PBI_CLIENT_SECRET: ${{ secrets.PBI_CLIENT_SECRET }}
+        continue-on-error: true
+
+      - name: Verificar arquivos gerados
+        run: |
+          ls -la UMOE-OS-8.0/Relatorios/ || echo "Sem relatorios gerados"
+
+      - name: Commit e Push artefatos
+        run: |
+          git config user.name "andreielastico-blip"
+          git config user.email "292870464+andreielastico-blip@users.noreply.github.com"
+          git add UMOE-OS-8.0/Relatorios/ logs/ config/ || true
+          git diff --cached --quiet || git commit -m "CI: BI auto-update $(date +'%Y%m%d-%H%M') [skip ci]"
+          git push || echo "Push falhou (sem mudancas)"
+
+  deploy-pages:
+    runs-on: ubuntu-latest
+    needs: update-bi
+    name: Deploy GitHub Pages
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Preparar pasta docs/ para Pages
+        run: |
+          mkdir -p docs
+          # Copiar HTML gerados
+          cp UMOE-OS-8.0/Relatorios/*.html docs/ 2>/dev/null || true
+          # Criar index.html como hub de navegacao
+          cat > docs/index.html << 'HTMLEOF'
+          <!DOCTYPE html>
+          <html lang="pt-BR">
+          <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width,initial-scale=1">
+          <title>UMOE OS 8.0 | Hub de Relatorios</title>
+          <style>
+            body{margin:0;background:#060E1F;color:#E8EAF6;font-family:Inter,system-ui,sans-serif;padding:40px 24px}
+            h1{color:#FFD600;font-size:1.4rem;margin-bottom:8px}
+            p{color:#90A4AE;margin-bottom:32px;font-size:0.9rem}
+            .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+            .card{background:#0A1628;border:1px solid #1E3060;border-radius:12px;padding:20px;
+              text-decoration:none;color:inherit;transition:box-shadow 0.2s}
+            .card:hover{box-shadow:0 4px 20px rgba(0,200,83,0.2);border-color:#00C853}
+            .card h2{font-size:1rem;color:#00C853;margin:0 0 8px}
+            .card p{font-size:0.8rem;color:#546E7A;margin:0}
+            .badge{display:inline-block;background:rgba(0,200,83,0.1);border:1px solid rgba(0,200,83,0.3);
+              border-radius:20px;padding:2px 10px;font-size:0.72rem;color:#00C853;margin-top:10px}
+            .ts{color:#546E7A;font-size:0.72rem;margin-top:24px}
+          </style>
+          </head>
+          <body>
+          <h1>UMOE BIOENERGY | OS 8.0 — Hub de Relatórios</h1>
+          <p>Dashboards automaticos atualizados via GitHub Actions | Safra 2026/27</p>
+          <div class="grid">
+            <a class="card" href="UMOE_BI_Enterprise.html">
+              <h2>BI Enterprise</h2>
+              <p>Dashboard unificado: Executivo, Agricola, Industrial, Variedades, Historico, Inteligencia</p>
+              <span class="badge">7 abas | Dados reais</span>
+            </a>
+            <a class="card" href="UMOE_Painel_Executivo_MASTER.html">
+              <h2>Painel Executivo Master</h2>
+              <p>Moagem, BPC, CHI, Industria, Tendencias e Cenarios Safra 2026/27</p>
+              <span class="badge">7 abas | BPC completo</span>
+            </a>
+          </div>
+          <div class="ts">Ultima atualizacao automatica: via GitHub Actions | andreielastico-blip/umoe-os</div>
+          </body>
+          </html>
+          HTMLEOF
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
