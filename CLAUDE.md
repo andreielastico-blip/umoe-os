@@ -9,8 +9,9 @@ GitHub: andreielastico-blip/umoe-os | Último commit: 3dabe8c
 - CHI Engine: UMOE-OS-8.0/01-AGENTE-AUTONOMO/chi-engine.py
 - Base agrícola: UMOE-OS-8.0/Base-Agricola/Base_UMOE.xlsx
 - Solinftec CSV diário: UMOE-OS-8.0/Solinftec/SOLINFTEC_[AAAAMMDD].csv
+- Precipitacao (FONTE OFICIAL): C:\01 - UMOE\03 - Financeiro\Planilhas\1 - Indice Pluviometrico UMOE.xlsx
 - Relatórios: UMOE-OS-8.0/Relatorios/
-- Logs: logs/chi.log | logs/sync.log | logs/pipeline.log
+- Logs: logs/chi.log | logs/sync.log | logs/pipeline.log | logs/clima.log
 - INBOX arquivos: C:\01 - UMOE\09 - IA\UMOE-INBOX\
 - Sync script: C:\01 - UMOE\09 - IA\sync-umoe.ps1
 
@@ -59,6 +60,7 @@ GitHub: andreielastico-blip/umoe-os | Último commit: 3dabe8c
 
 ## Comandos Rápidos
 - Pipeline completo: python UMOE-OS-8.0/01-AGENTE-AUTONOMO/chi-engine.py
+- Clima/Chuva: python UMOE-OS-8.0/01-AGENTE-AUTONOMO/clima-engine.py
 - Sync GitHub: powershell "C:\01 - UMOE\09 - IA\sync-umoe.ps1"
 - Verificar CHI: Get-Content logs/chi.log -Tail 10
 - Validar SSoT: python ssot-validator.py (a criar)

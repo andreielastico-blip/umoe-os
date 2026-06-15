@@ -1130,3 +1130,38 @@ Detalhe unitário R$/t (acumulado):
 > NAO usar para apresentacao ao Conselho sem Opex total.
 > UMOE-067: Energia R$ 250/MWh ESTIMATIVA | UMOE-066: ATR 126.49 kg/t ponderado real.
 
+---
+
+## CLIMA ENGINE — PRECIPITACAO REAL 2026
+### Fonte: 1 - Indice Pluviometrico UMOE.xlsx | Atualizado: 2026-06-15 08:35 | Engine: 2026-06-15 11:39
+### (*) = mes de safra ativa | CRITICO > 200mm | ATENCAO > 100mm
+
+| Mes | 2026 (mm) | 2025 (mm) | 2024 (mm) | Media Hist. |
+|-----|-----------|-----------|-----------|-------------|
+| Janeiro | 229 | 118 | 106 | 181 |
+| Fevereiro | 63 | 108 | 218 | 148 |
+| Marco (*) | 91 | 48 | 97 | 140 |
+| Abril (*) | 112 [ATENCAO] | 175 | 130 | 113 |
+| Maio (*) | 365 [CRITICO] | 53 | 67 | 118 |
+| Junho (*) | 33 | 124 | 1 | 96 |
+| Julho (*) | - | 16 | 96 | 40 |
+| Agosto (*) | - | 0 | 42 | 59 |
+| Setembro (*) | - | 22 | 99 | 93 |
+| Outubro (*) | - | 225 | 112 | 164 |
+| Novembro (*) | - | 211 | 203 | 151 |
+| Dezembro | - | 312 | 283 | 197 |
+| **TOTAL** | **601** | -- | -- | -- |
+
+### Alertas Safra 2026
+> **Abril**: 112mm (-1% vs hist. 113mm) — ATENCAO
+> **Maio**: 365mm (+209% vs hist. 118mm) — CRITICO | Impacto est. R$ 6.93M
+
+### Impacto Financeiro Estimado (chuva)
+- Total acumulado safra 2026: **601mm** (Abril, Fevereiro, Janeiro, Junho, Maio, Marco)
+- Impacto estimado acumulado: **R$ 6.93 M**
+- Meses restantes sem dados: Julho, Agosto, Setembro, Outubro, Novembro
+- Projecao safra completa (media hist.): 1108mm
+
+### Historico Anual (mm)
+2011: 943mm | 2012: 1729mm | 2013: 1760mm | 2014: 1072mm | 2015: 1985mm | 2016: 1491mm | 2017: 1498mm | 2018: 1674mm | 2019: 1163mm | 2020: 1544mm | 2021: 1136mm | 2022: 1548mm | 2023: 1536mm | 2024: 1453mm | 2025: 1412mm | 2026: 893mm
+
