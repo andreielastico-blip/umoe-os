@@ -213,10 +213,29 @@ def calcular_ebitda(d: dict) -> dict:
             "total_acumulado": round(custo_total, 3),
         },
         "ebitda_M": {
+            "ebitda_parcial": True,
+            "custos_apenas_agricolas": True,
+            "nota_auditoria": (
+                "EBITDA {:.2f}% reflete apenas custos agricolas. "
+                "Faltam custos industriais, G&A e depreciacao. "
+                "NAO usar para apresentacao ao Conselho sem Opex total."
+            ).format(round(margem_pct, 2)),
             "ebitda_acumulado": round(ebitda, 3),
             "margem_pct": round(margem_pct, 2),
             "ebitda_projetado_safra": round(ebitda_proj, 3),
             "margem_projetada_pct": round(margem_pct, 2),
+            "ebitda_ajustado_estimado_M": round(
+                receita_real * (1 - 0.45) - custo_total, 3
+            ),
+            "ebitda_ajustado_margem_pct": round(
+                ((receita_real * (1 - 0.45) - custo_total) / receita_real * 100)
+                if receita_real else 0, 2
+            ),
+            "nota_ajuste": (
+                "Ajuste estimado com custo industrial de 45% da receita "
+                "(benchmark setor sucroenergético — PECEGE/DATAGRO). "
+                "Substituir pelo Opex industrial real da Controladoria."
+            ),
         },
         "vpl": {
             "vpl_M": round(vpl, 3),
@@ -252,22 +271,27 @@ def atualizar_ssot(ssot_texto: str, resultado: dict) -> str:
     vpl     = resultado["vpl"]["vpl_M"]
     custo   = resultado["custos_M"]["total_acumulado"]
 
+    ebitda_aj    = resultado["ebitda_M"]["ebitda_ajustado_estimado_M"]
+    marg_aj      = resultado["ebitda_M"]["ebitda_ajustado_margem_pct"]
+
     bloco = f"""
 ---
 
 {BLOCO_EBITDA_HEADER}
-### Gerado em: {ts} | ebitda-engine.py v1.0
+### Gerado em: {ts} | ebitda-engine.py v1.1
 
 | Indicador | Valor Acumulado | Projecao Safra |
 |-----------|----------------|----------------|
 | Receita total | R$ {rec:.2f} M | R$ {rec_proj:.2f} M |
-| Custos operacionais | R$ {custo:.2f} M | -- |
-| EBITDA | R$ {ebitda:.2f} M | R$ {ebitda_proj:.2f} M |
-| Margem EBITDA | {marg:.1f}% | {marg:.1f}% |
+| Custos operac. agricolas | R$ {custo:.2f} M | -- |
+| EBITDA agricola parcial | R$ {ebitda:.2f} M ({marg:.1f}%) | R$ {ebitda_proj:.2f} M |
+| EBITDA ajustado* | R$ {ebitda_aj:.2f} M ({marg_aj:.1f}%) | -- |
 | VPL (WACC 18,30%) | R$ {vpl:.2f} M | -- |
 
-> UMOE-067: Receita energia calculada com R$ 250/MWh ESTIMATIVA — aguarda contrato ACR/spot.
-> UMOE-066: ATR sempre ponderado pelas toneladas reais — {resultado['operacional']['atr_ponderado_real_kgt']} kg/t acumulado.
+> *EBITDA ajustado: benchmark industrial 45% receita (PECEGE/DATAGRO) — substituir por Opex real.
+> ATENCAO: EBITDA agricola parcial — faltam custos industriais, G&A e depreciacao.
+> NAO usar para apresentacao ao Conselho sem Opex total.
+> UMOE-067: Energia R$ 250/MWh ESTIMATIVA | UMOE-066: ATR {resultado['operacional']['atr_ponderado_real_kgt']} kg/t ponderado real.
 
 """
 
@@ -339,19 +363,19 @@ def main():
     o = resultado["operacional"]
 
     print("\n" + "=" * 60)
-    print("  EBITDA ENGINE — RESULTADO")
+    print("  EBITDA ENGINE - RESULTADO")
     print("=" * 60)
     print(f"  Moagem real acumulada : {o['moagem_real_t']:>12,.0f} t")
     print(f"  ATR ponderado real    : {o['atr_ponderado_real_kgt']:>12.2f} kg/t  [UMOE-066]")
     print(f"  Gap vs meta safra     : {o['gap_moagem_t']:>12,.0f} t  ({o['gap_moagem_pct']:.1f}%)")
     print("-" * 60)
     print(f"  Receita real acum.    : R$ {r['real_acumulado_ssot']:>9.2f} M")
-    print(f"    ↳ Etanol (calc.)    : R$ {r['etanol_calc']:>9.2f} M")
-    print(f"    ↳ Energia (est.)    : R$ {r['energia_calc_UMOE067_estimativa']:>9.2f} M  [UMOE-067]")
+    print(f"    >> Etanol (calc.)   : R$ {r['etanol_calc']:>9.2f} M")
+    print(f"    >> Energia (est.)   : R$ {r['energia_calc_UMOE067_estimativa']:>9.2f} M  [UMOE-067]")
     print(f"  Custos operac. acum.  : R$ {c['total_acumulado']:>9.2f} M")
-    print(f"    ↳ CCT              : R$ {c['cct_total']:>9.2f} M")
-    print(f"    ↳ Formacao         : R$ {c['formacao_total']:>9.2f} M")
-    print(f"    ↳ Tratos Soca      : R$ {c['tratos_soca']:>9.2f} M")
+    print(f"    >> CCT             : R$ {c['cct_total']:>9.2f} M")
+    print(f"    >> Formacao        : R$ {c['formacao_total']:>9.2f} M")
+    print(f"    >> Tratos Soca     : R$ {c['tratos_soca']:>9.2f} M")
     print("-" * 60)
     print(f"  EBITDA acumulado      : R$ {e['ebitda_acumulado']:>9.2f} M")
     print(f"  Margem EBITDA         : {e['margem_pct']:>12.1f}%")
