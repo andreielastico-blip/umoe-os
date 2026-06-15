@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UMOE OS 8.0 | Hub de Relatorios</title>
+<style>
+body{margin:0;background:#060E1F;color:#E8EAF6;font-family:Inter,system-ui,sans-serif;padding:40px 24px}
+h1{color:#FFD600;font-size:1.4rem;margin-bottom:6px}
+.sub{color:#90A4AE;margin-bottom:32px;font-size:0.85rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{background:#0A1628;border:1px solid #1E3060;border-radius:12px;padding:20px;
+  text-decoration:none;color:inherit;transition:box-shadow 0.2s;display:block}
+.card:hover{box-shadow:0 4px 20px rgba(0,200,83,0.25);border-color:#00C853}
+.card h2{font-size:1rem;color:#00C853;margin:0 0 8px}
+.card p{font-size:0.8rem;color:#546E7A;margin:0 0 10px}
+.badge{background:rgba(0,200,83,0.1);border:1px solid rgba(0,200,83,0.3);
+  border-radius:20px;padding:2px 10px;font-size:0.72rem;color:#00C853}
+.badge.gold{background:rgba(255,214,0,0.1);border-color:rgba(255,214,0,0.3);color:#FFD600}
+.ts{color:#546E7A;font-size:0.72rem;margin-top:32px}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#00C853;
+  margin-right:6px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+</style>
+</head>
+<body>
+<h1><span class="dot"></span>UMOE BIOENERGY &nbsp;|&nbsp; OS 8.0 &mdash; Hub de Relat&oacute;rios</h1>
+<div class="sub">Dashboards auto-atualizados via GitHub Actions &nbsp;&bull;&nbsp; Safra 2026/27 &nbsp;&bull;&nbsp; andreielastico-blip/umoe-os</div>
+<div class="grid">
+  <a class="card" href="UMOE_BI_Enterprise.html">
+    <h2>&#x1F3AF; BI Enterprise &mdash; Vis&atilde;o Unificada</h2>
+    <p>Executivo | Agr&iacute;cola drill-down | Industrial | Variedades | Hist&oacute;rico Safras | Intelig&ecirc;ncia</p>
+    <span class="badge">7 abas &nbsp;&bull;&nbsp; 51K registros BD SAFRAS &nbsp;&bull;&nbsp; 3K hist&oacute;rico di&aacute;rio</span>
+  </a>
+  <a class="card" href="UMOE_Painel_Executivo_MASTER.html">
+    <h2>&#x1F4CA; Painel Executivo Master</h2>
+    <p>Dashboard | Di&aacute;rio | Mensal | Acumulado | Agr&iacute;cola | Ind&uacute;stria | Tend&ecirc;ncias &amp; Cen&aacute;rios</p>
+    <span class="badge gold">7 abas &nbsp;&bull;&nbsp; BPC completo &nbsp;&bull;&nbsp; Reestimativa</span>
+  </a>
+</div>
+<div class="ts">
+  Atualiza&ccedil;&atilde;o autom&aacute;tica: GitHub Actions toda Seg&ndash;Sex &agrave;s 06:00 BRT<br>
+  Dados locais: Hist&oacute;rico Di&aacute;rio + BD SAFRAS + TCH-BROCA + Boletim PDF + BPC<br>
+  &copy; UMOE Bioenergy 2026 &mdash; Confidencial
+</div>
+</body>
+</html>
