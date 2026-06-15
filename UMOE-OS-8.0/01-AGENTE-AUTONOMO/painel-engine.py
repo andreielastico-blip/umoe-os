@@ -326,6 +326,48 @@ for _,r in prec_mensal.iterrows():
     m = int(r.MES); a = int(r.ANO)
     heatmap_prec.setdefault(m, {})[a] = round(float(r.CHUVA_MM), 1)
 
+# 5b. DECADAS + CLIMA DETALHADO (depende de heatmap_prec)
+print("[5b] Calculando decadas e impacto climatico 2026...")
+col_dec_name = df_pluvio.columns[6] if len(df_pluvio.columns) > 6 else None
+decadas_2026 = []
+if col_dec_name:
+    df_dec = df_pluvio[df_pluvio[col_ano] == 2026].copy()
+    df_dec["DEC"] = pd.to_numeric(df_dec[col_dec_name], errors="coerce")
+    for (mes, dec), g in df_dec.groupby(["MES_NUM", "DEC"]):
+        decadas_2026.append({"mes": int(mes), "dec": int(dec), "mm": round(float(g[col_mm].sum()), 1)})
+
+THRESHOLD_CRITICO = 200
+IMPACTO_MM = 0.042
+meses_safra = list(range(3, 12))
+
+clima_mensal_detalhado = []
+for mes in range(1, 13):
+    mm_2026 = heatmap_prec.get(mes, {}).get(2026, 0) or 0
+    mm_hist_vals = [v for a, v in heatmap_prec.get(mes, {}).items() if int(a) <= 2025 and v]
+    mm_hist_med = round(sum(mm_hist_vals) / len(mm_hist_vals), 1) if mm_hist_vals else None
+    mm_2025 = heatmap_prec.get(mes, {}).get(2025)
+    mm_2024 = heatmap_prec.get(mes, {}).get(2024)
+    excesso = max(0, mm_2026 - THRESHOLD_CRITICO) if mm_2026 else 0
+    impacto = round(excesso * IMPACTO_MM, 3)
+    status = "CRITICO" if mm_2026 > THRESHOLD_CRITICO else "ATENCAO" if mm_2026 > 100 else "NORMAL"
+    desvio_pct = round((mm_2026 - mm_hist_med) / mm_hist_med * 100, 1) if mm_hist_med and mm_2026 else None
+    clima_mensal_detalhado.append({
+        "mes": mes, "nome": MESES_NOME[mes],
+        "mm_2026": round(mm_2026, 1),
+        "mm_2025": round(mm_2025, 1) if mm_2025 else None,
+        "mm_2024": round(mm_2024, 1) if mm_2024 else None,
+        "mm_hist_med": mm_hist_med,
+        "excesso_mm": round(excesso, 1),
+        "impacto_M": impacto,
+        "status": status,
+        "desvio_pct": desvio_pct,
+    })
+
+impacto_total_safra = round(sum(r["impacto_M"] for r in clima_mensal_detalhado if r["mes"] in meses_safra), 3)
+meses_criticos = [r for r in clima_mensal_detalhado if r["status"] == "CRITICO" and r["mes"] in meses_safra]
+mm_safra_2026_total = round(sum(r["mm_2026"] for r in clima_mensal_detalhado if r["mes"] in meses_safra), 1)
+mm_safra_hist_med = round(sum(r["mm_hist_med"] or 0 for r in clima_mensal_detalhado if r["mes"] in meses_safra), 1)
+
 # Alertas 2026
 def status_alerta(val_2026, media_hist, campo):
     if val_2026 is None or media_hist is None:
@@ -414,6 +456,12 @@ dados = {
     "ranking_aprov": ranking_aprov,
     "alertas_2026":  alertas_2026,
     "meses_nome": {str(k): v for k,v in MESES_NOME.items()},
+    "clima_mensal": clima_mensal_detalhado,
+    "decadas_2026": decadas_2026,
+    "impacto_total_safra": impacto_total_safra,
+    "meses_criticos_count": len(meses_criticos),
+    "mm_safra_2026": mm_safra_2026_total,
+    "mm_safra_hist_med": mm_safra_hist_med,
 }
 
 dados_json = json.dumps(dados, ensure_ascii=False, default=str)
@@ -567,18 +615,48 @@ html = f"""<!DOCTYPE html>
 </div>
 
 <div id="tab-clima" class="tab">
+
+  <div class="grid-kpi" id="kpi-clima-grid"></div>
+
   <div class="chart-card">
-    <h3>Precipitacao Anual Total (2011-2026)</h3>
-    <div class="chart-wrap" style="height:250px"><canvas id="ch-prec-anual"></canvas></div>
+    <h3>Status Climatico por Mes da Safra 2026/27</h3>
+    <div style="overflow-x:auto"><table class="rank" id="tab-clima-mensal">
+      <thead><tr>
+        <th>Mes</th><th>Status</th>
+        <th>2024 (mm)</th><th>2025 (mm)</th><th>2026 (mm)</th>
+        <th>Media Hist.</th><th>Desvio %</th>
+        <th>Excesso (mm)</th><th>Impacto Fin.</th>
+      </tr></thead>
+      <tbody id="tbody-clima"></tbody>
+    </table></div>
   </div>
+
+  <div class="grid-2">
+    <div class="chart-card">
+      <h3>Precipitacao Anual Total (2011-2026)</h3>
+      <div class="chart-wrap" style="height:260px"><canvas id="ch-prec-anual"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Deficit / Excesso vs Media Historica por Mes (2026)</h3>
+      <div class="chart-wrap" style="height:260px"><canvas id="ch-prec-desvio"></canvas></div>
+    </div>
+  </div>
+
   <div class="chart-card">
-    <h3>Precipitacao Mensal - Comparativo por Ano</h3>
+    <h3>Precipitacao Mensal - Comparativo 2024 / 2025 / 2026 vs Media Historica</h3>
     <div class="chart-wrap" style="height:280px"><canvas id="ch-prec-mensal"></canvas></div>
   </div>
+
   <div class="chart-card">
-    <h3>Heatmap: Precipitacao por Mes x Ano (mm)</h3>
+    <h3>Precipitacao por Decada 2026 (1a, 2a, 3a decada de cada mes)</h3>
+    <div class="chart-wrap" style="height:240px"><canvas id="ch-decadas"></canvas></div>
+  </div>
+
+  <div class="chart-card">
+    <h3>Heatmap: Precipitacao por Mes x Ano (mm) — 2011 a 2026</h3>
     <div class="heatmap-wrap" id="heatmap-container"></div>
   </div>
+
 </div>
 
 <div id="tab-qualidade" class="tab">
@@ -716,6 +794,89 @@ function mkLabels(meses) {{ return meses.map(function(m){{ return MESES[m]||m; }
         y: {{ ticks:{{ color:'#94a3b8' }}, grid:{{ color:'#1e3a5f' }}, title:{{ display:true, text:'Chuva (mm)', color:'#94a3b8' }} }},
         y2: {{ position:'right', ticks:{{ color:'#22c55e' }}, grid:{{ drawOnChartArea:false }}, title:{{ display:true, text:'ATR (kg/t)', color:'#22c55e' }} }}
       }}
+    }}
+  }});
+}})();
+
+// CLIMA: KPI cards
+(function() {{
+  var k = [
+    {{ label:'Total Chuva Safra 2026', val: fmt(D.mm_safra_2026,0)+' mm', sub:'Mar-Nov 2026 (acum.)', cls:'' }},
+    {{ label:'Media Historica Safra', val: fmt(D.mm_safra_hist_med,0)+' mm', sub:'Mar-Nov 2011-2025', cls:'' }},
+    {{ label:'Meses CRITICO (>200mm)', val: D.meses_criticos_count+' mes(es)', sub:'Na safra 2026', cls: D.meses_criticos_count>2?'red':D.meses_criticos_count>0?'yellow':'' }},
+    {{ label:'Impacto Fin. Estimado', val:'R$ '+fmt(D.impacto_total_safra,1)+' M', sub:'R$0,042M por mm acima 200mm', cls:'red' }},
+  ];
+  var g = document.getElementById('kpi-clima-grid');
+  k.forEach(function(kpi) {{
+    g.innerHTML += '<div class="kpi-card '+kpi.cls+'"><div class="kpi-label">'+kpi.label+'</div><div class="kpi-val">'+kpi.val+'</div><div class="kpi-sub">'+kpi.sub+'</div></div>';
+  }});
+}})();
+
+// CLIMA: Tabela mensal detalhada
+(function() {{
+  var STATUS_COR = {{ CRITICO:'#ef4444', ATENCAO:'#f59e0b', NORMAL:'#22c55e' }};
+  var tbody = document.getElementById('tbody-clima');
+  D.clima_mensal.forEach(function(r) {{
+    var cor = STATUS_COR[r.status] || '#94a3b8';
+    var desv = r.desvio_pct !== null ? (r.desvio_pct > 0 ? '+' : '')+r.desvio_pct+'%' : '—';
+    var desvCor = r.desvio_pct > 20 ? '#ef4444' : r.desvio_pct > 0 ? '#f59e0b' : '#22c55e';
+    tbody.innerHTML +=
+      '<tr>'+
+      '<td><b>'+r.nome+'</b></td>'+
+      '<td><span style="background:'+cor+'22;color:'+cor+';padding:2px 8px;border-radius:10px;font-size:.75rem;font-weight:700">'+r.status+'</span></td>'+
+      '<td>'+(r.mm_2024!==null?r.mm_2024:'—')+'</td>'+
+      '<td>'+(r.mm_2025!==null?r.mm_2025:'—')+'</td>'+
+      '<td style="font-weight:600;color:'+cor+'">'+r.mm_2026+'</td>'+
+      '<td>'+(r.mm_hist_med!==null?r.mm_hist_med:'—')+'</td>'+
+      '<td style="color:'+desvCor+'">'+desv+'</td>'+
+      '<td>'+(r.excesso_mm>0?'<span style="color:#ef4444">+'+r.excesso_mm+'</span>':'—')+'</td>'+
+      '<td>'+(r.impacto_M>0?'<span style="color:#ef4444">R$'+fmt(r.impacto_M,3)+'M</span>':'—')+'</td>'+
+      '</tr>';
+  }});
+}})();
+
+// CLIMA: Desvio vs media historica
+(function() {{
+  var labels = D.clima_mensal.map(function(r){{return r.nome;}});
+  var desvs  = D.clima_mensal.map(function(r){{return r.desvio_pct;}});
+  var cores  = desvs.map(function(v){{return v>20?'rgba(239,68,68,0.7)':v>0?'rgba(245,158,11,0.6)':'rgba(34,197,94,0.6)';}});
+  new Chart(document.getElementById('ch-prec-desvio'), {{
+    type:'bar',
+    data:{{ labels:labels, datasets:[
+      {{ label:'Desvio vs Media Historica (%)', data:desvs, backgroundColor:cores, borderRadius:4 }},
+      {{ label:'Linha zero', data:labels.map(function(){{return 0;}}), type:'line', borderColor:'#64748b', borderWidth:1, pointRadius:0, fill:false }}
+    ]}},
+    options:{{ responsive:true, maintainAspectRatio:false,
+      plugins:{{ legend:{{ labels:{{ color:'#94a3b8' }} }} }},
+      scales:{{
+        x:{{ ticks:{{ color:'#64748b' }}, grid:{{ color:'#1e3a5f' }} }},
+        y:{{ ticks:{{ color:'#94a3b8', callback:function(v){{return v+'%';}} }}, grid:{{ color:'#1e3a5f' }}, title:{{ display:true, text:'Desvio (%)', color:'#94a3b8' }} }}
+      }}
+    }}
+  }});
+}})();
+
+// CLIMA: Decadas
+(function() {{
+  var meses = [1,2,3,4,5,6,7,8,9,10,11,12];
+  var d1=[],d2=[],d3=[];
+  meses.forEach(function(m) {{
+    var decs = D.decadas_2026.filter(function(d){{return d.mes===m;}});
+    d1.push((decs.find(function(d){{return d.dec===1;}})||{{}}).mm||0);
+    d2.push((decs.find(function(d){{return d.dec===2;}})||{{}}).mm||0);
+    d3.push((decs.find(function(d){{return d.dec===3;}})||{{}}).mm||0);
+  }});
+  new Chart(document.getElementById('ch-decadas'), {{
+    type:'bar',
+    data:{{ labels:MESES.slice(1), datasets:[
+      {{ label:'1a Decada', data:d1, backgroundColor:'rgba(59,130,246,0.7)', borderRadius:3 }},
+      {{ label:'2a Decada', data:d2, backgroundColor:'rgba(34,197,94,0.7)', borderRadius:3 }},
+      {{ label:'3a Decada', data:d3, backgroundColor:'rgba(168,85,247,0.7)', borderRadius:3 }},
+    ]}},
+    options:{{ responsive:true, maintainAspectRatio:false,
+      plugins:{{ legend:{{ labels:{{ color:'#94a3b8' }} }}, tooltip:{{ mode:'index' }} }},
+      scales:{{ x:{{ ticks:{{ color:'#64748b' }}, grid:{{ color:'#1e3a5f' }}, stacked:true }},
+               y:{{ ticks:{{ color:'#94a3b8' }}, grid:{{ color:'#1e3a5f' }}, stacked:true, title:{{ display:true, text:'mm', color:'#94a3b8' }} }} }}
     }}
   }});
 }})();
