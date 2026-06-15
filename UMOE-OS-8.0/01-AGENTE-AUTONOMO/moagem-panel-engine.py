@@ -13,23 +13,23 @@ BOLETIM_DIR  = r"C:\01 - UMOE\05 - Relatorios\PDF"
 TCH_BROCA    = r"C:\01 - UMOE\99 - SSoT\TCH - BROCA - 22627.xlsb"
 OUT_HTML     = r"C:\Users\andrei.elastico\Downloads\UMOE_Painel_Moagem_Plano_Real_SF2526.html"
 
-# Plano BPC SF2627 v2 (imutavel)
+# Plano Safra 2026/27 - fonte SSoT-UMOE-2026.md (Mar/26 a Nov/26)
 PLANO = {
-    "Abr/26": 279853, "Mai/26": 340481, "Jun/26": 295832,
+    "Mar/26": 202584, "Abr/26": 279853, "Mai/26": 340481, "Jun/26": 295832,
     "Jul/26": 402622, "Ago/26": 360951, "Set/26": 342203,
-    "Out/26": 279556, "Nov/26": 264527, "Mar/27": 202584,
+    "Out/26": 279556, "Nov/26": 264527,
 }
 PLANO_TOTAL = 2768608
-PLANO_UMOE   = 2262435
-PLANO_RICARD = 258321
-PLANO_FABIAN = 247851
+PLANO_UMOE   = 2253337   # fonte TCH-BROCA aba MOAGEM estimativa
+PLANO_RICARD = 275536
+PLANO_FABIAN = 239735
 
-PLANO_DIAS   = {"Abr/26":20.66,"Mai/26":25.14,"Jun/26":21.84,"Jul/26":27.78,"Ago/26":24.90,"Set/26":23.61,"Out/26":19.29,"Nov/26":18.25,"Mar/27":18.84}
-PLANO_EF     = {"Abr/26":68.9,"Mai/26":81.1,"Jun/26":72.8,"Jul/26":89.6,"Ago/26":80.3,"Set/26":78.7,"Out/26":62.2,"Nov/26":60.8,"Mar/27":60.8}
-PLANO_CLIMA  = {"Abr/26":26.2,"Mai/26":15.4,"Jun/26":25.4,"Jul/26":5.6,"Ago/26":15.9,"Set/26":18.2,"Out/26":35.3,"Nov/26":36.6,"Mar/27":33.6}
-PLANO_AGR    = {"Abr/26":1.6,"Mai/26":0.7,"Jun/26":0.5,"Jul/26":0.4,"Ago/26":1.6,"Set/26":0.5,"Out/26":0.3,"Nov/26":0.4,"Mar/27":2.2}
-PLANO_IND    = {"Abr/26":3.3,"Mai/26":2.8,"Jun/26":1.3,"Jul/26":4.4,"Ago/26":2.2,"Set/26":2.6,"Out/26":2.1,"Nov/26":2.2,"Mar/27":3.4}
-PLANO_ATR    = {"Abr/26":125.0,"Mai/26":130.0,"Jun/26":140.0,"Jul/26":145.0,"Ago/26":148.0,"Set/26":150.0,"Out/26":140.0,"Nov/26":136.5,"Mar/27":108.0}
+PLANO_DIAS   = {"Mar/26":18.84,"Abr/26":20.66,"Mai/26":25.14,"Jun/26":21.84,"Jul/26":27.78,"Ago/26":24.90,"Set/26":23.61,"Out/26":19.29,"Nov/26":18.25}
+PLANO_EF     = {"Mar/26":60.8,"Abr/26":68.9,"Mai/26":81.1,"Jun/26":72.8,"Jul/26":89.6,"Ago/26":80.3,"Set/26":78.7,"Out/26":62.2,"Nov/26":60.8}
+PLANO_CLIMA  = {"Mar/26":33.6,"Abr/26":26.2,"Mai/26":15.4,"Jun/26":25.4,"Jul/26":5.6,"Ago/26":15.9,"Set/26":18.2,"Out/26":35.3,"Nov/26":36.6}
+PLANO_AGR    = {"Mar/26":2.2,"Abr/26":1.6,"Mai/26":0.7,"Jun/26":0.5,"Jul/26":0.4,"Ago/26":1.6,"Set/26":0.5,"Out/26":0.3,"Nov/26":0.4}
+PLANO_IND    = {"Mar/26":3.4,"Abr/26":3.3,"Mai/26":2.8,"Jun/26":1.3,"Jul/26":4.4,"Ago/26":2.2,"Set/26":2.6,"Out/26":2.1,"Nov/26":2.2}
+PLANO_ATR    = {"Mar/26":118.0,"Abr/26":127.0,"Mai/26":132.0,"Jun/26":139.0,"Jul/26":140.0,"Ago/26":146.0,"Set/26":151.0,"Out/26":150.0,"Nov/26":135.0}
 
 # ─── LER BOLETIM PDF ───────────────────────────────────────────────────────────
 def ler_boletim():
@@ -114,20 +114,32 @@ def ler_tch_broca():
         return None
 
     result = {}
+    # A aba MOAGEM tem 3 blocos — o segundo (linhas ~16-19) tem moagem real por fornecedor
+    # Identificado pelo header com 'Reestimativa' na coluna 3
     with pyxlsb.open_workbook(TCH_BROCA) as wb:
         with wb.get_sheet("MOAGEM") as sh:
+            in_bloco_moagem = False
             for row in sh.rows():
                 vals = [c.v for c in row]
                 if len(vals) < 7:
                     continue
-                nome = vals[1]
-                if nome in ("UMOE", "RICARDO", "FABIANO", "Total"):
-                    try:
-                        moagem = float(vals[5]) if vals[5] not in (None, "0x17") else None
-                        posicao = float(vals[4]) if vals[4] not in (None, "0x17") else None
-                        result[nome] = {"moagem": moagem, "posicao": posicao}
-                    except:
-                        pass
+                # Detectar header do segundo bloco: vals[3] contem 'Reestimativa'
+                if vals[1] == "Frente" and vals[3] and "estim" in str(vals[3]).lower():
+                    in_bloco_moagem = True
+                    continue
+                if in_bloco_moagem:
+                    nome = vals[1]
+                    if nome in ("UMOE", "RICARDO", "FABIANO", "Total"):
+                        try:
+                            moagem = float(vals[5]) if vals[5] not in (None, "0x17") else None
+                            posicao = float(vals[4]) if vals[4] not in (None, "0x17") else None
+                            estim   = float(vals[2]) if vals[2] not in (None, "0x17") else None
+                            reest   = float(vals[3]) if vals[3] not in (None, "0x17") else None
+                            result[nome] = {"moagem": moagem, "posicao": posicao, "estimativa": estim, "reestimativa": reest}
+                        except:
+                            pass
+                    elif nome is None and len(result) >= 4:
+                        break  # fim do bloco
     print(f"  TCH-BROCA: {result}")
     return result
 
@@ -136,38 +148,40 @@ def ler_tch_broca():
 def gerar_html(boletim, fornecedores):
     agora = datetime.now().strftime("%d/%m/%Y %H:%M")
 
-    # Dados reais conhecidos
+    # Dados reais conhecidos (todos os meses com dado confirmado)
     REAL = {
+        "Mar/26": 169307,   # 730994 - 258410 - 178701 - 124576 (boletim acum - abr - mai - jun1-14)
         "Abr/26": 258410,
         "Mai/26": 178701,
     }
     # Adicionar junho parcial se tiver do boletim
     jun_parcial = None
+    dias_jun_reais = 14
     if boletim and boletim.get("moagem_mensal"):
         jun_parcial = int(round(boletim["moagem_mensal"]))
         REAL["Jun/26"] = jun_parcial
 
     # KPIs calculados
     total_real    = sum(REAL.values())
-    meses_reais   = sorted(REAL.keys())
-    ultimo_mes    = meses_reais[-1] if meses_reais else "Mai/26"
 
-    # Plano proporcional para meses parciais
-    # Jun/26 - 14 dias de 30
-    dias_jun_reais = 14
+    # Plano proporcional: Mar/26 completo + Abr completo + Mai completo + Jun prop (14 de 30 dias)
     plano_jun_prop = int(round(PLANO["Jun/26"] * dias_jun_reais / 30))
-    total_plano_prop = PLANO["Abr/26"] + PLANO["Mai/26"] + plano_jun_prop
+    total_plano_prop = PLANO["Mar/26"] + PLANO["Abr/26"] + PLANO["Mai/26"] + plano_jun_prop
 
     delta_acum      = total_real - total_plano_prop
     delta_pct       = delta_acum / total_plano_prop * 100
     execucao_pct    = total_real / PLANO_TOTAL * 100
 
-    # Dias e eficiencia
+    # Dias e eficiencia por mes
+    # Mar/26: estimado pela diferenca (total_ef_acum - ef_abr - ef_mai - ef_jun)
+    dias_ef_acum_total = 57.83   # 1387h40m efetivas / 24 = 57.83d (boletim acum)
     dias_ef_abr = 20.05
     dias_ef_mai = 13.77
-    dias_ef_jun = round(boletim["aproveit_mensal"] / 100 * dias_jun_reais, 2) if boletim and boletim.get("aproveit_mensal") else 9.26
-    total_dias_ef = dias_ef_abr + dias_ef_mai + dias_ef_jun
+    dias_ef_jun = round((boletim.get("aproveit_mensal", 66.17) if boletim else 66.17) / 100 * dias_jun_reais, 2)
+    dias_ef_mar = round(dias_ef_acum_total - dias_ef_abr - dias_ef_mai - dias_ef_jun, 2)
+    total_dias_ef = dias_ef_mar + dias_ef_abr + dias_ef_mai + dias_ef_jun
 
+    ef_mar   = round(dias_ef_mar / 31 * 100, 1)   # 31 dias corridos em marco
     ef_abr   = 66.8
     ef_mai   = 44.4
     ef_jun   = boletim.get("aproveit_mensal", 66.17) if boletim else 66.17
@@ -218,7 +232,7 @@ def gerar_html(boletim, fornecedores):
 
     # Series do grafico
     import json as _json
-    meses_g = ["Abr/26","Mai/26","Jun/26","Jul/26","Ago/26","Set/26","Out/26","Nov/26","Mar/27"]
+    meses_g = ["Mar/26","Abr/26","Mai/26","Jun/26","Jul/26","Ago/26","Set/26","Out/26","Nov/26"]
     plano_g = [PLANO[m] for m in meses_g]
     real_g  = [REAL.get(m) for m in meses_g]
     real_g_js = [str(v) if v is not None else "null" for v in real_g]
@@ -237,10 +251,12 @@ def gerar_html(boletim, fornecedores):
     JS_BGREAL  = str(cor_real)
     JS_BDRREAL = str(bdr_real)
 
+    delta_mar = REAL["Mar/26"] - PLANO["Mar/26"]
     delta_abr = REAL["Abr/26"] - PLANO["Abr/26"]
     delta_mai = REAL["Mai/26"] - PLANO["Mai/26"]
     delta_jun = (jun_parcial - plano_jun_prop) if jun_parcial else None
     delta_jun_pct = (delta_jun / plano_jun_prop * 100) if delta_jun and plano_jun_prop else None
+    delta_mar_pct = delta_mar / PLANO["Mar/26"] * 100
 
     html = f"""<!DOCTYPE html>
 <html lang="pt-BR">
@@ -298,7 +314,7 @@ td:first-child{{text-align:left;font-weight:500}}
   <p>BPC Industria SF2627 v2 x Realizado Logistica Mensal - Safra 2025/26</p>
   <div class="upd">Atualizado automaticamente em: <b>{agora}</b> | Fonte: Boletim Industrial + TCH-BROCA 22627</div>
   <div class="badges">
-    <span class="badge br">Realizado: Abr/26 - Jun/26 (ate 14/06)</span>
+    <span class="badge br">Realizado: Mar/26 - Jun/26 (ate 14/06)</span>
     <span class="badge bp">Planejado: Jul/26 - Mar/27</span>
     <span class="badge bg">Dados oficiais 14/06/2026</span>
   </div>
@@ -306,7 +322,7 @@ td:first-child{{text-align:left;font-weight:500}}
 
 <div class="kpi-grid">
   <div class="kpi"><p class="kl">Plano total safra</p><p class="kv" style="color:#1B5E20">{fmt(PLANO_TOTAL)} t</p><p class="ks">Abr/26 a Mar/27 - BPC v2</p></div>
-  <div class="kpi red"><p class="kl">Realizado Abr-Jun (14/06)</p><p class="kv" style="color:#C62828">{fmt(total_real)} t</p><p class="ks">Plano prop.: {fmt(total_plano_prop)} t</p></div>
+  <div class="kpi red"><p class="kl">Realizado Mar-Jun (14/06)</p><p class="kv" style="color:#C62828">{fmt(total_real)} t</p><p class="ks">Plano prop.: {fmt(total_plano_prop)} t</p></div>
   <div class="kpi red"><p class="kl">Delta acumulado</p><p class="kv" style="color:#C62828">{fmt(delta_acum)} t</p><p class="ks">{sinal(delta_pct)}{delta_pct:.1f}% vs plano proporcional</p></div>
   <div class="kpi yellow"><p class="kl">Execucao da safra</p><p class="kv" style="color:#E65100">{execucao_pct:.1f}%</p><p class="ks">{fmt(total_real)} de {fmt(PLANO_TOTAL)} t</p></div>
   <div class="kpi red"><p class="kl">Dias efetivos acum.</p><p class="kv" style="color:#C62828">{total_dias_ef:.2f} d</p><p class="ks">Plano: {PLANO_DIAS['Abr/26']+PLANO_DIAS['Mai/26']:.2f} + {dias_jun_reais*PLANO_EF['Jun/26']/100:.2f} d (prop.)</p></div>
@@ -317,7 +333,7 @@ td:first-child{{text-align:left;font-weight:500}}
 
 <div class="panel">
   <p class="ph">Moagem mensal - plano BPC vs. real (toneladas)</p>
-  <div class="nota-jun">Jun/26 PARCIAL: dados de 01 a 14/06/2026 (14 dias de 30). Plano proporcional: {fmt(plano_jun_prop)} t. Real: {fmt(jun_parcial)} t. Delta: {fmt(delta_jun)} t ({sinal(delta_jun_pct)}{delta_jun_pct:.1f}% vs proporcional).</div>
+  <div class="nota-jun">Jun/26 PARCIAL: dados de 01 a 14/06/2026 (14 dias de 30 planejados). Plano proporcional: {fmt(plano_jun_prop)} t | Real: {fmt(jun_parcial)} t | Delta: {fmt(delta_jun)} t ({sinal(delta_jun_pct)}{delta_jun_pct:.1f}% vs proporcional). Mar/26 = inicio de safra (169.307 t real vs 202.584 t plano).</div>
   <div class="chart-wrap"><canvas id="moaChart"></canvas></div>
 </div>
 
@@ -327,59 +343,80 @@ td:first-child{{text-align:left;font-weight:500}}
   <table>
     <thead><tr>
       <th style="text-align:left;min-width:175px">Indicador</th><th>Un.</th>
-      <th>Abr/26</th><th>Mai/26</th><th>Jun/26*</th><th>Jul/26</th><th>Ago/26</th><th>Set/26</th><th>Out/26</th><th>Nov/26</th><th>Mar/27</th><th>Total</th>
+      <th>Mar/26</th><th>Abr/26</th><th>Mai/26</th><th>Jun/26*</th><th>Jul/26</th><th>Ago/26</th><th>Set/26</th><th>Out/26</th><th>Nov/26</th><th>Total</th>
     </tr></thead>
     <tbody>
-      <tr class="rp"><td>Dias corridos</td><td>d</td><td>30</td><td>31</td><td>14*</td><td>31</td><td>31</td><td>30</td><td>31</td><td>30</td><td>31</td><td>-</td></tr>
+      <tr class="rp"><td>Dias corridos</td><td>d</td><td>31</td><td>30</td><td>31</td><td>14*</td><td>31</td><td>31</td><td>30</td><td>31</td><td>30</td><td>-</td></tr>
       <tr class="rp"><td>Dias efetivos - Plano</td><td>d</td>
-        <td>{PLANO_DIAS['Abr/26']}</td><td>{PLANO_DIAS['Mai/26']}</td><td>{PLANO_DIAS['Jun/26']}</td><td>{PLANO_DIAS['Jul/26']}</td><td>{PLANO_DIAS['Ago/26']}</td><td>{PLANO_DIAS['Set/26']}</td><td>{PLANO_DIAS['Out/26']}</td><td>{PLANO_DIAS['Nov/26']}</td><td>{PLANO_DIAS['Mar/27']}</td>
+        <td>{PLANO_DIAS['Mar/26']}</td><td>{PLANO_DIAS['Abr/26']}</td><td>{PLANO_DIAS['Mai/26']}</td><td>{PLANO_DIAS['Jun/26']}</td><td>{PLANO_DIAS['Jul/26']}</td><td>{PLANO_DIAS['Ago/26']}</td><td>{PLANO_DIAS['Set/26']}</td><td>{PLANO_DIAS['Out/26']}</td><td>{PLANO_DIAS['Nov/26']}</td>
         <td><b>200,3</b></td></tr>
       <tr class="rr"><td>Dias efetivos - Real</td><td>d</td>
+        <td><b>{fmt(dias_ef_mar,2)}</b></td>
         <td><b>{fmt(dias_ef_abr,2)}</b></td>
         <td style="color:#C62828"><b>{fmt(dias_ef_mai,2)}</b></td>
         <td class="rjun"><b>{fmt(dias_ef_jun,2)}</b></td>
-        <td colspan="6" style="text-align:center;color:#9E9E9E">- a realizar -</td>
+        <td colspan="5" style="text-align:center;color:#9E9E9E">- a realizar -</td>
         <td><b>{fmt(total_dias_ef,2)}</b></td></tr>
       <tr class="rd"><td>Delta dias efetivos</td><td>d</td>
+        <td style="color:#C62828">{fmt(dias_ef_mar - PLANO_DIAS['Mar/26'],2)}</td>
         <td style="color:#E65100">{fmt(dias_ef_abr - PLANO_DIAS['Abr/26'],2)}</td>
         <td style="color:#C62828"><b>{fmt(dias_ef_mai - PLANO_DIAS['Mai/26'],2)}</b></td>
         <td class="rjun">{fmt(dias_ef_jun - PLANO_DIAS['Jun/26']*dias_jun_reais/30,2)}</td>
-        <td colspan="6" style="text-align:center">-</td>
-        <td style="color:#C62828"><b>{fmt(total_dias_ef - (PLANO_DIAS['Abr/26']+PLANO_DIAS['Mai/26']+PLANO_DIAS['Jun/26']*dias_jun_reais/30),2)}</b></td></tr>
+        <td colspan="5" style="text-align:center">-</td>
+        <td style="color:#C62828"><b>{fmt(total_dias_ef - (PLANO_DIAS['Mar/26']+PLANO_DIAS['Abr/26']+PLANO_DIAS['Mai/26']+PLANO_DIAS['Jun/26']*dias_jun_reais/30),2)}</b></td></tr>
       <tr class="sep-row"><td colspan="12"></td></tr>
       <tr class="rp"><td>Indisp. Clima - Plano</td><td>%</td>
-        <td>{PLANO_CLIMA['Abr/26']}%</td><td>{PLANO_CLIMA['Mai/26']}%</td><td>{PLANO_CLIMA['Jun/26']}%</td><td>{PLANO_CLIMA['Jul/26']}%</td><td>{PLANO_CLIMA['Ago/26']}%</td><td>{PLANO_CLIMA['Set/26']}%</td><td>{PLANO_CLIMA['Out/26']}%</td><td>{PLANO_CLIMA['Nov/26']}%</td><td>{PLANO_CLIMA['Mar/27']}%</td><td><b>23,5%</b></td></tr>
+        <td>{PLANO_CLIMA['Mar/26']}%</td><td>{PLANO_CLIMA['Abr/26']}%</td><td>{PLANO_CLIMA['Mai/26']}%</td><td>{PLANO_CLIMA['Jun/26']}%</td><td>{PLANO_CLIMA['Jul/26']}%</td><td>{PLANO_CLIMA['Ago/26']}%</td><td>{PLANO_CLIMA['Set/26']}%</td><td>{PLANO_CLIMA['Out/26']}%</td><td>{PLANO_CLIMA['Nov/26']}%</td><td><b>23,5%</b></td></tr>
       <tr class="rp"><td>Indisp. Agricola - Plano</td><td>%</td>
-        <td>{PLANO_AGR['Abr/26']}%</td><td>{PLANO_AGR['Mai/26']}%</td><td>{PLANO_AGR['Jun/26']}%</td><td>{PLANO_AGR['Jul/26']}%</td><td>{PLANO_AGR['Ago/26']}%</td><td>{PLANO_AGR['Set/26']}%</td><td>{PLANO_AGR['Out/26']}%</td><td>{PLANO_AGR['Nov/26']}%</td><td>{PLANO_AGR['Mar/27']}%</td><td><b>0,9%</b></td></tr>
+        <td>{PLANO_AGR['Mar/26']}%</td><td>{PLANO_AGR['Abr/26']}%</td><td>{PLANO_AGR['Mai/26']}%</td><td>{PLANO_AGR['Jun/26']}%</td><td>{PLANO_AGR['Jul/26']}%</td><td>{PLANO_AGR['Ago/26']}%</td><td>{PLANO_AGR['Set/26']}%</td><td>{PLANO_AGR['Out/26']}%</td><td>{PLANO_AGR['Nov/26']}%</td><td><b>0,9%</b></td></tr>
       <tr class="rp"><td>Indisp. Industrial - Plano</td><td>%</td>
-        <td>{PLANO_IND['Abr/26']}%</td><td>{PLANO_IND['Mai/26']}%</td><td>{PLANO_IND['Jun/26']}%</td><td>{PLANO_IND['Jul/26']}%</td><td>{PLANO_IND['Ago/26']}%</td><td>{PLANO_IND['Set/26']}%</td><td>{PLANO_IND['Out/26']}%</td><td>{PLANO_IND['Nov/26']}%</td><td>{PLANO_IND['Mar/27']}%</td><td><b>2,7%</b></td></tr>
+        <td>{PLANO_IND['Mar/26']}%</td><td>{PLANO_IND['Abr/26']}%</td><td>{PLANO_IND['Mai/26']}%</td><td>{PLANO_IND['Jun/26']}%</td><td>{PLANO_IND['Jul/26']}%</td><td>{PLANO_IND['Ago/26']}%</td><td>{PLANO_IND['Set/26']}%</td><td>{PLANO_IND['Out/26']}%</td><td>{PLANO_IND['Nov/26']}%</td><td><b>2,7%</b></td></tr>
       <tr class="sep-row"><td colspan="12"></td></tr>
       <tr class="rp"><td>Eficiencia - Plano</td><td>%</td>
-        <td>{PLANO_EF['Abr/26']}%</td><td>{PLANO_EF['Mai/26']}%</td><td>{PLANO_EF['Jun/26']}%</td><td>{PLANO_EF['Jul/26']}%</td><td>{PLANO_EF['Ago/26']}%</td><td>{PLANO_EF['Set/26']}%</td><td>{PLANO_EF['Out/26']}%</td><td>{PLANO_EF['Nov/26']}%</td><td>{PLANO_EF['Mar/27']}%</td><td><b>72,8%</b></td></tr>
+        <td>{PLANO_EF['Mar/26']}%</td><td>{PLANO_EF['Abr/26']}%</td><td>{PLANO_EF['Mai/26']}%</td><td>{PLANO_EF['Jun/26']}%</td><td>{PLANO_EF['Jul/26']}%</td><td>{PLANO_EF['Ago/26']}%</td><td>{PLANO_EF['Set/26']}%</td><td>{PLANO_EF['Out/26']}%</td><td>{PLANO_EF['Nov/26']}%</td><td><b>74,5%</b></td></tr>
       <tr class="rr"><td>Eficiencia - Real (Aproveit.)</td><td>%</td>
+        <td><b>{ef_mar:.1f}%</b></td>
         <td><b>{ef_abr}%</b></td>
         <td style="color:#C62828"><b>{ef_mai}%</b></td>
         <td class="rjun"><b>{ef_jun:.1f}%</b></td>
-        <td colspan="6" style="text-align:center;color:#9E9E9E">-</td>
+        <td colspan="5" style="text-align:center;color:#9E9E9E">-</td>
         <td><b style="color:#E65100">{ef_acum:.1f}%</b></td></tr>
       <tr class="rd"><td>Delta eficiencia</td><td>pp</td>
+        <td style="color:#C62828">{fmt(ef_mar - PLANO_EF['Mar/26'],1)}</td>
         <td style="color:#E65100">{fmt(ef_abr - PLANO_EF['Abr/26'],1)}</td>
         <td style="color:#C62828"><b>{fmt(ef_mai - PLANO_EF['Mai/26'],1)}</b></td>
         <td class="rjun">{fmt(ef_jun - PLANO_EF['Jun/26'],1)}</td>
-        <td colspan="6" style="text-align:center">-</td>
-        <td style="color:#C62828"><b>{fmt(ef_acum - 72.8,1)}</b></td></tr>
+        <td colspan="5" style="text-align:center">-</td>
+        <td style="color:#C62828"><b>{fmt(ef_acum - 74.5,1)}</b></td></tr>
       <tr class="sep-row"><td colspan="12"></td></tr>
       <tr class="rp"><td>ATR - Plano (kg/tc)</td><td>kg/tc</td>
-        <td>{PLANO_ATR['Abr/26']}</td><td>{PLANO_ATR['Mai/26']}</td><td>{PLANO_ATR['Jun/26']}</td><td>{PLANO_ATR['Jul/26']}</td><td>{PLANO_ATR['Ago/26']}</td><td>{PLANO_ATR['Set/26']}</td><td>{PLANO_ATR['Out/26']}</td><td>{PLANO_ATR['Nov/26']}</td><td>{PLANO_ATR['Mar/27']}</td><td><b>137,58</b></td></tr>
+        <td>{PLANO_ATR['Mar/26']}</td><td>{PLANO_ATR['Abr/26']}</td><td>{PLANO_ATR['Mai/26']}</td><td>{PLANO_ATR['Jun/26']}</td><td>{PLANO_ATR['Jul/26']}</td><td>{PLANO_ATR['Ago/26']}</td><td>{PLANO_ATR['Set/26']}</td><td>{PLANO_ATR['Out/26']}</td><td>{PLANO_ATR['Nov/26']}</td><td><b>138,66</b></td></tr>
       <tr class="rr"><td>ATR - Real</td><td>kg/tc</td>
-        <td><b>125,11</b></td><td><b>127,15</b></td>
+        <td><b>117,80</b></td><td><b>125,11</b></td><td><b>127,15</b></td>
         <td class="rjun"><b>{fmt(atr_jun,2)}</b></td>
-        <td colspan="6" style="text-align:center;color:#9E9E9E">-</td>
+        <td colspan="5" style="text-align:center;color:#9E9E9E">-</td>
         <td><b style="color:#1565C0">{fmt(atr_acum,2)}</b></td></tr>
+      <tr class="sep-row"><td colspan="12"></td></tr>
+      <tr class="rp"><td>Moagem - Plano (t)</td><td>t</td>
+        <td>{fmt(PLANO['Mar/26'])}</td><td>{fmt(PLANO['Abr/26'])}</td><td>{fmt(PLANO['Mai/26'])}</td><td>{fmt(PLANO['Jun/26'])}</td><td>{fmt(PLANO['Jul/26'])}</td><td>{fmt(PLANO['Ago/26'])}</td><td>{fmt(PLANO['Set/26'])}</td><td>{fmt(PLANO['Out/26'])}</td><td>{fmt(PLANO['Nov/26'])}</td><td><b>{fmt(PLANO_TOTAL)}</b></td></tr>
+      <tr class="rr"><td>Moagem - Real (t)</td><td>t</td>
+        <td style="color:#C62828"><b>{fmt(REAL['Mar/26'])}</b></td>
+        <td><b>{fmt(REAL['Abr/26'])}</b></td>
+        <td style="color:#C62828"><b>{fmt(REAL['Mai/26'])}</b></td>
+        <td class="rjun"><b>{fmt(jun_parcial)}</b></td>
+        <td colspan="5" style="text-align:center;color:#9E9E9E">-</td>
+        <td style="color:#C62828"><b>{fmt(total_real)}</b></td></tr>
+      <tr class="rd"><td>Delta Plano-Real (t)</td><td>t</td>
+        <td style="color:#C62828">{fmt(delta_mar)}</td>
+        <td style="color:#E65100">{fmt(delta_abr)}</td>
+        <td style="color:#C62828"><b>{fmt(delta_mai)}</b></td>
+        <td class="rjun">{fmt(delta_jun)}</td>
+        <td colspan="5" style="text-align:center">-</td>
+        <td style="color:#C62828"><b>{fmt(delta_acum)}</b></td></tr>
     </tbody>
   </table>
   </div>
-  <p class="fn">* Jun/26 parcial = 14 dias (1-14/06/2026). Eficiencia = Aproveitamento da Moagem Geral (Boletim Industrial).</p>
+  <p class="fn">* Jun/26 parcial = 14 dias corridos (1-14/06/2026). Mar/26 = inicio de safra (EF estimada por diferenca do acumulado). Aproveitamento = Boletim Industrial Unidade 2. Plano = SSoT UMOE-2026.</p>
 </div>
 
 <div class="panel">
@@ -388,40 +425,44 @@ td:first-child{{text-align:left;font-weight:500}}
   <table>
     <thead><tr>
       <th style="text-align:left;min-width:155px">Fornecedor / Indicador</th><th>Un.</th>
-      <th>Abr/26</th><th>Mai/26</th><th>Jun/26*</th><th>Jul/26</th><th>Ago/26</th><th>Set/26</th><th>Out/26</th><th>Nov/26</th><th>Mar/27</th><th>Total safra</th>
+      <th>Mar/26</th><th>Abr/26</th><th>Mai/26</th><th>Jun/26*</th><th>Jul/26</th><th>Ago/26</th><th>Set/26</th><th>Out/26</th><th>Nov/26</th><th>Total</th>
     </tr></thead>
     <tbody>
-      <tr class="rp"><td>Moagem Propria UMOE</td><td>t</td><td>222.217</td><td>270.359</td><td>234.906</td><td>325.144</td><td>291.491</td><td>276.351</td><td>225.760</td><td>213.623</td><td>202.584</td><td><b>{fmt(PLANO_UMOE)}</b></td></tr>
-      <tr class="rp"><td>Moagem Ricardo (Frente 10)</td><td>t</td><td>29.414</td><td>35.786</td><td>31.093</td><td>39.540</td><td>35.448</td><td>33.607</td><td>27.455</td><td>25.979</td><td>-</td><td><b>{fmt(PLANO_RICARD)}</b></td></tr>
-      <tr class="rp"><td>Moagem Fabiano (Frente 27)</td><td>t</td><td>28.222</td><td>34.336</td><td>29.833</td><td>37.938</td><td>34.011</td><td>32.245</td><td>26.342</td><td>24.926</td><td>-</td><td><b>{fmt(PLANO_FABIAN)}</b></td></tr>
-      <tr class="rt"><td>Total Plano BPC</td><td>t</td><td>279.853</td><td>340.481</td><td>295.832</td><td>402.622</td><td>360.951</td><td>342.203</td><td>279.556</td><td>264.527</td><td>202.584</td><td><b>{fmt(PLANO_TOTAL)}</b></td></tr>
+      <tr class="rp"><td>Moagem Propria UMOE - Plano</td><td>t</td><td>165.596</td><td>222.217</td><td>270.359</td><td>234.906</td><td>325.144</td><td>291.491</td><td>276.351</td><td>225.760</td><td>213.623</td><td><b>{fmt(PLANO_UMOE)}</b></td></tr>
+      <tr class="rp"><td>Moagem Ricardo (Frente 10) - Plano</td><td>t</td><td>19.607</td><td>29.414</td><td>35.786</td><td>31.093</td><td>39.540</td><td>35.448</td><td>33.607</td><td>27.455</td><td>25.979</td><td><b>{fmt(PLANO_RICARD)}</b></td></tr>
+      <tr class="rp"><td>Moagem Fabiano (Frente 27) - Plano</td><td>t</td><td>17.381</td><td>28.222</td><td>34.336</td><td>29.833</td><td>37.938</td><td>34.011</td><td>32.245</td><td>26.342</td><td>24.926</td><td><b>{fmt(PLANO_FABIAN)}</b></td></tr>
+      <tr class="rt"><td>Total Plano Safra</td><td>t</td><td>{fmt(PLANO['Mar/26'])}</td><td>{fmt(PLANO['Abr/26'])}</td><td>{fmt(PLANO['Mai/26'])}</td><td>{fmt(PLANO['Jun/26'])}</td><td>{fmt(PLANO['Jul/26'])}</td><td>{fmt(PLANO['Ago/26'])}</td><td>{fmt(PLANO['Set/26'])}</td><td>{fmt(PLANO['Out/26'])}</td><td>{fmt(PLANO['Nov/26'])}</td><td><b>{fmt(PLANO_TOTAL)}</b></td></tr>
       <tr class="sep-row"><td colspan="12"></td></tr>
-      <tr class="rr"><td>Total Moagem Real (desde Abr)</td><td>t</td>
-        <td><b>258.410</b></td>
-        <td style="color:#C62828"><b>178.701</b></td>
+      <tr class="rr"><td>Total Moagem Real</td><td>t</td>
+        <td style="color:#C62828"><b>{fmt(REAL['Mar/26'])}</b></td>
+        <td><b>{fmt(REAL['Abr/26'])}</b></td>
+        <td style="color:#C62828"><b>{fmt(REAL['Mai/26'])}</b></td>
         <td class="rjun"><b>{fmt(jun_parcial)}</b></td>
-        <td colspan="6" style="text-align:center;color:#9E9E9E">- a realizar -</td>
+        <td colspan="5" style="text-align:center;color:#9E9E9E">- a realizar -</td>
         <td><b style="color:#C62828">{fmt(total_real)}</b></td></tr>
-      <tr class="rd"><td>Delta Plano-Real</td><td>t</td>
-        <td style="color:#E65100"><b>-21.443</b></td>
-        <td style="color:#C62828"><b>-161.780</b></td>
+      <tr class="rd"><td>Delta Plano-Real (t)</td><td>t</td>
+        <td style="color:#C62828">{fmt(delta_mar)}</td>
+        <td style="color:#E65100">{fmt(delta_abr)}</td>
+        <td style="color:#C62828"><b>{fmt(delta_mai)}</b></td>
         <td class="rjun">{fmt(delta_jun)}</td>
-        <td colspan="6" style="text-align:center">-</td>
+        <td colspan="5" style="text-align:center">-</td>
         <td style="color:#C62828"><b>{fmt(delta_acum)}</b></td></tr>
       <tr class="rd"><td>Delta % (vs plano proporcional)</td><td>%</td>
+        <td style="color:#C62828">{sinal(delta_mar_pct)}{delta_mar_pct:.1f}%</td>
         <td style="color:#E65100">-7,7%</td>
         <td style="color:#C62828"><b>-47,5%</b></td>
         <td class="rjun">{sinal(delta_jun_pct)}{delta_jun_pct:.1f}%</td>
-        <td colspan="6" style="text-align:center">-</td>
+        <td colspan="5" style="text-align:center">-</td>
         <td style="color:#C62828"><b>{sinal(delta_pct)}{delta_pct:.1f}%</b></td></tr>
       <tr class="sep-row"><td colspan="12"></td></tr>
-      {"<tr class='rf'><td>Real UMOE (total safra Mar-Jun)</td><td>t</td><td colspan='9' style='text-align:center;color:#607D8B'>Desde Mar/26 - TCH-BROCA 22627</td><td><b>" + fmt(fn_umoe) + "</b></td></tr>" if fn_umoe else ""}
-      {"<tr class='rf'><td>Real Ricardo (total safra Mar-Jun)</td><td>t</td><td colspan='9' style='text-align:center;color:#607D8B'>Desde Mar/26</td><td><b>" + fmt(fn_ric) + "</b></td></tr>" if fn_ric else ""}
-      {"<tr class='rf'><td>Real Fabiano (total safra Mar-Jun)</td><td>t</td><td colspan='9' style='text-align:center;color:#607D8B'>Desde Mar/26</td><td><b>" + fmt(fn_fab) + "</b></td></tr>" if fn_fab else ""}
+      {"<tr class='rf'><td><b>Real UMOE (posicao acum.)</b></td><td>t</td><td colspan='9' style='text-align:center;color:#607D8B'>Mar a Jun/26 (14/06) - TCH-BROCA</td><td><b style='color:#1B5E20'>" + fmt(fn_umoe) + "</b></td></tr>" if fn_umoe else ""}
+      {"<tr class='rf'><td><b>Real Ricardo - Frente 10</b></td><td>t</td><td colspan='9' style='text-align:center;color:#607D8B'>Mar a Jun/26 (14/06)</td><td><b>" + fmt(fn_ric) + "</b></td></tr>" if fn_ric else ""}
+      {"<tr class='rf'><td><b>Real Fabiano - Frente 27</b></td><td>t</td><td colspan='9' style='text-align:center;color:#607D8B'>Mar a Jun/26 (14/06)</td><td><b>" + fmt(fn_fab) + "</b></td></tr>" if fn_fab else ""}
+      {"<tr class='rf'><td>Total real (TCH-BROCA acum.)</td><td>t</td><td colspan='9' style='text-align:center;color:#607D8B'>Confirma Boletim Industrial</td><td><b style='color:#1B5E20'>730.994</b></td></tr>" if fn_umoe else ""}
     </tbody>
   </table>
   </div>
-  <p class="fn">Moagem real por fornecedor: total safra desde Marco/26 (inclui marco que nao esta no BPC abr-mar). Fonte: TCH-BROCA 22627 aba MOAGEM.</p>
+  <p class="fn">Plano Mar/26 por fornecedor: rateio proporcional da estimativa TCH-BROCA (UMOE 81,4% | Ricardo 9,9% | Fabiano 8,7%). Real por fornecedor: posicao atual (colheita + repasse) conforme TCH-BROCA 22627 aba MOAGEM. * Jun/26 parcial 14 dias.</p>
 </div>
 
 <div class="panel">
@@ -469,7 +510,7 @@ td:first-child{{text-align:left;font-weight:500}}
 </div>
 
 <div class="panel">
-  <p class="ph">Decomposicao do desvio acumulado Abr-Jun (14/06) - {fmt(delta_acum)} t vs plano proporcional</p>
+  <p class="ph">Decomposicao do desvio acumulado Mar-Jun (14/06) - {fmt(delta_acum)} t vs plano proporcional</p>
   <div class="two-col">
     <table>
       <thead><tr><th style="text-align:left">Camada</th><th style="text-align:left">Responsavel</th><th>Toneladas</th><th>%</th></tr></thead>
@@ -477,7 +518,8 @@ td:first-child{{text-align:left;font-weight:500}}
         <tr style="background:#EEEDFE22"><td>Plano - Recalc</td><td><span style="background:#EEEDFE;color:#534AB7;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:600">Chuva</span></td><td style="color:#534AB7"><b>-198.751</b></td><td style="color:#534AB7">~101%</td></tr>
         <tr style="background:#FFEBEE22"><td>Recalc - Real</td><td><span style="background:#FAEEDA;color:#854F0B;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:600">UMOE + Imediato</span></td><td style="color:#C62828"><b>-52.685</b></td><td style="color:#C62828">~27%</td></tr>
         <tr style="background:#E8F5E922"><td>Ganhos operacionais</td><td><span style="background:#E8F5E9;color:#1B5E20;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:600">Compensacao</span></td><td style="color:#2E7D32"><b>+68.213</b></td><td style="color:#2E7D32">~-35%</td></tr>
-        <tr class="rt"><td>Delta Abr+Mai (base)</td><td>-</td><td style="color:#C62828"><b>-183.223</b></td><td><b>100%</b></td></tr>
+        <tr><td>+ Mar/26 inicio safra</td><td><span style="background:#FFE0E0;color:#B71C1C;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:600">Mar/26</span></td><td style="color:#C62828">-33.277</td><td>-</td></tr>
+        <tr class="rt"><td>Delta Mar+Abr+Mai (base)</td><td>-</td><td style="color:#C62828"><b>-216.500</b></td><td><b>~100%</b></td></tr>
         <tr class="rjun"><td>+ Jun/26 parcial (1-14)</td><td><span style="background:#FFF9C4;color:#5D4037;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:600">Parcial</span></td><td style="color:#C62828">{fmt(delta_jun)}</td><td>-</td></tr>
         <tr class="rt"><td><b>Total Acumulado</b></td><td>-</td><td style="color:#C62828"><b>{fmt(delta_acum)}</b></td><td><b>100%</b></td></tr>
       </tbody>
