@@ -44,19 +44,22 @@ $wsTarget = $wsAll | Where-Object {
 if (-not $wsTarget) {
     Write-Host ''
     Write-Host '  Workspace nao encontrado pelo nome. Listando todos os workspaces disponiveis:'
-    $wsAll | Sort-Object name | Format-Table id, name -AutoSize
+    $wsAll | Sort-Object name | ForEach-Object { Write-Host "  $($_.id)  |  $($_.name)" }
     Write-Host ''
-    $wsId = Read-Host '  Cole o ID do workspace de Manutencao acima'
+    Write-Host '  Cole SOMENTE o UUID (ex: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx):'
+    $wsId = (Read-Host '  ID').Trim() -replace '\s.*',''  # Remove tudo apos o primeiro espaco
     $wsNome = ($wsAll | Where-Object { $_.id -eq $wsId }).name
+    if (-not $wsNome) { $wsNome = "Workspace $wsId" }
 } else {
     if ($wsTarget.Count -gt 1) {
         Write-Host '  Multiplos workspaces encontrados:'
-        $wsTarget | Format-Table id, name -AutoSize
-        $wsId   = Read-Host '  Cole o ID correto'
+        $wsTarget | ForEach-Object { Write-Host "  $($_.id)  |  $($_.name)" }
+        Write-Host '  Cole SOMENTE o UUID:'
+        $wsId   = (Read-Host '  ID').Trim() -replace '\s.*',''
         $wsNome = ($wsTarget | Where-Object { $_.id -eq $wsId }).name
     } else {
-        $wsId   = $wsTarget.id
-        $wsNome = $wsTarget.name
+        $wsId   = [string]$wsTarget.id     # garantir string pura sem concatenacao
+        $wsNome = [string]$wsTarget.name
     }
 }
 
