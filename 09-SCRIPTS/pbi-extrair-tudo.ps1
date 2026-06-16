@@ -100,6 +100,18 @@ Get-ChildItem "$outDir\*.json" | Sort-Object Name | ForEach-Object {
     Write-Host "    $($_.Name) ($kb KB)"
 }
 Write-Host ''
-Write-Host '  Proximo passo: python pbi-pipeline.py  (dashboard)'
+Write-Host '  Gerando Dashboard HTML automaticamente...'
+$dashScript = 'C:\01 - UMOE\09 - IA\umoe-os-8\UMOE-OS-8.0\01-AGENTE-AUTONOMO\pbi-dashboard-v2.py'
+if (Test-Path $dashScript) {
+    python -X utf8 $dashScript
+    $dashOut = 'C:\01 - UMOE\09 - IA\umoe-os-8\UMOE-OS-8.0\Relatorios\UMOE_PBI_Dashboard.html'
+    if (Test-Path $dashOut) {
+        Write-Host "  Dashboard gerado: $dashOut"
+        Write-Host '  Abrindo no navegador...'
+        Start-Process $dashOut
+    }
+} else {
+    Write-Host "  Script dashboard nao encontrado: $dashScript"
+}
 Write-Host '======================================================='
 pause

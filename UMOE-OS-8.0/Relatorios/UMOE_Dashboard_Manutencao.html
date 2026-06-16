@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>UMOE OS 8.0 | Dashboard Manutencao Premium</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#0d1b2a;color:#e0e0e0;font-size:13px}
+h1{color:#f0a500;font-size:22px;padding:18px 24px 6px}
+h2{color:#f0a500;font-size:15px;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid #333}
+h3{color:#ffc947;font-size:13px;margin:14px 0 8px}
+.tabs{display:flex;gap:2px;padding:0 24px;flex-wrap:wrap}
+.tab{padding:7px 14px;cursor:pointer;background:#162033;color:#888;border-radius:6px 6px 0 0;font-size:12px;transition:.15s}
+.tab:hover{color:#ccc}
+.tab.active{background:#1a3a5c;color:#f0a500;font-weight:600}
+.content{display:none;padding:18px 24px}
+.content.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:10px;margin-bottom:16px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.kpi{background:#162033;border-radius:8px;padding:14px;border-left:3px solid #f0a500}
+.kpi .val{font-size:24px;font-weight:700;color:#f0a500}
+.kpi .lbl{font-size:11px;color:#888;margin-top:3px}
+.kpi .sub{font-size:11px;color:#bbb;margin-top:3px}
+.kpi.r{border-left-color:#e74c3c}.kpi.r .val{color:#e74c3c}
+.kpi.y{border-left-color:#f39c12}.kpi.y .val{color:#f39c12}
+.kpi.g{border-left-color:#27ae60}.kpi.g .val{color:#27ae60}
+.card{background:#162033;border-radius:8px;padding:14px;margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:#1a3a5c;color:#f0a500;padding:7px 9px;text-align:left;position:sticky;top:0;z-index:1}
+td{padding:5px 9px;border-bottom:1px solid #222}
+tr:hover td{background:#1e3050}
+.tw{max-height:360px;overflow-y:auto;border-radius:6px;border:1px solid #333}
+.red{color:#e74c3c}.green{color:#27ae60}.yellow{color:#f39c12}
+.alert{background:#2d1b00;border-left:4px solid #f0a500;padding:10px 14px;border-radius:0 6px 6px 0;margin-bottom:12px;font-size:12px}
+.bbar{background:#333;border-radius:3px;height:7px;width:100%;margin-top:5px}
+.bf{height:7px;border-radius:3px}
+.sub{color:#888;font-size:12px;padding:0 24px 12px}
+.tag{display:inline-block;padding:2px 7px;border-radius:10px;font-size:11px;background:#1a3a5c;color:#f0a500;margin:2px}
+</style>
+</head>
+<body>
+<h1>UMOE OS 8.0 | Dashboard Manutencao Premium</h1>
+<p class="sub">Manutencao Premium | Extraido: 2026-06-16 | 0 tabelas | 0 registros</p>
+<div class="tabs"><div class="tab active" onclick="showTab('cockpit',this)">Cockpit</div><div class="tab " onclick="showTab('os',this)">Ordens Serv.</div><div class="tab " onclick="showTab('falhas',this)">Falhas/Pareto</div><div class="tab " onclick="showTab('disp',this)">DM/MTBF/MTTR</div><div class="tab " onclick="showTab('pecas',this)">Pecas/ABC</div><div class="tab " onclick="showTab('custos',this)">Custos</div><div class="tab " onclick="showTab('frota',this)">Frota</div><div class="tab " onclick="showTab('dados',this)">Todos os Dados</div></div>
+<div id="tab-cockpit" class="content active"><h2>Cockpit</h2>
+<div class="grid">
+  <div class="kpi"><div class="val">Manutencao Premium</div><div class="lbl">Workspace</div><div class="sub">0 datasets | 0 reports</div></div>
+  <div class="kpi"><div class="val">0</div><div class="lbl">Tabelas Extraidas</div><div class="sub">0 registros total</div></div>
+  <div class="kpi g"><div class="val">0</div><div class="lbl">Ordens de Servico</div><div class="sub">Abertas: 0 | Fechadas: 0</div></div>
+  <div class="kpi r"><div class="val">0,0%</div><div class="lbl">DM Medio</div><div class="sub">Meta: 90%</div>
+    <div class="bbar"><div class="bf" style="width:0.0%;background:#e74c3c"></div></div>
+  </div>
+  <div class="kpi"><div class="val">0,0</div><div class="lbl">MTBF Medio (h)</div></div>
+  <div class="kpi y"><div class="val">0,00</div><div class="lbl">MTTR Medio (h)</div></div>
+  <div class="kpi"><div class="val">0</div><div class="lbl">Registros Falhas</div></div>
+  <div class="kpi"><div class="val">R$ 0</div><div class="lbl">Custo Total</div></div>
+</div>
+
+<div class="alert">
+  <b>WORKSPACE: Manutencao Premium</b> | Extraido em 2026-06-16 |
+  0 tabelas | 0 registros |
+  DM: 0,0% (meta 90%) |
+  OS Abertas: 0
+</div>
+
+<div class="g2">
+  <div class="card">
+    <h3>Datasets Encontrados</h3>
+    <table><thead><tr><th>Nome</th><th>ID</th></tr></thead><tbody></tbody></table>
+  </div>
+  <div class="card">
+    <h3>Tabelas Extraidas (Inventario)</h3>
+    <div class="tw">
+      <table><thead><tr><th>Tabela</th><th>Registros</th><th>Colunas (primeiras 4)</th></tr></thead>
+      <tbody></tbody></table>
+    </div>
+  </div>
+</div>
+</div><div id="tab-os" class="content "><h2>Ordens Serv.</h2><div class="card"><p style="color:#888;padding:20px">Tabela de Ordens de Servico nao encontrada.<br>Execute o pipeline para extrair dados do workspace.</p></div></div><div id="tab-falhas" class="content "><h2>Falhas/Pareto</h2><div class="card"><p style="color:#888;padding:20px">Tabela de Falhas nao encontrada.</p></div></div><div id="tab-disp" class="content "><h2>DM/MTBF/MTTR</h2><div class="card"><p style="color:#888;padding:20px">Tabela de Disponibilidade nao encontrada.</p></div></div><div id="tab-pecas" class="content "><h2>Pecas/ABC</h2><div class="card"><p style="color:#888;padding:20px">Tabela de Pecas/Estoque nao encontrada.</p></div></div><div id="tab-custos" class="content "><h2>Custos</h2><div class="card"><p style="color:#888;padding:20px">Tabela de Custos nao encontrada.</p></div></div><div id="tab-frota" class="content "><h2>Frota</h2><div class="card"><p style="color:#888;padding:20px">Tabela de Frota/Equipamentos nao encontrada.</p></div></div><div id="tab-dados" class="content "><h2>Todos os Dados</h2><p style="color:#888;padding:20px">Nenhum dado extraido ainda. Execute pbi-manutencao-pipeline.ps1 primeiro.</p></div>
+<script>
+function showTab(id,el){
+  document.querySelectorAll('.content').forEach(c=>c.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>
