@@ -15,3 +15,136 @@
 [2026-06-14 11:10:06] [INFO]    29707c9..8e42546  main -> main
 [2026-06-14 11:10:06] [OK] Push realizado com sucesso! Commit: UMOE OS 8.0 - Auto-sync 2026-06-14 11:10:06
 [2026-06-14 11:10:06] [OK] === Sync concluido com sucesso em 2026-06-14 11:10:06 ===
+[2026-06-16 11:44:32] [INFO] === UMOE OS 8.0 - Sync iniciado ===
+[2026-06-16 11:44:32] [OK] Git encontrado: git version 2.54.0.windows.1
+[2026-06-16 11:44:32] [OK] Repositorio encontrado: C:\Users\andrei.elastico\umoe-os
+[2026-06-16 11:44:32] [INFO] Diretorio de trabalho: C:\Users\andrei.elastico\umoe-os
+[2026-06-16 11:44:32] [INFO] Nenhuma skill nova encontrada.
+[2026-06-16 11:44:32] [INFO] Puxando atualizacoes do GitHub...
+[2026-06-16 11:44:32] [INFO] From https://github.com/andreielastico-blip/umoe-os
+[2026-06-16 11:44:32] [INFO]  * branch            main       -> FETCH_HEAD
+[2026-06-16 11:44:32] [INFO]    3dabe8c..140928a  main       -> origin/main
+[2026-06-16 11:44:32] [INFO] Updating 3dabe8c..140928a
+[2026-06-16 11:44:32] [INFO] Fast-forward
+[2026-06-16 11:44:32] [INFO]  .env.example                                       |   19 +
+[2026-06-16 11:44:32] [INFO]  .github/workflows/update-bi.yml                    |  135 ++
+[2026-06-16 11:44:32] [INFO]  .gitignore                                         |   45 +
+[2026-06-16 11:44:32] [INFO]  09-SCRIPTS/INSTALAR-COMO-ADMIN.bat                 |   41 +
+[2026-06-16 11:44:32] [INFO]  09-SCRIPTS/agendar-painel-diario.ps1               |   61 +
+[2026-06-16 11:44:32] [INFO]  09-SCRIPTS/configurar-service-principal.ps1        |   99 ++
+[2026-06-16 11:44:32] [INFO]  09-SCRIPTS/descobrir-tabelas-pbi.ps1               |   66 +
+[2026-06-16 11:44:32] [INFO]  09-SCRIPTS/explorar_dados.py                       |   30 +
+[2026-06-16 11:44:32] [INFO]  09-SCRIPTS/explorar_dados2.py                      |   24 +
+[2026-06-16 11:44:32] [INFO]  09-SCRIPTS/extrair-dados-pbi.ps1                   |  333 ++++
+[2026-06-16 11:44:32] [INFO]  09-SCRIPTS/habilitar-xmla-powerbi.ps1              |  183 +++
+[2026-06-16 11:44:32] [INFO]  09-SCRIPTS/instalar-pipeline-agendado.ps1          |   58 +
+[2026-06-16 11:44:32] [INFO]  09-SCRIPTS/instalar-umoe-os-8.ps1                  |  168 ++
+[2026-06-16 11:44:32] [INFO]  09-SCRIPTS/parse-pbix.py                           |  168 ++
+[2026-06-16 11:44:32] [INFO]  09-SCRIPTS/pbi-busca-expandida.ps1                 |  219 +++
+[2026-06-16 11:44:32] [INFO]  09-SCRIPTS/pbi-busca-final.ps1                     |  207 +++
+[2026-06-16 11:44:32] [INFO]  09-SCRIPTS/pbi-dashboard-manutencao.py             |  619 +++++++
+[2026-06-16 11:44:32] [INFO]  09-SCRIPTS/pbi-descobrir-e-extrair.ps1             |  130 ++
+[2026-06-16 11:44:32] [INFO]  09-SCRIPTS/pbi-extrair-por-nome.ps1                |  174 ++
+[2026-06-16 11:44:32] [INFO]  09-SCRIPTS/pbi-extrair-tudo.ps1                    |  117 ++
+[2026-06-16 11:44:32] [INFO]  09-SCRIPTS/pbi-manutencao-fix.ps1                  |  345 ++++
+[2026-06-16 11:44:32] [INFO]  09-SCRIPTS/pbi-manutencao-pipeline.ps1             |  294 ++++
+[2026-06-16 11:44:32] [INFO]  09-SCRIPTS/read_chuva.py                           |   39 +
+[2026-06-16 11:44:32] [INFO]  CLAUDE.md                                          |   74 +
+[2026-06-16 11:44:32] [INFO]  UMOE-OS-8.0/01-AGENTE-AUTONOMO/clima-engine.py     |  366 +++++
+[2026-06-16 11:44:32] [INFO]  UMOE-OS-8.0/01-AGENTE-AUTONOMO/ebitda-engine.py    |  397 +++++
+[2026-06-16 11:44:32] [INFO]  .../01-AGENTE-AUTONOMO/moagem-panel-engine.py      | 1692 ++++++++++++++++++++
+[2026-06-16 11:44:32] [INFO]  UMOE-OS-8.0/01-AGENTE-AUTONOMO/painel-engine.py    | 1160 ++++++++++++++
+[2026-06-16 11:44:32] [INFO]  .../01-AGENTE-AUTONOMO/painel-master-engine.py     |  941 +++++++++++
+[2026-06-16 11:44:32] [INFO]  UMOE-OS-8.0/01-AGENTE-AUTONOMO/pbi-auth.py         |  177 ++
+[2026-06-16 11:44:32] [INFO]  UMOE-OS-8.0/01-AGENTE-AUTONOMO/pbi-dashboard-v2.py |  719 +++++++++
+[2026-06-16 11:44:32] [INFO]  UMOE-OS-8.0/01-AGENTE-AUTONOMO/pbi-pipeline.py     |  746 +++++++++
+[2026-06-16 11:44:32] [INFO]  .../01-AGENTE-AUTONOMO/umoe-bi-enterprise.py       |  636 ++++++++
+[2026-06-16 11:44:32] [INFO]  UMOE-OS-8.0/01-AGENTE-AUTONOMO/umoe-pipeline.py    |  185 +++
+[2026-06-16 11:44:32] [INFO]  UMOE-OS-8.0/99-SSoT/SSoT-UMOE-2026.md              |   54 +
+[2026-06-16 11:44:32] [INFO]  UMOE-OS-8.0/99-SSoT/umoe-clima-snapshot.json       |  120 ++
+[2026-06-16 11:44:32] [INFO]  UMOE-OS-8.0/99-SSoT/umoe-ebitda-snapshot.json      |   61 +
+[2026-06-16 11:44:32] [INFO]  UMOE-OS-8.0/Dados-PBI/BASE_Chuva.json              |    1 +
+[2026-06-16 11:44:32] [INFO]  UMOE-OS-8.0/Dados-PBI/BASE_Plant_OCMuda.json       |    1 +
+[2026-06-16 11:44:32] [INFO]  UMOE-OS-8.0/Dados-PBI/BASE_Preparo.json            |    1 +
+[2026-06-16 11:44:32] [INFO]  UMOE-OS-8.0/Dados-PBI/BASE_TABELAS.txt             |   87 +
+[2026-06-16 11:44:32] [INFO]  UMOE-OS-8.0/Dados-PBI/BASE_Variedades.json         |    1 +
+[2026-06-16 11:44:32] [INFO]  UMOE-OS-8.0/Dados-PBI/CST_TABELAS.txt              |   12 +
+[2026-06-16 11:44:32] [INFO]  UMOE-OS-8.0/Dados-PBI/CTRL_Func_Div.json           |    1 +
+[2026-06-16 11:44:32] [INFO]  UMOE-OS-8.0/Dados-PBI/CTRL_TABELAS.txt             |   16 +
+[2026-06-16 11:44:32] [INFO]  UMOE-OS-8.0/Dados-PBI/ESTRUTURA_PBI.json           |   16 +
+[2026-06-16 11:44:32] [INFO]  UMOE-OS-8.0/Dados-PBI/RESUMO_EXTRACAO.json         |   14 +
+[2026-06-16 11:44:32] [INFO]  UMOE-OS-8.0/Relatorios/UMOE_BI_Enterprise.html     | 1606 +++++++++++++++++++
+[2026-06-16 11:44:32] [INFO]  .../Relatorios/UMOE_Dashboard_Manutencao.html      |   90 ++
+[2026-06-16 11:44:32] [INFO]  UMOE-OS-8.0/Relatorios/UMOE_PBI_Dashboard.html     |  254 +++
+[2026-06-16 11:44:32] [INFO]  UMOE-OS-8.0/Relatorios/UMOE_PBI_Oracle.html        |  457 ++++++
+[2026-06-16 11:44:32] [INFO]  .../Relatorios/UMOE_Painel_Executivo_MASTER.html   |  632 ++++++++
+[2026-06-16 11:44:32] [INFO]  UMOE-OS-8.0/Relatorios/pipeline-status.json        |   30 +
+[2026-06-16 11:44:32] [INFO]  config/pbi-catalog.json                            |   61 +
+[2026-06-16 11:44:32] [INFO]  docs/UMOE_BI_Enterprise.html                       | 1606 +++++++++++++++++++
+[2026-06-16 11:44:32] [INFO]  docs/UMOE_PBI_Oracle.html                          |  457 ++++++
+[2026-06-16 11:44:32] [INFO]  docs/UMOE_Painel_Executivo_MASTER.html             | 1492 +++++++++++++++++
+[2026-06-16 11:44:32] [INFO]  docs/index.html                                    |   47 +
+[2026-06-16 11:44:32] [INFO]  docs/pbi-hub.html                                  |  408 +++++
+[2026-06-16 11:44:32] [INFO]  logs/.gitkeep                                      |    0
+[2026-06-16 11:44:32] [INFO]  logs/chi.log                                       |    4 +
+[2026-06-16 11:44:32] [INFO]  61 files changed, 18196 insertions(+)
+[2026-06-16 11:44:32] [INFO]  create mode 100644 .env.example
+[2026-06-16 11:44:32] [INFO]  create mode 100644 .github/workflows/update-bi.yml
+[2026-06-16 11:44:32] [INFO]  create mode 100644 .gitignore
+[2026-06-16 11:44:32] [INFO]  create mode 100644 09-SCRIPTS/INSTALAR-COMO-ADMIN.bat
+[2026-06-16 11:44:32] [INFO]  create mode 100644 09-SCRIPTS/agendar-painel-diario.ps1
+[2026-06-16 11:44:32] [INFO]  create mode 100644 09-SCRIPTS/configurar-service-principal.ps1
+[2026-06-16 11:44:32] [INFO]  create mode 100644 09-SCRIPTS/descobrir-tabelas-pbi.ps1
+[2026-06-16 11:44:32] [INFO]  create mode 100644 09-SCRIPTS/explorar_dados.py
+[2026-06-16 11:44:32] [INFO]  create mode 100644 09-SCRIPTS/explorar_dados2.py
+[2026-06-16 11:44:32] [INFO]  create mode 100644 09-SCRIPTS/extrair-dados-pbi.ps1
+[2026-06-16 11:44:32] [INFO]  create mode 100644 09-SCRIPTS/habilitar-xmla-powerbi.ps1
+[2026-06-16 11:44:32] [INFO]  create mode 100644 09-SCRIPTS/instalar-pipeline-agendado.ps1
+[2026-06-16 11:44:32] [INFO]  create mode 100644 09-SCRIPTS/instalar-umoe-os-8.ps1
+[2026-06-16 11:44:32] [INFO]  create mode 100644 09-SCRIPTS/parse-pbix.py
+[2026-06-16 11:44:32] [INFO]  create mode 100644 09-SCRIPTS/pbi-busca-expandida.ps1
+[2026-06-16 11:44:32] [INFO]  create mode 100644 09-SCRIPTS/pbi-busca-final.ps1
+[2026-06-16 11:44:32] [INFO]  create mode 100644 09-SCRIPTS/pbi-dashboard-manutencao.py
+[2026-06-16 11:44:32] [INFO]  create mode 100644 09-SCRIPTS/pbi-descobrir-e-extrair.ps1
+[2026-06-16 11:44:32] [INFO]  create mode 100644 09-SCRIPTS/pbi-extrair-por-nome.ps1
+[2026-06-16 11:44:32] [INFO]  create mode 100644 09-SCRIPTS/pbi-extrair-tudo.ps1
+[2026-06-16 11:44:32] [INFO]  create mode 100644 09-SCRIPTS/pbi-manutencao-fix.ps1
+[2026-06-16 11:44:32] [INFO]  create mode 100644 09-SCRIPTS/pbi-manutencao-pipeline.ps1
+[2026-06-16 11:44:32] [INFO]  create mode 100644 09-SCRIPTS/read_chuva.py
+[2026-06-16 11:44:32] [INFO]  create mode 100644 CLAUDE.md
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/01-AGENTE-AUTONOMO/clima-engine.py
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/01-AGENTE-AUTONOMO/ebitda-engine.py
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/01-AGENTE-AUTONOMO/moagem-panel-engine.py
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/01-AGENTE-AUTONOMO/painel-engine.py
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/01-AGENTE-AUTONOMO/painel-master-engine.py
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/01-AGENTE-AUTONOMO/pbi-auth.py
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/01-AGENTE-AUTONOMO/pbi-dashboard-v2.py
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/01-AGENTE-AUTONOMO/pbi-pipeline.py
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/01-AGENTE-AUTONOMO/umoe-bi-enterprise.py
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/01-AGENTE-AUTONOMO/umoe-pipeline.py
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/99-SSoT/umoe-clima-snapshot.json
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/99-SSoT/umoe-ebitda-snapshot.json
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/Dados-PBI/BASE_Chuva.json
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/Dados-PBI/BASE_Plant_OCMuda.json
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/Dados-PBI/BASE_Preparo.json
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/Dados-PBI/BASE_TABELAS.txt
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/Dados-PBI/BASE_Variedades.json
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/Dados-PBI/CST_TABELAS.txt
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/Dados-PBI/CTRL_Func_Div.json
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/Dados-PBI/CTRL_TABELAS.txt
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/Dados-PBI/ESTRUTURA_PBI.json
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/Dados-PBI/RESUMO_EXTRACAO.json
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/Relatorios/UMOE_BI_Enterprise.html
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/Relatorios/UMOE_Dashboard_Manutencao.html
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/Relatorios/UMOE_PBI_Dashboard.html
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/Relatorios/UMOE_PBI_Oracle.html
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/Relatorios/UMOE_Painel_Executivo_MASTER.html
+[2026-06-16 11:44:32] [INFO]  create mode 100644 UMOE-OS-8.0/Relatorios/pipeline-status.json
+[2026-06-16 11:44:32] [INFO]  create mode 100644 config/pbi-catalog.json
+[2026-06-16 11:44:32] [INFO]  create mode 100644 docs/UMOE_BI_Enterprise.html
+[2026-06-16 11:44:32] [INFO]  create mode 100644 docs/UMOE_PBI_Oracle.html
+[2026-06-16 11:44:32] [INFO]  create mode 100644 docs/UMOE_Painel_Executivo_MASTER.html
+[2026-06-16 11:44:32] [INFO]  create mode 100644 docs/index.html
+[2026-06-16 11:44:32] [INFO]  create mode 100644 docs/pbi-hub.html
+[2026-06-16 11:44:32] [INFO]  create mode 100644 logs/.gitkeep
+[2026-06-16 11:44:32] [INFO] Alteracoes detectadas. Commitando...
