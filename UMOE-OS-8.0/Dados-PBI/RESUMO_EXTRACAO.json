@@ -1,0 +1,14 @@
+﻿[
+    {
+        "Dataset":  "BASE",
+        "Tabela":  "Chuva",
+        "Linhas":  47254,
+        "Arquivo":  "BASE_Chuva.json"
+    },
+    {
+        "Dataset":  "BASE",
+        "Tabela":  "Preparo",
+        "Linhas":  5457,
+        "Arquivo":  "BASE_Preparo.json"
+    }
+]
