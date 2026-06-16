@@ -1,96 +1,61 @@
 {
-  "_comment": "Catalogo completo Power BI UMOE - gerado 15/06/2026",
-  "_auth": "Requer PBI_CLIENT_ID + PBI_CLIENT_SECRET + PBI_TENANT_ID no .env (Service Principal) OU PBI_TOKEN temporario",
-  "app": {
-    "id": "c45a9f0d-2539-4a5b-9d97-3614b1004e32",
-    "name": "Projetos Manutencao Automotiva",
-    "report_id": "631a95ed-619d-4ec2-a0e9-6982bd3f1121"
-  },
-  "workspaces": {
-    "Industria": {
-      "id": "e29d4dca-b888-4b26-9a4e-b2b402f063c2",
-      "reports": {
-        "Dashboard Industrial": "34c708a6-2ce3-4602-8e1b-96a5179fe5d3",
-        "Gestao Industrial": "8911ce70-eb8e-4bda-96f2-3b31b75adb75",
-        "KPIS UMOE": "67d61255-cbe9-465c-a72d-8dca2f8e5201",
-        "Tempo Real": "71e3451b-2896-4fc5-9544-dc7aa2430e80",
-        "Tempo Real Supervisorio": "59333634-69de-470a-a1f3-f51f276744c0",
-        "GESTAO DE ATIVOS": "154509df-bf94-4b9c-a4ea-0a758300b57b",
-        "VIBRACAO": "9c0eb7cb-d8cb-46a1-b570-6e7dfeeb92d1",
-        "INSPECAO ESTRUTURAS": "d04853de-620e-4fe5-9efb-98732946162e",
-        "KPI REUNIAO DIARIA MANUTENCAO": "1df84558-69c5-41c5-88b5-f06487476d81",
-        "Dashboard Manut Industrial": "c9617ec9-7f6d-4959-8e76-9c31e066b932",
-        "KPIs ENTRESSAFRA": "ce995af3-6845-4bae-b8a1-placeholder"
-      },
-      "pages": {
-        "Dashboard Industrial": ["Menu","Producao","Manutencao","Custos","Moagem","Etanol","Vapor","Fermento","Oleo Fusel","Energia"],
-        "Gestao Industrial": ["Home","Producao","Eficiencia","Indicadores","Budget","Manutencao","Historico","Analise Evolutiva","Tempo Real"]
-      }
-    },
-    "Agricola": {
-      "id": "662a06b5-5579-4af6-b66a-7ac191a96674",
-      "reports": {
-        "BI_AGR_01_BASE": "placeholder_agr_base",
-        "BI_AGR_01_CST": "placeholder_agr_cst",
-        "BI_AGR_01_CTRL": "placeholder_agr_ctrl"
-      },
-      "pages": {
-        "BI_AGR_01_BASE": [
-          "UMOE","LOG_PRDParcial","LOG_PRDParcialTurno","LOG_PRDParcialFazenda",
-          "LOG_PRDAberto","LOG_PRDHora","LOG_PRDCargas","ORG_Estoque","ORG_Leiras",
-          "MOAG_Eficiencia","MOAG_Producao","MOAG_PRDDia","MOAG_Frentes","MOAG_Projecao",
-          "MOAG_QLD_Mineral","MOAG_QLD_Vegetal","MOAG_QLD_Perdas","MOAG_QLD_Broca",
-          "MOAG_OrdemCorte","MOAG_Areas","MAtCH_ATR","MAtCH_ATRSemanas",
-          "MAtCH_AderenMaturador","MAtCH_Maturador","MAtCH_TCH","MAtCH_TAH",
-          "MAtCH_TAHVariedade","MAtCH_TAHEstagio","PREP_Fazendas","PREP_Projecao",
-          "PLANT-PRD","PLANT_Apontamento","PLANT-Mudas","PLANT_Projecao",
-          "AGRONO_Broca","AGRONO_Cigarrinha","QLD_PP_Fazendas","QLD_Tratos"
+  "_comment": "Catalogo Power BI UMOE - IDs reais extraidos via API REST 15/06/2026",
+  "_auth": "Token Bearer via browser (projetos@umoe.com.br) | Service Principal: configurar .env",
+  "workspace_agricola": {
+    "id": "662a06b5-5579-4af6-b66a-7ac191a96674",
+    "name": "Projetos Agricola PREMIUM",
+    "base_url": "https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674",
+    "reports": {
+      "BI_AGR_01_BASE": {
+        "report_id": "3be2f3d8-557a-4375-8f70-1e2694fbf95e",
+        "dataset_id": "06950719-48dc-403d-bd91-2e059cf1a25e",
+        "url": "https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e",
+        "pages": [
+          "UMOE", "LOG_PRDParcial", "LOG_PRDParcialTurno", "LOG_PRDParcialFazenda",
+          "LOG_PRDAberto", "LOG_PRDHora", "LOG_PRDCargas",
+          "ORG_Estoque", "ORG_Leiras",
+          "MOAG_Eficiência", "MOAG_Produção", "MOAG_PRDDia", "MOAG_Frentes",
+          "MOAG_Projeção", "MOAG_QLD_Mineral", "MOAG_QLD_Vegetal",
+          "MOAG_QLD_Perdas", "MOAG_QLD_Broca", "MOAG_OrdemCorte", "MOAG_Áreas",
+          "MAtCH_ATR", "MAtCH_ATRSemanas", "MAtCH_AderenMaturador", "MAtCH_Maturador",
+          "MAtCH_TCH", "MAtCH_PréAnálise", "MAtCH_TAH", "MAtCH_TAHVariedade", "MAtCH_TAHEstágio",
+          "PREP_Fazendas", "PREP_Projeção",
+          "PLANT-PRD", "PLANT_Apontamento", "PLANT-Mudas", "PLANT_Projeção", "PLANT_OCMuda",
+          "QLD_PP_Fazendas", "QLD_Preparo", "QLD_Plantio", "QLD_PlantioENG",
+          "QLD_PlantioGemas", "QLD_Muda", "QLD_Tratos", "QLD_Apontamentos",
+          "AGRONO_Broca", "AGRONO_Cigarrinha", "AGRONO_Migdolus", "AGRONO_Sphenophorus",
+          "AGRONO_OutrasPrgas", "AGRONO_EstriaVermelha",
+          "ADEREN_Inset1ª", "ADEREN_Inset2ª", "ADEREN_Foliar1ª", "ADEREN_Foliar2ª",
+          "ADEREN_PréMaturador", "ADEREN_Maturador", "ADEREN_TSEnleira",
+          "ADEREN_TPHerb", "ADEREN_TSHerb", "ADEREN_Carreador", "ADEREN_Catação",
+          "ADEREN_TPQLombo", "ADEREN_TPAduba", "ADEREN_TSAduba",
+          "ADEREN_TPFertirri", "ADEREN_TSFertirri", "ADEREN_IrrigaSalva",
+          "ADEREN_TPComposto", "ADEREN_TSCorretivo", "ADEREN_Saldo",
+          "CTRL_Escala", "CTRL_Chuva", "CTRL_PainelSolar", "CTRL_OrdemServiço"
         ]
-      }
-    },
-    "Manutencao": {
-      "id": "954ecb3e-1daf-4a98-8801-39f2026da2d8",
-      "reports": {
-        "Disponibilidade Hora em Hora": "placeholder_disp_hora",
-        "Materiais Aplicados - Por Equipamento": "placeholder_mat_equip",
-        "Ordens de Servico": "placeholder_os",
-        "Indicadores CCT": "placeholder_cct",
-        "Consumo Combustivel": "placeholder_diesel",
-        "PARETOS PROCESSOS": "placeholder_pareto",
-        "Disponibilidade Diversos": "placeholder_disp_div",
-        "Acompanhamento Veiculos Leves": "placeholder_veic",
-        "Atendimento Borracharia": "placeholder_borr"
-      }
-    },
-    "Seguranca": {
-      "id": "2ceefeea-a380-4fb0-befc-18cb7a81f219",
-      "reports": {
-        "Controle de acoes SSMA": "placeholder_ssma",
-        "Gestao de EPI": "placeholder_epi",
-        "BI Status Eventos": "placeholder_eventos"
-      }
-    },
-    "Fiscal": {
-      "id": "6238b363-7881-4149-9b4d-53f83e785b14",
-      "reports": {
-        "GestFrete": "placeholder_frete"
-      }
-    },
-    "Compras": {
-      "id": "ce5cb6d0-1ded-40ff-ba86-55783dfccc83",
-      "reports": {
-        "FOLLOW-UP": "placeholder_followup"
+      },
+      "BI_AGR_01_CST": {
+        "report_id": "0881949a-a6b2-4b11-a030-b183f2e67651",
+        "dataset_id": "a735ce0e-4234-42f8-bedd-5cbb07ce6364",
+        "url": "https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/0881949a-a6b2-4b11-a030-b183f2e67651",
+        "pages": ["UMOE", "R-Headcount", "R-Custos", "R-Insumos"]
+      },
+      "BI_AGR_01_CTRL": {
+        "report_id": "721b4394-4455-4bb6-971d-ef5244e66e07",
+        "dataset_id": "4c81ea62-ef7f-4976-9aaa-bf7ab3727c0b",
+        "url": "https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/721b4394-4455-4bb6-971d-ef5244e66e07",
+        "pages": [
+          "INI", "CTRL_ESTOQ_SALDO_POS", "CTRL_ORDEM_CORTE", "CTRL_OC_FORNEC",
+          "CTRL_PESAGEM_EQ_DIVERG", "CTRL_FUNC_SEM_ESCALA", "CTRL_FUNC_DIV",
+          "CTRL_OS_DOSE", "CTRL_ORÇAMENTO"
+        ]
       }
     }
   },
   "local_sources": {
-    "hist_diario":   "C:/01 - UMOE/03 - Financeiro/Planilhas/Histórico Diário Safras.xlsx",
-    "kpi_agri":      "C:/01 - UMOE/03 - Financeiro/Planilhas/Historico Kpis e Indicadores Agrícolas - Real e Projeções - UMOE.xlsx",
-    "base_equip":    "C:/01 - UMOE/03 - Financeiro/Planilhas/Base Equipamentos UMOE - Atualizada 15.06.xlsx",
-    "orca_manut":    "C:/01 - UMOE/03 - Financeiro/Planilhas/Orçamento Manutenção Automotiva SF 26'27.xlsx",
-    "tch_broca":     "C:/01 - UMOE/99 - SSoT/TCH - BROCA - 22627.xlsb",
-    "pdf_dir":       "C:/01 - UMOE/05 - Relatorios/PDF",
-    "bpc_file":      "C:/01 - UMOE/Gerencial/BPC/Safra 2026/Indústria - BPC - Safra 2026-27 - v_2025.12.15.xlsx",
-    "pluvio":        "C:/01 - UMOE/03 - Financeiro/Planilhas/1 - Indice Pluviometrico UMOE.xlsx"
+    "hist_diario": "C:/01 - UMOE/03 - Financeiro/Planilhas/Histórico Diário Safras.xlsx",
+    "kpi_agri": "C:/01 - UMOE/03 - Financeiro/Planilhas/Historico Kpis e Indicadores Agrícolas - Real e Projeções - UMOE.xlsx",
+    "base_equip": "C:/01 - UMOE/03 - Financeiro/Planilhas/Base Equipamentos UMOE - Atualizada 15.06.xlsx",
+    "pluvio": "C:/01 - UMOE/03 - Financeiro/Planilhas/1 - Indice Pluviometrico UMOE.xlsx"
   }
 }

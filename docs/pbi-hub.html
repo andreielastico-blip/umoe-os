@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UMOE OS 8.0 | Hub Power BI Agricola</title>
+<style>
+:root{--bg:#060E1F;--bg2:#0D1B35;--bg3:#152344;--green:#00C853;--gold:#FFD600;--red:#FF1744;--blue:#2979FF;--cyan:#00E5FF;--text:#E8EFF8;--text2:#8BA0BB;--border:#1E3252}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',sans-serif;font-size:13px;min-height:100vh}
+header{background:linear-gradient(135deg,#0A1628,#0D2040);border-bottom:2px solid var(--green);padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
+header h1{font-size:20px;font-weight:700;color:var(--green)}
+header .sub{color:var(--text2);font-size:11px;margin-top:3px}
+.meta{text-align:right;color:var(--text2);font-size:11px}
+.meta strong{color:var(--gold)}
+.search-bar{padding:12px 24px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:center}
+.search-bar input{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 14px;color:var(--text);font-size:13px;outline:none}
+.search-bar input:focus{border-color:var(--green)}
+.search-bar input::placeholder{color:var(--text2)}
+.badge-count{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--text2)}
+.container{padding:20px 24px;max-width:1400px;margin:0 auto}
+.report-section{margin-bottom:28px}
+.report-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.report-header h2{font-size:15px;font-weight:700;color:var(--text)}
+.report-badge{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-size:10px;color:var(--text2)}
+.report-link{margin-left:auto;font-size:11px;color:var(--cyan);text-decoration:none;border:1px solid var(--border);border-radius:6px;padding:4px 10px}
+.report-link:hover{background:var(--bg3);border-color:var(--cyan)}
+.group-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin:16px 0 8px;display:flex;align-items:center;gap:6px}
+.group-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.pages-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.page-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;text-decoration:none;color:var(--text);display:flex;align-items:center;gap:8px;transition:all .15s}
+.page-card:hover{border-color:var(--green);background:var(--bg3);color:var(--green);transform:translateY(-1px)}
+.page-card .icon{font-size:14px;flex-shrink:0}
+.page-card .name{font-size:12px;font-weight:500;line-height:1.3}
+.page-card .cat{font-size:9px;color:var(--text2);text-transform:uppercase;margin-top:2px}
+.page-card.priority{border-color:var(--gold)}
+.page-card.priority .name{color:var(--gold)}
+.page-card.critical{border-color:var(--red)}
+.page-card.critical .name{color:var(--red)}
+.hidden{display:none!important}
+.stats-bar{display:flex;gap:16px;padding:12px 24px;background:var(--bg2);border-bottom:1px solid var(--border);font-size:11px;color:var(--text2)}
+.stats-bar span strong{color:var(--green)}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>UMOE OS 8.0 | Hub Power BI Agrícola</h1>
+    <div class="sub">Workspace: Projetos Agrícola PREMIUM | projetos@umoe.com.br</div>
+  </div>
+  <div class="meta">
+    <div><strong>86 páginas</strong> mapeadas via API REST</div>
+    <div>Gerado: 15/06/2026 | Workspace: 662a06b5</div>
+    <div style="margin-top:4px"><a href="UMOE_BI_Enterprise.html" style="color:var(--cyan);font-size:11px">← BI Enterprise Dashboard</a></div>
+  </div>
+</header>
+
+<div class="stats-bar">
+  <span>Relatórios: <strong>3</strong></span>
+  <span>Páginas BASE: <strong>73</strong></span>
+  <span>Páginas CST: <strong>4</strong></span>
+  <span>Páginas CTRL: <strong>9</strong></span>
+  <span>Total: <strong>86</strong></span>
+</div>
+
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="Filtrar páginas... (ex: TCH, ATR, Custo, Broca)" oninput="filterPages()">
+  <div class="badge-count" id="countBadge">86 páginas</div>
+</div>
+
+<div class="container">
+
+<!-- BI_AGR_01_BASE -->
+<div class="report-section" id="sec-base">
+  <div class="report-header">
+    <h2>📊 BI_AGR_01_BASE</h2>
+    <span class="report-badge">Relatório Principal</span>
+    <span class="report-badge">73 páginas</span>
+    <a href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e" target="_blank" class="report-link">Abrir relatório ↗</a>
+  </div>
+
+  <div class="group-label">🏠 Visão Geral</div>
+  <div class="pages-grid">
+    <a class="page-card priority" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSection" target="_blank" data-name="UMOE">
+      <span class="icon">🏠</span><div><div class="name">UMOE (Home)</div><div class="cat">Visão Geral</div></div>
+    </a>
+  </div>
+
+  <div class="group-label">📋 Logística de Produção</div>
+  <div class="pages-grid">
+    <a class="page-card priority" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionLOG_PRDParcial" target="_blank" data-name="LOG_PRDParcial">
+      <span class="icon">📦</span><div><div class="name">LOG_PRDParcial</div><div class="cat">Produção Parcial</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionLOG_PRDParcialTurno" target="_blank" data-name="LOG_PRDParcialTurno">
+      <span class="icon">🔄</span><div><div class="name">LOG_PRDParcialTurno</div><div class="cat">Por Turno</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionLOG_PRDParcialFazenda" target="_blank" data-name="LOG_PRDParcialFazenda">
+      <span class="icon">🏡</span><div><div class="name">LOG_PRDParcialFazenda</div><div class="cat">Por Fazenda</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionLOG_PRDAberto" target="_blank" data-name="LOG_PRDAberto">
+      <span class="icon">📂</span><div><div class="name">LOG_PRDAberto</div><div class="cat">Em Aberto</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionLOG_PRDHora" target="_blank" data-name="LOG_PRDHora">
+      <span class="icon">⏱</span><div><div class="name">LOG_PRDHora</div><div class="cat">Por Hora</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionLOG_PRDCargas" target="_blank" data-name="LOG_PRDCargas">
+      <span class="icon">🚛</span><div><div class="name">LOG_PRDCargas</div><div class="cat">Cargas</div></div>
+    </a>
+  </div>
+
+  <div class="group-label">🏭 Organização</div>
+  <div class="pages-grid">
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionORG_Estoque" target="_blank" data-name="ORG_Estoque">
+      <span class="icon">📦</span><div><div class="name">ORG_Estoque</div><div class="cat">Estoque Campo</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionORG_Leiras" target="_blank" data-name="ORG_Leiras">
+      <span class="icon">🌾</span><div><div class="name">ORG_Leiras</div><div class="cat">Leiras de Cana</div></div>
+    </a>
+  </div>
+
+  <div class="group-label">⚙️ Moagem</div>
+  <div class="pages-grid">
+    <a class="page-card priority" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionMOAG_Efici%C3%AAncia" target="_blank" data-name="MOAG_Eficiência">
+      <span class="icon">⚡</span><div><div class="name">MOAG_Eficiência</div><div class="cat">EGI / Eficiência</div></div>
+    </a>
+    <a class="page-card priority" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionMOAG_Produ%C3%A7%C3%A3o" target="_blank" data-name="MOAG_Produção">
+      <span class="icon">📈</span><div><div class="name">MOAG_Produção</div><div class="cat">Volume Moído</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionMOAG_PRDDia" target="_blank" data-name="MOAG_PRDDia">
+      <span class="icon">📅</span><div><div class="name">MOAG_PRDDia</div><div class="cat">Produção Diária</div></div>
+    </a>
+    <a class="page-card priority" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionMOAG_Frentes" target="_blank" data-name="MOAG_Frentes">
+      <span class="icon">🚜</span><div><div class="name">MOAG_Frentes</div><div class="cat">Frentes de Colheita</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionMOAG_Proje%C3%A7%C3%A3o" target="_blank" data-name="MOAG_Projeção">
+      <span class="icon">🔮</span><div><div class="name">MOAG_Projeção</div><div class="cat">Projeção Safra</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionMOAG_QLD_Mineral" target="_blank" data-name="MOAG_QLD_Mineral">
+      <span class="icon">🪨</span><div><div class="name">MOAG_QLD_Mineral</div><div class="cat">Qualidade Mineral</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionMOAG_QLD_Vegetal" target="_blank" data-name="MOAG_QLD_Vegetal">
+      <span class="icon">🌿</span><div><div class="name">MOAG_QLD_Vegetal</div><div class="cat">Qualidade Vegetal</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionMOAG_QLD_Perdas" target="_blank" data-name="MOAG_QLD_Perdas">
+      <span class="icon">📉</span><div><div class="name">MOAG_QLD_Perdas</div><div class="cat">Perdas de Moagem</div></div>
+    </a>
+    <a class="page-card critical" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionMOAG_QLD_Broca" target="_blank" data-name="MOAG_QLD_Broca">
+      <span class="icon">🐛</span><div><div class="name">MOAG_QLD_Broca</div><div class="cat">Qualidade Broca</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionMOAG_OrdemCorte" target="_blank" data-name="MOAG_OrdemCorte">
+      <span class="icon">📋</span><div><div class="name">MOAG_OrdemCorte</div><div class="cat">Ordem de Corte</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionMOAG_%C3%81reas" target="_blank" data-name="MOAG_Áreas">
+      <span class="icon">🗺</span><div><div class="name">MOAG_Áreas</div><div class="cat">Áreas Colhidas</div></div>
+    </a>
+  </div>
+
+  <div class="group-label">🌿 Match TCH / ATR / TAH</div>
+  <div class="pages-grid">
+    <a class="page-card priority" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionMAtCH_ATR" target="_blank" data-name="MAtCH_ATR">
+      <span class="icon">🍬</span><div><div class="name">MAtCH_ATR</div><div class="cat">ATR por Fazenda</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionMAtCH_ATRSemanas" target="_blank" data-name="MAtCH_ATRSemanas">
+      <span class="icon">📅</span><div><div class="name">MAtCH_ATRSemanas</div><div class="cat">ATR por Semana</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionMAtCH_AderenMaturador" target="_blank" data-name="MAtCH_AderenMaturador">
+      <span class="icon">💊</span><div><div class="name">MAtCH_AderenMaturador</div><div class="cat">Aderência Maturador</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionMAtCH_Maturador" target="_blank" data-name="MAtCH_Maturador">
+      <span class="icon">🧪</span><div><div class="name">MAtCH_Maturador</div><div class="cat">Maturador</div></div>
+    </a>
+    <a class="page-card priority" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionMAtCH_TCH" target="_blank" data-name="MAtCH_TCH">
+      <span class="icon">⚖️</span><div><div class="name">MAtCH_TCH</div><div class="cat">TCH por Fazenda</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionMAtCH_Pr%C3%A9An%C3%A1lise" target="_blank" data-name="MAtCH_PréAnálise">
+      <span class="icon">🔬</span><div><div class="name">MAtCH_PréAnálise</div><div class="cat">Pré-Análise</div></div>
+    </a>
+    <a class="page-card priority" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionMAtCH_TAH" target="_blank" data-name="MAtCH_TAH">
+      <span class="icon">🏆</span><div><div class="name">MAtCH_TAH</div><div class="cat">TAH por Fazenda</div></div>
+    </a>
+    <a class="page-card priority" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionMAtCH_TAHVariedade" target="_blank" data-name="MAtCH_TAHVariedade">
+      <span class="icon">🧬</span><div><div class="name">MAtCH_TAHVariedade</div><div class="cat">TAH por Variedade</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionMAtCH_TAHEst%C3%A1gio" target="_blank" data-name="MAtCH_TAHEstágio">
+      <span class="icon">📊</span><div><div class="name">MAtCH_TAHEstágio</div><div class="cat">TAH por Estágio</div></div>
+    </a>
+  </div>
+
+  <div class="group-label">🌱 Preparo e Plantio</div>
+  <div class="pages-grid">
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionPREP_Fazendas" target="_blank" data-name="PREP_Fazendas">
+      <span class="icon">🚜</span><div><div class="name">PREP_Fazendas</div><div class="cat">Preparo Fazendas</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionPREP_Proje%C3%A7%C3%A3o" target="_blank" data-name="PREP_Projeção">
+      <span class="icon">🔮</span><div><div class="name">PREP_Projeção</div><div class="cat">Projeção Preparo</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionPLANT-PRD" target="_blank" data-name="PLANT-PRD">
+      <span class="icon">🌿</span><div><div class="name">PLANT-PRD</div><div class="cat">Produção Plantio</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionPLANT_Apontamento" target="_blank" data-name="PLANT_Apontamento">
+      <span class="icon">📝</span><div><div class="name">PLANT_Apontamento</div><div class="cat">Apontamentos Plantio</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionPLANT-Mudas" target="_blank" data-name="PLANT-Mudas">
+      <span class="icon">🌱</span><div><div class="name">PLANT-Mudas</div><div class="cat">Gestão de Mudas</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionPLANT_Proje%C3%A7%C3%A3o" target="_blank" data-name="PLANT_Projeção">
+      <span class="icon">🔮</span><div><div class="name">PLANT_Projeção</div><div class="cat">Projeção Plantio</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionPLANT_OCMuda" target="_blank" data-name="PLANT_OCMuda">
+      <span class="icon">📋</span><div><div class="name">PLANT_OCMuda</div><div class="cat">OC Muda</div></div>
+    </a>
+  </div>
+
+  <div class="group-label">✅ Qualidade</div>
+  <div class="pages-grid">
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionQLD_PP_Fazendas" target="_blank" data-name="QLD_PP_Fazendas">
+      <span class="icon">🏡</span><div><div class="name">QLD_PP_Fazendas</div><div class="cat">PP por Fazenda</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionQLD_Preparo" target="_blank" data-name="QLD_Preparo">
+      <span class="icon">✅</span><div><div class="name">QLD_Preparo</div><div class="cat">Qualidade Preparo</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionQLD_Plantio" target="_blank" data-name="QLD_Plantio">
+      <span class="icon">✅</span><div><div class="name">QLD_Plantio</div><div class="cat">Qualidade Plantio</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionQLD_Tratos" target="_blank" data-name="QLD_Tratos">
+      <span class="icon">✅</span><div><div class="name">QLD_Tratos</div><div class="cat">Qualidade Tratos</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionQLD_Muda" target="_blank" data-name="QLD_Muda">
+      <span class="icon">🌱</span><div><div class="name">QLD_Muda</div><div class="cat">Qualidade Muda</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionQLD_Apontamentos" target="_blank" data-name="QLD_Apontamentos">
+      <span class="icon">📝</span><div><div class="name">QLD_Apontamentos</div><div class="cat">Apontamentos QLD</div></div>
+    </a>
+  </div>
+
+  <div class="group-label">🐛 Agronomia — Pragas</div>
+  <div class="pages-grid">
+    <a class="page-card critical" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionAGRONO_Broca" target="_blank" data-name="AGRONO_Broca">
+      <span class="icon">🐛</span><div><div class="name">AGRONO_Broca</div><div class="cat">Diatraea saccharalis</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionAGRONO_Cigarrinha" target="_blank" data-name="AGRONO_Cigarrinha">
+      <span class="icon">🦟</span><div><div class="name">AGRONO_Cigarrinha</div><div class="cat">Cigarrinha-das-raízes</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionAGRONO_Migdolus" target="_blank" data-name="AGRONO_Migdolus">
+      <span class="icon">🪲</span><div><div class="name">AGRONO_Migdolus</div><div class="cat">Migdolus</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionAGRONO_Sphenophorus" target="_blank" data-name="AGRONO_Sphenophorus">
+      <span class="icon">🪲</span><div><div class="name">AGRONO_Sphenophorus</div><div class="cat">Sphenophorus</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionAGRONO_OutrasPrgas" target="_blank" data-name="AGRONO_OutrasPrgas">
+      <span class="icon">🦠</span><div><div class="name">AGRONO_OutrasPrgas</div><div class="cat">Outras Pragas</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionAGRONO_EstriaVermelha" target="_blank" data-name="AGRONO_EstriaVermelha">
+      <span class="icon">🔴</span><div><div class="name">AGRONO_EstriaVermelha</div><div class="cat">Estria Vermelha</div></div>
+    </a>
+  </div>
+
+  <div class="group-label">📋 Aderência Operações</div>
+  <div class="pages-grid">
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionADEREN_Inset1%C2%AA" target="_blank" data-name="ADEREN_Inset1ª">
+      <span class="icon">💉</span><div><div class="name">ADEREN_Inset1ª</div><div class="cat">Inseticida 1ª</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionADEREN_Inset2%C2%AA" target="_blank" data-name="ADEREN_Inset2ª">
+      <span class="icon">💉</span><div><div class="name">ADEREN_Inset2ª</div><div class="cat">Inseticida 2ª</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionADEREN_Foliar1%C2%AA" target="_blank" data-name="ADEREN_Foliar1ª">
+      <span class="icon">🌿</span><div><div class="name">ADEREN_Foliar1ª</div><div class="cat">Foliar 1ª</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionADEREN_Foliar2%C2%AA" target="_blank" data-name="ADEREN_Foliar2ª">
+      <span class="icon">🌿</span><div><div class="name">ADEREN_Foliar2ª</div><div class="cat">Foliar 2ª</div></div>
+    </a>
+    <a class="page-card priority" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionADEREN_Maturador" target="_blank" data-name="ADEREN_Maturador">
+      <span class="icon">🧪</span><div><div class="name">ADEREN_Maturador</div><div class="cat">Aderência Maturador</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionADEREN_TSEnleira" target="_blank" data-name="ADEREN_TSEnleira">
+      <span class="icon">🌾</span><div><div class="name">ADEREN_TSEnleira</div><div class="cat">Enleiramento</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionADEREN_TPHerb" target="_blank" data-name="ADEREN_TPHerb">
+      <span class="icon">🌿</span><div><div class="name">ADEREN_TPHerb</div><div class="cat">Herbicida TP</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionADEREN_TSHerb" target="_blank" data-name="ADEREN_TSHerb">
+      <span class="icon">🌿</span><div><div class="name">ADEREN_TSHerb</div><div class="cat">Herbicida TS</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionADEREN_TPAduba" target="_blank" data-name="ADEREN_TPAduba">
+      <span class="icon">🌱</span><div><div class="name">ADEREN_TPAduba</div><div class="cat">Adubação TP</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionADEREN_TSAduba" target="_blank" data-name="ADEREN_TSAduba">
+      <span class="icon">🌱</span><div><div class="name">ADEREN_TSAduba</div><div class="cat">Adubação TS</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionADEREN_IrrigaSalva" target="_blank" data-name="ADEREN_IrrigaSalva">
+      <span class="icon">💧</span><div><div class="name">ADEREN_IrrigaSalva</div><div class="cat">Irrigação Salvação</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionADEREN_Saldo" target="_blank" data-name="ADEREN_Saldo">
+      <span class="icon">📊</span><div><div class="name">ADEREN_Saldo</div><div class="cat">Saldo Aderência</div></div>
+    </a>
+  </div>
+
+  <div class="group-label">🎛️ Controle Operacional</div>
+  <div class="pages-grid">
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionCTRL_Escala" target="_blank" data-name="CTRL_Escala">
+      <span class="icon">📅</span><div><div class="name">CTRL_Escala</div><div class="cat">Escala Trabalho</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionCTRL_Chuva" target="_blank" data-name="CTRL_Chuva">
+      <span class="icon">🌧️</span><div><div class="name">CTRL_Chuva</div><div class="cat">Precipitação</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionCTRL_PainelSolar" target="_blank" data-name="CTRL_PainelSolar">
+      <span class="icon">☀️</span><div><div class="name">CTRL_PainelSolar</div><div class="cat">Painel Solar</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/3be2f3d8-557a-4375-8f70-1e2694fbf95e/ReportSectionCTRL_OrdemServi%C3%A7o" target="_blank" data-name="CTRL_OrdemServiço">
+      <span class="icon">🔧</span><div><div class="name">CTRL_OrdemServiço</div><div class="cat">Ordens de Serviço</div></div>
+    </a>
+  </div>
+</div>
+
+<!-- BI_AGR_01_CST -->
+<div class="report-section" id="sec-cst">
+  <div class="report-header">
+    <h2>💰 BI_AGR_01_CST</h2>
+    <span class="report-badge">Custos Agrícolas</span>
+    <span class="report-badge">4 páginas</span>
+    <a href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/0881949a-a6b2-4b11-a030-b183f2e67651" target="_blank" class="report-link">Abrir relatório ↗</a>
+  </div>
+  <div class="pages-grid">
+    <a class="page-card priority" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/0881949a-a6b2-4b11-a030-b183f2e67651" target="_blank" data-name="CST UMOE">
+      <span class="icon">🏠</span><div><div class="name">UMOE (Home)</div><div class="cat">Visão Geral Custos</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/0881949a-a6b2-4b11-a030-b183f2e67651/ReportSectionR-Headcount" target="_blank" data-name="R-Headcount">
+      <span class="icon">👥</span><div><div class="name">R-Headcount</div><div class="cat">Mão de Obra</div></div>
+    </a>
+    <a class="page-card priority" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/0881949a-a6b2-4b11-a030-b183f2e67651/ReportSectionR-Custos" target="_blank" data-name="R-Custos">
+      <span class="icon">💰</span><div><div class="name">R-Custos</div><div class="cat">Custos Detalhados</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/0881949a-a6b2-4b11-a030-b183f2e67651/ReportSectionR-Insumos" target="_blank" data-name="R-Insumos">
+      <span class="icon">🧴</span><div><div class="name">R-Insumos</div><div class="cat">Insumos Agrícolas</div></div>
+    </a>
+  </div>
+</div>
+
+<!-- BI_AGR_01_CTRL -->
+<div class="report-section" id="sec-ctrl">
+  <div class="report-header">
+    <h2>🎛️ BI_AGR_01_CTRL</h2>
+    <span class="report-badge">Controle Operacional</span>
+    <span class="report-badge">9 páginas</span>
+    <a href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/721b4394-4455-4bb6-971d-ef5244e66e07" target="_blank" class="report-link">Abrir relatório ↗</a>
+  </div>
+  <div class="pages-grid">
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/721b4394-4455-4bb6-971d-ef5244e66e07" target="_blank" data-name="CTRL INI">
+      <span class="icon">🏠</span><div><div class="name">INI</div><div class="cat">Inicio</div></div>
+    </a>
+    <a class="page-card priority" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/721b4394-4455-4bb6-971d-ef5244e66e07/ReportSectionCTRL_ESTOQ_SALDO_POS" target="_blank" data-name="CTRL_ESTOQ_SALDO_POS">
+      <span class="icon">📦</span><div><div class="name">CTRL_ESTOQ_SALDO_POS</div><div class="cat">Saldo Estoque</div></div>
+    </a>
+    <a class="page-card priority" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/721b4394-4455-4bb6-971d-ef5244e66e07/ReportSectionCTRL_ORDEM_CORTE" target="_blank" data-name="CTRL_ORDEM_CORTE">
+      <span class="icon">✂️</span><div><div class="name">CTRL_ORDEM_CORTE</div><div class="cat">Ordem de Corte</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/721b4394-4455-4bb6-971d-ef5244e66e07/ReportSectionCTRL_OC_FORNEC" target="_blank" data-name="CTRL_OC_FORNEC">
+      <span class="icon">🤝</span><div><div class="name">CTRL_OC_FORNEC</div><div class="cat">OC Fornecedor</div></div>
+    </a>
+    <a class="page-card critical" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/721b4394-4455-4bb6-971d-ef5244e66e07/ReportSectionCTRL_PESAGEM_EQ_DIVERG" target="_blank" data-name="CTRL_PESAGEM_EQ_DIVERG">
+      <span class="icon">⚠️</span><div><div class="name">CTRL_PESAGEM_EQ_DIVERG</div><div class="cat">Divergências Pesagem</div></div>
+    </a>
+    <a class="page-card critical" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/721b4394-4455-4bb6-971d-ef5244e66e07/ReportSectionCTRL_FUNC_SEM_ESCALA" target="_blank" data-name="CTRL_FUNC_SEM_ESCALA">
+      <span class="icon">⚠️</span><div><div class="name">CTRL_FUNC_SEM_ESCALA</div><div class="cat">Func. sem Escala</div></div>
+    </a>
+    <a class="page-card critical" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/721b4394-4455-4bb6-971d-ef5244e66e07/ReportSectionCTRL_FUNC_DIV" target="_blank" data-name="CTRL_FUNC_DIV">
+      <span class="icon">⚠️</span><div><div class="name">CTRL_FUNC_DIV</div><div class="cat">Divergências RH</div></div>
+    </a>
+    <a class="page-card" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/721b4394-4455-4bb6-971d-ef5244e66e07/ReportSectionCTRL_OS_DOSE" target="_blank" data-name="CTRL_OS_DOSE">
+      <span class="icon">💊</span><div><div class="name">CTRL_OS_DOSE</div><div class="cat">Dose OS</div></div>
+    </a>
+    <a class="page-card priority" href="https://app.powerbi.com/groups/662a06b5-5579-4af6-b66a-7ac191a96674/reports/721b4394-4455-4bb6-971d-ef5244e66e07/ReportSectionCTRL_OR%C3%87AMENTO" target="_blank" data-name="CTRL_ORÇAMENTO">
+      <span class="icon">💰</span><div><div class="name">CTRL_ORÇAMENTO</div><div class="cat">Orçamento vs Real</div></div>
+    </a>
+  </div>
+</div>
+
+</div>
+
+<script>
+function filterPages() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const cards = document.querySelectorAll('.page-card');
+  let visible = 0;
+  cards.forEach(c => {
+    const name = (c.dataset.name || '').toLowerCase() + ' ' + (c.textContent || '').toLowerCase();
+    if (!q || name.includes(q)) {
+      c.classList.remove('hidden'); visible++;
+    } else {
+      c.classList.add('hidden');
+    }
+  });
+  document.getElementById('countBadge').textContent = visible + ' páginas';
+
+  // Ocultar group-labels sem cards visíveis
+  document.querySelectorAll('.group-label').forEach(label => {
+    let next = label.nextElementSibling;
+    let hasVisible = false;
+    while (next && next.classList.contains('pages-grid')) {
+      if (next.querySelector('.page-card:not(.hidden)')) hasVisible = true;
+      next = next.nextElementSibling;
+    }
+    label.style.display = hasVisible || !q ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>
