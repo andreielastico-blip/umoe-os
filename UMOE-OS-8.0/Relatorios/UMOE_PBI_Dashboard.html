@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>UMOE OS 8.0 | Dashboard BI Agricola 2026/27</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#1a1a2e;color:#e0e0e0;font-size:13px}
+h1{color:#00d4aa;font-size:22px;padding:18px 24px 6px}
+h2{color:#00d4aa;font-size:15px;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid #333}
+h3{color:#7ecfd4;font-size:13px;margin:14px 0 8px}
+.tabs{display:flex;gap:2px;padding:0 24px;flex-wrap:wrap;margin-bottom:2px}
+.tab{padding:7px 14px;cursor:pointer;background:#16213e;color:#888;border-radius:6px 6px 0 0;font-size:12px;transition:.15s}
+.tab:hover{color:#ccc}
+.tab.active{background:#0f3460;color:#00d4aa;font-weight:600}
+.content{display:none;padding:18px 24px}
+.content.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:16px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.kpi{background:#16213e;border-radius:8px;padding:14px;border-left:3px solid #00d4aa}
+.kpi .val{font-size:24px;font-weight:700;color:#00d4aa}
+.kpi .lbl{font-size:11px;color:#888;margin-top:3px}
+.kpi .sub{font-size:11px;color:#bbb;margin-top:3px}
+.kpi.r{border-left-color:#e74c3c}.kpi.r .val{color:#e74c3c}
+.kpi.y{border-left-color:#f39c12}.kpi.y .val{color:#f39c12}
+.kpi.g{border-left-color:#27ae60}.kpi.g .val{color:#27ae60}
+.card{background:#16213e;border-radius:8px;padding:14px;margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:#0f3460;color:#00d4aa;padding:7px 9px;text-align:left;position:sticky;top:0;z-index:1}
+td{padding:5px 9px;border-bottom:1px solid #222}
+tr:hover td{background:#1e2d50}
+.tw{max-height:350px;overflow-y:auto;border-radius:6px;border:1px solid #333}
+.red{color:#e74c3c}.green{color:#27ae60}.yellow{color:#f39c12}
+.alert{background:#2d1b1b;border-left:4px solid #e74c3c;padding:10px 14px;border-radius:0 6px 6px 0;margin-bottom:12px;font-size:12px}
+.bbar{background:#333;border-radius:3px;height:7px;width:100%;margin-top:5px}
+.bf{height:7px;border-radius:3px}
+.sub{color:#888;font-size:12px;padding:0 24px 12px}
+</style>
+</head>
+<body>
+<h1>UMOE OS 8.0 | Dashboard BI Agricola</h1>
+<p class="sub">Safra 2026/27 | 2026-06-15 | BASE+CST+CTRL: 95 tabelas / 98.329 registros principais</p>
+<div class="tabs"><div class="tab active" onclick="showTab('cockpit',this)">Cockpit</div><div class="tab " onclick="showTab('producao',this)">Producao</div><div class="tab " onclick="showTab('atr',this)">ATR/Qual.</div><div class="tab " onclick="showTab('custos',this)">Custos</div><div class="tab " onclick="showTab('rh',this)">RH</div><div class="tab " onclick="showTab('insumos',this)">Insumos</div><div class="tab " onclick="showTab('agronomia',this)">Agronomia</div><div class="tab " onclick="showTab('plantio',this)">Plantio</div></div>
+<div id="tab-cockpit" class="content active"><h2>Cockpit</h2>
+<div class="grid">
+  <div class="kpi r">
+    <div class="val">606.418</div>
+    <div class="lbl">Moagem Acumulada (t)</div>
+    <div class="sub">Meta: 2.768.000 t</div>
+    <div class="bbar"><div class="bf" style="width:21.9%;background:#f39c12"></div></div>
+  </div>
+  <div class="kpi r"><div class="val">2.161.582</div><div class="lbl">Gap Moagem (t)</div><div class="sub">-R$ 50,78 M impacto</div></div>
+  <div class="kpi r"><div class="val">125,62</div><div class="lbl">ATR Real (kg/t)</div><div class="sub">Meta 138.66 | Gap -13,04</div></div>
+  <div class="kpi r"><div class="val">R$50.0/t</div><div class="lbl">CCT Real</div><div class="sub">Orc R$38.3/t | +R$11.7/t</div></div>
+  <div class="kpi"><div class="val">730.994</div><div class="lbl">Ton 2026 (HISTPRD)</div></div>
+  <div class="kpi"><div class="val">1517</div><div class="lbl">Headcount Jun/26</div></div>
+  <div class="kpi"><div class="val">8</div><div class="lbl">Centros de Custo</div></div>
+  <div class="kpi"><div class="val">2428</div><div class="lbl">Aval. Broca</div></div>
+</div>
+<div class="alert">
+  <b>ALERTA SAFRA 2026/27:</b>
+  Gap moagem 2.161.582 t (89% volume / 11% custo).
+  ATR 125,62 kg/t vs meta 138.66 kg/t (-13.04).
+  CCT R$ 50.0/t vs orc R$ 38.3/t (+30.5%).
+  Dias afastamento Jun/26: 6.293.
+</div>
+<div class="g2">
+  <div class="card">
+    <h3>Producao Mensal 2026</h3>
+    <div class="tw"><table><thead><tr><th>Mes</th><th>Ton</th><th>ATR kg/t</th></tr></thead><tbody><tr><td>2026-03</td><td>169.307</td><td>123,31</td></tr><tr><td>2026-04</td><td>258.410</td><td>124,15</td></tr><tr><td>2026-05</td><td>178.701</td><td>126,27</td></tr><tr><td>2026-06</td><td>124.577</td><td>130,90</td></tr></tbody></table></div>
+  </div>
+  <div class="card">
+    <h3>Producao por Frente 2026</h3>
+    <div class="tw"><table><thead><tr><th>Frente</th><th>Ton</th><th>ATR kg/t</th></tr></thead><tbody><tr><td>Frente 1</td><td>190.610</td><td>125,49</td></tr><tr><td>Frente 4</td><td>167.700</td><td>124,81</td></tr><tr><td>Frente 3</td><td>141.566</td><td>127,77</td></tr><tr><td>Frente 2</td><td>132.310</td><td>124,59</td></tr><tr><td>Frente 10</td><td>62.489</td><td>129,97</td></tr><tr><td>Frente 27</td><td>36.320</td><td>118,02</td></tr></tbody></table></div>
+  </div>
+</div>
+</div><div id="tab-producao" class="content "><h2>Producao</h2>
+<div class="grid">
+  <div class="kpi"><div class="val">730.994</div><div class="lbl">Ton Moidas 2026</div></div>
+  <div class="kpi"><div class="val">54</div><div class="lbl">Fazendas Ativas</div></div>
+  <div class="kpi"><div class="val">15895</div><div class="lbl">Cargas Registradas</div></div>
+  <div class="kpi"><div class="val">1761</div><div class="lbl">Reg. Indisponibilidade</div></div>
+</div>
+<div class="g3">
+  <div class="card">
+    <h3>TCH Estimado por Estagio (26/27)</h3>
+    <div class="tw"><table><thead><tr><th>Estagio</th><th>Talhoes</th><th>Area ha</th><th>TCH</th></tr></thead><tbody><tr><td>1.0</td><td>300</td><td>5.567</td><td class="green">106,3</td></tr><tr><td>2.0</td><td>311</td><td>6.486</td><td class="y">88,3</td></tr><tr><td>3.0</td><td>429</td><td>8.458</td><td class="y">75,3</td></tr><tr><td>4.0</td><td>428</td><td>8.078</td><td class="r">65,8</td></tr><tr><td>5.0</td><td>269</td><td>4.910</td><td class="r">63,6</td></tr><tr><td>6.0</td><td>49</td><td>994</td><td class="r">64,4</td></tr><tr><td>7.0</td><td>72</td><td>748</td><td class="r">63,5</td></tr><tr><td>8.0</td><td>23</td><td>389</td><td class="y">77,7</td></tr></tbody></table></div>
+  </div>
+  <div class="card">
+    <h3>Top 20 Fazendas - Ton 2026</h3>
+    <div class="tw"><table><thead><tr><th>Fazenda</th><th>Ton</th><th>Dias</th></tr></thead><tbody><tr><td style="font-size:11px">20305 - Fazenda Vista Bonita</td><td>79.194</td><td>266</td></tr><tr><td style="font-size:11px">20314 - Fazenda Agua Mansa</td><td>72.126</td><td>165</td></tr><tr><td style="font-size:11px">20462 - Fazenda Santa Irene III</td><td>57.475</td><td>177</td></tr><tr><td style="font-size:11px">20449 - Fazenda Santa Izabel</td><td>57.321</td><td>126</td></tr><tr><td style="font-size:11px">20432 - Fazenda Vista Bonita</td><td>52.413</td><td>92</td></tr><tr><td style="font-size:11px">20588 - Fazenda Laranjeiras</td><td>48.222</td><td>116</td></tr><tr><td style="font-size:11px">20713 - Fazenda Velha Taquarussu</td><td>29.009</td><td>113</td></tr><tr><td style="font-size:11px">20306 - Fazenda Sao Domingos</td><td>25.976</td><td>39</td></tr><tr><td style="font-size:11px">20408 - Fazenda Santa Irene II</td><td>20.876</td><td>56</td></tr><tr><td style="font-size:11px">20315 - Fazenda Taquarussu</td><td>19.448</td><td>49</td></tr><tr><td style="font-size:11px">20590 - Fazenda São Domingos</td><td>19.203</td><td>45</td></tr><tr><td style="font-size:11px">20511 - Fazenda Mercedina</td><td>19.162</td><td>60</td></tr><tr><td style="font-size:11px">20705 - Fazenda Taquarussu</td><td>19.161</td><td>110</td></tr><tr><td style="font-size:11px">20548 - Fazenda Concórdia</td><td>14.552</td><td>22</td></tr><tr><td style="font-size:11px">20716 - Fazenda Sossego</td><td>14.319</td><td>75</td></tr><tr><td style="font-size:11px">30629 - Fazenda São Jorge (Fabiano)</td><td>14.081</td><td>54</td></tr><tr><td style="font-size:11px">20596 - Estância Três Corações</td><td>11.245</td><td>21</td></tr><tr><td style="font-size:11px">20510 - Fazenda Santa Cecília</td><td>11.127</td><td>21</td></tr><tr><td style="font-size:11px">20321 - Fazenda Bela Vista</td><td>10.852</td><td>35</td></tr><tr><td style="font-size:11px">20555 - Fazenda Santa Alice</td><td>9.712</td><td>37</td></tr></tbody></table></div>
+  </div>
+  <div class="card">
+    <h3>Indisponibilidade por Causa</h3>
+    <div class="tw"><table><thead><tr><th>Causa</th><th>Horas</th><th>Ocorr.</th></tr></thead><tbody><tr><td>?</td><td>0,0</td><td>1761</td></tr></tbody></table></div>
+  </div>
+</div>
+<div class="card">
+  <h3>Cargas por Frente</h3>
+  <table><thead><tr><th>Frente</th><th>Ton</th><th>Cargas</th></tr></thead><tbody><tr><td>Frente 3</td><td>0</td><td>4146</td></tr><tr><td>Frente 1</td><td>0</td><td>3883</td></tr><tr><td>Frente 4</td><td>0</td><td>3000</td></tr><tr><td>Frente 2</td><td>0</td><td>2593</td></tr><tr><td>Frente 10</td><td>0</td><td>1147</td></tr><tr><td>Frente 27</td><td>0</td><td>1126</td></tr></tbody></table>
+</div>
+</div><div id="tab-atr" class="content "><h2>ATR/Qual.</h2>
+<div class="grid">
+  <div class="kpi y"><div class="val">125,62</div><div class="lbl">ATR Real 2026 (kg/t)</div><div class="sub">Meta 138.66 kg/t</div></div>
+  <div class="kpi"><div class="val">13301</div><div class="lbl">Registros ATR Historico</div></div>
+  <div class="kpi"><div class="val">3658</div><div class="lbl">Registros Maturador</div></div>
+  <div class="kpi"><div class="val">69</div><div class="lbl">Pre-Analises</div></div>
+</div>
+<div class="g3">
+  <div class="card">
+    <h3>ATR por Safra (2023-2026)</h3>
+    <table><thead><tr><th>Safra</th><th>Ton</th><th>ATR kg/t</th></tr></thead><tbody><tr><td>2025</td><td>2.768.892</td><td class="green">138,87</td></tr><tr><td>2026</td><td>730.994</td><td class="y">125,62</td></tr></tbody></table>
+  </div>
+  <div class="card">
+    <h3>ATR Diario 2026 (ultimos 30)</h3>
+    <div class="tw"><table><thead><tr><th>Data</th><th>Ton</th><th>ATR kg/t</th></tr></thead><tbody><tr><td>2026-04-24</td><td>13.019</td><td class="y">128,28</td></tr><tr><td>2026-04-25</td><td>13.670</td><td class="r">124,12</td></tr><tr><td>2026-04-26</td><td>14.223</td><td class="y">126,15</td></tr><tr><td>2026-04-27</td><td>576</td><td class="r">83,66</td></tr><tr><td>2026-05-02</td><td>9.817</td><td class="r">117,59</td></tr><tr><td>2026-05-03</td><td>11.486</td><td class="y">125,00</td></tr><tr><td>2026-05-04</td><td>11.935</td><td class="r">124,35</td></tr><tr><td>2026-05-05</td><td>12.950</td><td class="r">124,64</td></tr><tr><td>2026-05-06</td><td>12.886</td><td class="r">124,82</td></tr><tr><td>2026-05-07</td><td>12.030</td><td class="y">125,20</td></tr><tr><td>2026-05-08</td><td>6.784</td><td class="r">121,78</td></tr><tr><td>2026-05-21</td><td>3.098</td><td class="r">113,53</td></tr><tr><td>2026-05-24</td><td>5.939</td><td class="y">125,13</td></tr><tr><td>2026-05-25</td><td>10.462</td><td class="y">130,01</td></tr><tr><td>2026-05-26</td><td>12.249</td><td class="y">133,11</td></tr><tr><td>2026-05-27</td><td>12.699</td><td class="y">127,99</td></tr><tr><td>2026-05-28</td><td>14.327</td><td class="y">126,84</td></tr><tr><td>2026-05-29</td><td>15.100</td><td class="y">128,57</td></tr><tr><td>2026-05-30</td><td>14.553</td><td class="y">128,87</td></tr><tr><td>2026-05-31</td><td>12.387</td><td class="y">128,40</td></tr><tr><td>2026-06-01</td><td>12.405</td><td class="y">132,00</td></tr><tr><td>2026-06-02</td><td>12.995</td><td class="y">134,65</td></tr><tr><td>2026-06-03</td><td>12.602</td><td class="y">128,83</td></tr><tr><td>2026-06-04</td><td>13.126</td><td class="y">128,15</td></tr><tr><td>2026-06-05</td><td>12.991</td><td class="y">131,78</td></tr><tr><td>2026-06-06</td><td>13.174</td><td class="y">132,01</td></tr><tr><td>2026-06-07</td><td>13.362</td><td class="y">133,32</td></tr><tr><td>2026-06-08</td><td>13.542</td><td class="y">130,16</td></tr><tr><td>2026-06-09</td><td>12.795</td><td class="y">129,81</td></tr><tr><td>2026-06-10</td><td>7.585</td><td class="y">126,41</td></tr></tbody></table></div>
+  </div>
+  <div class="card">
+    <h3>Maturador por Frente</h3>
+    <table><thead><tr><th>Frente</th><th>Aplicacoes</th></tr></thead><tbody><tr><td>Frente 1.0</td><td>1547</td></tr><tr><td>Frente 2.0</td><td>490</td></tr><tr><td>Frente 3.0</td><td>350</td></tr><tr><td>Frente 4.0</td><td>461</td></tr><tr><td>Frente 10.0</td><td>644</td></tr><tr><td>Frente 27.0</td><td>166</td></tr></tbody></table>
+  </div>
+</div>
+<div class="card">
+  <h3>Pre-Analise ATR</h3>
+  <div class="tw"><table><thead><tr><th>CD_UPNIVEL1</th><th>DE_UPNIVEL1</th><th>MIN_TLH</th><th>TLHS</th><th>DE_LATITUDE</th><th>DE_LONGITUDE</th><th>DE_MATURAC</th></tr></thead><tbody><tr><td>10310</td><td>Fazenda Sao Jorge</td><td>   23</td><td>23, 24, 25, 26, 30, </td><td>-22.5279607645</td><td>-51.7071312807</td><td>Média</td></tr><tr><td>10310</td><td>Fazenda Sao Jorge</td><td>  103</td><td>103, 106, 109, 110</td><td>-22.5193563331</td><td>-51.7062154744</td><td>Média/Tardia</td></tr><tr><td>10310</td><td>Fazenda Sao Jorge</td><td>    1</td><td>1</td><td>-22.52836097142</td><td>-51.7107735522</td><td>Média/Tardia</td></tr><tr><td>10311</td><td>Fazenda Santo Antôni</td><td>   10</td><td>10, 11</td><td>-22.45662180116</td><td>-51.72720989167</td><td>Precoce/Média</td></tr><tr><td>10311</td><td>Fazenda Santo Antôni</td><td>   49</td><td>49, 51, 53</td><td>-22.48018804431</td><td>-51.7467994881</td><td>Precoce/Média</td></tr><tr><td>10311</td><td>Fazenda Santo Antôni</td><td>  227</td><td>227, 228</td><td>-22.48313318468</td><td>-51.73815559849</td><td>Precoce/Média</td></tr><tr><td>10312</td><td>Fazenda Sao Joaquim</td><td>    5</td><td>5</td><td>-22.51085936469</td><td>-51.67465094115</td><td>Precoce/Média</td></tr><tr><td>10312</td><td>Fazenda Sao Joaquim</td><td>    1</td><td>1, 2, 3</td><td>-22.50018815602</td><td>-51.69927041105</td><td>Média</td></tr><tr><td>10312</td><td>Fazenda Sao Joaquim</td><td>    4</td><td>4</td><td>-22.50764464742</td><td>-51.68147834735</td><td>Média</td></tr><tr><td>10316</td><td>Fazenda Santa Luzia</td><td>   27</td><td>27, 28, 29</td><td>-22.5076164391</td><td>-51.7074599832</td><td>ND</td></tr><tr><td>10316</td><td>Fazenda Santa Luzia</td><td>    3</td><td>3, 4, 6</td><td>-22.50899320048</td><td>-51.68963572601</td><td>Média</td></tr><tr><td>20303</td><td>Chacara Nativa</td><td>    1</td><td>1</td><td>-22.4523913786</td><td>-51.7925508983</td><td>Média</td></tr><tr><td>20304</td><td>Estância Nativa I</td><td>    1</td><td>1</td><td>-22.4487448232</td><td>-51.7870412091</td><td>Média</td></tr><tr><td>20305</td><td>Fazenda Vista Bonita</td><td>  292</td><td>292, 294</td><td>-22.49745552504</td><td>-51.80984518013</td><td>Precoce/Média</td></tr><tr><td>20305</td><td>Fazenda Vista Bonita</td><td>  298</td><td>298, 299, 300</td><td>-22.5373553506</td><td>-51.83565759443</td><td>ND</td></tr><tr><td>20305</td><td>Fazenda Vista Bonita</td><td>  264</td><td>264</td><td>-22.50384429852</td><td>-51.818140659</td><td>Precoce/Média</td></tr><tr><td>20307</td><td>Fazenda Santa Irene</td><td>    7</td><td>7, 8</td><td>-22.54511969675</td><td>-51.87268320011</td><td>Precoce/Média</td></tr><tr><td>20307</td><td>Fazenda Santa Irene</td><td>    4</td><td>4</td><td>-22.55034952781</td><td>-51.87317007819</td><td>Precoce/Média</td></tr><tr><td>20307</td><td>Fazenda Santa Irene</td><td>   14</td><td>14, 18</td><td>-22.54281317257</td><td>-51.88377225752</td><td>Precoce/Média</td></tr><tr><td>20307</td><td>Fazenda Santa Irene</td><td>    1</td><td>1</td><td>-22.54859699576</td><td>-51.86394402018</td><td>Precoce/Média</td></tr><tr><td>20308</td><td>Estância Nativa II</td><td>    1</td><td>1</td><td>-22.4495376061</td><td>-51.7815732369</td><td>Média</td></tr><tr><td>20314</td><td>Fazenda Agua Mansa</td><td>  532</td><td>532</td><td>-22.59680131064</td><td>-51.86179146694</td><td>Precoce/Média</td></tr><tr><td>20314</td><td>Fazenda Agua Mansa</td><td>  524</td><td>524</td><td>-22.58839468728</td><td>-51.85796466505</td><td>Precoce/Média</td></tr><tr><td>20314</td><td>Fazenda Agua Mansa</td><td>  533</td><td>533, 535</td><td>-22.59437435515</td><td>-51.85575953524</td><td>Precoce/Média</td></tr><tr><td>20314</td><td>Fazenda Agua Mansa</td><td>  601</td><td>601</td><td>-22.57768288377</td><td>-51.83315721203</td><td>Média</td></tr></tbody></table></div>
+</div>
+</div><div id="tab-custos" class="content "><h2>Custos</h2>
+<div class="grid">
+  <div class="kpi"><div class="val">R$ 0</div><div class="lbl">Total Orcado 2026</div></div>
+  <div class="kpi r"><div class="val">R$ 44.808.746</div><div class="lbl">Total Realizado 2026</div></div>
+  <div class="kpi r"><div class="val">R$ 44.808.746</div><div class="lbl">Desvio</div></div>
+  <div class="kpi"><div class="val">8</div><div class="lbl">Centros de Custo</div></div>
+</div>
+<div class="g2">
+  <div class="card">
+    <h3>Top 12 CC - Realizado 2026</h3>
+    <div class="tw"><table><thead><tr><th>Centro de Custo</th><th>Orcado</th><th>Realizado</th><th>Desvio</th></tr></thead><tbody><tr><td>Entre Safra Agricola</td><td>R$ 0</td><td>R$ 10.807.834</td><td class="r">R$ 10.807.834</td></tr><tr><td>Colheita Mecanizada - SDV</td><td>R$ 0</td><td>R$ 10.015.385</td><td class="r">R$ 10.015.385</td></tr><tr><td>Tratos Cana Soca</td><td>R$ 0</td><td>R$ 7.586.027</td><td class="r">R$ 7.586.027</td></tr><tr><td>Plantio Convencional</td><td>R$ 0</td><td>R$ 6.406.347</td><td class="r">R$ 6.406.347</td></tr><tr><td>Preparo de Solo RENOVACAO</td><td>R$ 0</td><td>R$ 4.036.121</td><td class="r">R$ 4.036.121</td></tr><tr><td>Tratos Cana Planta</td><td>R$ 0</td><td>R$ 3.917.159</td><td class="r">R$ 3.917.159</td></tr><tr><td>Preparo de Solo EXPANSAO</td><td>R$ 0</td><td>R$ 1.726.624</td><td class="r">R$ 1.726.624</td></tr><tr><td>Plantio Mecanizado</td><td>R$ 0</td><td>R$ 313.248</td><td class="r">R$ 313.248</td></tr></tbody></table></div>
+  </div>
+  <div class="card">
+    <h3>Top 10 Grupos de Custo 2026</h3>
+    <div class="tw"><table><thead><tr><th>Grupo</th><th>Orcado</th><th>Realizado</th><th>Desvio</th></tr></thead><tbody><tr><td>ENTRESSAFRA</td><td>R$ 0</td><td>R$ 10.807.834</td><td class="r">R$ 10.807.834</td></tr><tr><td>CORTE DE CANA</td><td>R$ 0</td><td>R$ 6.590.644</td><td class="r">R$ 6.590.644</td></tr><tr><td>TRANSP PESSOAL</td><td>R$ 0</td><td>R$ 3.648.166</td><td class="r">R$ 3.648.166</td></tr><tr><td>VINHACA</td><td>R$ 0</td><td>R$ 2.078.591</td><td class="r">R$ 2.078.591</td></tr><tr><td>TRANSP PRANCHA/AGUA/INSUMOS</td><td>R$ 0</td><td>R$ 1.696.233</td><td class="r">R$ 1.696.233</td></tr><tr><td>TRANSP DE CANA</td><td>R$ 0</td><td>R$ 1.574.193</td><td class="r">R$ 1.574.193</td></tr><tr><td>SISTEMATIZACAO</td><td>R$ 0</td><td>R$ 1.427.750</td><td class="r">R$ 1.427.750</td></tr><tr><td>APLIC INSETIC BROCA 2ª+</td><td>R$ 0</td><td>R$ 1.143.343</td><td class="r">R$ 1.143.343</td></tr><tr><td>APLIC INSETIC BROCA 1ª</td><td>R$ 0</td><td>R$ 867.931</td><td class="r">R$ 867.931</td></tr><tr><td>REPLANTIO</td><td>R$ 0</td><td>R$ 855.114</td><td class="r">R$ 855.114</td></tr></tbody></table></div>
+  </div>
+</div>
+<div class="card">
+  <h3>Orcamento vs Realizado YTD (CTRL)</h3>
+  <div class="tw"><table><thead><tr><th>Grupo</th><th>Tipo</th><th>Vlr Orc YTD</th><th>Vlr Real YTD</th></tr></thead><tbody><tr><td>PREPARO - AREA PROCESSO</td><td>YTD</td><td>R$ 0</td><td>-</td></tr><tr><td>SISTEMATIZACAO</td><td>YTD</td><td>R$ 0</td><td>-</td></tr><tr><td>ELIMINADOR DE SOQUEIRA</td><td>YTD</td><td>R$ 0</td><td>-</td></tr><tr><td>GRADAGEM PESADA 1ª</td><td>YTD</td><td>R$ 0</td><td>-</td></tr><tr><td>GRADAGEM MEDIA 1ª</td><td>YTD</td><td>R$ 0</td><td>-</td></tr><tr><td>GRADAGEM LEVE PPI 1ª</td><td>YTD</td><td>R$ 0</td><td>-</td></tr><tr><td>IRRIG ASPERSAO</td><td>YTD</td><td>R$ 0</td><td>-</td></tr><tr><td>MANUT. ESTRADA/CARREAD</td><td>YTD</td><td>R$ 0</td><td>-</td></tr><tr><td>GESTAO/TOPOG/QUALID</td><td>YTD</td><td>R$ 0</td><td>-</td></tr><tr><td>MECANIZACAO DIVERSOS</td><td>YTD</td><td>R$ 0</td><td>-</td></tr><tr><td>TRANSP PESSOAL</td><td>YTD</td><td>R$ 0</td><td>-</td></tr><tr><td>TRANSP PRANCHA/AGUA/INSUMOS</td><td>YTD</td><td>R$ 0</td><td>-</td></tr><tr><td>PLANTIO - AREA PROCESSO</td><td>YTD</td><td>R$ 0</td><td>-</td></tr><tr><td>MUDA - CORTE</td><td>YTD</td><td>R$ 0</td><td>-</td></tr><tr><td>MUDA - CARREGAMENTO</td><td>YTD</td><td>R$ 0</td><td>-</td></tr><tr><td>MUDA - TRANSPORTE</td><td>YTD</td><td>R$ 0</td><td>-</td></tr><tr><td>MAN- PLANTIO DESDOBRA</td><td>YTD</td><td>R$ 0</td><td>-</td></tr><tr><td>MAN- PLANTIO CONVENCIONAL</td><td>YTD</td><td>R$ 0</td><td>-</td></tr><tr><td>RETAMPA</td><td>YTD</td><td>R$ 0</td><td>-</td></tr><tr><td>ALINHAMENTO CARREADOR</td><td>YTD</td><td>R$ 0</td><td>-</td></tr><tr><td>REPLANTIO</td><td>YTD</td><td>R$ 0</td><td>-</td></tr><tr><td>GESTAO/TOPOG/QUALID</td><td>YTD</td><td>R$ 0</td><td>-</td></tr><tr><td>MECANIZACAO DIVERSOS</td><td>YTD</td><td>R$ 0</td><td>-</td></tr><tr><td>TRANSP PESSOAL</td><td>YTD</td><td>R$ 0</td><td>-</td></tr><tr><td>PLANTIO - AREA PROCESSO</td><td>YTD</td><td>R$ 0</td><td>-</td></tr></tbody></table></div>
+</div>
+</div><div id="tab-rh" class="content "><h2>RH</h2>
+<div class="grid">
+  <div class="kpi"><div class="val">1517</div><div class="lbl">Headcount Ativo Jun/26</div></div>
+  <div class="kpi y"><div class="val">6.293</div><div class="lbl">Dias Afastamento Jun/26</div></div>
+  <div class="kpi"><div class="val">20229</div><div class="lbl">Historico Func</div></div>
+  <div class="kpi"><div class="val">1030</div><div class="lbl">Func Div (CTRL)</div></div>
+</div>
+<div class="g3">
+  <div class="card">
+    <h3>Headcount por CC (Jun/26)</h3>
+    <div class="tw"><table><thead><tr><th>Centro de Custo</th><th>Qtd</th></tr></thead><tbody><tr><td>Auxiliares - DEPMAN</td><td>190</td></tr><tr><td>Operadores - DECMEC</td><td>181</td></tr><tr><td>Auxiliares - CATMAN</td><td>59</td></tr><tr><td>Operadores - DEFERT</td><td>41</td></tr><tr><td>Operadores - DEPMAN</td><td>40</td></tr><tr><td>Mao de obra - DEPMAN</td><td>38</td></tr><tr><td>Mecanica Maquinas Agricolas - DEMAUT</td><td>36</td></tr><tr><td>Administracao - DEMAUT</td><td>35</td></tr><tr><td>Geracao/Distrib. Vapor - SDV</td><td>33</td></tr><tr><td>Assistentes - DEMAUT</td><td>28</td></tr><tr><td>Operadores - DEIRRI</td><td>28</td></tr><tr><td>Lab Controle - Qualidade SDV</td><td>25</td></tr></tbody></table></div>
+  </div>
+  <div class="card">
+    <h3>Afastamentos Jun/26</h3>
+    <div class="tw"><table><thead><tr><th>Motivo</th><th>Func.</th><th>Dias</th></tr></thead><tbody><tr><td>?</td><td>243</td><td>6.293</td></tr></tbody></table></div>
+  </div>
+  <div class="card">
+    <h3>Divisao por Setor</h3>
+    <div class="tw"><table><thead><tr><th>Setor</th><th>Qtd</th></tr></thead><tbody><tr><td>PLANTIO</td><td>343</td></tr><tr><td>CTT</td><td>239</td></tr><tr><td>TRATOS</td><td>171</td></tr><tr><td>IRRIGA/COMPOSTO</td><td>104</td></tr><tr><td>AGRONOMICO</td><td>37</td></tr><tr><td>PREPARO</td><td>32</td></tr><tr><td>LOGISTICA</td><td>31</td></tr><tr><td>PLANTIO MEC</td><td>31</td></tr><tr><td>AFASTADOS</td><td>17</td></tr><tr><td>TOPOGRAFIA</td><td>10</td></tr><tr><td>COORDENACAO</td><td>9</td></tr><tr><td>CONTROLE AGRICOLA</td><td>5</td></tr><tr><td>ATIV COMPATIVEL</td><td>1</td></tr></tbody></table></div>
+  </div>
+</div>
+<div class="card">
+  <h3>FUNC_99_BI - Quadro RH Completo (amostra 30)</h3>
+  <div class="tw"><table><thead><tr><th>DT</th><th>CCUSTO</th><th>DES_TIT_CTBL</th><th>CD_CARGO</th><th>CD_NIV</th><th>DES_CARGO</th></tr></thead><tbody><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr></tbody></table></div>
+</div>
+</div><div id="tab-insumos" class="content "><h2>Insumos</h2>
+<div class="grid">
+  <div class="kpi"><div class="val">29720</div><div class="lbl">Registros Consumo 2026</div></div>
+  <div class="kpi"><div class="val">1023</div><div class="lbl">Registros Estoque</div></div>
+  <div class="kpi"><div class="val">800</div><div class="lbl">Saldo CTRL</div></div>
+</div>
+<div class="g3">
+  <div class="card">
+    <h3>Consumo por Grupo 2026</h3>
+    <div class="tw"><table><thead><tr><th>Grupo</th><th>Qtd</th></tr></thead><tbody><tr><td>ADUBACAO C/ CORTE SOQ COM 1ª</td><td>0,0</td></tr><tr><td>APLIC HERB BARRA 1ª</td><td>0,0</td></tr><tr><td>APLIC HERB CATACAO 1ª</td><td>0,0</td></tr><tr><td>APLIC ADUBO FOLIAR 1ª</td><td>0,0</td></tr><tr><td>APLIC ADUBO FOLIAR 2ª+</td><td>0,0</td></tr><tr><td>APLIC PRE MATURADOR 1ª</td><td>0,0</td></tr><tr><td>APLIC INSETIC BROCA 2ª+</td><td>0,0</td></tr><tr><td>APLIC HERB CATACAO 2ª+</td><td>0,0</td></tr><tr><td>APLIC INSETIC BROCA 1ª</td><td>0,0</td></tr><tr><td>APLIC MATURADOR 1ª</td><td>0,0</td></tr><tr><td>VINHACA</td><td>0,0</td></tr><tr><td>APLIC INIBIDOR 1ª</td><td>0,0</td></tr><tr><td>APLIC HERB PINGENTE 1ª</td><td>0,0</td></tr><tr><td>APLIC CORRETIVO 1ª</td><td>0,0</td></tr><tr><td>ADUBACAO C/ CORTE SOQUEIR 1ª</td><td>0,0</td></tr></tbody></table></div>
+  </div>
+  <div class="card">
+    <h3>Top Componentes 2026</h3>
+    <div class="tw"><table><thead><tr><th>Componente</th><th>Qtd</th><th>Reg</th></tr></thead><tbody><tr><td>FOLI EURO BORO</td><td>0,0</td><td>381</td></tr><tr><td>FERT EXPERTGROW EXT ALGAS ADAMA</td><td>0,0</td><td>109</td></tr><tr><td>NEMATICIDA BIOLOGICO EVENWICHT KRACHT</td><td>0,0</td><td>89</td></tr><tr><td>FERTILIZANTE EUROMAN MANGANES19 EUROFORT</td><td>0,0</td><td>95</td></tr><tr><td>FOLI EURO ZINCO 53</td><td>0,0</td><td>149</td></tr><tr><td>BIOL BIOASIS B ARYABHATTAI BIOTROP</td><td>0,0</td><td>109</td></tr><tr><td>ADJU PROTANK MN6%+ZIN4% CROPFIELD</td><td>0,0</td><td>160</td></tr><tr><td>BIOL INOC BIOMAX AZUM</td><td>0,0</td><td>89</td></tr><tr><td>INSE SINGULAR BR FIPRON600 OURO FINO</td><td>0,0</td><td>115</td></tr><tr><td>FERT 34.17.00 UREIA PROTEGIDA</td><td>0,0</td><td>151</td></tr><tr><td>HERB BORAL SULFENTRAZONE 500 FMC</td><td>0,0</td><td>50</td></tr><tr><td>HERB ALION INDAZIFLAN 500 BAYER</td><td>0,0</td><td>172</td></tr><tr><td>HERB PONTEIRO SULFENTRAZONA 500 G/LT OUR</td><td>0,0</td><td>32</td></tr><tr><td>HERB COACT DICLOSULAM 840 CORTEVA</td><td>0,0</td><td>24</td></tr><tr><td>HERB QUALLIS 2,4D240+PICL64 OUROFINO</td><td>0,0</td><td>92</td></tr></tbody></table></div>
+  </div>
+  <div class="card">
+    <h3>Estoque Saldo (CTRL)</h3>
+    <div class="tw"><table><thead><tr><th>NO_OS</th><th>CD_INSUMO</th><th>DE_INSUMO</th><th>DE_FUNC</th><th>CD_CCUSTO</th><th>CD_OPERACAO</th></tr></thead><tbody><tr><td>108640</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501200.0</td><td>9990.0</td></tr><tr><td>109467</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501100.0</td><td>9990.0</td></tr><tr><td>109623</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501100.0</td><td>9990.0</td></tr><tr><td>109865</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501200.0</td><td>9990.0</td></tr><tr><td>110054</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501200.0</td><td>9990.0</td></tr><tr><td>110055</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501100.0</td><td>9990.0</td></tr><tr><td>110217</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501100.0</td><td>9990.0</td></tr><tr><td>110267</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501100.0</td><td>9990.0</td></tr><tr><td>111414</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501100.0</td><td>9990.0</td></tr><tr><td>112094</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501200.0</td><td>9990.0</td></tr><tr><td>112385</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501100.0</td><td>9990.0</td></tr><tr><td>112386</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501100.0</td><td>9990.0</td></tr><tr><td>112933</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501200.0</td><td>9990.0</td></tr><tr><td>113425</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501200.0</td><td>9990.0</td></tr><tr><td>113915</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501100.0</td><td>9990.0</td></tr><tr><td>115318</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501100.0</td><td>9990.0</td></tr><tr><td>115373</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501100.0</td><td>9990.0</td></tr><tr><td>115396</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501100.0</td><td>9990.0</td></tr><tr><td>115465</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501100.0</td><td>9990.0</td></tr><tr><td>116257</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501100.0</td><td>9990.0</td></tr><tr><td>116412</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501100.0</td><td>9990.0</td></tr><tr><td>116489</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501100.0</td><td>9990.0</td></tr><tr><td>116606</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501100.0</td><td>9990.0</td></tr><tr><td>116607</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501100.0</td><td>9990.0</td></tr><tr><td>116708</td><td>18102</td><td>CORR GESSO AGRICOLA</td><td>NELSON GOMES BALMORISCO J</td><td>3501100.0</td><td>9990.0</td></tr></tbody></table></div>
+  </div>
+</div>
+</div><div id="tab-agronomia" class="content "><h2>Agronomia</h2>
+<div class="grid">
+  <div class="kpi"><div class="val">47254</div><div class="lbl">Registros Chuva</div></div>
+  <div class="kpi r"><div class="val">2428</div><div class="lbl">Aval. Broca</div></div>
+  <div class="kpi y"><div class="val">10334</div><div class="lbl">Aval. Cigarrinha</div></div>
+  <div class="kpi"><div class="val">3714</div><div class="lbl">Aval. Migdolus</div></div>
+</div>
+<div class="g3">
+  <div class="card">
+    <h3>Chuva Mensal (mm acum postos)</h3>
+    <div class="tw"><table><thead><tr><th>Mes</th><th>mm</th></tr></thead><tbody></tbody></table></div>
+  </div>
+  <div class="card">
+    <h3>Broca - Top Fazendas (% infest.)</h3>
+    <div class="tw"><table><thead><tr><th>Fazenda</th><th>Aval</th><th>% Infest</th></tr></thead><tbody><tr><td>Fazenda Taquarussu</td><td>85</td><td>0,00%</td></tr><tr><td>Fazenda Velha Taquarussu</td><td>57</td><td>0,00%</td></tr><tr><td>Fazenda Sossego</td><td>29</td><td>0,00%</td></tr><tr><td>Fazenda Bandeirantes I</td><td>7</td><td>0,00%</td></tr><tr><td>Fazenda Bandeirantes II</td><td>6</td><td>0,00%</td></tr><tr><td>Sítio Taquaruçu</td><td>2</td><td>0,00%</td></tr><tr><td>Fazenda Santa Virginia (Fabiano)</td><td>30</td><td>0,00%</td></tr><tr><td>Fazenda São João (Fabiano)</td><td>9</td><td>0,00%</td></tr><tr><td>Estancia Pedrini (Fabiano)</td><td>5</td><td>0,00%</td></tr><tr><td>Fazenda Cruzeiro do Sul (Fabiano)</td><td>31</td><td>0,00%</td></tr><tr><td>Sitio Santa Catarina (Fabiano)</td><td>6</td><td>0,00%</td></tr><tr><td>Fazenda Chapada (Fabiano)</td><td>7</td><td>0,00%</td></tr><tr><td>Fazenda Pederneiras II (Fabiano)</td><td>3</td><td>0,00%</td></tr><tr><td>Fazenda São Jorge (Fabiano)</td><td>3</td><td>0,00%</td></tr><tr><td>Fazenda Concordia - Expansão</td><td>12</td><td>0,00%</td></tr></tbody></table></div>
+  </div>
+  <div class="card">
+    <h3>Cigarrinha Mensal</h3>
+    <div class="tw"><table><thead><tr><th>Mes</th><th>Ocorr.</th></tr></thead><tbody><tr><td></td><td>10334</td></tr></tbody></table></div>
+  </div>
+</div>
+<div class="card">
+  <h3>Migdolus por Fazenda</h3>
+  <table><thead><tr><th>Fazenda</th><th>Registros</th></tr></thead><tbody><tr><td>?</td><td>3714</td></tr></tbody></table>
+</div>
+</div><div id="tab-plantio" class="content "><h2>Plantio</h2>
+<div class="grid">
+  <div class="kpi"><div class="val">4.595</div><div class="lbl">Area Plantio Real (ha)</div></div>
+  <div class="kpi"><div class="val">0</div><div class="lbl">Meta Plantio (ha)</div></div>
+  <div class="kpi"><div class="val">2038</div><div class="lbl">Talhoes Ordem Corte</div></div>
+  <div class="kpi"><div class="val">5457</div><div class="lbl">Registros Preparo</div></div>
+</div>
+<div class="g3">
+  <div class="card">
+    <h3>Plantio Real 2026 por Mes</h3>
+    <table><thead><tr><th>Mes</th><th>Area ha</th><th>Reg</th></tr></thead><tbody><tr><td>2026-01</td><td>579,1</td><td>47</td></tr><tr><td>2026-02</td><td>856,5</td><td>43</td></tr><tr><td>2026-03</td><td>1.140,5</td><td>86</td></tr><tr><td>2026-04</td><td>1.072,9</td><td>95</td></tr><tr><td>2026-05</td><td>673,5</td><td>45</td></tr><tr><td>2026-06</td><td>272,6</td><td>25</td></tr></tbody></table>
+  </div>
+  <div class="card">
+    <h3>Ordem de Corte por Estagio</h3>
+    <table><thead><tr><th>Estagio</th><th>Talhoes</th><th>Area ha</th></tr></thead><tbody><tr><td>1C</td><td>425</td><td>6.696,6</td></tr><tr><td>2C</td><td>329</td><td>7.020,6</td></tr><tr><td>3C</td><td>431</td><td>8.649,3</td></tr><tr><td>4C</td><td>428</td><td>8.082,8</td></tr><tr><td>5C</td><td>281</td><td>5.150,0</td></tr><tr><td>6C</td><td>49</td><td>994,0</td></tr><tr><td>7C</td><td>72</td><td>748,0</td></tr><tr><td>8C</td><td>3</td><td>95,3</td></tr><tr><td>9C</td><td>17</td><td>252,3</td></tr><tr><td>10C</td><td>3</td><td>41,7</td></tr></tbody></table>
+  </div>
+  <div class="card">
+    <h3>Preparo de Solo por Tipo</h3>
+    <div class="tw"><table><thead><tr><th>Tipo</th><th>Talhoes</th><th>Area ha</th></tr></thead><tbody><tr><td>Sem Rotação</td><td>2414</td><td>32.505,2</td></tr><tr><td>Crotalária</td><td>1819</td><td>14.995,3</td></tr><tr><td>B. ruziziensis</td><td>255</td><td>4.904,4</td></tr><tr><td>Amendoim</td><td>629</td><td>3.750,1</td></tr><tr><td>Milheto</td><td>238</td><td>2.758,2</td></tr><tr><td>Mix</td><td>102</td><td>1.286,7</td></tr></tbody></table></div>
+  </div>
+</div>
+<div class="card">
+  <h3>Variedades</h3>
+  <table><thead><tr><th>Codigo</th><th>Variedade</th><th>Maturacao</th></tr></thead><tbody><tr><td>121</td><td>CTC9009</td><td>Precoce</td></tr><tr><td>122</td><td>CT042627</td><td>Precoce</td></tr><tr><td>301</td><td>IAC52-150</td><td>Precoce</td></tr><tr><td>305</td><td>IAC01-5503</td><td>Precoce</td></tr><tr><td>402</td><td>SP71-1406</td><td>Precoce</td></tr><tr><td>403</td><td>SP71-3146</td><td>Precoce</td></tr><tr><td>404</td><td>SP71-799</td><td>Precoce</td></tr><tr><td>405</td><td>SP72-1861</td><td>Precoce</td></tr><tr><td>406</td><td>SP77-5181</td><td>Precoce</td></tr><tr><td>413</td><td>SP83-5073</td><td>Precoce</td></tr><tr><td>414</td><td>SP89-1115</td><td>Precoce</td></tr><tr><td>415</td><td>SP91-1049</td><td>Precoce</td></tr><tr><td>208</td><td>RB825336</td><td>Precoce</td></tr><tr><td>213</td><td>RB855156</td><td>Precoce</td></tr><tr><td>231</td><td>RB975952</td><td>Precoce</td></tr><tr><td>235</td><td>RB026850</td><td>Precoce</td></tr><tr><td>236</td><td>RB006970</td><td>Precoce</td></tr><tr><td>123</td><td>CTCGS142519</td><td>Precoce/Média</td></tr><tr><td>112</td><td>CTC9003</td><td>Precoce/Média</td></tr><tr><td>113</td><td>CTC9003BT</td><td>Precoce/Média</td></tr><tr><td>124</td><td>CTC043445</td><td>Precoce/Média</td></tr><tr><td>125</td><td>CTAN163254</td><td>Precoce/Média</td></tr><tr><td>126</td><td>CTEP153829</td><td>Precoce/Média</td></tr><tr><td>127</td><td>CTPR162851</td><td>Precoce/Média</td></tr><tr><td>128</td><td>CTPR163270</td><td>Precoce/Média</td></tr></tbody></table>
+</div>
+</div>
+<script>
+function showTab(id,el){
+  document.querySelectorAll('.content').forEach(c=>c.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>
