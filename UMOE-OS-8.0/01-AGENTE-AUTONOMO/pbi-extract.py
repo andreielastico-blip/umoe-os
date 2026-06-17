@@ -53,9 +53,19 @@ def load_pbi_auth():
     return mod
 
 
-def get_token(interactive=False):
-    """Retorna (token|None, erro|None)."""
+def get_token(interactive=False, user=False):
+    """Retorna (token|None, erro|None).
+
+    user=True: autentica COMO O USUARIO via device-code usando o client
+    publico do Power BI (ignora o Service Principal). Util quando o SP ainda
+    nao tem acesso ao workspace. Nao serve para CI (exige login interativo).
+    """
     auth = load_pbi_auth()
+    if user:
+        os.environ.pop("PBI_CLIENT_ID", None)   # forca o client publico do PBI
+        print("  Modo usuario: autenticando via Device Code...")
+        token, err = auth.get_pbi_token_device_code()
+        return (token, None) if token else (None, err)
     token, err = auth.get_pbi_token_service_principal()
     if token:
         print("  Auth: Service Principal OK")
@@ -155,7 +165,7 @@ STATUS_FILE = PBI_DIR / "_extract_status.json"
 def write_status(**kw):
     """Grava diagnostico (sem segredos) para inspecao via repo/CI."""
     import datetime
-    kw["timestamp"] = datetime.datetime.utcnow().isoformat() + "Z"
+    kw["timestamp"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
     STATUS_FILE.write_text(json.dumps(kw, ensure_ascii=False, indent=2),
                            encoding="utf-8")
 
@@ -167,13 +177,14 @@ def main():
     ap.add_argument("--only", choices=list(DATASETS), help="extrai apenas um dataset")
     ap.add_argument("--discover", action="store_true", help="lista tabelas reais (INFO.TABLES)")
     ap.add_argument("--interactive", action="store_true", help="permite device-code (local)")
+    ap.add_argument("--user", action="store_true", help="autentica como usuario via device-code (ignora SP)")
     args = ap.parse_args()
 
     print("=" * 60)
     print("  UMOE OS 8.0 | Power BI Extractor (Service Principal)")
     print("=" * 60)
 
-    token, auth_err = get_token(interactive=args.interactive)
+    token, auth_err = get_token(interactive=args.interactive, user=args.user)
     if not token:
         print("\n  ERRO: nao foi possivel obter token. Verifique os secrets "
               "PBI_TENANT_ID / PBI_CLIENT_ID / PBI_CLIENT_SECRET e se o Service "
