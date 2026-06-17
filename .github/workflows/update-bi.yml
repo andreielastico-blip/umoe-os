@@ -44,6 +44,15 @@ jobs:
         run: |
           pip install -r requirements.txt --quiet
 
+      - name: Extrair dados Power BI (Service Principal)
+        run: |
+          python UMOE-OS-8.0/01-AGENTE-AUTONOMO/pbi-extract.py --force
+        env:
+          PBI_TENANT_ID: ${{ secrets.PBI_TENANT_ID }}
+          PBI_CLIENT_ID: ${{ secrets.PBI_CLIENT_ID }}
+          PBI_CLIENT_SECRET: ${{ secrets.PBI_CLIENT_SECRET }}
+        continue-on-error: true
+
       - name: Run BI Enterprise (dados historicos)
         run: |
           python UMOE-OS-8.0/01-AGENTE-AUTONOMO/umoe-bi-enterprise.py
@@ -61,7 +70,7 @@ jobs:
         run: |
           git config user.name "andreielastico-blip"
           git config user.email "292870464+andreielastico-blip@users.noreply.github.com"
-          git add UMOE-OS-8.0/Relatorios/ docs/ logs/ config/ || true
+          git add UMOE-OS-8.0/Relatorios/ UMOE-OS-8.0/Dados-PBI/ docs/ logs/ config/ || true
           git diff --cached --quiet || git commit -m "CI: BI auto-update $(date +'%Y%m%d-%H%M') [skip ci]"
           git push || echo "Push falhou (sem mudancas)"
           # GitHub Pages publica o docs/ automaticamente (source: branch main /docs)

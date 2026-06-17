@@ -3,3 +3,4 @@ pyxlsb
 pdfplumber
 requests
 python-dotenv
+msal
