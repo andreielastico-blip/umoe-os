@@ -54,18 +54,20 @@ def load_pbi_auth():
 
 
 def get_token(interactive=False):
+    """Retorna (token|None, erro|None)."""
     auth = load_pbi_auth()
     token, err = auth.get_pbi_token_service_principal()
     if token:
         print("  Auth: Service Principal OK")
-        return token
+        return token, None
     print(f"  Service Principal indisponivel: {err}")
     if interactive:
         print("  Tentando Device Code (interativo)...")
-        token, err = auth.get_pbi_token_device_code()
+        token, err2 = auth.get_pbi_token_device_code()
         if token:
-            return token
-    return None
+            return token, None
+        return None, err2 or err
+    return None, err
 
 
 # ─── EXTRACAO ────────────────────────────────────────────────────────────────
@@ -147,6 +149,17 @@ def discover(token, ds):
         print(f"    {name}")
 
 
+STATUS_FILE = PBI_DIR / "_extract_status.json"
+
+
+def write_status(**kw):
+    """Grava diagnostico (sem segredos) para inspecao via repo/CI."""
+    import datetime
+    kw["timestamp"] = datetime.datetime.utcnow().isoformat() + "Z"
+    STATUS_FILE.write_text(json.dumps(kw, ensure_ascii=False, indent=2),
+                           encoding="utf-8")
+
+
 # ─── MAIN ────────────────────────────────────────────────────────────────────
 def main():
     ap = argparse.ArgumentParser(description="Extrai tabelas Power BI via API")
@@ -160,11 +173,12 @@ def main():
     print("  UMOE OS 8.0 | Power BI Extractor (Service Principal)")
     print("=" * 60)
 
-    token = get_token(interactive=args.interactive)
+    token, auth_err = get_token(interactive=args.interactive)
     if not token:
         print("\n  ERRO: nao foi possivel obter token. Verifique os secrets "
               "PBI_TENANT_ID / PBI_CLIENT_ID / PBI_CLIENT_SECRET e se o Service "
               "Principal tem acesso ao workspace.")
+        write_status(auth_ok=False, auth_error=str(auth_err), extracted=0)
         sys.exit(1)
 
     targets = [args.only] if args.only else list(DATASETS)
@@ -176,9 +190,17 @@ def main():
 
     t0 = time.time()
     tot_ok = tot_empty = tot_err = 0
+    sample_err = None
     for ds in targets:
         ok, empty, err = extract_dataset(token, ds, force=args.force)
         tot_ok += ok; tot_empty += empty; tot_err += err
+
+    # Diagnostico: roda um INFO.TABLES no primeiro dataset para confirmar acesso
+    probe_rows, probe_err = execute_dax(token, DATASETS[targets[0]], "EVALUATE INFO.TABLES()")
+    write_status(auth_ok=True, auth_error=None, extracted=tot_ok, empty=tot_empty,
+                 errors=tot_err, datasets=targets,
+                 probe_tables=(len(probe_rows) if probe_rows else 0),
+                 probe_error=probe_err)
 
     print("=" * 60)
     print(f"  CONCLUIDO em {time.time()-t0:.0f}s | "
