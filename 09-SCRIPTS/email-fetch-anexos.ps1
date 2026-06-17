@@ -38,6 +38,17 @@ foreach ($d in @($InboxDir, (Split-Path $LogFile))) {
     if (-not (Test-Path $d)) { New-Item -ItemType Directory -Path $d -Force | Out-Null }
 }
 
+# Coleta recursiva de todas as pastas de e-mail (todas as contas/stores)
+function Get-TodasPastas($folder, $caminho) {
+    $lista = @()
+    foreach ($sub in $folder.Folders) {
+        $p = "$caminho\$($sub.Name)"
+        $lista += [PSCustomObject]@{ Folder = $sub; Path = $p }
+        $lista += Get-TodasPastas $sub $p
+    }
+    return $lista
+}
+
 Log "==== Inicio busca de anexos (janela $DaysBack dia(s)) ===="
 
 try {
@@ -56,21 +67,29 @@ $items.Sort("[ReceivedTime]", $true)
 $filtro = "[ReceivedTime] >= '" + $cutoff.ToString("MM/dd/yyyy HH:mm") + "'"
 try { $items = $items.Restrict($filtro) } catch { Log "Aviso: Restrict por data falhou, varrendo tudo" }
 
-# ---- MODO DESCOBERTA: lista e-mails com anexo e sai (nao baixa nada) ----
+# ---- MODO DESCOBERTA: varre TODAS as pastas/contas e lista anexos, depois sai ----
 if ($Listar) {
-    Log "MODO DESCOBERTA - e-mails com anexo nos ultimos $DaysBack dia(s):"
+    Log "MODO DESCOBERTA - varrendo todas as pastas/contas (janela $DaysBack dia(s)):"
+    $filtroL = "[ReceivedTime] >= '" + $cutoff.ToString("MM/dd/yyyy HH:mm") + "'"
+    $pastas = @()
+    foreach ($store in $ns.Folders) { $pastas += Get-TodasPastas $store $store.Name }
+    Log "Pastas a varrer: $($pastas.Count)"
     $n = 0
-    foreach ($mail in $items) {
-        if ($mail.Class -ne 43) { continue }
-        if ($mail.Attachments.Count -lt 1) { continue }
-        $de = ""; try { $de = [string]$mail.SenderEmailAddress } catch {}
-        if (-not $de) { try { $de = [string]$mail.SenderName } catch {} }
-        $anexos = @(); foreach ($a in $mail.Attachments) { $anexos += [string]$a.FileName }
-        $dt = $mail.ReceivedTime.ToString("yyyy-MM-dd HH:mm")
-        Log ("  {0} | DE: {1} | ASSUNTO: {2} | ANEXOS: {3}" -f $dt, $de, $mail.Subject, ($anexos -join ", "))
-        $n++
+    foreach ($pf in $pastas) {
+        $it = $pf.Folder.Items
+        try { $it = $it.Restrict($filtroL) } catch { continue }
+        foreach ($mail in $it) {
+            if ($mail.Class -ne 43) { continue }
+            if ($mail.Attachments.Count -lt 1) { continue }
+            $de = ""; try { $de = [string]$mail.SenderEmailAddress } catch {}
+            if (-not $de) { try { $de = [string]$mail.SenderName } catch {} }
+            $anexos = @(); foreach ($a in $mail.Attachments) { $anexos += [string]$a.FileName }
+            $dt = $mail.ReceivedTime.ToString("yyyy-MM-dd HH:mm")
+            Log ("  [{0}] {1} | DE: {2} | ASSUNTO: {3} | ANEXOS: {4}" -f $pf.Path, $dt, $de, $mail.Subject, ($anexos -join ", "))
+            $n++
+        }
     }
-    Log "Total com anexo: $n"
+    Log "Total de e-mails com anexo: $n"
     exit 0
 }
 # ------------------------------------------------------------------------
