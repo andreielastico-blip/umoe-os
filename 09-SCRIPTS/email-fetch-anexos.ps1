@@ -74,6 +74,13 @@ try {
     exit 1
 }
 
+# Diagnostico: quais contas/caixas estao no perfil e qual e a padrao (usada no download)
+Log "Contas configuradas no Outlook:"
+try { foreach ($acc in $ns.Accounts) { Log ("  CONTA: {0} <{1}>" -f $acc.DisplayName, $acc.SmtpAddress) } } catch { Log "  (nao foi possivel listar Accounts)" }
+Log "Caixas (stores) acessiveis:"
+try { foreach ($st in $ns.Stores) { Log ("  STORE: {0}" -f $st.DisplayName) } } catch {}
+try { Log ("Caixa de Entrada PADRAO (usada no download): {0}" -f $inbox.Store.DisplayName) } catch {}
+
 $cutoff = (Get-Date).AddDays(-$DaysBack)
 
 # ---- MODO DESCOBERTA: varre TODAS as pastas/contas e lista anexos, depois sai ----
