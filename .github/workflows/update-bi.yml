@@ -9,6 +9,8 @@ on:
     paths:
       - 'UMOE-OS-8.0/01-AGENTE-AUTONOMO/**.py'
       - 'config/**.json'
+      - '.github/workflows/**'
+      - 'requirements.txt'
   workflow_dispatch:
     inputs:
       mode:
