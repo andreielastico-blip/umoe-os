@@ -1,11 +1,20 @@
 # UMOE OS 8.0 - Busca diaria de anexos no e-mail corporativo (Outlook desktop / COM)
 # Salva anexos que casam com as REGRAS em UMOE-INBOX. Roda como o usuario logado.
 # Agendar no Agendador de Tarefas (ver final do arquivo). Encoding: ASCII puro.
+#
+# MODO DESCOBERTA: rode com  -Listar  para LISTAR (sem baixar) os e-mails com
+# anexo dos ultimos N dias (data | remetente | assunto | anexos). Use a saida
+# para montar as REGRAS. Aumente a janela com  -Dias 7 .
+param(
+    [switch]$Listar,
+    [int]$Dias = 0
+)
 
 # ============================ CONFIG =================================
 $InboxDir = "C:\01 - UMOE\09 - IA\UMOE-INBOX"
 $LogFile  = "C:\01 - UMOE\09 - IA\umoe-os-8\logs\email-fetch.log"
 $DaysBack = 2          # janela de e-mails a varrer (dias). 2 = hoje + ontem (margem)
+if ($Dias -gt 0) { $DaysBack = $Dias }   # override pela linha de comando (-Dias N)
 $PrefixarData = $true  # salva como AAAAMMDD_nomeoriginal (mantem historico, evita sobrescrever)
 
 # REGRAS: um e-mail casa se (De contem) E (Assunto contem). Vazio = ignora aquele criterio.
@@ -46,6 +55,25 @@ $items.Sort("[ReceivedTime]", $true)
 # Filtro DASL por data (formato US obrigatorio no Restrict)
 $filtro = "[ReceivedTime] >= '" + $cutoff.ToString("MM/dd/yyyy HH:mm") + "'"
 try { $items = $items.Restrict($filtro) } catch { Log "Aviso: Restrict por data falhou, varrendo tudo" }
+
+# ---- MODO DESCOBERTA: lista e-mails com anexo e sai (nao baixa nada) ----
+if ($Listar) {
+    Log "MODO DESCOBERTA - e-mails com anexo nos ultimos $DaysBack dia(s):"
+    $n = 0
+    foreach ($mail in $items) {
+        if ($mail.Class -ne 43) { continue }
+        if ($mail.Attachments.Count -lt 1) { continue }
+        $de = ""; try { $de = [string]$mail.SenderEmailAddress } catch {}
+        if (-not $de) { try { $de = [string]$mail.SenderName } catch {} }
+        $anexos = @(); foreach ($a in $mail.Attachments) { $anexos += [string]$a.FileName }
+        $dt = $mail.ReceivedTime.ToString("yyyy-MM-dd HH:mm")
+        Log ("  {0} | DE: {1} | ASSUNTO: {2} | ANEXOS: {3}" -f $dt, $de, $mail.Subject, ($anexos -join ", "))
+        $n++
+    }
+    Log "Total com anexo: $n"
+    exit 0
+}
+# ------------------------------------------------------------------------
 
 $totSalvos = 0; $totCasou = 0
 foreach ($mail in $items) {
