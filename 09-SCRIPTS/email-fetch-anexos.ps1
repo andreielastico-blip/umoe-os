@@ -49,6 +49,20 @@ function Get-TodasPastas($folder, $caminho) {
     return $lista
 }
 
+# Retorna os itens de e-mail de uma pasta recebidos depois do cutoff.
+# Filtra no PowerShell (a prova de locale) em vez de usar Restrict por data.
+function Get-MailRecentes($folder, $cutoff) {
+    $res = @()
+    $it = $folder.Items
+    try { $it.Sort("[ReceivedTime]", $true) } catch {}   # mais novos primeiro
+    foreach ($m in $it) {
+        $rt = $null; try { $rt = $m.ReceivedTime } catch {}
+        if ($rt -ne $null -and $rt -lt $cutoff) { break }   # ordenado desc: resto e mais antigo
+        if ($m.Class -eq 43) { $res += $m }                 # 43 = olMail
+    }
+    return $res
+}
+
 Log "==== Inicio busca de anexos (janela $DaysBack dia(s)) ===="
 
 try {
@@ -61,25 +75,16 @@ try {
 }
 
 $cutoff = (Get-Date).AddDays(-$DaysBack)
-$items = $inbox.Items
-$items.Sort("[ReceivedTime]", $true)
-# Filtro DASL por data (formato US obrigatorio no Restrict)
-$filtro = "[ReceivedTime] >= '" + $cutoff.ToString("MM/dd/yyyy HH:mm") + "'"
-try { $items = $items.Restrict($filtro) } catch { Log "Aviso: Restrict por data falhou, varrendo tudo" }
 
 # ---- MODO DESCOBERTA: varre TODAS as pastas/contas e lista anexos, depois sai ----
 if ($Listar) {
     Log "MODO DESCOBERTA - varrendo todas as pastas/contas (janela $DaysBack dia(s)):"
-    $filtroL = "[ReceivedTime] >= '" + $cutoff.ToString("MM/dd/yyyy HH:mm") + "'"
     $pastas = @()
     foreach ($store in $ns.Folders) { $pastas += Get-TodasPastas $store $store.Name }
     Log "Pastas a varrer: $($pastas.Count)"
     $n = 0
     foreach ($pf in $pastas) {
-        $it = $pf.Folder.Items
-        try { $it = $it.Restrict($filtroL) } catch { continue }
-        foreach ($mail in $it) {
-            if ($mail.Class -ne 43) { continue }
+        foreach ($mail in (Get-MailRecentes $pf.Folder $cutoff)) {
             if ($mail.Attachments.Count -lt 1) { continue }
             $de = ""; try { $de = [string]$mail.SenderEmailAddress } catch {}
             if (-not $de) { try { $de = [string]$mail.SenderName } catch {} }
@@ -95,8 +100,7 @@ if ($Listar) {
 # ------------------------------------------------------------------------
 
 $totSalvos = 0; $totCasou = 0
-foreach ($mail in $items) {
-    if ($mail.Class -ne 43) { continue }   # 43 = olMail
+foreach ($mail in (Get-MailRecentes $inbox $cutoff)) {
     $assunto = [string]$mail.Subject
     $de = ""
     try { $de = [string]$mail.SenderEmailAddress } catch {}
