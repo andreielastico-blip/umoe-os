@@ -8,10 +8,10 @@ from pathlib import Path
 from datetime import datetime
 from collections import defaultdict
 
-OUT_DIR = Path(__file__).parent.parent.parent / "Relatorios"
+OUT_DIR = Path(__file__).parent.parent / "Relatorios"
 OUT_DIR.mkdir(exist_ok=True)
 OUT_FILE = OUT_DIR / "UMOE_BI_Enterprise.html"
-DOCS_DIR = Path(__file__).parent.parent.parent.parent / "docs"
+DOCS_DIR = Path(__file__).parent.parent.parent / "docs"
 DOCS_DIR.mkdir(exist_ok=True)
 
 print("[1/5] Carregando BD SAFRAS...")

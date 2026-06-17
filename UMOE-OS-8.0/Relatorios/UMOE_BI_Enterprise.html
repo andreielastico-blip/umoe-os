@@ -3,1604 +3,452 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>UMOE BI Enterprise | Safra 2026/27</title>
+<title>UMOE OS 8.0 | Enterprise BI Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
-:root{
-  --bg:#060E1F;--bg2:#0A1628;--bg3:#0F1E3A;--card:#111D35;--card2:#162445;
-  --border:#1E3060;--green:#00C853;--gold:#FFD600;--red:#FF1744;
-  --orange:#FF6D00;--blue:#42A5F5;--purple:#AB47BC;--cyan:#00BCD4;
-  --text:#E8EAF6;--text2:#90A4AE;--text3:#546E7A;
-}
+:root{--bg:#060E1F;--bg2:#0D1B35;--bg3:#152344;--green:#00C853;--gold:#FFD600;--red:#FF1744;--blue:#2979FF;--orange:#FF6D00;--cyan:#00E5FF;--text:#E8EFF8;--text2:#8BA0BB;--border:#1E3252}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:13px;min-height:100vh}
-/* HEADER */
-.header{background:linear-gradient(135deg,#060E1F 0%,#0F1E3A 50%,#060E1F 100%);
-  border-bottom:2px solid var(--green);padding:10px 24px;
-  display:flex;align-items:center;justify-content:space-between;
-  position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,200,83,0.15)}
-.logo-ring{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--green),#005523);
-  display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;
-  box-shadow:0 0 0 3px rgba(0,200,83,0.3),0 0 16px rgba(0,200,83,0.3)}
-.h-title{font-size:1.1rem;font-weight:700;color:var(--gold);letter-spacing:1.5px}
-.h-sub{font-size:0.7rem;color:var(--text2);margin-top:2px}
-.badge{background:rgba(0,200,83,0.1);border:1px solid rgba(0,200,83,0.4);
-  border-radius:20px;padding:3px 12px;font-size:0.72rem;color:var(--green)}
-.dot{display:inline-block;width:7px;height:7px;border-radius:50%;
-  background:var(--green);margin-right:6px;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,200,83,0.4)}50%{box-shadow:0 0 0 5px rgba(0,200,83,0)}}
-/* TABS */
-.tabs{background:var(--bg2);border-bottom:1px solid var(--border);
-  display:flex;padding:0 16px;gap:2px;overflow-x:auto;scrollbar-width:thin}
-.tab{padding:12px 18px;cursor:pointer;font-weight:600;font-size:0.78rem;
-  color:var(--text3);border-bottom:3px solid transparent;transition:all 0.2s;
-  white-space:nowrap;letter-spacing:0.5px;user-select:none}
-.tab:hover{color:var(--text2);background:rgba(255,255,255,0.03)}
-.tab.active{color:var(--gold);border-bottom-color:var(--gold);background:rgba(255,214,0,0.04)}
-/* LAYOUT */
-.content{display:none;padding:20px 24px;max-width:1800px;margin:0 auto}
-.content.active{display:block}
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
-.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
-.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px}
-.g6{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:20px}
-.g53{display:grid;grid-template-columns:5fr 3fr;gap:14px;margin-bottom:20px}
-/* CARDS */
-.card{background:var(--card);border:1px solid var(--border);border-radius:14px;
-  padding:18px;position:relative;overflow:hidden;transition:box-shadow 0.2s}
-.card:hover{box-shadow:0 4px 20px rgba(0,0,0,0.3)}
-.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,var(--green),var(--cyan))}
-.card.red::before{background:linear-gradient(90deg,var(--red),var(--orange))}
-.card.yellow::before{background:linear-gradient(90deg,var(--gold),var(--orange))}
-.card.blue::before{background:linear-gradient(90deg,var(--blue),var(--cyan))}
-.card.purple::before{background:linear-gradient(90deg,var(--purple),var(--blue))}
-.kpi-lbl{font-size:0.68rem;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
-.kpi-val{font-size:1.8rem;font-weight:800;line-height:1;margin-bottom:4px}
-.kpi-big{font-size:2.4rem}
-.kpi-plan{font-size:0.72rem;color:var(--text3);margin-top:4px}
-.kpi-delta{font-size:0.8rem;margin-top:6px}
-.pb{height:6px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;margin-top:8px}
-.pf{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--green),#00E676);transition:width 1s}
-.pf.red{background:linear-gradient(90deg,var(--red),#FF5252)}
-.pf.yellow{background:linear-gradient(90deg,var(--gold),#FFEA00)}
-/* CHART CARDS */
-.chart-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px}
-.chart-title{font-size:0.72rem;font-weight:600;color:var(--text2);
-  text-transform:uppercase;letter-spacing:0.5px;margin-bottom:14px}
-/* SECTION */
-.sec{font-size:0.85rem;font-weight:700;color:var(--gold);
-  margin:22px 0 14px;border-left:3px solid var(--green);padding-left:10px;
-  text-transform:uppercase;letter-spacing:1px}
-/* ALERT BAR */
-.alert{background:linear-gradient(135deg,rgba(255,23,68,0.15),rgba(255,109,0,0.08));
-  border:1px solid rgba(255,23,68,0.4);border-radius:10px;
-  padding:10px 18px;margin-bottom:18px;display:flex;align-items:center;gap:12px;
-  font-weight:600;font-size:0.85rem;color:#FF8A80}
-.alert.warn{background:rgba(255,214,0,0.08);border-color:rgba(255,214,0,0.3);color:var(--gold)}
-.alert.ok{background:rgba(0,200,83,0.08);border-color:rgba(0,200,83,0.3);color:var(--green)}
-/* TABLE */
-.tbl-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:18px}
-.tbl-hdr{background:var(--card2);padding:10px 18px;font-size:0.72rem;
-  font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px;
-  border-bottom:1px solid var(--border)}
-table{width:100%;border-collapse:collapse}
-th{background:var(--card2);padding:8px 12px;font-size:0.7rem;color:var(--text2);
-  text-transform:uppercase;letter-spacing:0.5px;font-weight:600;border-bottom:1px solid var(--border)}
-td{padding:7px 12px;border-bottom:1px solid rgba(255,255,255,0.04);font-size:0.82rem}
-tr:last-child td{border-bottom:none}
-tr:hover td{background:rgba(255,255,255,0.02)}
-/* METRIC GRID */
-.metric-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
-.metric-chip{background:rgba(255,255,255,0.05);border:1px solid var(--border);
-  border-radius:8px;padding:6px 12px;font-size:0.8rem}
-.metric-chip span{color:var(--gold);font-weight:700}
-/* SCORE CARD */
-.score{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:18px}
-.score-item{background:var(--card2);border:1px solid var(--border);border-radius:10px;
-  padding:10px;text-align:center}
-.score-v{font-size:1.3rem;font-weight:800;margin-bottom:2px}
-.score-l{font-size:0.62rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px}
-/* WATERFALL */
-.wfall{display:flex;gap:8px;margin-bottom:18px;align-items:flex-end;height:120px}
-.wf-bar{flex:1;background:rgba(255,255,255,0.05);border-radius:4px 4px 0 0;
-  position:relative;display:flex;align-items:flex-end;justify-content:center}
-.wf-fill{width:100%;border-radius:4px 4px 0 0;transition:height 1s}
-.wf-lbl{position:absolute;bottom:-20px;font-size:0.68rem;color:var(--text3);white-space:nowrap}
-/* DRILL-DOWN */
-.drill-btn{background:none;border:1px solid var(--border);border-radius:6px;
-  padding:4px 10px;color:var(--blue);cursor:pointer;font-size:0.75rem;transition:all 0.2s}
-.drill-btn:hover{background:rgba(66,165,245,0.1);border-color:var(--blue)}
-/* NOTE */
-.note{font-size:0.72rem;color:var(--text3);padding:8px 12px;
-  background:rgba(255,255,255,0.02);border-radius:6px;margin-top:10px}
-/* RESPONSIVE */
-@media(max-width:1200px){.g4{grid-template-columns:repeat(2,1fr)}.g6{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:768px){.g4,.g3,.g2,.g6{grid-template-columns:1fr}}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',sans-serif;font-size:13px}
+header{background:linear-gradient(135deg,#0A1628,#0D2040);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+header h1{font-size:18px;font-weight:700;color:var(--green)}
+.tabs{display:flex;gap:2px;padding:10px 16px 0;background:var(--bg2);border-bottom:2px solid var(--border);overflow-x:auto}
+.tab{padding:8px 18px;cursor:pointer;border-radius:6px 6px 0 0;color:var(--text2);font-size:12px;font-weight:600;white-space:nowrap;border:1px solid transparent;border-bottom:none;transition:all .2s}
+.tab:hover{color:var(--text);background:var(--bg3)}
+.tab.active{color:var(--green);background:var(--bg);border-color:var(--border)}
+.panel{display:none;padding:16px;animation:fade .2s}
+.panel.active{display:block}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;margin-bottom:14px}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
+.kpi .label{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.kpi .value{font-size:22px;font-weight:700}
+.kpi .sub{font-size:10px;color:var(--text2);margin-top:2px}
+.kpi.red .value{color:var(--red)}.kpi.green .value{color:var(--green)}.kpi.gold .value{color:var(--gold)}.kpi.blue .value{color:var(--blue)}.kpi.orange .value{color:var(--orange)}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px}
+.card h3{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px}
+.chart-wrap{position:relative;height:220px}
+.chart-wrap.tall{height:300px}
+table{width:100%;border-collapse:collapse;font-size:11px}
+th{background:var(--bg3);color:var(--text2);text-align:left;padding:7px 10px;font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border)}
+td{padding:6px 10px;border-bottom:1px solid var(--border)}
+tr:last-child td{border:none}
+tr:hover td{background:var(--bg3)}
+.alert-bar{background:#FF174410;border:1px solid var(--red);border-radius:8px;padding:10px 16px;margin-bottom:14px;font-size:12px}
+.insight{background:linear-gradient(135deg,var(--bg3),var(--bg2));border:1px solid var(--green);border-radius:10px;padding:16px;margin-bottom:14px}
+.insight h4{color:var(--green);font-size:13px;font-weight:700;margin-bottom:8px}
+.insight p{color:var(--text2);font-size:12px;line-height:1.7}
+.hl{color:var(--gold);font-weight:700}
+.drill-btn{cursor:pointer;color:var(--cyan);text-decoration:underline;font-size:11px}
+#drill-modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:#000a;z-index:999;align-items:center;justify-content:center}
+#drill-modal.open{display:flex}
+.modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:14px;width:90%;max-width:900px;max-height:85vh;overflow:auto;padding:20px}
+.modal-box h3{color:var(--green);margin-bottom:14px;font-size:15px}
+.close-btn{float:right;cursor:pointer;color:var(--red);font-size:18px;font-weight:700}
+.bar-mini{display:inline-block;height:6px;border-radius:3px;vertical-align:middle;margin-left:6px}
+.trend-up{color:var(--green)}.trend-down{color:var(--red)}
+.scroll-x{overflow-x:auto}
+.box3{padding:12px;background:var(--bg3);border-radius:8px}
 </style>
 </head>
 <body>
-
-<div class="header">
-  <div style="display:flex;align-items:center;gap:14px">
-    <div class="logo-ring">U</div>
-    <div>
-      <div class="h-title">UMOE BIOENERGY &nbsp;|&nbsp; BI ENTERPRISE</div>
-      <div class="h-sub">Safra 2026/27 &nbsp;&bull;&nbsp; Inteligência de Dados para Tomada de Decisão &nbsp;&bull;&nbsp; 15/06/2026 20:26</div>
-    </div>
+<header>
+  <div>
+    <h1>UMOE OS 8.0 | Enterprise BI Dashboard</h1>
+    <div style="color:var(--text2);font-size:11px">Safra 2025/26 | Base: 51.333 registros | Gerado: 17/06/2026 08:20</div>
   </div>
-  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
-    <div class="badge"><span class="dot"></span>Live &nbsp;|&nbsp; 15/06/2026 20:26</div>
-    <div style="font-size:0.68rem;color:var(--text3)">Histórico Diário · BD SAFRAS · TCH-BROCA · BPC · Boletim PDF</div>
+  <div style="text-align:right">
+    <div style="color:var(--gold);font-weight:700;font-size:14px">Presidente Prudente, SP</div>
+    <div style="color:var(--text2);font-size:11px">Diretor: Andrei Elastico | UMOE Bioenergy</div>
   </div>
-</div>
+</header>
 
 <div class="tabs">
-  <div class="tab active" onclick="switchTab(0)">&#x1F3AF;&nbsp; EXECUTIVO</div>
-  <div class="tab" onclick="switchTab(1)">&#x1F4C8;&nbsp; OPERACIONAL</div>
-  <div class="tab" onclick="switchTab(2)">&#x1F33E;&nbsp; AGR&Iacute;COLA</div>
-  <div class="tab" onclick="switchTab(3)">&#x1F331;&nbsp; VARIEDADES</div>
-  <div class="tab" onclick="switchTab(4)">&#x1F3ED;&nbsp; INDUSTRIAL</div>
-  <div class="tab" onclick="switchTab(5)">&#x1F4CA;&nbsp; HIST&Oacute;RICO SAFRAS</div>
-  <div class="tab" onclick="switchTab(6)">&#x1F4A1;&nbsp; INTELIG&Ecirc;NCIA</div>
+  <div class="tab active" onclick="showTab('exec',this)">EXECUTIVO</div>
+  <div class="tab" onclick="showTab('agr',this)">AGRICOLA DRILL-DOWN</div>
+  <div class="tab" onclick="showTab('var',this)">VARIEDADES</div>
+  <div class="tab" onclick="showTab('corte',this)">CURVA CORTE</div>
+  <div class="tab" onclick="showTab('ind',this)">INDUSTRIAL</div>
+  <div class="tab" onclick="showTab('hist',this)">HISTORICO SAFRAS</div>
+  <div class="tab" onclick="showTab('intel',this)">INTELIGENCIA</div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════
-     TAB 0 — EXECUTIVO
-══════════════════════════════════════════════════════════ -->
-<div class="content active" id="tab0">
-
-  <div class="alert">
-    <div style="font-size:1.4rem">&#x26A0;</div>
-    <div><strong>SAFRA 2026/27 — ALERTA CRÍTICO:</strong>
-      Reestimativa 2,62 M t vs BPC 2,77 M t
-      &nbsp;|&nbsp; Gap: <span style="color:#FF5252">-145K t (-5.2%)</span>
-      &nbsp;|&nbsp; Impacto receita estimado: <span style="color:#FF5252">R$ 20.8 M</span>
-    </div>
+<div id="panel-exec" class="panel active">
+  <div class="alert-bar">
+    <strong style="color:var(--red)">ALERTA CRITICO:</strong>
+    Moagem 606,418 t vs meta 1,153,333 t (proporcional) &nbsp;|&nbsp;
+    Gap receita: <strong style="color:var(--red)">-R$ 50.8M</strong> &nbsp;|&nbsp;
+    ATR <strong style="color:var(--red)">126.49</strong> vs meta 138.66 (-12.2 kg/t) &nbsp;|&nbsp;
+    CCT: <strong style="color:var(--red)">R$50/t vs R$38,3/t orcado</strong>
   </div>
-
-  <!-- KPIs master -->
-  <div class="g4">
-    <div class="card ">
-      <div class="kpi-lbl">&#x1F6A6; Moagem Acumulada Mar–14/Jun</div>
-      <div class="kpi-val kpi-big">0,731<small style="font-size:0.35em;color:var(--text2)"> M t</small></div>
-      <div class="kpi-plan">BPC Plano Total: 2,769 M t</div>
-      <div class="kpi-delta"><span style="color:#00C853">▲ 0K t (+0.0%)</span></div>
-      <div class="pb"><div class="pf red" style="width:26.4%"></div></div>
-      <div style="font-size:0.72rem;color:var(--text3);margin-top:4px">26.4% da safra executada</div>
-    </div>
-    <div class="card yellow">
-      <div class="kpi-lbl">&#x1F4C9; Reestimativa Final Safra</div>
-      <div class="kpi-val kpi-big">2,624<small style="font-size:0.35em;color:var(--text2)"> M t</small></div>
-      <div class="kpi-plan">BPC: 2,769 M t</div>
-      <div class="kpi-delta"><span style="color:#FF1744">▼ 145K t (-5.2%)</span></div>
-      <div class="pb"><div class="pf yellow" style="width:94.8%"></div></div>
-      <div style="font-size:0.72rem;color:var(--text3);margin-top:4px">Impacto receita: R$ 20.8 M</div>
-    </div>
-    <div class="card yellow">
-      <div class="kpi-lbl">&#x1F36D; ATR Ponderado Acumulado</div>
-      <div class="kpi-val kpi-big">126.51<small style="font-size:0.35em;color:var(--text2)"> kg/t</small></div>
-      <div class="kpi-plan">Meta safra: 138.66 kg/t | CONSECANA R$1,03/kg</div>
-      <div class="kpi-delta"><span style="color:#FF1744">▼ 12.1 kg/t (-8.8%)</span></div>
-      <div class="pb"><div class="pf yellow" style="width:91.2%"></div></div>
-      <div style="font-size:0.72rem;color:var(--text3);margin-top:4px">Recuperação: Jun/26 → 126.51 (crescendo)</div>
+  <div class="kpi-row">
+    <div class="kpi red"><div class="label">Moagem Acumulada</div><div class="value">0.606 Mt</div><div class="sub">Meta prop: 1.153 Mt | Gap: -546kt</div></div>
+    <div class="kpi red"><div class="label">Gap Receita</div><div class="value">-R$ 50.8M</div><div class="sub">89% volume | 11% custo</div></div>
+    <div class="kpi gold"><div class="label">ATR Real mai/26</div><div class="value">126.49</div><div class="sub">Meta 138.66 | Gap -12.2 kg/t</div></div>
+    <div class="kpi red"><div class="label">CCT Real</div><div class="value">R$ 50,0/t</div><div class="sub">Orcado R$38,3/t | +R$11,7/t</div></div>
+    <div class="kpi orange"><div class="label">SP81-3250 CRITICO</div><div class="value">30,077 ha</div><div class="sub">TAH 6.3 vs 19.6 best | Pot R$410M</div></div>
+    <div class="kpi red"><div class="label">Canavial 4C+</div><div class="value">15,173 ha</div><div class="sub">TCH 52.6 vs 1C 98.5 (-47%)</div></div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <h3>TOP 5 ACOES POR IMPACTO FINANCEIRO</h3>
+      <table>
+        <thead><tr><th>#</th><th>Acao</th><th>Area</th><th>Impacto R$</th><th>Prazo</th></tr></thead>
+        <tbody>
+          <tr><td><strong style="color:var(--red)">1</strong></td><td><strong>Substituir SP81-3250</strong> por CTC9006/CTC9007</td><td>30,077 ha</td><td style="color:var(--green)">R$ 410M+</td><td>1-3 safras</td></tr>
+          <tr><td><strong style="color:var(--red)">2</strong></td><td><strong>Reforma urgente 4C+</strong></td><td>15,173 ha</td><td style="color:var(--green)">R$ 180M+</td><td>2 safras</td></tr>
+          <tr><td><strong style="color:var(--gold)">3</strong></td><td><strong>Recuperar ATR</strong> — maturadores + variedades</td><td>—</td><td style="color:var(--green)">R$ 28M/safra</td><td>Imediato</td></tr>
+          <tr><td><strong style="color:var(--gold)">4</strong></td><td><strong>Reducao CCT</strong> — logistica + CHI</td><td>2,77 Mt</td><td style="color:var(--green)">R$ 32M/safra</td><td>Imediato</td></tr>
+          <tr><td><strong style="color:var(--blue)">5</strong></td><td><strong>Expandir CTC9006</strong> em Amb D e E</td><td>+5.000 ha</td><td style="color:var(--green)">R$ 79M+</td><td>3-5 safras</td></tr>
+        </tbody>
+      </table>
     </div>
     <div class="card">
-      <div class="kpi-lbl">&#x26A1; Eficiência Industrial Global (EGI)</div>
-      <div class="kpi-val kpi-big">87.10<small style="font-size:0.35em;color:var(--text2)"> %</small></div>
-      <div class="kpi-plan">RTC: 94.67% | Moagem horária: 526.8 t/h</div>
-      <div class="kpi-delta"><span style="color:#00C853">▲ Eficiência OK — problema é volume</span></div>
-      <div class="pb"><div class="pf" style="width:87.1%"></div></div>
+      <h3>ATR MENSAL COMPARATIVO 2024-2026</h3>
+      <div class="chart-wrap"><canvas id="cAtrComp"></canvas></div>
     </div>
   </div>
-
-  <!-- Score strip -->
-  <div class="score">
-    <div class="score-item">
-      <div class="score-v" style="color:var(--gold)">26.4%</div>
-      <div class="score-l">Execução Safra</div>
-    </div>
-    <div class="score-item">
-      <div class="score-v" style="color:#FFD600">57.2%</div>
-      <div class="score-l">Aproveitamento</div>
-    </div>
-    <div class="score-item">
-      <div class="score-v" style="color:var(--blue)">527</div>
-      <div class="score-l">t/h Acumulado</div>
-    </div>
-    <div class="score-item">
-      <div class="score-v" style="color:#FF1744">91.621%</div>
-      <div class="score-l">IFF Broca (≤1%)</div>
-    </div>
-    <div class="score-item">
-      <div class="score-v" style="color:var(--cyan)">101.1</div>
-      <div class="score-l">TCH Semana 15</div>
-    </div>
-    <div class="score-item">
-      <div class="score-v" style="color:var(--red)">R$21M</div>
-      <div class="score-l">Gap Receita</div>
-    </div>
+  <div class="grid g3" style="margin-top:14px">
+    <div class="card"><h3>PERFORMANCE POR AMBIENTE</h3><div class="chart-wrap"><canvas id="cAmb"></canvas></div></div>
+    <div class="card"><h3>MOAGEM MENSAL 2025 vs 2026 (kt)</h3><div class="chart-wrap"><canvas id="cMoaComp"></canvas></div></div>
+    <div class="card"><h3>EGI INDUSTRIAL 2022-2026 (%)</h3><div class="chart-wrap"><canvas id="cEgi"></canvas></div></div>
   </div>
+</div>
 
-  <div class="g2">
-    <div class="chart-card">
-      <div class="chart-title">Moagem Mensal 2026/27 — BPC vs Real vs Reestimativa</div>
-      <canvas id="c_exec_moa" height="130"></canvas>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">ATR Acumulado Mensal — Real vs BPC</div>
-      <canvas id="c_exec_atr" height="130"></canvas>
-    </div>
+<div id="panel-agr" class="panel">
+  <div class="kpi-row">
+    <div class="kpi blue"><div class="label">Total Area Historico</div><div class="value">391,330 ha</div><div class="sub">8 safras consolidadas</div></div>
+    <div class="kpi green"><div class="label">Melhor TAH Ambiente</div><div class="value">Amb C</div><div class="sub">TAH 8.76 | 101.178 ha</div></div>
+    <div class="kpi gold"><div class="label">Maior Area</div><div class="value">Amb D</div><div class="sub">182.562 ha | TAH 8.69</div></div>
+    <div class="kpi red"><div class="label">Maior ATR Ambiente</div><div class="value">Amb E</div><div class="sub">ATR medio 131.0 | 60.440 ha</div></div>
   </div>
+  <div class="grid g2">
+    <div class="card">
+      <h3>PERFORMANCE POR AMBIENTE — clique para ver fazendas</h3>
+      <table><thead><tr><th>Amb</th><th>TCH</th><th>ATR</th><th>TAH</th><th>Area (ha)</th><th>% Area</th><th>Drill</th></tr></thead>
+      <tbody id="amb-table"></tbody></table>
+    </div>
+    <div class="card"><h3>TAH POR AMBIENTE (barras horizontais)</h3><div class="chart-wrap tall"><canvas id="cAmbTah"></canvas></div></div>
+  </div>
+</div>
 
-  <div class="sec">&#x1F3AF; Diagnóstico Executivo — Safra 2026/27</div>
-  <div class="g3">
-    <div style="display:flex;flex-direction:column;gap:10px">
-      <div style="background:rgba(0,200,83,0.06);border:1px solid rgba(0,200,83,0.25);border-radius:10px;padding:14px">
-        <div style="font-weight:700;color:var(--green);margin-bottom:6px;font-size:0.85rem">&#x2705; PONTOS FORTES</div>
-        <div style="font-size:0.8rem;color:var(--text2);line-height:1.8">
-          • ATR em recuperação: Jun/26 131.68 &gt; Mai 127.15 &gt; Abr 125.11<br>
-          • Broca controlada: IFF 91.621% (meta ≤1.0%)<br>
-          • EGI acum. 87.10% — problema é volume, não eficiência<br>
-          • Jun/26 acelerando: 527 t/h vs Mai 473 t/h<br>
-          • TCH sem.15: 101.1 t/ha — acima da estimativa
-        </div>
-      </div>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:10px">
-      <div style="background:rgba(255,23,68,0.06);border:1px solid rgba(255,23,68,0.25);border-radius:10px;padding:14px">
-        <div style="font-weight:700;color:var(--red);margin-bottom:6px;font-size:0.85rem">&#x274C; RISCOS CRÍTICOS</div>
-        <div style="font-size:0.8rem;color:var(--text2);line-height:1.8">
-          • Gap moagem: 145K t abaixo do BPC (-5.2%)<br>
-          • Mai/26 catastrófico: 178K t vs 340K planejado (-47.5%)<br>
-          • ATR 126.51 kg/t vs meta 138.66 (gap: -12.15)<br>
-          • 15.173 ha 4C+ com TCH 64 vs 99.6 t/ha no 1C<br>
-          • CCT R$50.0/t vs orçado R$38.3/t (+30.5%)
-        </div>
-      </div>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:10px">
-      <div style="background:rgba(255,214,0,0.06);border:1px solid rgba(255,214,0,0.25);border-radius:10px;padding:14px">
-        <div style="font-weight:700;color:var(--gold);margin-bottom:6px;font-size:0.85rem">&#x1F3AF; AÇÕES PRIORITÁRIAS</div>
-        <div style="font-size:0.8rem;color:var(--text2);line-height:1.8">
-          • <strong style="color:#fff">1.</strong> Maximizar aproveitamento Jul-Set (meta &gt;85%)<br>
-          • <strong style="color:#fff">2.</strong> Acelerar renovação 4C+ (prioridade ROI)<br>
-          • <strong style="color:#fff">3.</strong> Variedades: substituir CTC15 por CTC9006/RB92579<br>
-          • <strong style="color:#fff">4.</strong> Maturadores: antecipar para compensar ATR<br>
-          • <strong style="color:#fff">5.</strong> CHI: reduzir paradas controláveis &lt;R$5K/dia
-        </div>
+<div id="panel-var" class="panel">
+  <div class="insight">
+    <h4>INSIGHT CRITICO — SP81-3250: O MAIOR DESTRUIDOR DE VALOR</h4>
+    <p>
+      A variedade <span class="hl">SP81-3250</span> ocupa <span class="hl">30,077 ha</span> (a MAIOR area de qualquer variedade)
+      com TAH de <span class="hl">6.31 t ATR/ha</span>. A melhor variedade, CTC9006, atinge
+      <span class="hl">TAH 19.56</span> — <span class="hl">3.1x mais produtiva</span>.
+      Gap potencial: <span class="hl">+13.2 t ATR/ha x 30,077 ha = R$ 410M</span> por safra.
+    </p>
+  </div>
+  <div class="grid g2">
+    <div class="card"><h3>TOP 15 VARIEDADES (TAH)</h3><div class="scroll-x"><table><thead><tr><th>#</th><th>Variedade</th><th>TAH</th><th>TCH</th><th>ATR</th><th>Area (ha)</th></tr></thead><tbody id="top-var-table"></tbody></table></div></div>
+    <div class="card"><h3>PIORES VARIEDADES (min 100ha) — SUBSTITUIR URGENTE</h3><div class="scroll-x"><table><thead><tr><th>#</th><th>Variedade</th><th>TAH</th><th>TCH</th><th>Area (ha)</th><th>Perda R$</th></tr></thead><tbody id="worst-var-table"></tbody></table></div></div>
+  </div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card"><h3>RANKING VARIEDADES POR TAH (top 12)</h3><div class="chart-wrap tall"><canvas id="cVarRank"></canvas></div></div>
+    <div class="card"><h3>TOP VARIEDADE x AMBIENTE</h3><div class="scroll-x"><table><thead><tr><th>Variedade</th><th>Amb</th><th>TAH</th><th>TCH</th><th>Area (ha)</th></tr></thead><tbody id="var-amb-table"></tbody></table></div></div>
+  </div>
+</div>
+
+<div id="panel-corte" class="panel">
+  <div class="insight">
+    <h4>DECAIMENTO REAL: 1C para 6C = -54% DE TCH</h4>
+    <p>
+      O canavial UMOE perde <span class="hl">-20 t/ha no 2o corte</span> e chega ao 4o corte com
+      <span class="hl">apenas 53% da produtividade original</span> (98.5 para 52.6 t/ha).
+      Com <span class="hl">15,173 ha em 4C+</span>, a empresa perde
+      <span class="hl">R$ 40-60M por safra</span> vs potencial de reforma.
+      Taxa de reforma ideal: <span class="hl">25% ao ano</span> para manter canavial jovem.
+    </p>
+  </div>
+  <div class="grid g2">
+    <div class="card"><h3>CURVA DE DECAIMENTO TCH POR CORTE (dados reais)</h3><div class="chart-wrap tall"><canvas id="cCorte"></canvas></div></div>
+    <div class="card">
+      <h3>TABELA DECAIMENTO + IMPACTO FINANCEIRO</h3>
+      <table><thead><tr><th>Corte</th><th>TCH</th><th>vs 1C</th><th>Perda t/ha</th><th>Receita Perdida</th></tr></thead><tbody id="corte-table"></tbody></table>
+      <div style="background:var(--bg3);padding:12px;border-radius:8px;margin-top:10px;font-size:11px;color:var(--text2);line-height:1.6">
+        <strong style="color:var(--gold)">Recomendacao:</strong> Aumentar reforma para 25% ao ano (6.930 ha/ano) priorizando 4C+.
+        Payback estimado: 2,5 safras. ROI 5 anos: &gt;400%. Integrar com substituicao SP81-3250.
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════
-     TAB 1 — OPERACIONAL (timeline 2026)
-══════════════════════════════════════════════════════════ -->
-<div class="content" id="tab1">
-  <div class="alert warn">
-    <span>&#x1F4CB;</span>
-    <span>Últimos 60 dias de operação (2026) &nbsp;|&nbsp; 60 dias com dados &nbsp;|&nbsp; Fonte: Histórico Diário Safras</span>
+<div id="panel-ind" class="panel">
+  <div class="kpi-row">
+    <div class="kpi red"><div class="label">ATR mai/26</div><div class="value">127.2</div><div class="sub">vs mai/25: 134.4 (-5.4%)</div></div>
+    <div class="kpi red"><div class="label">Moagem mar-mai/26</div><div class="value">606 kt</div><div class="sub">vs meta: 823 kt (-26%)</div></div>
+    <div class="kpi gold"><div class="label">EGI jun/26</div><div class="value">87.3%</div><div class="sub">Acima media historica</div></div>
+    <div class="kpi green"><div class="label">Aproveit. jun/26</div><div class="value">92.6%</div><div class="sub">Melhor do ano</div></div>
+    <div class="kpi red"><div class="label">Melhor ATR historico</div><div class="value">154.8</div><div class="sub">Set/2025 — benchmark</div></div>
+  </div>
+  <div class="grid g2">
+    <div class="card"><h3>ATR MENSAL POR SAFRA (2022-2026)</h3><div class="chart-wrap tall"><canvas id="cAtrSafra"></canvas></div></div>
+    <div class="card"><h3>MOAGEM MENSAL POR SAFRA (kt)</h3><div class="chart-wrap tall"><canvas id="cMoaSafra"></canvas></div></div>
+  </div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card"><h3>EGI MENSAL 2023-2026 (%)</h3><div class="chart-wrap"><canvas id="cEgiSafra"></canvas></div></div>
+    <div class="card"><h3>APROVEITAMENTO INDUSTRIAL 2024-2026 (%)</h3><div class="chart-wrap"><canvas id="cAprov"></canvas></div></div>
+  </div>
+</div>
+
+<div id="panel-hist" class="panel">
+  <div class="kpi-row">
+    <div class="kpi green"><div class="label">Melhor TCH Historico</div><div class="value">85.9</div><div class="sub">Safra 22/23-23/24</div></div>
+    <div class="kpi red"><div class="label">Pior TCH Historico</div><div class="value">55.6</div><div class="sub">Safra 21/22-22/23</div></div>
+    <div class="kpi green"><div class="label">Melhor ATR</div><div class="value">136.9</div><div class="sub">Ultima safra completa</div></div>
+    <div class="kpi gold"><div class="label">TAH Tendencia</div><div class="value">+10%</div><div class="sub">Ultimas 3 safras</div></div>
+  </div>
+  <div class="grid g2">
+    <div class="card"><h3>TCH HISTORICO POR SAFRA</h3><div class="chart-wrap tall"><canvas id="cTchHist"></canvas></div></div>
+    <div class="card"><h3>ATR HISTORICO POR SAFRA</h3><div class="chart-wrap tall"><canvas id="cAtrHist"></canvas></div></div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <h3>HISTORICO COMPLETO POR SAFRA</h3>
+    <table><thead><tr><th>Safra</th><th>TCH</th><th>ATR</th><th>TAH</th><th>Area (ha)</th><th>TCH Trend</th><th>ATR Trend</th></tr></thead>
+    <tbody id="hist-table"></tbody></table>
+  </div>
+</div>
+
+<div id="panel-intel" class="panel">
+  <div class="insight">
+    <h4>ANALISE CONCLUSIVA — UMOE BIOENERGY | SAFRA 2025/26</h4>
+    <p>
+      <strong style="color:var(--red)">SITUACAO CRITICA:</strong>
+      A UMOE enfrenta combinacao perigosa: canavial envelhecido (15.173 ha em 4C+),
+      variedade dominante obsoleta (SP81-3250 em 30,077 ha), ATR 5% abaixo do ano anterior
+      e gap de moagem de 216.500 t. Impacto combinado:
+      <span class="hl">-R$ 51M so nesta safra</span>.
+      Sem acao estrutural, a tendencia e de piora progressiva nas proximas safras.
+    </p>
   </div>
 
-  <div class="g4">
+  <div class="grid g2">
     <div class="card">
-      <div class="kpi-lbl">Moagem Diária Média (Jun)</div>
-      <div class="kpi-val">12.925 t</div>
-      <div class="kpi-plan">BPC Jun: 9.861 t/dia</div>
+      <h3>PONTOS POSITIVOS</h3>
+      <table><thead><tr><th>Item</th><th>Evidencia</th><th>Impacto</th></tr></thead><tbody>
+        <tr><td>EGI Industrial estavel</td><td>84-87% em jun/26</td><td style="color:var(--green)">Operacional OK</td></tr>
+        <tr><td>Aproveitamento subindo</td><td>82.9% (mar/24) -> 92.6% (jun/26)</td><td style="color:var(--green)">+R$ 8M+</td></tr>
+        <tr><td>CTC9006 disponivel</td><td>TAH 21.62 — 3.4x SP81</td><td style="color:var(--green)">R$ 410M potencial</td></tr>
+        <tr><td>Tratos Soca eficientes</td><td>Unico CC abaixo orcado (-R$126/ha)</td><td style="color:var(--green)">Benchmark interno</td></tr>
+        <tr><td>ATR set/25 = 154.8</td><td>Maior da historia UMOE</td><td style="color:var(--green)">Potencial existe</td></tr>
+        <tr><td>Faz. 20614 Amb D = TAH 21.70</td><td>Blueprint do sucesso a replicar</td><td style="color:var(--green)">Caso de sucesso</td></tr>
+      </tbody></table>
     </div>
     <div class="card">
-      <div class="kpi-lbl">ATR Médio (Jun)</div>
-      <div class="kpi-val">130,72 kg/t</div>
-      <div class="kpi-plan">BPC Jun/26: 139 kg/t</div>
-    </div>
-    <div class="card">
-      <div class="kpi-lbl">Aproveitamento Médio (Jun)</div>
-      <div class="kpi-val">93,7%</div>
-      <div class="kpi-plan">BPC Jun/26: 72.8%</div>
-    </div>
-    <div class="card">
-      <div class="kpi-lbl">Moagem Horária (Jun)</div>
-      <div class="kpi-val">574,7 t/h</div>
-      <div class="kpi-plan">BPC: 564.35 t/h</div>
+      <h3>PONTOS CRITICOS</h3>
+      <table><thead><tr><th>Item</th><th>Evidencia</th><th>Impacto R$</th></tr></thead><tbody>
+        <tr><td style="color:var(--red)">SP81-3250: 30,077 ha</td><td>TAH 6.3 vs best 19.6</td><td style="color:var(--red)">-R$ 410M+</td></tr>
+        <tr><td style="color:var(--red)">4C+: 15.173 ha</td><td>TCH 52.6 vs 1C 98.5 (-47%)</td><td style="color:var(--red)">-R$ 40-60M</td></tr>
+        <tr><td style="color:var(--red)">ATR 2026 -5% vs 2025</td><td>Todos os meses mar-jun/26</td><td style="color:var(--red)">-R$ 28M/safra</td></tr>
+        <tr><td style="color:var(--red)">CCT R$50/t vs R$38,3/t</td><td>+30% acima do orcado</td><td style="color:var(--red)">-R$ 32M/safra</td></tr>
+        <tr><td style="color:var(--gold)">RB72454: 4.845 ha</td><td>TAH 5.33 — segunda pior</td><td style="color:var(--red)">-R$ 15M+</td></tr>
+        <tr><td style="color:var(--gold)">EGI em leve declinio</td><td>88.4% (2024) -> 85.7% (2026)</td><td style="color:var(--red)">-R$ 8M</td></tr>
+      </tbody></table>
     </div>
   </div>
 
-  <div class="chart-card" style="margin-bottom:16px">
-    <div class="chart-title">Moagem Diária Acumulada 2026 — Últimos 60 Dias</div>
-    <canvas id="c_op_moa" height="100"></canvas>
-  </div>
-  <div class="g3">
-    <div class="chart-card">
-      <div class="chart-title">ATR Diário 2026</div>
-      <canvas id="c_op_atr" height="130"></canvas>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">Aproveitamento Diário %</div>
-      <canvas id="c_op_aprov" height="130"></canvas>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">Moagem Horária (t/h)</div>
-      <canvas id="c_op_mh" height="130"></canvas>
+  <div class="card" style="margin-top:14px">
+    <h3>TENDENCIAS IDENTIFICADAS</h3>
+    <div class="grid g3">
+      <div class="box3" style="border-left:3px solid var(--red)">
+        <strong style="color:var(--red)">ATR 2026 — TENDENCIA NEGATIVA</strong>
+        <p style="color:var(--text2);font-size:11px;margin-top:6px;line-height:1.6">
+          ATR 5% abaixo de 2025 em TODOS os meses (mar: -3.1%, abr: -5.0%, mai: -5.4%, jun: -5.1%).
+          Tendencia estrutural do canavial envelhecido. Se nao revertida: -R$ 28M na safra 25/26.
+        </p>
+      </div>
+      <div class="box3" style="border-left:3px solid var(--gold)">
+        <strong style="color:var(--gold)">MOAGEM — RECUPERACAO URGENTE</strong>
+        <p style="color:var(--text2);font-size:11px;margin-top:6px;line-height:1.6">
+          Jun/26: ritmo de 12,5 kt/dia vs meta de 15 kt/dia. Para atingir 2.768.000 t:
+          precisa 18.500 t/dia de jul a nov. Historico maximo: 14,3 kt/dia (ago/25). Distancia critica.
+        </p>
+      </div>
+      <div class="box3" style="border-left:3px solid var(--green)">
+        <strong style="color:var(--green)">APROVEITAMENTO — TENDENCIA POSITIVA</strong>
+        <p style="color:var(--text2);font-size:11px;margin-top:6px;line-height:1.6">
+          Aproveitamento subiu de 82.9% (mar/24) para 92.6% (jun/26): +9.7 pp em 2 anos.
+          Melhor indicador da empresa. Investimento industrial rendendo resultados. Manter.
+        </p>
+      </div>
     </div>
   </div>
 
-  <div class="tbl-wrap">
-    <div class="tbl-hdr">Últimos 20 Dias Operacionais &mdash; Indicadores Diários</div>
+  <div class="card" style="margin-top:14px">
+    <h3>PLANO DE ACAO 5W2H — PRIORIZACAO POR IMPACTO R$</h3>
     <table>
-      <thead>
-        <tr><th>Data</th><th style="text-align:right">Moagem (t)</th><th style="text-align:right">ATR</th>
-          <th style="text-align:right">Aprov.%</th><th style="text-align:right">t/h</th>
-          <th style="text-align:right">EGI%</th><th style="text-align:right">AEHC (L)</th></tr>
-      </thead>
+      <thead><tr><th>Prior.</th><th>Acao</th><th>Responsavel</th><th>Prazo</th><th>Como</th><th>ROI</th></tr></thead>
       <tbody>
-        <tr>
-          <td><strong>06-10</strong></td>
-          <td style="text-align:right">7.585</td>
-          <td style="text-align:right;color:#00C853">130,62</td>
-          <td style="text-align:right;color:#FFD600">57,1%</td>
-          <td style="text-align:right">553,7</td>
-          <td style="text-align:right">97,33%</td>
-          <td style="text-align:right">0,188 M</td>
-        </tr><tr>
-          <td><strong>06-09</strong></td>
-          <td style="text-align:right">12.795</td>
-          <td style="text-align:right;color:#00C853">131,80</td>
-          <td style="text-align:right;color:#00C853">100,0%</td>
-          <td style="text-align:right">533,1</td>
-          <td style="text-align:right">87,16%</td>
-          <td style="text-align:right">0,418 M</td>
-        </tr><tr>
-          <td><strong>06-08</strong></td>
-          <td style="text-align:right">13.542</td>
-          <td style="text-align:right;color:#00C853">131,94</td>
-          <td style="text-align:right;color:#00C853">94,2%</td>
-          <td style="text-align:right">599,2</td>
-          <td style="text-align:right">86,91%</td>
-          <td style="text-align:right">0,479 M</td>
-        </tr><tr>
-          <td><strong>06-07</strong></td>
-          <td style="text-align:right">13.362</td>
-          <td style="text-align:right;color:#00C853">133,36</td>
-          <td style="text-align:right;color:#00C853">99,4%</td>
-          <td style="text-align:right">560,2</td>
-          <td style="text-align:right">85,93%</td>
-          <td style="text-align:right">0,419 M</td>
-        </tr><tr>
-          <td><strong>06-06</strong></td>
-          <td style="text-align:right">13.174</td>
-          <td style="text-align:right;color:#00C853">132,02</td>
-          <td style="text-align:right;color:#00C853">99,3%</td>
-          <td style="text-align:right">552,8</td>
-          <td style="text-align:right">90,15%</td>
-          <td style="text-align:right">0,536 M</td>
-        </tr><tr>
-          <td><strong>06-05</strong></td>
-          <td style="text-align:right">12.991</td>
-          <td style="text-align:right;color:#00C853">132,58</td>
-          <td style="text-align:right;color:#00C853">99,8%</td>
-          <td style="text-align:right">542,4</td>
-          <td style="text-align:right">90,12%</td>
-          <td style="text-align:right">0,601 M</td>
-        </tr><tr>
-          <td><strong>06-04</strong></td>
-          <td style="text-align:right">13.126</td>
-          <td style="text-align:right;color:#FFD600">128,16</td>
-          <td style="text-align:right;color:#00C853">93,2%</td>
-          <td style="text-align:right">586,5</td>
-          <td style="text-align:right">76,75%</td>
-          <td style="text-align:right">0,342 M</td>
-        </tr><tr>
-          <td><strong>06-03</strong></td>
-          <td style="text-align:right">12.602</td>
-          <td style="text-align:right;color:#FFD600">128,90</td>
-          <td style="text-align:right;color:#00C853">88,8%</td>
-          <td style="text-align:right">591,1</td>
-          <td style="text-align:right">93,80%</td>
-          <td style="text-align:right">0,636 M</td>
-        </tr><tr>
-          <td><strong>06-02</strong></td>
-          <td style="text-align:right">12.995</td>
-          <td style="text-align:right;color:#00C853">134,68</td>
-          <td style="text-align:right;color:#00C853">99,0%</td>
-          <td style="text-align:right">546,7</td>
-          <td style="text-align:right">80,29%</td>
-          <td style="text-align:right">0,440 M</td>
-        </tr><tr>
-          <td><strong>06-01</strong></td>
-          <td style="text-align:right">12.405</td>
-          <td style="text-align:right;color:#00C853">132,22</td>
-          <td style="text-align:right;color:#00C853">95,5%</td>
-          <td style="text-align:right">541,0</td>
-          <td style="text-align:right">89,02%</td>
-          <td style="text-align:right">0,404 M</td>
-        </tr><tr>
-          <td><strong>05-31</strong></td>
-          <td style="text-align:right">12.387</td>
-          <td style="text-align:right;color:#FFD600">129,48</td>
-          <td style="text-align:right;color:#00C853">88,4%</td>
-          <td style="text-align:right">583,8</td>
-          <td style="text-align:right">86,31%</td>
-          <td style="text-align:right">0,422 M</td>
-        </tr><tr>
-          <td><strong>05-30</strong></td>
-          <td style="text-align:right">14.553</td>
-          <td style="text-align:right;color:#FFD600">128,91</td>
-          <td style="text-align:right;color:#00C853">98,2%</td>
-          <td style="text-align:right">617,2</td>
-          <td style="text-align:right">89,67%</td>
-          <td style="text-align:right">0,579 M</td>
-        </tr><tr>
-          <td><strong>05-29</strong></td>
-          <td style="text-align:right">15.100</td>
-          <td style="text-align:right;color:#FFD600">128,59</td>
-          <td style="text-align:right;color:#00C853">98,9%</td>
-          <td style="text-align:right">636,3</td>
-          <td style="text-align:right">83,27%</td>
-          <td style="text-align:right">0,491 M</td>
-        </tr><tr>
-          <td><strong>05-28</strong></td>
-          <td style="text-align:right">14.327</td>
-          <td style="text-align:right;color:#FFD600">126,87</td>
-          <td style="text-align:right;color:#00C853">99,3%</td>
-          <td style="text-align:right">601,2</td>
-          <td style="text-align:right">86,47%</td>
-          <td style="text-align:right">0,613 M</td>
-        </tr><tr>
-          <td><strong>05-27</strong></td>
-          <td style="text-align:right">12.699</td>
-          <td style="text-align:right;color:#FFD600">128,73</td>
-          <td style="text-align:right;color:#00C853">100,0%</td>
-          <td style="text-align:right">529,1</td>
-          <td style="text-align:right">96,67%</td>
-          <td style="text-align:right">1,156 M</td>
-        </tr><tr>
-          <td><strong>05-26</strong></td>
-          <td style="text-align:right">12.249</td>
-          <td style="text-align:right;color:#00C853">133,10</td>
-          <td style="text-align:right;color:#00C853">100,0%</td>
-          <td style="text-align:right">510,4</td>
-          <td style="text-align:right">89,45%</td>
-          <td style="text-align:right">0,987 M</td>
-        </tr><tr>
-          <td><strong>05-25</strong></td>
-          <td style="text-align:right">10.462</td>
-          <td style="text-align:right;color:#FFD600">129,99</td>
-          <td style="text-align:right;color:#00C853">85,7%</td>
-          <td style="text-align:right">508,6</td>
-          <td style="text-align:right">106,41%</td>
-          <td style="text-align:right">0,812 M</td>
-        </tr><tr>
-          <td><strong>05-24</strong></td>
-          <td style="text-align:right">5.939</td>
-          <td style="text-align:right;color:#FFD600">125,20</td>
-          <td style="text-align:right;color:#FFD600">50,9%</td>
-          <td style="text-align:right">486,0</td>
-          <td style="text-align:right">67,00%</td>
-          <td style="text-align:right">0,180 M</td>
-        </tr><tr>
-          <td><strong>05-21</strong></td>
-          <td style="text-align:right">3.098</td>
-          <td style="text-align:right;color:#FFD600">121,54</td>
-          <td style="text-align:right;color:#FF1744">25,8%</td>
-          <td style="text-align:right">499,7</td>
-          <td style="text-align:right">60,84%</td>
-          <td style="text-align:right">0,132 M</td>
-        </tr><tr>
-          <td><strong>05-08</strong></td>
-          <td style="text-align:right">6.784</td>
-          <td style="text-align:right;color:#FFD600">123,12</td>
-          <td style="text-align:right;color:#FFD600">57,3%</td>
-          <td style="text-align:right">493,4</td>
-          <td style="text-align:right">88,20%</td>
-          <td style="text-align:right">0,125 M</td>
-        </tr>
+        <tr><td style="color:var(--red)">1 URGENTE</td><td>Plano substituicao SP81-3250</td><td>Dir. Agricola</td><td>Ago/26</td><td>Mapear SP81 por Amb, definir substituto (CTC9006 Amb D/E, CTC9007 Amb C), cronograma 3 safras</td><td style="color:var(--green)">R$ 410M+/safra</td></tr>
+        <tr><td style="color:var(--red)">2 URGENTE</td><td>Acelerar reforma 4C+ (15.173 ha)</td><td>Dir. Agricola</td><td>Dez/26</td><td>Cronograma 25% ao ano (3.800 ha/safra), integrar com troca de variedades</td><td style="color:var(--green)">R$ 180M+ (5 anos)</td></tr>
+        <tr><td style="color:var(--gold)">3 CURTO</td><td>Programa maturadores + ATR</td><td>Fitotecnia</td><td>Jul/26</td><td>Aplicar ethephon/RLEG nos canaviais SP81 para recuperar 8-12 kg/t ATR antes reforma</td><td style="color:var(--green)">R$ 28M/safra</td></tr>
+        <tr><td style="color:var(--gold)">4 CURTO</td><td>Reducao CCT logistica + CHI</td><td>Oper. + Logistica</td><td>Imediato</td><td>Revisar DMT por frente, reduzir tempos patio, otimizar CHI controlavel</td><td style="color:var(--green)">R$ 32M/safra</td></tr>
+        <tr><td style="color:var(--blue)">5 MEDIO</td><td>Expandir CTC9006 em Amb D e E</td><td>Fitotecnia</td><td>Safra 27/28</td><td>Priorizar nas reformas, negociar com CTC mudas para +5.000 ha em 3 anos</td><td style="color:var(--green)">R$ 79M+ (pleno)</td></tr>
+        <tr><td style="color:var(--blue)">6 MEDIO</td><td>Auditar fazendas TAH &lt; 3 (Amb D)</td><td>Dir. Agricola</td><td>Set/26</td><td>Fazendas 20779, 20806, 20808: auditoria solo/variedade/manejo, decidir reforma emergencial</td><td style="color:var(--green)">R$ 15M+ pot.</td></tr>
       </tbody>
     </table>
   </div>
-</div>
 
-<!-- ══════════════════════════════════════════════════════════
-     TAB 2 — AGRÍCOLA (fazendas)
-══════════════════════════════════════════════════════════ -->
-<div class="content" id="tab2">
-  <div class="alert warn">
-    <span>&#x1F33E;</span>
-    <span>Dados granulares BD SAFRAS &nbsp;|&nbsp; Safra de referência: 22324 &nbsp;|&nbsp; 407 fazendas cadastradas &nbsp;|&nbsp; Média ponderada por área</span>
-  </div>
-
-  <div class="g4">
-    <div class="card blue">
-      <div class="kpi-lbl">Melhor TAH Histórico</div>
-      <div class="kpi-val">23,16</div>
-      <div class="kpi-plan">Fazenda 20420 | Amb. D</div>
-      <div class="kpi-delta"><span style="color:var(--green)">t ATR/ha — Referência de excelência</span></div>
-    </div>
-    <div class="card">
-      <div class="kpi-lbl">TCH Médio (Safra 22324)</div>
-      <div class="kpi-val">136,8</div>
-      <div class="kpi-plan">t/ha ponderado | Top 15 fazendas</div>
-    </div>
-    <div class="card red">
-      <div class="kpi-lbl">Pior Fazenda TAH</div>
-      <div class="kpi-val" style="color:var(--red)">2,69</div>
-      <div class="kpi-plan">Fazenda 10001 — prioridade reforma</div>
-      <div class="kpi-delta"><span style="color:#FF1744">Gap vs melhor: 20,47 t ATR/ha</span></div>
-    </div>
-    <div class="card">
-      <div class="kpi-lbl">Canaviais 4C+ (Renovação Urgente)</div>
-      <div class="kpi-val" style="color:var(--orange)">15.173 ha</div>
-      <div class="kpi-plan">TCH 64 vs 99.6 t/ha no 1C</div>
-      <div class="kpi-delta"><span style="color:#FF1744">▼ Perda de 35.6 t/ha por talhão</span></div>
-    </div>
-  </div>
-
-  <div class="g53">
-    <div class="chart-card">
-      <div class="chart-title">Top 15 Fazendas — TAH vs TCH (Safra 22324)</div>
-      <canvas id="c_agri_faz" height="130"></canvas>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">Distribuição ATR por Fazenda</div>
-      <canvas id="c_agri_atr" height="130"></canvas>
-    </div>
-  </div>
-
-  <div class="g2">
-    <div>
-      <div class="tbl-wrap">
-        <div class="tbl-hdr">&#x1F3C6; Top 15 Fazendas — Maior TAH (Safra 22324)</div>
-        <table>
-          <thead>
-            <tr><th>#</th><th>Fazenda</th><th>Amb.</th><th style="text-align:right">Área (ha)</th>
-              <th style="text-align:right">TCH</th><th style="text-align:right">ATR</th>
-              <th style="text-align:right">TAH</th><th>Variedades</th></tr>
-          </thead>
-          <tbody><tr>
-          <td style="text-align:center;color:#90A4AE">1</td>
-          <td><strong>20420</strong></td>
-          <td style="text-align:center">D</td>
-          <td style="text-align:right">90</td>
-          <td style="text-align:right">150,7</td>
-          <td style="text-align:right">153,7</td>
-          <td style="text-align:right;color:#00C853;font-weight:700">23,16</td>
-          <td style="font-size:0.75rem;color:#90A4AE">RB975201</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">2</td>
-          <td><strong>20319</strong></td>
-          <td style="text-align:center">D</td>
-          <td style="text-align:right">153</td>
-          <td style="text-align:right">157,2</td>
-          <td style="text-align:right">145,2</td>
-          <td style="text-align:right;color:#00C853;font-weight:700">22,82</td>
-          <td style="font-size:0.75rem;color:#90A4AE">RB975201</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">3</td>
-          <td><strong>20415</strong></td>
-          <td style="text-align:center">E</td>
-          <td style="text-align:right">26</td>
-          <td style="text-align:right">144,9</td>
-          <td style="text-align:right">155,3</td>
-          <td style="text-align:right;color:#00C853;font-weight:700">22,49</td>
-          <td style="font-size:0.75rem;color:#90A4AE">RB975201</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">4</td>
-          <td><strong>20614</strong></td>
-          <td style="text-align:center">D</td>
-          <td style="text-align:right">52</td>
-          <td style="text-align:right">142,2</td>
-          <td style="text-align:right">152,5</td>
-          <td style="text-align:right;color:#00C853;font-weight:700">21,70</td>
-          <td style="font-size:0.75rem;color:#90A4AE">RB975201</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">5</td>
-          <td><strong>20426</strong></td>
-          <td style="text-align:center">D</td>
-          <td style="text-align:right">178</td>
-          <td style="text-align:right">143,5</td>
-          <td style="text-align:right">148,9</td>
-          <td style="text-align:right;color:#00C853;font-weight:700">21,18</td>
-          <td style="font-size:0.75rem;color:#90A4AE">CTC9006, RB975201</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">6</td>
-          <td><strong>20460</strong></td>
-          <td style="text-align:center">E</td>
-          <td style="text-align:right">68</td>
-          <td style="text-align:right">137,3</td>
-          <td style="text-align:right">152,6</td>
-          <td style="text-align:right;color:#00C853;font-weight:700">20,94</td>
-          <td style="font-size:0.75rem;color:#90A4AE">CTC9006</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">7</td>
-          <td><strong>20532</strong></td>
-          <td style="text-align:center">D</td>
-          <td style="text-align:right">83</td>
-          <td style="text-align:right">134,5</td>
-          <td style="text-align:right">154,5</td>
-          <td style="text-align:right;color:#00C853;font-weight:700">20,78</td>
-          <td style="font-size:0.75rem;color:#90A4AE">CTC9006</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">8</td>
-          <td><strong>20570</strong></td>
-          <td style="text-align:center">E</td>
-          <td style="text-align:right">493</td>
-          <td style="text-align:right">140,5</td>
-          <td style="text-align:right">142,1</td>
-          <td style="text-align:right;color:#00C853;font-weight:700">19,91</td>
-          <td style="font-size:0.75rem;color:#90A4AE">SP83-2847, CTC9006</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">9</td>
-          <td><strong>20414</strong></td>
-          <td style="text-align:center">E</td>
-          <td style="text-align:right">14</td>
-          <td style="text-align:right">133,9</td>
-          <td style="text-align:right">144,6</td>
-          <td style="text-align:right;color:#00C853;font-weight:700">19,37</td>
-          <td style="font-size:0.75rem;color:#90A4AE">RB985517, CTC9006, RB975201</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">10</td>
-          <td><strong>20401</strong></td>
-          <td style="text-align:center">E</td>
-          <td style="text-align:right">37</td>
-          <td style="text-align:right">139,8</td>
-          <td style="text-align:right">135,4</td>
-          <td style="text-align:right;color:#00C853;font-weight:700">18,93</td>
-          <td style="font-size:0.75rem;color:#90A4AE">CTC9006</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">11</td>
-          <td><strong>20323</strong></td>
-          <td style="text-align:center">E</td>
-          <td style="text-align:right">74</td>
-          <td style="text-align:right">137,6</td>
-          <td style="text-align:right">137,8</td>
-          <td style="text-align:right;color:#00C853;font-weight:700">18,69</td>
-          <td style="font-size:0.75rem;color:#90A4AE">RB975242</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">12</td>
-          <td><strong>20322</strong></td>
-          <td style="text-align:center">D</td>
-          <td style="text-align:right">6</td>
-          <td style="text-align:right">126,7</td>
-          <td style="text-align:right">146,9</td>
-          <td style="text-align:right;color:#00C853;font-weight:700">18,62</td>
-          <td style="font-size:0.75rem;color:#90A4AE">RB975242</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">13</td>
-          <td><strong>20860</strong></td>
-          <td style="text-align:center">D</td>
-          <td style="text-align:right">128</td>
-          <td style="text-align:right">120,7</td>
-          <td style="text-align:right">154,2</td>
-          <td style="text-align:right;color:#00C853;font-weight:700">18,57</td>
-          <td style="font-size:0.75rem;color:#90A4AE">RB985476, CTC4</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">14</td>
-          <td><strong>20850</strong></td>
-          <td style="text-align:center">C</td>
-          <td style="text-align:right">16</td>
-          <td style="text-align:right">123,3</td>
-          <td style="text-align:right">147,7</td>
-          <td style="text-align:right;color:#00C853;font-weight:700">18,21</td>
-          <td style="font-size:0.75rem;color:#90A4AE">CTC4</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">15</td>
-          <td><strong>20441</strong></td>
-          <td style="text-align:center">D</td>
-          <td style="text-align:right">156</td>
-          <td style="text-align:right">119,0</td>
-          <td style="text-align:right">154,8</td>
-          <td style="text-align:right;color:#00C853;font-weight:700">17,94</td>
-          <td style="font-size:0.75rem;color:#90A4AE">RB975201</td>
-        </tr></tbody>
-        </table>
+  <div class="card" style="margin-top:14px">
+    <h3>VISOES QUE OS DADOS REVELAM — CRUZAMENTOS INEDITOS</h3>
+    <div class="grid g2">
+      <div class="box3" style="border-left:3px solid var(--red)">
+        <strong style="color:var(--red)">SP81 x Amb D = Bomba Silenciosa</strong>
+        <p style="color:var(--text2);font-size:11px;margin-top:6px;line-height:1.6">
+          SP81-3250 domina o Amb D — o maior ambiente (182.562 ha).
+          O Amb D tem solo OTIMO (TAH medio 8.69) mas variedade pessima.
+          Se todo Amb D fosse CTC9006, TAH seria &gt;19.0. O solo nao e o problema — a variedade e.
+        </p>
       </div>
-    </div>
-    <div>
-      <div class="tbl-wrap">
-        <div class="tbl-hdr">&#x1F6A8; Fazendas Críticas — Menor TAH (Candidatas a Reforma)</div>
-        <table>
-          <thead>
-            <tr><th>Fazenda</th><th>Amb.</th><th style="text-align:right">Área</th>
-              <th style="text-align:right">TCH</th><th style="text-align:right">ATR</th><th style="text-align:right">TAH</th></tr>
-          </thead>
-          <tbody><tr>
-          <td><strong style="color:#FF1744">10001</strong></td>
-          <td style="text-align:center">C</td>
-          <td style="text-align:right">8</td>
-          <td style="text-align:right">20,9</td>
-          <td style="text-align:right">128,7</td>
-          <td style="text-align:right;color:#FF1744;font-weight:700">2,69</td>
-        </tr><tr>
-          <td><strong style="color:#FF1744">20473</strong></td>
-          <td style="text-align:center">E</td>
-          <td style="text-align:right">96</td>
-          <td style="text-align:right">20,3</td>
-          <td style="text-align:right">140,4</td>
-          <td style="text-align:right;color:#FF1744;font-weight:700">2,86</td>
-        </tr><tr>
-          <td><strong style="color:#FF1744">20330</strong></td>
-          <td style="text-align:center">D</td>
-          <td style="text-align:right">9</td>
-          <td style="text-align:right">22,5</td>
-          <td style="text-align:right">131,0</td>
-          <td style="text-align:right;color:#FF1744;font-weight:700">2,94</td>
-        </tr><tr>
-          <td><strong style="color:#FF1744">20519</strong></td>
-          <td style="text-align:center">E</td>
-          <td style="text-align:right">275</td>
-          <td style="text-align:right">31,9</td>
-          <td style="text-align:right">130,8</td>
-          <td style="text-align:right;color:#FF1744;font-weight:700">3,90</td>
-        </tr><tr>
-          <td><strong style="color:#FF1744">20457</strong></td>
-          <td style="text-align:center">D</td>
-          <td style="text-align:right">95</td>
-          <td style="text-align:right">27,6</td>
-          <td style="text-align:right">144,7</td>
-          <td style="text-align:right;color:#FF1744;font-weight:700">3,99</td>
-        </tr><tr>
-          <td><strong style="color:#FF1744">20811</strong></td>
-          <td style="text-align:center">ADEF</td>
-          <td style="text-align:right">95</td>
-          <td style="text-align:right">30,4</td>
-          <td style="text-align:right">136,6</td>
-          <td style="text-align:right;color:#FF1744;font-weight:700">4,15</td>
-        </tr><tr>
-          <td><strong style="color:#FF1744">20568</strong></td>
-          <td style="text-align:center">D</td>
-          <td style="text-align:right">110</td>
-          <td style="text-align:right">29,6</td>
-          <td style="text-align:right">144,5</td>
-          <td style="text-align:right;color:#FF1744;font-weight:700">4,21</td>
-        </tr><tr>
-          <td><strong style="color:#FF1744">20529</strong></td>
-          <td style="text-align:center">E</td>
-          <td style="text-align:right">89</td>
-          <td style="text-align:right">31,4</td>
-          <td style="text-align:right">138,2</td>
-          <td style="text-align:right;color:#FF1744;font-weight:700">4,34</td>
-        </tr></tbody>
-        </table>
+      <div class="box3" style="border-left:3px solid var(--gold)">
+        <strong style="color:var(--gold)">ATR alto x TCH baixo = Amb E escondido</strong>
+        <p style="color:var(--text2);font-size:11px;margin-top:6px;line-height:1.6">
+          Amb E tem MAIOR ATR (131.0) mas MENOR TCH (58.7). Parece ruim.
+          Mas CTC9006 em Amb E atinge TAH 21.62 — a MELHOR combinacao da empresa.
+          Amb E precisa de variedade de alta biomassa para liberar seu potencial de ATR.
+        </p>
       </div>
-      <div class="tbl-wrap" style="margin-top:14px">
-        <div class="tbl-hdr">Curva de Decaimento TCH por Ciclo de Corte</div>
-        <table>
-          <thead><tr><th>Corte</th><th style="text-align:right">1C</th><th style="text-align:right">2C</th><th style="text-align:right">3C</th><th style="text-align:right">4C</th><th style="text-align:right">5C</th><th style="text-align:right">6C</th><th style="text-align:right">7C</th></tr></thead>
-          <tbody><tr>
-            <td style="text-align:right;color:#00C853">96,6</td><td style="text-align:right;color:#FFD600">79,0</td><td style="text-align:right;color:#FF1744">62,0</td><td style="text-align:right;color:#FF1744">52,1</td><td style="text-align:right;color:#FF1744">47,7</td><td style="text-align:right;color:#FF1744">44,1</td><td style="text-align:right;color:#FF1744">48,7</td>
-          </tr></tbody>
-        </table>
+      <div class="box3" style="border-left:3px solid var(--blue)">
+        <strong style="color:var(--blue)">Decaimento real x Meta = Ilusao matematica</strong>
+        <p style="color:var(--text2);font-size:11px;margin-top:6px;line-height:1.6">
+          A meta de 2.768.000 t assume TCH viavel. Com 15.173 ha em 4C+ (TCH 52.5) e
+          30.183 ha de SP81 (TCH ~43-51), o TCH medio real tende a 65-70 vs 80+ necessario.
+          A meta so e atingivel com reforma estrutural do canavial.
+        </p>
       </div>
-    </div>
-  </div>
-
-  <div class="note">
-    &#x1F9EE; TAH = Toneladas de ATR por Hectare &nbsp;&bull;&nbsp; Ranking baseado em área real colhida &nbsp;&bull;&nbsp;
-    Fazendas com área &gt;5 ha incluídas &nbsp;&bull;&nbsp; Safra 22324
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════════════════════
-     TAB 3 — VARIEDADES
-══════════════════════════════════════════════════════════ -->
-<div class="content" id="tab3">
-  <div class="alert ok">
-    <span>&#x1F331;</span>
-    <span>Análise de 65 variedades cadastradas &nbsp;|&nbsp; Ponderada por área realizada &nbsp;|&nbsp; Múltiplas safras</span>
-  </div>
-
-  <div class="g3">
-    <div class="chart-card">
-      <div class="chart-title">Top 15 Variedades — TAH (t ATR/ha)</div>
-      <canvas id="c_var_tah" height="160"></canvas>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">TCH por Variedade</div>
-      <canvas id="c_var_tch" height="160"></canvas>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">ATR por Variedade (kg/t)</div>
-      <canvas id="c_var_atr" height="160"></canvas>
-    </div>
-  </div>
-
-  <div class="tbl-wrap">
-    <div class="tbl-hdr">Ranking Completo de Variedades — Performance Consolidada (Todas as Safras)</div>
-    <table>
-      <thead>
-        <tr><th>#</th><th>Variedade</th><th style="text-align:right">Área (ha)</th>
-          <th style="text-align:right">TCH (t/ha)</th><th style="text-align:right">ATR (kg/t)</th>
-          <th style="text-align:right">TAH</th><th style="text-align:center">Safras</th></tr>
-      </thead>
-      <tbody><tr>
-          <td style="text-align:center;color:#90A4AE">1</td>
-          <td><strong>CTC9006</strong></td>
-          <td style="text-align:right">1.068</td>
-          <td style="text-align:right">140,0</td>
-          <td style="text-align:right">139,8</td>
-          <td style="text-align:right;color:#00C853;font-weight:700">19,60</td>
-          <td style="text-align:center;color:#90A4AE">1</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">2</td>
-          <td><strong>CTC9003BT</strong></td>
-          <td style="text-align:right">86</td>
-          <td style="text-align:right">136,1</td>
-          <td style="text-align:right">129,3</td>
-          <td style="text-align:right;color:#00C853;font-weight:700">17,41</td>
-          <td style="text-align:center;color:#90A4AE">1</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">3</td>
-          <td><strong>CTC9007</strong></td>
-          <td style="text-align:right">773</td>
-          <td style="text-align:right">126,4</td>
-          <td style="text-align:right">134,8</td>
-          <td style="text-align:right;color:#00C853;font-weight:700">16,90</td>
-          <td style="text-align:center;color:#90A4AE">2</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">4</td>
-          <td><strong>RB975242</strong></td>
-          <td style="text-align:right">1.620</td>
-          <td style="text-align:right">111,9</td>
-          <td style="text-align:right">140,2</td>
-          <td style="text-align:right;color:#00C853;font-weight:700">15,70</td>
-          <td style="text-align:center;color:#90A4AE">2</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">5</td>
-          <td><strong>RB975201</strong></td>
-          <td style="text-align:right">2.919</td>
-          <td style="text-align:right">106,1</td>
-          <td style="text-align:right">141,8</td>
-          <td style="text-align:right;color:#00C853;font-weight:700">15,13</td>
-          <td style="text-align:center;color:#90A4AE">4</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">6</td>
-          <td><strong>CTC9001BT</strong></td>
-          <td style="text-align:right">3.118</td>
-          <td style="text-align:right">108,3</td>
-          <td style="text-align:right">136,6</td>
-          <td style="text-align:right;color:#00C853;font-weight:700">14,80</td>
-          <td style="text-align:center;color:#90A4AE">2</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">7</td>
-          <td><strong>RB985476</strong></td>
-          <td style="text-align:right">308</td>
-          <td style="text-align:right">96,6</td>
-          <td style="text-align:right">148,2</td>
-          <td style="text-align:right;color:#00C853;font-weight:700">14,21</td>
-          <td style="text-align:center;color:#90A4AE">2</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">8</td>
-          <td><strong>RB985517</strong></td>
-          <td style="text-align:right">110</td>
-          <td style="text-align:right">111,2</td>
-          <td style="text-align:right">122,0</td>
-          <td style="text-align:right;color:#FFD600;font-weight:700">13,60</td>
-          <td style="text-align:center;color:#90A4AE">1</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">9</td>
-          <td><strong>CTC4</strong></td>
-          <td style="text-align:right">2.322</td>
-          <td style="text-align:right">96,6</td>
-          <td style="text-align:right">140,1</td>
-          <td style="text-align:right;color:#FFD600;font-weight:700">13,56</td>
-          <td style="text-align:center;color:#90A4AE">2</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">10</td>
-          <td><strong>CTC9001</strong></td>
-          <td style="text-align:right">10.896</td>
-          <td style="text-align:right">91,3</td>
-          <td style="text-align:right">137,8</td>
-          <td style="text-align:right;color:#FFD600;font-weight:700">12,57</td>
-          <td style="text-align:center;color:#90A4AE">7</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">11</td>
-          <td><strong>CTC04</strong></td>
-          <td style="text-align:right">1.213</td>
-          <td style="text-align:right">95,3</td>
-          <td style="text-align:right">109,2</td>
-          <td style="text-align:right;color:#FF1744;font-weight:700">10,32</td>
-          <td style="text-align:center;color:#90A4AE">4</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">12</td>
-          <td><strong>RB966928</strong></td>
-          <td style="text-align:right">28.490</td>
-          <td style="text-align:right">79,0</td>
-          <td style="text-align:right">124,2</td>
-          <td style="text-align:right;color:#FF1744;font-weight:700">9,73</td>
-          <td style="text-align:center;color:#90A4AE">12</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">13</td>
-          <td><strong>RB92579</strong></td>
-          <td style="text-align:right">18.640</td>
-          <td style="text-align:right">72,7</td>
-          <td style="text-align:right">130,8</td>
-          <td style="text-align:right;color:#FF1744;font-weight:700">9,42</td>
-          <td style="text-align:center;color:#90A4AE">11</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">14</td>
-          <td><strong>IAC87-3396</strong></td>
-          <td style="text-align:right">6.520</td>
-          <td style="text-align:right">72,4</td>
-          <td style="text-align:right">124,5</td>
-          <td style="text-align:right;color:#FF1744;font-weight:700">9,03</td>
-          <td style="text-align:center;color:#90A4AE">12</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">15</td>
-          <td><strong>RB965902</strong></td>
-          <td style="text-align:right">1.635</td>
-          <td style="text-align:right">71,6</td>
-          <td style="text-align:right">125,2</td>
-          <td style="text-align:right;color:#FF1744;font-weight:700">8,86</td>
-          <td style="text-align:center;color:#90A4AE">7</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">16</td>
-          <td><strong>RB975033</strong></td>
-          <td style="text-align:right">1.475</td>
-          <td style="text-align:right">65,7</td>
-          <td style="text-align:right">130,9</td>
-          <td style="text-align:right;color:#FF1744;font-weight:700">8,61</td>
-          <td style="text-align:center;color:#90A4AE">4</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">17</td>
-          <td><strong>SP83-5073</strong></td>
-          <td style="text-align:right">31.591</td>
-          <td style="text-align:right">65,0</td>
-          <td style="text-align:right">132,4</td>
-          <td style="text-align:right;color:#FF1744;font-weight:700">8,56</td>
-          <td style="text-align:center;color:#90A4AE">12</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">18</td>
-          <td><strong>CTC9002</strong></td>
-          <td style="text-align:right">217</td>
-          <td style="text-align:right">63,4</td>
-          <td style="text-align:right">131,9</td>
-          <td style="text-align:right;color:#FF1744;font-weight:700">8,43</td>
-          <td style="text-align:center;color:#90A4AE">3</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">19</td>
-          <td><strong>SP83-2847</strong></td>
-          <td style="text-align:right">24.335</td>
-          <td style="text-align:right">65,4</td>
-          <td style="text-align:right">128,3</td>
-          <td style="text-align:right;color:#FF1744;font-weight:700">8,36</td>
-          <td style="text-align:center;color:#90A4AE">12</td>
-        </tr><tr>
-          <td style="text-align:center;color:#90A4AE">20</td>
-          <td><strong>RB937570</strong></td>
-          <td style="text-align:right">3.090</td>
-          <td style="text-align:right">63,7</td>
-          <td style="text-align:right">128,0</td>
-          <td style="text-align:right;color:#FF1744;font-weight:700">8,11</td>
-          <td style="text-align:center;color:#90A4AE">10</td>
-        </tr></tbody>
-    </table>
-  </div>
-
-  <div class="g2" style="margin-top:16px">
-    <div style="background:rgba(0,200,83,0.06);border:1px solid rgba(0,200,83,0.2);border-radius:12px;padding:16px">
-      <div class="sec" style="margin-top:0">&#x1F3C6; Variedades Campeãs</div>
-      <div style="font-size:0.82rem;color:var(--text2);line-height:2">
-        <div>&#x2B50; <strong style="color:#E8EAF6">CTC9006</strong> — TAH 19.60 | TCH 140.0 | ATR 139.8</div><div>&#x2B50; <strong style="color:#E8EAF6">CTC9003BT</strong> — TAH 17.41 | TCH 136.1 | ATR 129.3</div><div>&#x2B50; <strong style="color:#E8EAF6">CTC9007</strong> — TAH 16.90 | TCH 126.4 | ATR 134.8</div><div>&#x2B50; <strong style="color:#E8EAF6">RB975242</strong> — TAH 15.70 | TCH 111.9 | ATR 140.2</div><div>&#x2B50; <strong style="color:#E8EAF6">RB975201</strong> — TAH 15.13 | TCH 106.1 | ATR 141.8</div>
-      </div>
-    </div>
-    <div style="background:rgba(255,23,68,0.06);border:1px solid rgba(255,23,68,0.2);border-radius:12px;padding:16px">
-      <div class="sec" style="margin-top:0;color:var(--red)">&#x26A0; Variedades para Substituição</div>
-      <div style="font-size:0.82rem;color:var(--text2);line-height:2">
-        <div>&#x274C; <strong style="color:#E8EAF6">IACSP95-50</strong> — TAH 7.92 | TCH 58.4 | ATR 131.4</div><div>&#x274C; <strong style="color:#E8EAF6">RB855156</strong> — TAH 7.95 | TCH 63.4 | ATR 127.2</div><div>&#x274C; <strong style="color:#E8EAF6">DIVERSAS</strong> — TAH 8.01 | TCH 63.9 | ATR 128.4</div><div>&#x274C; <strong style="color:#E8EAF6">IAC95-5000</strong> — TAH 8.09 | TCH 67.2 | ATR 122.3</div>
+      <div class="box3" style="border-left:3px solid var(--green)">
+        <strong style="color:var(--green)">Fazenda 20614 = Blueprint do Sucesso</strong>
+        <p style="color:var(--text2);font-size:11px;margin-top:6px;line-height:1.6">
+          TAH 21.70, TCH 142.2, ATR 152.5 — TODOS os indicadores no topo.
+          Entender e replicar o manejo desta fazenda para as 267 fazendas Amb D
+          poderia elevar TAH medio de 8.69 para 12-15. Impacto: &gt;R$ 200M.
+        </p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════
-     TAB 4 — INDUSTRIAL
-══════════════════════════════════════════════════════════ -->
-<div class="content" id="tab4">
-  <div class="g4">
-    <div class="card">
-      <div class="kpi-lbl">EGI Acumulado Real</div>
-      <div class="kpi-val">87.10%</div>
-      <div class="kpi-plan">BPC Jun/26: 85.73%</div>
-      <div class="kpi-delta"><span style="color:#00C853">▲ 1.4% (+1.6%)</span></div>
-    </div>
-    <div class="card">
-      <div class="kpi-lbl">RTC Acumulado</div>
-      <div class="kpi-val">94.67%</div>
-      <div class="kpi-plan">BPC Jun/26: 93.15%</div>
-      <div class="kpi-delta"><span style="color:#00C853">▲ 1.5% (+1.6%)</span></div>
-    </div>
-    <div class="card">
-      <div class="kpi-lbl">Aproveitamento Acumulado</div>
-      <div class="kpi-val">57.2%</div>
-      <div class="kpi-plan">BPC prop. Mar–Jun: ~70.9%</div>
-      <div class="kpi-delta"><span style="color:#FF1744">▼ 13.7 pp (-19.3%)</span></div>
-    </div>
-    <div class="card">
-      <div class="kpi-lbl">Moagem Horária Acum.</div>
-      <div class="kpi-val">526.8 t/h</div>
-      <div class="kpi-plan">BPC: 564.35 t/h</div>
-      <div class="kpi-delta"><span style="color:#FF1744">▼ 37.6 t/h (-6.7%)</span></div>
-    </div>
-  </div>
-
-  <div class="g2">
-    <div class="chart-card">
-      <div class="chart-title">EGI Diário 2026 — Tendência</div>
-      <canvas id="c_ind_egi2" height="130"></canvas>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">Aproveitamento Diário % — 2026</div>
-      <canvas id="c_ind_aprov2" height="130"></canvas>
-    </div>
-  </div>
-
-  <div class="chart-card" style="margin-bottom:16px">
-    <div class="chart-title">BPC Industrial Mensal — Plano vs Real Acumulado (Mar–14/Jun/2026)</div>
-    <canvas id="c_ind_bpc" height="100"></canvas>
-  </div>
-
-  <div class="tbl-wrap">
-    <div class="tbl-hdr">Plano Industrial Mensal BPC — Safra 2026/27 Completa</div>
-    <table>
-      <thead>
-        <tr><th>Mês</th><th style="text-align:right">Moagem (t)</th><th style="text-align:right">Aprov.%</th>
-          <th style="text-align:right">ATR</th><th style="text-align:right">EGI%</th>
-          <th style="text-align:right">RTC%</th><th style="text-align:right">Et.Hid.</th>
-          <th style="text-align:right">Et.Ani.</th><th style="text-align:right">Energia Exp.</th></tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Mar/26</strong></td>
-          <td style="text-align:right">202.584</td>
-          <td style="text-align:right">60,76%</td>
-          <td style="text-align:right">118</td>
-          <td style="text-align:right">84,82%</td>
-          <td style="text-align:right">92,09%</td>
-          <td style="text-align:right">8.916</td>
-          <td style="text-align:right">5.728</td>
-          <td style="text-align:right">13.168</td>
-        </tr><tr>
-          <td><strong>Abr/26</strong></td>
-          <td style="text-align:right">279.853</td>
-          <td style="text-align:right">68,87%</td>
-          <td style="text-align:right">127</td>
-          <td style="text-align:right">86,85%</td>
-          <td style="text-align:right">94,37%</td>
-          <td style="text-align:right">9.729</td>
-          <td style="text-align:right">12.428</td>
-          <td style="text-align:right">16.791</td>
-        </tr><tr>
-          <td><strong>Mai/26</strong></td>
-          <td style="text-align:right">340.481</td>
-          <td style="text-align:right">81,09%</td>
-          <td style="text-align:right">132</td>
-          <td style="text-align:right">86,48%</td>
-          <td style="text-align:right">93,94%</td>
-          <td style="text-align:right">13.104</td>
-          <td style="text-align:right">14.825</td>
-          <td style="text-align:right">20.940</td>
-        </tr><tr>
-          <td><strong>Jun/26</strong></td>
-          <td style="text-align:right">295.832</td>
-          <td style="text-align:right">72,81%</td>
-          <td style="text-align:right">139</td>
-          <td style="text-align:right">85,73%</td>
-          <td style="text-align:right">93,15%</td>
-          <td style="text-align:right">12.402</td>
-          <td style="text-align:right">12.948</td>
-          <td style="text-align:right">18.637</td>
-        </tr><tr>
-          <td><strong>Jul/26</strong></td>
-          <td style="text-align:right">402.622</td>
-          <td style="text-align:right">89,60%</td>
-          <td style="text-align:right">140</td>
-          <td style="text-align:right">85,52%</td>
-          <td style="text-align:right">92,90%</td>
-          <td style="text-align:right">19.079</td>
-          <td style="text-align:right">15.662</td>
-          <td style="text-align:right">24.560</td>
-        </tr><tr>
-          <td><strong>Ago/26</strong></td>
-          <td style="text-align:right">360.951</td>
-          <td style="text-align:right">80,33%</td>
-          <td style="text-align:right">146</td>
-          <td style="text-align:right">85,14%</td>
-          <td style="text-align:right">92,47%</td>
-          <td style="text-align:right">18.087</td>
-          <td style="text-align:right">14.261</td>
-          <td style="text-align:right">22.740</td>
-        </tr><tr>
-          <td><strong>Set/26</strong></td>
-          <td style="text-align:right">342.203</td>
-          <td style="text-align:right">78,69%</td>
-          <td style="text-align:right">151</td>
-          <td style="text-align:right">86,13%</td>
-          <td style="text-align:right">93,57%</td>
-          <td style="text-align:right">18.266</td>
-          <td style="text-align:right">13.831</td>
-          <td style="text-align:right">21.901</td>
-        </tr><tr>
-          <td><strong>Out/26</strong></td>
-          <td style="text-align:right">279.556</td>
-          <td style="text-align:right">62,21%</td>
-          <td style="text-align:right">150</td>
-          <td style="text-align:right">84,76%</td>
-          <td style="text-align:right">92,10%</td>
-          <td style="text-align:right">13.546</td>
-          <td style="text-align:right">12.050</td>
-          <td style="text-align:right">18.590</td>
-        </tr><tr>
-          <td><strong>Nov/26</strong></td>
-          <td style="text-align:right">264.527</td>
-          <td style="text-align:right">60,83%</td>
-          <td style="text-align:right">135</td>
-          <td style="text-align:right">84,15%</td>
-          <td style="text-align:right">91,44%</td>
-          <td style="text-align:right">11.232</td>
-          <td style="text-align:right">10.400</td>
-          <td style="text-align:right">17.591</td>
-        </tr>
-        <tr style="font-weight:700;color:var(--gold);border-top:2px solid var(--green)">
-          <td>TOTAL BPC</td>
-          <td style="text-align:right">2.768.608</td>
-          <td style="text-align:right">72,80%</td>
-          <td style="text-align:right">137,6</td>
-          <td style="text-align:right">85,51%</td>
-          <td style="text-align:right">92,89%</td>
-          <td style="text-align:right">124.361</td>
-          <td style="text-align:right">112.133</td>
-          <td style="text-align:right">174.918</td>
-        </tr>
-      </tbody>
-    </table>
+<div id="drill-modal">
+  <div class="modal-box">
+    <span class="close-btn" onclick="closeDrill()">x</span>
+    <h3 id="drill-title">Fazendas</h3>
+    <div id="drill-content"></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════
-     TAB 5 — HISTÓRICO SAFRAS
-══════════════════════════════════════════════════════════ -->
-<div class="content" id="tab5">
-  <div class="alert ok">
-    <span>&#x1F4CA;</span>
-    <span>Série histórica 2017–2026 &nbsp;|&nbsp; 21.4 M t processadas &nbsp;|&nbsp; Fonte: Histórico Diário Safras.xlsx</span>
-  </div>
-
-  <div class="g3">
-    <div class="chart-card">
-      <div class="chart-title">Moagem Total por Safra (t)</div>
-      <canvas id="c_h_moa" height="160"></canvas>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">ATR Médio por Safra (kg/t)</div>
-      <canvas id="c_h_atr" height="160"></canvas>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">EGI Médio por Safra (%)</div>
-      <canvas id="c_h_egi" height="160"></canvas>
-    </div>
-  </div>
-
-  <div class="g2">
-    <div class="chart-card">
-      <div class="chart-title">TCH Histórico por Safra — BD SAFRAS</div>
-      <canvas id="c_h_tch" height="140"></canvas>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">Aproveitamento Médio Histórico (%)</div>
-      <canvas id="c_h_aprov" height="140"></canvas>
-    </div>
-  </div>
-
-  <div class="tbl-wrap">
-    <div class="tbl-hdr">Resumo Histórico por Safra — Indicadores Consolidados</div>
-    <table>
-      <thead>
-        <tr><th>Safra</th><th style="text-align:right">Moagem</th><th style="text-align:right">ATR</th>
-          <th style="text-align:right">EGI%</th><th style="text-align:right">t/h</th><th style="text-align:right">Aprov.%</th></tr>
-      </thead>
-      <tbody><tr>
-          <td><strong>2026</strong></td>
-          <td style="text-align:right">730K</td>
-          <td style="text-align:right">126,51</td>
-          <td style="text-align:right">87,37%</td>
-          <td style="text-align:right">518,4</td>
-          <td style="text-align:right">81,4%</td>
-        </tr><tr>
-          <td><strong>2025</strong></td>
-          <td style="text-align:right">2768K</td>
-          <td style="text-align:right">139,65</td>
-          <td style="text-align:right">85,93%</td>
-          <td style="text-align:right">557,6</td>
-          <td style="text-align:right">87,0%</td>
-        </tr><tr>
-          <td><strong>2024</strong></td>
-          <td style="text-align:right">2605K</td>
-          <td style="text-align:right">137,68</td>
-          <td style="text-align:right">84,94%</td>
-          <td style="text-align:right">525,3</td>
-          <td style="text-align:right">88,8%</td>
-        </tr><tr>
-          <td><strong>2023</strong></td>
-          <td style="text-align:right">2580K</td>
-          <td style="text-align:right">138,94</td>
-          <td style="text-align:right">87,04%</td>
-          <td style="text-align:right">88,2</td>
-          <td style="text-align:right">0,0%</td>
-        </tr><tr>
-          <td><strong>2022</strong></td>
-          <td style="text-align:right">2017K</td>
-          <td style="text-align:right">135,54</td>
-          <td style="text-align:right">85,48%</td>
-          <td style="text-align:right">88,6</td>
-          <td style="text-align:right">0,0%</td>
-        </tr><tr>
-          <td><strong>2021</strong></td>
-          <td style="text-align:right">1881K</td>
-          <td style="text-align:right">134,20</td>
-          <td style="text-align:right">85,87%</td>
-          <td style="text-align:right">90,0</td>
-          <td style="text-align:right">0,0%</td>
-        </tr><tr>
-          <td><strong>2020</strong></td>
-          <td style="text-align:right">2335K</td>
-          <td style="text-align:right">130,28</td>
-          <td style="text-align:right">85,55%</td>
-          <td style="text-align:right">90,5</td>
-          <td style="text-align:right">0,0%</td>
-        </tr><tr>
-          <td><strong>2019</strong></td>
-          <td style="text-align:right">2133K</td>
-          <td style="text-align:right">126,97</td>
-          <td style="text-align:right">85,83%</td>
-          <td style="text-align:right">12,6</td>
-          <td style="text-align:right">486,8%</td>
-        </tr><tr>
-          <td><strong>2018</strong></td>
-          <td style="text-align:right">2270K</td>
-          <td style="text-align:right">121,65</td>
-          <td style="text-align:right">84,50%</td>
-          <td style="text-align:right">9,6</td>
-          <td style="text-align:right">499,3%</td>
-        </tr><tr>
-          <td><strong>2017</strong></td>
-          <td style="text-align:right">2118K</td>
-          <td style="text-align:right">126,45</td>
-          <td style="text-align:right">85,27%</td>
-          <td style="text-align:right">490,5</td>
-          <td style="text-align:right">81,4%</td>
-        </tr></tbody>
-    </table>
-  </div>
-
-  <div class="tbl-wrap">
-    <div class="tbl-hdr">TCH e ATR Histórico por Safra — BD SAFRAS (407 fazendas)</div>
-    <table>
-      <thead>
-        <tr><th>Safra</th><th style="text-align:right">21213</th><th style="text-align:right">21314</th><th style="text-align:right">21415</th><th style="text-align:right">21516</th><th style="text-align:right">21617</th><th style="text-align:right">21718</th><th style="text-align:right">21819</th><th style="text-align:right">21920</th><th style="text-align:right">22021</th><th style="text-align:right">22122</th><th style="text-align:right">22223</th><th style="text-align:right">22324</th></tr>
-      </thead>
-      <tbody>
-        <tr><td><strong>TCH</strong></td><td style="text-align:right">60.1</td><td style="text-align:right">56.0</td><td style="text-align:right">55.5</td><td style="text-align:right">75.2</td><td style="text-align:right">67.2</td><td style="text-align:right">65.0</td><td style="text-align:right">70.8</td><td style="text-align:right">63.4</td><td style="text-align:right">66.2</td><td style="text-align:right">55.4</td><td style="text-align:right">63.1</td><td style="text-align:right">85.8</td></tr>
-        <tr><td><strong>ATR</strong></td><td style="text-align:right">128.3</td><td style="text-align:right">122.8</td><td style="text-align:right">126.0</td><td style="text-align:right">121.6</td><td style="text-align:right">129.4</td><td style="text-align:right">127.3</td><td style="text-align:right">122.1</td><td style="text-align:right">128.2</td><td style="text-align:right">130.9</td><td style="text-align:right">133.2</td><td style="text-align:right">135.3</td><td style="text-align:right">136.9</td></tr>
-        <tr><td><strong>TAH</strong></td><td style="text-align:right">7.62</td><td style="text-align:right">6.76</td><td style="text-align:right">6.93</td><td style="text-align:right">9.00</td><td style="text-align:right">8.61</td><td style="text-align:right">8.18</td><td style="text-align:right">8.58</td><td style="text-align:right">7.98</td><td style="text-align:right">8.64</td><td style="text-align:right">7.41</td><td style="text-align:right">8.52</td><td style="text-align:right">11.80</td></tr>
-        <tr><td><strong>Área (ha)</strong></td><td style="text-align:right">32,599</td><td style="text-align:right">34,747</td><td style="text-align:right">34,649</td><td style="text-align:right">30,882</td><td style="text-align:right">29,764</td><td style="text-align:right">32,598</td><td style="text-align:right">32,060</td><td style="text-align:right">33,648</td><td style="text-align:right">37,041</td><td style="text-align:right">33,985</td><td style="text-align:right">32,013</td><td style="text-align:right">31,053</td></tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════════════════════
-     TAB 6 — INTELIGÊNCIA
-══════════════════════════════════════════════════════════ -->
-<div class="content" id="tab6">
-  <div class="sec">&#x1F4A1; Análise de Inteligência — Cruzamentos e Insights</div>
-
-  <div class="g3">
-    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px">
-      <div style="font-size:0.75rem;font-weight:700;color:var(--gold);text-transform:uppercase;margin-bottom:14px;letter-spacing:1px">
-        &#x1F4B0; OPORTUNIDADE FINANCEIRA — Reforma 4C+
-      </div>
-      <div style="font-size:0.82rem;color:var(--text2);line-height:1.9">
-        <div style="color:var(--text);font-weight:600;margin-bottom:8px">Análise: Renovação de 15.173 ha 4C+</div>
-        <div>• TCH atual 4C+: <span style="color:#FF1744">64 t/ha</span></div>
-        <div>• TCH potencial 1C: <span style="color:#00C853">99.6 t/ha</span></div>
-        <div>• Ganho/ha: <span style="color:#00C853">+35.6 t/ha</span></div>
-        <div>• Ganho total safra: <span style="color:#00C853">+540K t</span></div>
-        <div>• Receita adicional: <span style="color:var(--gold);font-weight:700">~R$ 42 M/safra</span></div>
-        <div style="margin-top:10px;padding:8px;background:rgba(0,200,83,0.08);border-radius:6px;font-size:0.78rem;color:#00C853">
-          &#x2705; ROI de renovação: &lt;2 safras se priorizado estrategicamente
-        </div>
-      </div>
-    </div>
-
-    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px">
-      <div style="font-size:0.75rem;font-weight:700;color:var(--gold);text-transform:uppercase;margin-bottom:14px;letter-spacing:1px">
-        &#x1F331; TROCA DE VARIEDADE — Impacto TAH
-      </div>
-      <div style="font-size:0.82rem;color:var(--text2);line-height:1.9">
-        <div style="color:var(--text);font-weight:600;margin-bottom:8px">Substituição CTC15 → CTC9006</div>
-        <div>• CTC15 TAH: <span style="color:#FF1744">≤ 7.6 t ATR/ha</span></div>
-        <div>• CTC9006 TAH: <span style="color:#00C853">19.60 t ATR/ha</span></div>
-        <div>• Diferença: <span style="color:#00C853">+12.00 t ATR/ha</span></div>
-        <div>• Em 1.000 ha: <span style="color:var(--gold);font-weight:700">+12,000 t ATR</span></div>
-        <div>• Receita adicional: <span style="color:var(--gold);font-weight:700">R$ 12.4 M/1K ha</span></div>
-        <div style="margin-top:10px;padding:8px;background:rgba(255,214,0,0.08);border-radius:6px;font-size:0.78rem;color:var(--gold)">
-          &#x26A0; Verificar compatibilidade ambiente × solo antes de escalar
-        </div>
-      </div>
-    </div>
-
-    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px">
-      <div style="font-size:0.75rem;font-weight:700;color:var(--gold);text-transform:uppercase;margin-bottom:14px;letter-spacing:1px">
-        &#x1F4C8; PROJEÇÃO FINAL SAFRA 2026/27
-      </div>
-      <div style="font-size:0.82rem;color:var(--text2);line-height:1.9">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-          <span>Pessimista (aprov. 60%)</span>
-          <span style="color:#FF1744;font-weight:700">1.915 M t</span>
-        </div>
-        <div class="pb" style="margin-bottom:12px"><div class="pf red" style="width:69%"></div></div>
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-          <span>Base (Reestimativa)</span>
-          <span style="color:var(--gold);font-weight:700">2,624 M t</span>
-        </div>
-        <div class="pb" style="margin-bottom:12px"><div class="pf yellow" style="width:95%"></div></div>
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-          <span>Otimista (aprov. 95%)</span>
-          <span style="color:#00C853;font-weight:700">2.461 M t</span>
-        </div>
-        <div class="pb"><div class="pf" style="width:89%"></div></div>
-        <div style="margin-top:12px;font-size:0.75rem;color:var(--text3)">
-          Precisa de aprov. médio ≥82% (Jul–Nov) para atingir Reestimativa
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="g2">
-    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px">
-      <div style="font-size:0.75rem;font-weight:700;color:var(--gold);text-transform:uppercase;margin-bottom:14px">
-        &#x1F4CB; PLANO DE AÇÃO PRIORIZADO POR IMPACTO R$
-      </div>
-      <div style="display:flex;flex-direction:column;gap:8px;font-size:0.82rem">
-        <div style="display:flex;align-items:flex-start;gap:10px;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;border-left:3px solid #00C853">
-          <div style="font-size:1.2rem;min-width:24px">1️⃣</div>
-          <div><div style="color:var(--text);font-weight:600;margin-bottom:2px">Maximizar aproveitamento Jul–Set</div>
-          <div style="color:var(--text2);font-size:0.78rem">Meta >85% | Cada 1pp = ~+8K t moagem</div>
-          <div style="color:#00C853;font-size:0.75rem;margin-top:3px;font-weight:600">Impacto: R$8–12M por pp recuperado</div></div>
-        </div><div style="display:flex;align-items:flex-start;gap:10px;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;border-left:3px solid #00C853">
-          <div style="font-size:1.2rem;min-width:24px">2️⃣</div>
-          <div><div style="color:var(--text);font-weight:600;margin-bottom:2px">Renovação prioritária 4C+ (15.173 ha)</div>
-          <div style="color:var(--text2);font-size:0.78rem">TCH 64→99.6 t/ha | Priorizar Amb. A e B</div>
-          <div style="color:#00C853;font-size:0.75rem;margin-top:3px;font-weight:600">Receita adicional: R$42M/safra</div></div>
-        </div><div style="display:flex;align-items:flex-start;gap:10px;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;border-left:3px solid #FFD600">
-          <div style="font-size:1.2rem;min-width:24px">3️⃣</div>
-          <div><div style="color:var(--text);font-weight:600;margin-bottom:2px">Substituir CTC15 em todos os novos plantios</div>
-          <div style="color:var(--text2);font-size:0.78rem">TAH <7.6 | Trocar por CTC9006 ou top variedade</div>
-          <div style="color:#FFD600;font-size:0.75rem;margin-top:3px;font-weight:600">Ganho: +7 t ATR/ha vs CTC15</div></div>
-        </div><div style="display:flex;align-items:flex-start;gap:10px;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;border-left:3px solid #FFD600">
-          <div style="font-size:1.2rem;min-width:24px">4️⃣</div>
-          <div><div style="color:var(--text);font-weight:600;margin-bottom:2px">Reduzir CHI controlável <R$5K/dia</div>
-          <div style="color:var(--text2);font-size:0.78rem">Meta: CHI R$2K–5K/dia (amarelo)</div>
-          <div style="color:#FFD600;font-size:0.75rem;margin-top:3px;font-weight:600">Economia estimada: R$1.5–3M/safra</div></div>
-        </div><div style="display:flex;align-items:flex-start;gap:10px;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;border-left:3px solid #FF6D00">
-          <div style="font-size:1.2rem;min-width:24px">5️⃣</div>
-          <div><div style="color:var(--text);font-weight:600;margin-bottom:2px">Antecipar maturadores nas áreas com ATR <130</div>
-          <div style="color:var(--text2);font-size:0.78rem">Corrigir curva de maturação Jul/Ago</div>
-          <div style="color:#FF6D00;font-size:0.75rem;margin-top:3px;font-weight:600">Ganho: +3–5 kg ATR/t = R$3–8M</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px">
-      <div style="font-size:0.75rem;font-weight:700;color:var(--gold);text-transform:uppercase;margin-bottom:14px">
-        &#x1F4D0; ANÁLISE DE CORRELAÇÕES
-      </div>
-      <div style="font-size:0.82rem;color:var(--text2);line-height:2">
-        <div style="color:var(--text);font-weight:600;margin-bottom:8px;font-size:0.85rem">O que os dados revelam:</div>
-        <div>• <strong style="color:#fff">Ambiente E</strong> = maior TAH médio histórico → priorizar no mapa de renovação</div>
-        <div>• <strong style="color:#fff">Ciclo 1C</strong> entrega ~55% mais TCH que 4C+ na média histórica</div>
-        <div>• <strong style="color:#fff">ATR e aproveitamento</strong> crescem jun→set: janela de recuperação real</div>
-        <div>• <strong style="color:#fff">EGI industrial</strong> consistente ~86–87%: perda é agrícola, não industrial</div>
-        <div>• <strong style="color:#fff">Meses Jul–Set</strong> historicamente têm aproveitamento >80% → base para recuperação</div>
-        <div>• <strong style="color:#fff">Fazendas top TAH</strong> concentram poucas variedades de alta performance</div>
-        <div style="margin-top:12px;padding:10px;background:rgba(0,200,83,0.06);border-radius:8px;color:#00C853;font-size:0.78rem">
-          &#x2714; VEREDICTO: Operação industrialmente eficiente. Gap é 100% agrícola:
-          volume, renovação e variedades. Ações acima valem R$50–70M na próxima safra.
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════════════════════
-     SCRIPTS
-══════════════════════════════════════════════════════════ -->
 <script>
-function switchTab(n){
-  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===n));
-  document.querySelectorAll('.content').forEach((c,i)=>c.classList.toggle('active',i===n));
+const DRILLDOWN={"A": [{"amb": "A", "faz": "20592", "tah": 15.65, "tch": 116.7, "atr": 135.8, "ha": 288.0}, {"amb": "A", "faz": "10105", "tah": 11.82, "tch": 99.7, "atr": 120.1, "ha": 73.0}, {"amb": "A", "faz": "20545", "tah": 11.45, "tch": 101.2, "atr": 121.0, "ha": 80.0}, {"amb": "A", "faz": "10100", "tah": 10.61, "tch": 84.9, "atr": 126.9, "ha": 69.0}, {"amb": "A", "faz": "20517", "tah": 10.29, "tch": 82.0, "atr": 127.5, "ha": 281.0}, {"amb": "A", "faz": "10432", "tah": 9.16, "tch": 80.6, "atr": 115.8, "ha": 67.0}, {"amb": "A", "faz": "20314", "tah": 7.79, "tch": 66.1, "atr": 118.4, "ha": 12316.0}, {"amb": "A", "faz": "10409", "tah": 6.86, "tch": 58.6, "atr": 121.3, "ha": 134.0}], "B": [{"amb": "B", "faz": "20718", "tah": 15.54, "tch": 105.2, "atr": 147.7, "ha": 43.0}, {"amb": "B", "faz": "20590", "tah": 13.67, "tch": 106.9, "atr": 127.6, "ha": 574.0}, {"amb": "B", "faz": "20848", "tah": 13.07, "tch": 92.4, "atr": 142.9, "ha": 32.0}, {"amb": "B", "faz": "20454", "tah": 12.9, "tch": 98.1, "atr": 133.0, "ha": 42.0}, {"amb": "B", "faz": "20833", "tah": 11.49, "tch": 78.7, "atr": 146.2, "ha": 65.0}, {"amb": "B", "faz": "20592", "tah": 11.02, "tch": 82.2, "atr": 134.5, "ha": 34.0}, {"amb": "B", "faz": "20306", "tah": 10.38, "tch": 85.5, "atr": 122.9, "ha": 684.0}, {"amb": "B", "faz": "20479", "tah": 10.25, "tch": 89.3, "atr": 115.2, "ha": 79.0}, {"amb": "B", "faz": "10108", "tah": 9.79, "tch": 79.4, "atr": 123.3, "ha": 77.0}, {"amb": "B", "faz": "20473", "tah": 9.53, "tch": 67.8, "atr": 140.9, "ha": 52.0}, {"amb": "B", "faz": "10318", "tah": 9.3, "tch": 75.6, "atr": 124.4, "ha": 102.0}, {"amb": "B", "faz": "10102", "tah": 9.19, "tch": 76.9, "atr": 121.5, "ha": 107.0}, {"amb": "B", "faz": "10112", "tah": 9.13, "tch": 70.8, "atr": 126.8, "ha": 50.0}, {"amb": "B", "faz": "10005", "tah": 8.97, "tch": 67.0, "atr": 134.6, "ha": 392.0}, {"amb": "B", "faz": "10106", "tah": 8.84, "tch": 72.3, "atr": 122.4, "ha": 32.0}, {"amb": "B", "faz": "20579", "tah": 8.77, "tch": 68.7, "atr": 128.8, "ha": 66.0}, {"amb": "B", "faz": "20315", "tah": 8.71, "tch": 77.0, "atr": 116.4, "ha": 707.0}, {"amb": "B", "faz": "20471", "tah": 8.59, "tch": 64.1, "atr": 136.5, "ha": 98.0}, {"amb": "B", "faz": "10113", "tah": 8.51, "tch": 67.4, "atr": 133.1, "ha": 93.0}, {"amb": "B", "faz": "10316", "tah": 8.47, "tch": 68.7, "atr": 122.4, "ha": 63.0}, {"amb": "B", "faz": "20314", "tah": 8.28, "tch": 69.7, "atr": 118.7, "ha": 3819.0}, {"amb": "B", "faz": "20432", "tah": 8.22, "tch": 64.6, "atr": 127.9, "ha": 1279.0}, {"amb": "B", "faz": "20483", "tah": 8.19, "tch": 60.9, "atr": 133.2, "ha": 417.0}, {"amb": "B", "faz": "10703", "tah": 8.13, "tch": 64.8, "atr": 127.1, "ha": 1113.0}, {"amb": "B", "faz": "20450", "tah": 7.92, "tch": 63.3, "atr": 128.0, "ha": 364.0}, {"amb": "B", "faz": "10107", "tah": 7.9, "tch": 67.8, "atr": 119.5, "ha": 64.0}, {"amb": "B", "faz": "10328", "tah": 7.86, "tch": 59.0, "atr": 133.5, "ha": 117.0}, {"amb": "B", "faz": "10417", "tah": 7.8, "tch": 59.5, "atr": 131.5, "ha": 431.0}, {"amb": "B", "faz": "10326", "tah": 7.79, "tch": 60.4, "atr": 132.1, "ha": 49.0}, {"amb": "B", "faz": "20420", "tah": 7.68, "tch": 57.8, "atr": 131.1, "ha": 34.0}], "C": [{"amb": "C", "faz": "20717", "tah": 16.65, "tch": 120.3, "atr": 139.7, "ha": 65.0}, {"amb": "C", "faz": "20847", "tah": 15.52, "tch": 103.9, "atr": 149.6, "ha": 119.0}, {"amb": "C", "faz": "20373", "tah": 14.08, "tch": 107.0, "atr": 133.0, "ha": 62.0}, {"amb": "C", "faz": "20592", "tah": 13.85, "tch": 101.6, "atr": 136.7, "ha": 350.0}, {"amb": "C", "faz": "10312", "tah": 13.49, "tch": 93.1, "atr": 144.9, "ha": 60.0}, {"amb": "C", "faz": "20533", "tah": 12.56, "tch": 101.0, "atr": 125.6, "ha": 41.0}, {"amb": "C", "faz": "20554", "tah": 12.04, "tch": 102.2, "atr": 120.3, "ha": 86.0}, {"amb": "C", "faz": "20706", "tah": 11.5, "tch": 87.6, "atr": 134.3, "ha": 271.0}, {"amb": "C", "faz": "20569", "tah": 11.33, "tch": 84.7, "atr": 135.4, "ha": 1604.0}, {"amb": "C", "faz": "20491", "tah": 10.89, "tch": 81.9, "atr": 133.6, "ha": 960.0}, {"amb": "C", "faz": "20705", "tah": 10.75, "tch": 84.9, "atr": 128.7, "ha": 3105.0}, {"amb": "C", "faz": "20590", "tah": 10.54, "tch": 84.5, "atr": 124.4, "ha": 618.0}, {"amb": "C", "faz": "20555", "tah": 10.46, "tch": 83.2, "atr": 127.2, "ha": 698.0}, {"amb": "C", "faz": "20539", "tah": 10.21, "tch": 80.3, "atr": 127.8, "ha": 330.0}, {"amb": "C", "faz": "20496", "tah": 10.14, "tch": 78.0, "atr": 130.5, "ha": 1301.0}, {"amb": "C", "faz": "10313", "tah": 9.94, "tch": 74.9, "atr": 134.4, "ha": 453.0}, {"amb": "C", "faz": "20579", "tah": 9.91, "tch": 77.4, "atr": 130.1, "ha": 2093.0}, {"amb": "C", "faz": "20556", "tah": 9.88, "tch": 84.8, "atr": 122.1, "ha": 206.0}, {"amb": "C", "faz": "20515", "tah": 9.87, "tch": 73.1, "atr": 133.2, "ha": 148.0}, {"amb": "C", "faz": "20314", "tah": 9.86, "tch": 79.2, "atr": 124.6, "ha": 12009.0}, {"amb": "C", "faz": "20454", "tah": 9.83, "tch": 77.4, "atr": 127.0, "ha": 337.0}, {"amb": "C", "faz": "20538", "tah": 9.83, "tch": 74.1, "atr": 133.6, "ha": 112.0}, {"amb": "C", "faz": "20479", "tah": 9.73, "tch": 87.4, "atr": 113.8, "ha": 133.0}, {"amb": "C", "faz": "20511", "tah": 9.69, "tch": 76.6, "atr": 127.2, "ha": 9654.0}, {"amb": "C", "faz": "20576", "tah": 9.55, "tch": 66.4, "atr": 143.3, "ha": 64.0}, {"amb": "C", "faz": "20518", "tah": 9.41, "tch": 76.8, "atr": 123.6, "ha": 901.0}, {"amb": "C", "faz": "10317", "tah": 9.37, "tch": 71.0, "atr": 132.9, "ha": 272.0}, {"amb": "C", "faz": "20453", "tah": 9.35, "tch": 77.7, "atr": 126.2, "ha": 71.0}, {"amb": "C", "faz": "20333", "tah": 9.27, "tch": 64.1, "atr": 141.9, "ha": 202.0}, {"amb": "C", "faz": "20339", "tah": 9.07, "tch": 65.6, "atr": 133.3, "ha": 321.0}], "D": [{"amb": "D", "faz": "20614", "tah": 21.7, "tch": 142.2, "atr": 152.5, "ha": 52.0}, {"amb": "D", "faz": "20860", "tah": 18.57, "tch": 120.7, "atr": 154.2, "ha": 128.0}, {"amb": "D", "faz": "20716", "tah": 14.6, "tch": 103.8, "atr": 141.1, "ha": 732.0}, {"amb": "D", "faz": "20592", "tah": 14.51, "tch": 103.7, "atr": 138.8, "ha": 319.0}, {"amb": "D", "faz": "20847", "tah": 13.32, "tch": 95.5, "atr": 139.4, "ha": 86.0}, {"amb": "D", "faz": "20589", "tah": 12.75, "tch": 93.2, "atr": 133.7, "ha": 544.0}, {"amb": "D", "faz": "20569", "tah": 11.98, "tch": 92.7, "atr": 131.0, "ha": 1524.0}, {"amb": "D", "faz": "20746", "tah": 11.96, "tch": 92.1, "atr": 129.9, "ha": 35.0}, {"amb": "D", "faz": "20821", "tah": 11.8, "tch": 92.1, "atr": 127.2, "ha": 152.0}, {"amb": "D", "faz": "20713", "tah": 11.69, "tch": 86.9, "atr": 135.4, "ha": 3496.0}, {"amb": "D", "faz": "20552", "tah": 11.63, "tch": 81.3, "atr": 143.4, "ha": 308.0}, {"amb": "D", "faz": "20319", "tah": 11.62, "tch": 84.6, "atr": 131.1, "ha": 465.0}, {"amb": "D", "faz": "20591", "tah": 11.47, "tch": 84.2, "atr": 135.6, "ha": 1490.0}, {"amb": "D", "faz": "20824", "tah": 11.44, "tch": 106.9, "atr": 106.2, "ha": 193.0}, {"amb": "D", "faz": "20524", "tah": 11.22, "tch": 102.0, "atr": 118.2, "ha": 172.0}, {"amb": "D", "faz": "20751", "tah": 11.19, "tch": 80.1, "atr": 139.7, "ha": 203.0}, {"amb": "D", "faz": "20820", "tah": 11.08, "tch": 82.4, "atr": 134.4, "ha": 195.0}, {"amb": "D", "faz": "20328", "tah": 11.04, "tch": 83.0, "atr": 138.0, "ha": 484.0}, {"amb": "D", "faz": "20705", "tah": 10.87, "tch": 79.7, "atr": 136.6, "ha": 4487.0}, {"amb": "D", "faz": "20565", "tah": 10.83, "tch": 99.4, "atr": 123.2, "ha": 58.0}, {"amb": "D", "faz": "20790", "tah": 10.71, "tch": 74.7, "atr": 143.4, "ha": 30.0}, {"amb": "D", "faz": "20420", "tah": 10.62, "tch": 73.5, "atr": 138.9, "ha": 334.0}, {"amb": "D", "faz": "20307", "tah": 10.55, "tch": 78.5, "atr": 132.8, "ha": 1123.0}, {"amb": "D", "faz": "20518", "tah": 10.49, "tch": 83.4, "atr": 124.1, "ha": 1082.0}, {"amb": "D", "faz": "20415", "tah": 10.38, "tch": 71.4, "atr": 143.7, "ha": 76.0}, {"amb": "D", "faz": "10007", "tah": 10.37, "tch": 85.2, "atr": 121.5, "ha": 95.0}, {"amb": "D", "faz": "20805", "tah": 10.29, "tch": 83.3, "atr": 128.1, "ha": 47.0}, {"amb": "D", "faz": "20426", "tah": 10.23, "tch": 76.3, "atr": 133.3, "ha": 737.0}, {"amb": "D", "faz": "20580", "tah": 10.23, "tch": 75.6, "atr": 133.9, "ha": 660.0}, {"amb": "D", "faz": "20734", "tah": 10.2, "tch": 76.7, "atr": 132.9, "ha": 64.0}], "E": [{"amb": "E", "faz": "20601", "tah": 16.6, "tch": 124.3, "atr": 133.7, "ha": 51.0}, {"amb": "E", "faz": "20716", "tah": 16.35, "tch": 112.7, "atr": 146.8, "ha": 97.0}, {"amb": "E", "faz": "20610", "tah": 16.03, "tch": 102.2, "atr": 156.8, "ha": 61.0}, {"amb": "E", "faz": "10311", "tah": 12.2, "tch": 83.7, "atr": 143.2, "ha": 765.0}, {"amb": "E", "faz": "20575", "tah": 11.78, "tch": 91.2, "atr": 126.7, "ha": 59.0}, {"amb": "E", "faz": "20362", "tah": 11.56, "tch": 83.4, "atr": 136.1, "ha": 118.0}, {"amb": "E", "faz": "20440", "tah": 11.07, "tch": 85.8, "atr": 128.8, "ha": 409.0}, {"amb": "E", "faz": "20305", "tah": 10.63, "tch": 81.7, "atr": 133.0, "ha": 305.0}, {"amb": "E", "faz": "20603", "tah": 10.63, "tch": 84.1, "atr": 125.7, "ha": 100.0}, {"amb": "E", "faz": "20555", "tah": 10.61, "tch": 94.0, "atr": 115.7, "ha": 34.0}, {"amb": "E", "faz": "20414", "tah": 10.57, "tch": 73.9, "atr": 141.4, "ha": 100.0}, {"amb": "E", "faz": "20392", "tah": 10.41, "tch": 84.6, "atr": 121.2, "ha": 247.0}, {"amb": "E", "faz": "20591", "tah": 10.32, "tch": 80.1, "atr": 128.2, "ha": 74.0}, {"amb": "E", "faz": "20595", "tah": 9.91, "tch": 70.0, "atr": 140.7, "ha": 77.0}, {"amb": "E", "faz": "20401", "tah": 9.88, "tch": 76.3, "atr": 127.1, "ha": 167.0}, {"amb": "E", "faz": "20833", "tah": 9.86, "tch": 77.3, "atr": 129.0, "ha": 85.0}, {"amb": "E", "faz": "10335", "tah": 9.8, "tch": 75.8, "atr": 123.7, "ha": 78.0}, {"amb": "E", "faz": "10714", "tah": 9.76, "tch": 84.1, "atr": 120.3, "ha": 132.0}, {"amb": "E", "faz": "20415", "tah": 9.75, "tch": 70.3, "atr": 136.8, "ha": 107.0}, {"amb": "E", "faz": "20482", "tah": 9.57, "tch": 75.4, "atr": 129.7, "ha": 426.0}, {"amb": "E", "faz": "20344", "tah": 9.55, "tch": 72.9, "atr": 131.1, "ha": 197.0}, {"amb": "E", "faz": "20553", "tah": 9.54, "tch": 74.2, "atr": 127.1, "ha": 504.0}, {"amb": "E", "faz": "20540", "tah": 9.51, "tch": 71.0, "atr": 130.6, "ha": 70.0}, {"amb": "E", "faz": "20471", "tah": 9.4, "tch": 71.3, "atr": 132.2, "ha": 2471.0}, {"amb": "E", "faz": "20485", "tah": 9.27, "tch": 68.9, "atr": 135.8, "ha": 436.0}, {"amb": "E", "faz": "20548", "tah": 9.27, "tch": 64.7, "atr": 147.4, "ha": 956.0}, {"amb": "E", "faz": "20331", "tah": 9.04, "tch": 65.2, "atr": 140.1, "ha": 307.0}, {"amb": "E", "faz": "10328", "tah": 9.03, "tch": 68.0, "atr": 134.0, "ha": 689.0}, {"amb": "E", "faz": "20479", "tah": 9.01, "tch": 64.1, "atr": 141.1, "ha": 230.0}, {"amb": "E", "faz": "20306", "tah": 8.96, "tch": 81.1, "atr": 110.7, "ha": 791.0}]};
+const AMB_DATA=[{"amb": "A", "tah": 8.07, "tch": 68.0, "atr": 119.1, "ha": 13394.0}, {"amb": "B", "tah": 7.79, "tch": 62.9, "atr": 125.0, "ha": 22598.0}, {"amb": "C", "tah": 8.65, "tch": 68.3, "atr": 127.3, "ha": 103509.0}, {"amb": "D", "tah": 8.54, "tch": 66.1, "atr": 130.2, "ha": 188219.0}, {"amb": "E", "tah": 7.66, "tch": 58.7, "atr": 131.2, "ha": 63610.0}];
+const VAR_LIST=[{"var": "CTC9006", "tah": 19.56, "tch": 139.6, "atr": 140.1, "ha": 1071.0}, {"var": "CTC9007", "tah": 16.91, "tch": 126.4, "atr": 134.8, "ha": 769.0}, {"var": "CTC9003BT", "tah": 16.44, "tch": 125.1, "atr": 133.0, "ha": 132.0}, {"var": "RB975242", "tah": 15.3, "tch": 109.4, "atr": 139.6, "ha": 1709.0}, {"var": "RB975201", "tah": 15.13, "tch": 106.1, "atr": 141.8, "ha": 2918.0}, {"var": "CTC9001BT", "tah": 14.8, "tch": 108.4, "atr": 136.6, "ha": 3117.0}, {"var": "RB985476", "tah": 14.21, "tch": 96.6, "atr": 148.2, "ha": 308.0}, {"var": "RB975952", "tah": 14.13, "tch": 127.9, "atr": 113.8, "ha": 46.0}, {"var": "CTC4", "tah": 13.56, "tch": 96.6, "atr": 140.1, "ha": 2322.0}, {"var": "RB985517", "tah": 13.51, "tch": 110.2, "atr": 122.6, "ha": 112.0}, {"var": "CTC9001", "tah": 12.58, "tch": 91.3, "atr": 137.8, "ha": 10902.0}, {"var": "CTC9003", "tah": 12.55, "tch": 108.3, "atr": 115.9, "ha": 26.0}, {"var": "CTC04", "tah": 10.32, "tch": 95.3, "atr": 109.2, "ha": 1213.0}, {"var": "RB966928", "tah": 9.77, "tch": 79.2, "atr": 124.5, "ha": 28371.0}, {"var": "CTC25", "tah": 9.77, "tch": 73.8, "atr": 131.9, "ha": 152.0}];
+const WORST_VAR=[{"var": "SP79-1011", "tah": 4.66, "tch": 43.6, "atr": 110.1, "ha": 109.0}, {"var": "RB72454", "tah": 5.33, "tch": 43.2, "atr": 125.0, "ha": 4840.0}, {"var": "RB835486", "tah": 5.68, "tch": 45.4, "atr": 125.3, "ha": 2112.0}, {"var": "SP80-3280", "tah": 5.98, "tch": 43.7, "atr": 138.0, "ha": 440.0}, {"var": "PO 88-62", "tah": 6.09, "tch": 54.1, "atr": 116.5, "ha": 145.0}, {"var": "SP81-3250", "tah": 6.31, "tch": 50.9, "atr": 125.1, "ha": 30077.0}, {"var": "RB855453", "tah": 6.39, "tch": 50.7, "atr": 127.1, "ha": 8019.0}, {"var": "RB925211", "tah": 6.42, "tch": 66.9, "atr": 101.7, "ha": 249.0}, {"var": "RB845210", "tah": 6.45, "tch": 53.4, "atr": 120.5, "ha": 860.0}, {"var": "RB855035", "tah": 6.52, "tch": 53.7, "atr": 123.4, "ha": 2415.0}, {"var": "RB935744", "tah": 7.08, "tch": 61.1, "atr": 116.6, "ha": 5306.0}, {"var": "RB835054", "tah": 7.08, "tch": 57.0, "atr": 125.9, "ha": 5303.0}];
+const CORTE_DATA=[{"corte": 1, "tch": 98.5, "ha": 67821.0}, {"corte": 2, "tch": 78.8, "ha": 67872.0}, {"corte": 3, "tch": 61.9, "ha": 72079.0}, {"corte": 4, "tch": 52.6, "ha": 80127.0}, {"corte": 5, "tch": 48.1, "ha": 58259.0}, {"corte": 6, "tch": 45.2, "ha": 29382.0}, {"corte": 7, "tch": 47.9, "ha": 10640.0}, {"corte": 8, "tch": 42.5, "ha": 3924.0}];
+const SAFRA_DATA=[{"safra": 21213, "label": "21213", "tch": 60.9, "atr": 132.4, "tah": 7.96, "ha": 31181.0}, {"safra": 21314, "label": "21314", "tch": 56.7, "atr": 122.9, "tah": 6.86, "ha": 34161.0}, {"safra": 21415, "label": "21415", "tch": 56.0, "atr": 126.1, "tah": 6.99, "ha": 34271.0}, {"safra": 21516, "label": "21516", "tch": 75.4, "atr": 121.7, "tah": 9.07, "ha": 30608.0}, {"safra": 21617, "label": "21617", "tch": 67.5, "atr": 129.5, "tah": 8.67, "ha": 29524.0}, {"safra": 21718, "label": "21718", "tch": 65.0, "atr": 127.3, "tah": 8.18, "ha": 32574.0}, {"safra": 21819, "label": "21819", "tch": 70.8, "atr": 122.1, "tah": 8.59, "ha": 31996.0}, {"safra": 21920, "label": "21920", "tch": 63.7, "atr": 128.8, "tah": 8.03, "ha": 33409.0}, {"safra": 22021, "label": "22021", "tch": 66.3, "atr": 130.9, "tah": 8.65, "ha": 36961.0}, {"safra": 22122, "label": "22122", "tch": 55.6, "atr": 133.2, "tah": 7.44, "ha": 33836.0}, {"safra": 22223, "label": "22223", "tch": 63.2, "atr": 135.4, "tah": 8.53, "ha": 31941.0}, {"safra": 22324, "label": "22324", "tch": 85.9, "atr": 136.9, "tah": 11.81, "ha": 31004.0}];
+const VAR_AMB=[{"var": "CTC9006", "amb": "E", "tah": 21.61, "tch": 149.6, "ha": 276.0}, {"var": "CTC9006", "amb": "D", "tah": 19.6, "tch": 141.5, "ha": 603.0}, {"var": "CTC9003BT", "amb": "C", "tah": 18.57, "tch": 152.5, "ha": 39.0}, {"var": "CTC9007", "amb": "D", "tah": 17.6, "tch": 131.9, "ha": 31.0}, {"var": "RB975201", "amb": "D", "tah": 17.58, "tch": 122.1, "ha": 1760.0}, {"var": "CTC9001", "amb": "A", "tah": 17.06, "tch": 117.1, "ha": 43.0}, {"var": "CTC9007", "amb": "B", "tah": 17.04, "tch": 117.4, "ha": 132.0}, {"var": "CTC9007", "amb": "C", "tah": 16.8, "tch": 127.2, "ha": 584.0}, {"var": "CTC9001BT", "amb": "E", "tah": 16.54, "tch": 118.9, "ha": 124.0}, {"var": "CTC9006", "amb": "C", "tah": 16.5, "tch": 119.3, "ha": 193.0}, {"var": "CTC9001BT", "amb": "C", "tah": 15.94, "tch": 111.5, "ha": 757.0}, {"var": "RB975242", "amb": "E", "tah": 15.64, "tch": 109.1, "ha": 698.0}, {"var": "RB975242", "amb": "D", "tah": 15.63, "tch": 113.5, "ha": 787.0}, {"var": "CTC9003BT", "amb": "D", "tah": 15.53, "tch": 113.5, "ha": 93.0}, {"var": "CTC9001BT", "amb": "A", "tah": 15.43, "tch": 105.1, "ha": 53.0}, {"var": "CTC9001", "amb": "C", "tah": 14.97, "tch": 107.3, "ha": 2527.0}, {"var": "CTC4", "amb": "A", "tah": 14.56, "tch": 112.4, "ha": 313.0}, {"var": "CTC4", "amb": "B", "tah": 14.31, "tch": 98.6, "ha": 94.0}, {"var": "CTC9001BT", "amb": "D", "tah": 14.29, "tch": 106.8, "ha": 2183.0}, {"var": "RB985476", "amb": "D", "tah": 14.24, "tch": 96.3, "ha": 294.0}];
+const IND={};
+const TOTAL_HA=391330;
+const C={green:'#00C853',gold:'#FFD600',red:'#FF1744',blue:'#2979FF',cyan:'#00E5FF',text2:'#8BA0BB',bg3:'#152344'};
+
+function showTab(id,el){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  el.classList.add('active');
 }
+function openDrill(amb){
+  const fazs=DRILLDOWN[amb]||[];
+  document.getElementById('drill-title').textContent='Ambiente '+amb+' — Top '+fazs.length+' Fazendas por TAH';
+  const rows=fazs.map((f,i)=>{
+    const bar=Math.round(f.tah/22*100);
+    const color=f.tah>14?C.green:f.tah>8?C.gold:C.red;
+    return `<tr><td>${i+1}</td><td>${f.faz}</td><td><strong style="color:${color}">${f.tah}</strong><span class="bar-mini" style="width:${bar}px;background:${color}"></span></td><td>${f.tch}</td><td>${f.atr}</td><td>${f.ha.toLocaleString()}</td></tr>`;
+  }).join('');
+  document.getElementById('drill-content').innerHTML=`<table><thead><tr><th>#</th><th>Fazenda</th><th>TAH</th><th>TCH</th><th>ATR</th><th>Area (ha)</th></tr></thead><tbody>${rows}</tbody></table>`;
+  document.getElementById('drill-modal').classList.add('open');
+}
+function closeDrill(){document.getElementById('drill-modal').classList.remove('open');}
+document.getElementById('drill-modal').onclick=function(e){if(e.target===this)closeDrill();};
 
-const GREEN='#00C853',GOLD='#FFD600',RED='#FF1744',ORANGE='#FF6D00',
-      BLUE='#42A5F5',PURPLE='#AB47BC',CYAN='#00BCD4',GRAY='rgba(255,255,255,0.15)';
-const BORDER='rgba(255,255,255,0.06)',TEXT='#90A4AE';
-Chart.defaults.color=TEXT;
-Chart.defaults.borderColor=BORDER;
-Chart.defaults.font.family="'Inter',system-ui,sans-serif";
-Chart.defaults.font.size=11;
+document.getElementById('amb-table').innerHTML=AMB_DATA.map(a=>{
+  const color=a.tah>9?C.green:a.tah>8?C.gold:C.red;
+  return `<tr><td><strong style="color:${color}">Amb ${a.amb}</strong></td><td>${a.tch}</td><td>${a.atr}</td><td style="color:${color}">${a.tah}</td><td>${a.ha.toLocaleString()}</td><td>${(a.ha/TOTAL_HA*100).toFixed(1)}%</td><td><span class="drill-btn" onclick="openDrill('${a.amb}')">Ver fazendas</span></td></tr>`;
+}).join('');
 
-const MESES=["Mar/26", "Abr/26", "Mai/26", "Jun/26", "Jul/26", "Ago/26", "Set/26", "Out/26", "Nov/26"];
-const BPC_MOA=[202584, 279853, 340481, 295832, 402622, 360951, 342203, 279556, 264527];
-const BPC_ATR=[118, 127, 132, 139, 140, 146, 151, 150, 135];
-const BPC_EGI=[84.82, 86.85, 86.48, 85.73, 85.52, 85.14, 86.13, 84.76, 84.15];
-const BPC_APROV=[60.76, 68.87, 81.09, 72.81, 89.6, 80.33, 78.69, 62.21, 60.83];
-const REAL_MOA=[169307, 258410, 178701, 124577, null, null, null, null, null];
-const TL_DTS=["03-21", "03-22", "03-23", "03-24", "03-25", "03-26", "03-27", "03-28", "03-29", "03-30", "03-31", "04-01", "04-02", "04-03", "04-04", "04-05", "04-06", "04-07", "04-10", "04-11", "04-12", "04-15", "04-16", "04-17", "04-18", "04-19", "04-20", "04-21", "04-22", "04-23", "04-24", "04-25", "04-26", "04-27", "05-02", "05-03", "05-04", "05-05", "05-06", "05-07", "05-08", "05-21", "05-24", "05-25", "05-26", "05-27", "05-28", "05-29", "05-30", "05-31", "06-01", "06-02", "06-03", "06-04", "06-05", "06-06", "06-07", "06-08", "06-09", "06-10"];
-const TL_MOA=[8831.62, 8006.34, 3555.8, 5610.7, 10343.9, 10472.37, 10708.22, 10262.87, 10759.19, 10811.16, 10419.79, 8420.62, 11969.19, 12874.42, 12565.79, 12326.96, 9200.45, 6967.59, 9064.27, 12009.08, 11926.7, 5885.34, 13092.2, 13179.2, 12117.65, 13216.36, 12427.86, 12783.05, 14021.08, 12875.09, 13018.71, 13669.63, 14222.84, 575.68, 9817.38, 11486.4, 11935.34, 12949.79, 12885.5, 12029.98, 6783.54, 3098.06, 5938.91, 10461.75, 12248.99, 12698.53, 14326.81, 15099.76, 14553.05, 12387.08, 12404.93, 12994.8, 12601.85, 13125.63, 12991.48, 13173.69, 13361.96, 13541.53, 12795.24, 7585.43];
-const TL_ATR=[125.1, 129.22, 122.65, 116.92, 123.89, 127.47, 124.02, 130.71, 126.85, 130.4, 129.34, 125.3, 124.61, 128.05, 128.86, 131.01, 126.58, 124.62, 126.69, 122.1, 126.75, 125.44, 124.37, 125.04, 124.15, 120.04, 122.03, 123.61, 121.04, 120.79, 129.59, 126.97, 126.19, 127.31, 122.0, 125.02, 125.47, 125.0, 126.55, 126.67, 123.12, 121.54, 125.2, 129.99, 133.1, 128.73, 126.87, 128.59, 128.91, 129.48, 132.22, 134.68, 128.9, 128.16, 132.58, 132.02, 133.36, 131.94, 131.8, 130.62];
-const TL_APROV=[80.71, 74.29, 30.96, 47.21, 85.96, 87.92, 90.21, 86.88, 90.42, 89.08, 83.33, 73.33, 100.0, 99.71, 98.42, 100.0, 79.71, 62.0, 75.5, 93.88, 83.67, 46.67, 99.79, 96.13, 99.67, 100.0, 96.46, 100.0, 100.0, 99.29, 97.17, 98.0, 100.0, 5.71, 82.38, 95.96, 94.71, 100.0, 99.04, 100.0, 57.29, 25.83, 50.92, 85.71, 100.0, 100.0, 99.29, 98.88, 98.25, 88.42, 95.54, 99.04, 88.83, 93.25, 99.79, 99.29, 99.38, 94.17, 100.0, 57.08];
-const TL_MH=[455.94, 449.04, 478.57, 495.21, 501.4, 496.32, 494.61, 492.22, 495.82, 505.67, 520.99, 478.44, 498.72, 538.0, 532.0, 513.62, 480.94, 468.25, 500.24, 533.03, 593.96, 525.48, 546.65, 571.27, 506.59, 550.68, 536.84, 532.63, 584.21, 540.29, 558.26, 581.19, 592.62, 420.2, 496.58, 498.76, 525.09, 539.57, 542.09, 501.25, 493.35, 499.69, 486.0, 508.59, 510.37, 529.11, 601.21, 636.32, 617.18, 583.75, 540.99, 546.69, 591.08, 586.49, 542.44, 552.82, 560.25, 599.18, 533.14, 553.68];
-const HS_ANOS=["2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026"];
-const HS_MOA=[2118418, 2270287, 2133945, 2335798, 1881399, 2017916, 2580178, 2605941, 2768824, 730994];
-const HS_ATR=[126.45, 121.65, 126.97, 130.28, 134.2, 135.54, 138.94, 137.68, 139.65, 126.51];
-const HS_EGI=[85.27, 84.5, 85.83, 85.55, 85.87, 85.48, 87.04, 84.94, 85.93, 87.37];
-const HS_MH=[490.49, 9.64, 12.58, 90.48, 89.98, 88.58, 88.25, 525.27, 557.6, 518.4];
-const HS_APROV=[81.38, 499.26, 486.76, 0.0, 0.0, 0.0, 0.0, 88.79, 87.04, 81.44];
-const TF_FAZ=["20420", "20319", "20415", "20614", "20426", "20460", "20532", "20570", "20414", "20401", "20323", "20322", "20860", "20850", "20441", "20339", "10325", "20500", "20555", "20101"];
-const TF_TCH=[150.7, 157.2, 144.9, 142.2, 143.5, 137.3, 134.5, 140.5, 133.9, 139.8, 137.6, 126.7, 120.7, 123.3, 119.0, 112.8, 120.3, 119.5, 128.3, 115.7];
-const TF_TAH=[23.16, 22.82, 22.49, 21.7, 21.18, 20.94, 20.78, 19.91, 19.37, 18.93, 18.69, 18.62, 18.57, 18.21, 17.94, 17.93, 17.6, 17.55, 17.46, 17.43];
-const TF_ATR=[153.7, 145.2, 155.3, 152.5, 148.9, 152.6, 154.5, 142.1, 144.6, 135.4, 137.8, 146.9, 154.2, 147.7, 154.8, 159.1, 148.0, 146.8, 137.4, 150.7];
-const VAR_NMS=["CTC9006", "CTC9003BT", "CTC9007", "RB975242", "RB975201", "CTC9001BT", "RB985476", "RB985517", "CTC4", "CTC9001", "CTC04", "RB966928", "RB92579", "IAC87-3396", "RB965902"];
-const VAR_TCH=[140.0, 136.1, 126.4, 111.9, 106.1, 108.3, 96.6, 111.2, 96.6, 91.3, 95.3, 79.0, 72.7, 72.4, 71.6];
-const VAR_TAH=[19.6, 17.41, 16.9, 15.7, 15.13, 14.8, 14.21, 13.6, 13.56, 12.57, 10.32, 9.73, 9.42, 9.03, 8.86];
-const VAR_ATR=[139.8, 129.3, 134.8, 140.2, 141.8, 136.6, 148.2, 122.0, 140.1, 137.8, 109.2, 124.2, 130.8, 124.5, 125.2];
-const SAF_ANOS=["21213", "21314", "21415", "21516", "21617", "21718", "21819", "21920", "22021", "22122", "22223", "22324"];
-const SAF_TCH=[60.1, 56.0, 55.5, 75.2, 67.2, 65.0, 70.8, 63.4, 66.2, 55.4, 63.1, 85.8];
-const SAF_ATR=[128.3, 122.8, 126.0, 121.6, 129.4, 127.3, 122.1, 128.2, 130.9, 133.2, 135.3, 136.9];
-const SAF_TAH=[7.62, 6.76, 6.93, 9.0, 8.61, 8.18, 8.58, 7.98, 8.64, 7.41, 8.52, 11.8];
-const EST_TCH=[96.6, 79.0, 62.0, 52.1, 47.7, 44.1, 48.7, 40.4, 53.1];
+document.getElementById('top-var-table').innerHTML=VAR_LIST.map((v,i)=>{
+  const color=v.tah>15?C.green:v.tah>10?C.gold:C.text2;
+  return `<tr><td>${i+1}</td><td style="color:${color}">${v.var}</td><td style="color:${color}">${v.tah}</td><td>${v.tch}</td><td>${v.atr}</td><td>${v.ha.toLocaleString()}</td></tr>`;
+}).join('');
 
-const OPT_STD = (ylabel='')=>(({
-  responsive:true,maintainAspectRatio:true,
-  plugins:{legend:{labels:{color:TEXT,boxWidth:12}},
-    tooltip:{backgroundColor:'rgba(10,22,40,0.95)',borderColor:BORDER,borderWidth:1}},
-  scales:{
-    x:{ticks:{color:TEXT,maxRotation:35,font:{size:10}},grid:{color:BORDER}},
-    y:{ticks:{color:TEXT},grid:{color:BORDER},title:{display:!!ylabel,text:ylabel,color:TEXT}}
-  }
-}));
+document.getElementById('worst-var-table').innerHTML=WORST_VAR.map((v,i)=>{
+  const perda=Math.round((10-v.tah)*v.ha*1000*1.03/1e6*10)/10;
+  return `<tr><td>${i+1}</td><td style="color:${C.red}">${v.var}</td><td style="color:${C.red}">${v.tah}</td><td>${v.tch}</td><td>${v.ha.toLocaleString()}</td><td style="color:${C.red}">-R$${perda.toFixed(1)}M</td></tr>`;
+}).join('');
 
-window.addEventListener('DOMContentLoaded',()=>{
+const tch1=CORTE_DATA[0]?.tch||98.6;
+document.getElementById('corte-table').innerHTML=CORTE_DATA.map(c=>{
+  const pctL=((1-c.tch/tch1)*100).toFixed(1);
+  const perda=(tch1-c.tch).toFixed(1);
+  const color=c.corte<=2?C.green:c.corte==3?C.gold:C.red;
+  return `<tr><td style="color:${color}">${c.corte}C</td><td style="color:${color}">${c.tch}</td><td style="color:${c.corte>1?C.red:C.green}">${c.corte>1?'-'+pctL+'%':'baseline'}</td><td style="color:${C.red}">${c.corte>1?'-'+perda+' t/ha':'—'}</td><td style="color:${C.red}">${c.corte>=4?'R$ '+Math.round((tch1-c.tch)*15173*1.03*0.0145/1e6)+'M':'—'}</td></tr>`;
+}).join('');
 
-  // TAB 0 — EXECUTIVO
-  new Chart(document.getElementById('c_exec_moa'),{type:'bar',
-    data:{labels:MESES,datasets:[
-      {label:'BPC',data:BPC_MOA,backgroundColor:'rgba(33,150,243,0.25)',borderColor:BLUE,borderWidth:1.5},
-      {label:'Real',data:REAL_MOA,backgroundColor:REAL_MOA.map((v,i)=>v===null?'transparent':v>=BPC_MOA[i]*0.95?'rgba(0,200,83,0.7)':v>=BPC_MOA[i]*0.80?'rgba(255,214,0,0.7)':'rgba(255,23,68,0.7)'),borderWidth:0},
-      {label:'Reestimativa',data:[null,null,null,null,330150,295980,280606,229236,216913],type:'line',borderColor:GOLD,borderWidth:2,borderDash:[4,4],pointRadius:3,fill:false}
-    ]},options:OPT_STD('t')
-  });
+document.getElementById('hist-table').innerHTML=SAFRA_DATA.map((s,i)=>{
+  const prev=i>0?SAFRA_DATA[i-1]:null;
+  const tt=prev?(s.tch>prev.tch?'<span class="trend-up">up</span>':'<span class="trend-down">dn</span>'):'—';
+  const ta=prev?(s.atr>prev.atr?'<span class="trend-up">up</span>':'<span class="trend-down">dn</span>'):'—';
+  return `<tr><td><strong>${s.label}</strong></td><td>${s.tch}</td><td>${s.atr}</td><td>${s.tah}</td><td>${s.ha.toLocaleString()}</td><td>${tt}</td><td>${ta}</td></tr>`;
+}).join('');
 
-  new Chart(document.getElementById('c_exec_atr'),{type:'line',
-    data:{labels:MESES,datasets:[
-      {label:'BPC ATR',data:BPC_ATR,borderColor:BLUE,backgroundColor:'rgba(33,150,243,0.05)',tension:0.4,fill:true},
-      {label:'Real',data:[117.80,125.11,127.15,131.68,null,null,null,null,null],borderColor:GREEN,pointRadius:5,pointBackgroundColor:GREEN,tension:0.3}
-    ]},options:OPT_STD('kg/t')
-  });
+document.getElementById('var-amb-table').innerHTML=VAR_AMB.map(v=>{
+  const color=v.tah>15?C.green:v.tah>10?C.gold:C.text2;
+  return `<tr><td style="color:${color}">${v.var}</td><td>Amb ${v.amb}</td><td style="color:${color}">${v.tah}</td><td>${v.tch}</td><td>${v.ha.toLocaleString()}</td></tr>`;
+}).join('');
 
-  // TAB 1 — OPERACIONAL
-  new Chart(document.getElementById('c_op_moa'),{type:'line',
-    data:{labels:TL_DTS,datasets:[
-      {label:'Moagem (t)',data:TL_MOA,borderColor:GREEN,backgroundColor:'rgba(0,200,83,0.06)',tension:0.3,fill:true,pointRadius:2}
-    ]},options:OPT_STD('t')
-  });
-  new Chart(document.getElementById('c_op_atr'),{type:'line',
-    data:{labels:TL_DTS,datasets:[
-      {label:'ATR (kg/t)',data:TL_ATR,borderColor:GOLD,tension:0.4,pointRadius:1}
-    ]},options:OPT_STD('kg/t')
-  });
-  new Chart(document.getElementById('c_op_aprov'),{type:'line',
-    data:{labels:TL_DTS,datasets:[
-      {label:'Aprov.%',data:TL_APROV,borderColor:BLUE,tension:0.4,pointRadius:1,fill:false},
-      {label:'Meta 70%',data:TL_DTS.map(()=>70),borderColor:ORANGE,borderDash:[5,5],borderWidth:1,pointRadius:0}
-    ]},options:OPT_STD('%')
-  });
-  new Chart(document.getElementById('c_op_mh'),{type:'bar',
-    data:{labels:TL_DTS,datasets:[
-      {label:'t/h',data:TL_MH,backgroundColor:TL_MH.map(v=>v>=550?'rgba(0,200,83,0.6)':v>=450?'rgba(255,214,0,0.6)':'rgba(255,23,68,0.6)'),borderWidth:0}
-    ]},options:OPT_STD('t/h')
-  });
+const meses=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+function getM(ano,f){return Array.from({length:12},(_,i)=>{const k=`${ano}-${String(i+1).padStart(2,'0')}`;return IND[k]?IND[k][f]:null;});}
+function mkChart(id,type,labels,datasets,opts={}){
+  const ctx=document.getElementById(id)?.getContext('2d');
+  if(!ctx)return;
+  new Chart(ctx,{type,data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:C.text2,font:{size:10}}}},
+    scales:type!='pie'&&type!='doughnut'?{x:{ticks:{color:C.text2,font:{size:10}},grid:{color:'#1E3252'}},y:{ticks:{color:C.text2,font:{size:10}},grid:{color:'#1E3252'}}}: undefined,
+    ...opts}});
+}
+function yds(ano,f,color){return{label:ano,data:getM(ano,f),borderColor:color,pointRadius:2,tension:.4,spanGaps:true};}
 
-  // TAB 2 — AGRÍCOLA
-  new Chart(document.getElementById('c_agri_faz'),{type:'bar',
-    data:{labels:TF_FAZ,datasets:[
-      {label:'TCH (t/ha)',data:TF_TCH,backgroundColor:'rgba(33,150,243,0.55)',borderColor:BLUE,borderWidth:1,yAxisID:'y'},
-      {label:'TAH',data:TF_TAH,type:'line',borderColor:GOLD,pointRadius:4,pointBackgroundColor:GOLD,yAxisID:'y1',fill:false}
-    ]},
-    options:{...OPT_STD(),scales:{
-      x:{ticks:{color:TEXT,maxRotation:45,font:{size:9}},grid:{color:BORDER}},
-      y:{ticks:{color:TEXT},grid:{color:BORDER},title:{display:true,text:'TCH',color:TEXT}},
-      y1:{ticks:{color:GOLD},grid:{display:false},position:'right',title:{display:true,text:'TAH',color:GOLD}}
-    }}
-  });
-  new Chart(document.getElementById('c_agri_atr'),{type:'bar',
-    data:{labels:TF_FAZ,datasets:[
-      {label:'ATR (kg/t)',data:TF_ATR,backgroundColor:TF_ATR.map(v=>v>=138?GREEN:v>=128?GOLD:RED),borderWidth:0}
-    ]},options:OPT_STD('kg/t')
-  });
-
-  // TAB 3 — VARIEDADES
-  new Chart(document.getElementById('c_var_tah'),{type:'bar',
-    data:{labels:VAR_NMS,datasets:[
-      {label:'TAH (t ATR/ha)',data:VAR_TAH,backgroundColor:VAR_TAH.map(v=>v>=14?GREEN:v>=11?GOLD:RED),borderWidth:0}
-    ]},options:OPT_STD('t ATR/ha')
-  });
-  new Chart(document.getElementById('c_var_tch'),{type:'bar',
-    data:{labels:VAR_NMS,datasets:[
-      {label:'TCH (t/ha)',data:VAR_TCH,backgroundColor:'rgba(33,150,243,0.6)',borderWidth:0}
-    ]},options:OPT_STD('t/ha')
-  });
-  new Chart(document.getElementById('c_var_atr'),{type:'bar',
-    data:{labels:VAR_NMS,datasets:[
-      {label:'ATR (kg/t)',data:VAR_ATR,backgroundColor:VAR_ATR.map(v=>v>=138?GREEN:v>=125?GOLD:RED),borderWidth:0}
-    ]},options:OPT_STD('kg/t')
-  });
-
-  // TAB 4 — INDUSTRIAL
-  new Chart(document.getElementById('c_ind_egi2'),{type:'line',
-    data:{labels:TL_DTS,datasets:[
-      {label:'EGI%',data:[87.79, 85.81, 156.96, 46.07, 68.15, 101.94, 90.65, 84.33, 87.77, 85.52, 85.16, 99.26, 79.9, 89.67, 95.24, 83.89, 91.54, 86.82, 47.04, 105.01, 101.02, 38.48, 91.29, 95.17, 83.59, 87.01, 93.47, 88.64, 90.6, 88.16, 85.04, 90.76, 86.62, 187.27, 44.92, 105.06, 91.59, 88.29, 78.92, 90.93, 88.2, 60.84, 67.0, 106.41, 89.45, 96.67, 86.47, 83.27, 89.67, 86.31, 89.02, 80.29, 93.8, 76.75, 90.12, 90.15, 85.93, 86.91, 87.16, 97.33],borderColor:CYAN,tension:0.4,pointRadius:1},
-      {label:'Meta',data:TL_DTS.map(()=>86),borderColor:ORANGE,borderDash:[5,5],borderWidth:1,pointRadius:0}
-    ]},options:OPT_STD('%')
-  });
-  new Chart(document.getElementById('c_ind_aprov2'),{type:'line',
-    data:{labels:TL_DTS,datasets:[
-      {label:'Aprov.%',data:TL_APROV,borderColor:BLUE,tension:0.4,pointRadius:1,fill:false},
-      {label:'BPC Jun 72.81%',data:TL_DTS.map(()=>72.81),borderColor:GOLD,borderDash:[5,5],borderWidth:1,pointRadius:0}
-    ]},options:OPT_STD('%')
-  });
-  new Chart(document.getElementById('c_ind_bpc'),{type:'bar',
-    data:{labels:MESES,datasets:[
-      {label:'BPC Moagem',data:BPC_MOA,backgroundColor:'rgba(33,150,243,0.3)',borderColor:BLUE,borderWidth:1},
-      {label:'Real',data:REAL_MOA,backgroundColor:REAL_MOA.map(v=>v?'rgba(0,200,83,0.6)':'transparent'),borderWidth:0},
-      {label:'BPC EGI%',data:BPC_EGI,type:'line',yAxisID:'y1',borderColor:CYAN,pointRadius:3,fill:false,borderDash:[3,3]}
-    ]},
-    options:{...OPT_STD(),scales:{
-      x:{ticks:{color:TEXT},grid:{color:BORDER}},
-      y:{ticks:{color:TEXT},grid:{color:BORDER}},
-      y1:{position:'right',ticks:{color:CYAN},grid:{display:false},min:82,max:90}
-    }}
-  });
-
-  // TAB 5 — HISTÓRICO
-  new Chart(document.getElementById('c_h_moa'),{type:'bar',
-    data:{labels:HS_ANOS,datasets:[
-      {label:'Moagem (t)',data:HS_MOA,backgroundColor:HS_MOA.map(v=>v>2000000?GREEN:v>1500000?GOLD:GRAY),borderWidth:0}
-    ]},options:OPT_STD('t')
-  });
-  new Chart(document.getElementById('c_h_atr'),{type:'line',
-    data:{labels:HS_ANOS,datasets:[
-      {label:'ATR (kg/t)',data:HS_ATR,borderColor:GOLD,backgroundColor:'rgba(255,214,0,0.06)',tension:0.4,fill:true,pointRadius:4,pointBackgroundColor:GOLD}
-    ]},options:OPT_STD('kg/t')
-  });
-  new Chart(document.getElementById('c_h_egi'),{type:'line',
-    data:{labels:HS_ANOS,datasets:[
-      {label:'EGI%',data:HS_EGI,borderColor:CYAN,tension:0.4,pointRadius:3}
-    ]},options:OPT_STD('%')
-  });
-  new Chart(document.getElementById('c_h_tch'),{type:'line',
-    data:{labels:SAF_ANOS,datasets:[
-      {label:'TCH (t/ha)',data:SAF_TCH,borderColor:GREEN,tension:0.4,fill:false,pointRadius:4},
-      {label:'ATR (kg/t)',data:SAF_ATR,borderColor:GOLD,tension:0.4,fill:false,borderDash:[4,3],pointRadius:3}
-    ]},options:OPT_STD()
-  });
-  new Chart(document.getElementById('c_h_aprov'),{type:'bar',
-    data:{labels:HS_ANOS,datasets:[
-      {label:'Aproveitamento%',data:HS_APROV,backgroundColor:HS_APROV.map(v=>v>=75?GREEN:v>=60?GOLD:RED),borderWidth:0}
-    ]},options:OPT_STD('%')
-  });
-
-});
+mkChart('cAtrComp','line',meses,[
+  yds('2024','atr',C.blue),yds('2025','atr',C.green),yds('2026','atr',C.red)]);
+mkChart('cMoaComp','bar',meses,[
+  {label:'2025',data:getM('2025','moa'),backgroundColor:C.blue+'80',borderColor:C.blue,borderWidth:1},
+  {label:'2026',data:getM('2026','moa'),backgroundColor:C.gold+'80',borderColor:C.gold,borderWidth:1}]);
+const egiK=Object.keys(IND).sort().filter(k=>IND[k].egi);
+mkChart('cEgi','line',egiK.slice(-24).map(k=>k.slice(2)),[{label:'EGI %',data:egiK.slice(-24).map(k=>IND[k].egi),borderColor:C.cyan,fill:true,backgroundColor:C.cyan+'15',tension:.4,pointRadius:2}]);
+mkChart('cAmb','bar',AMB_DATA.map(a=>'Amb '+a.amb),[
+  {label:'TCH',data:AMB_DATA.map(a=>a.tch),backgroundColor:C.blue+'80'},
+  {label:'ATR',data:AMB_DATA.map(a=>a.atr),backgroundColor:C.gold+'80'},
+  {label:'TAH x10',data:AMB_DATA.map(a=>+(a.tah*10).toFixed(0)),backgroundColor:C.green+'80'}]);
+mkChart('cAmbTah','bar',AMB_DATA.map(a=>'Amb '+a.amb+' ('+a.ha.toLocaleString()+'ha)'),[
+  {label:'TAH',data:AMB_DATA.map(a=>a.tah),
+    backgroundColor:AMB_DATA.map(a=>a.tah>9?C.green+'80':a.tah>8?C.gold+'80':C.red+'80'),
+    borderColor:AMB_DATA.map(a=>a.tah>9?C.green:a.tah>8?C.gold:C.red),borderWidth:1}],
+  {indexAxis:'y'});
+mkChart('cVarRank','bar',VAR_LIST.slice(0,12).map(v=>v.var),[
+  {label:'TAH',data:VAR_LIST.slice(0,12).map(v=>v.tah),
+    backgroundColor:VAR_LIST.slice(0,12).map(v=>v.tah>15?C.green+'90':v.tah>10?C.gold+'90':C.blue+'90'),borderWidth:0}],
+  {indexAxis:'y'});
+mkChart('cCorte','bar',CORTE_DATA.map(c=>c.corte+'C'),[
+  {label:'TCH (t/ha)',data:CORTE_DATA.map(c=>c.tch),
+    backgroundColor:CORTE_DATA.map(c=>c.corte<=2?C.green+'90':c.corte==3?C.gold+'90':C.red+'90'),borderWidth:0}]);
+mkChart('cAtrSafra','line',meses,[yds('2022','atr','#5C6BC0'),yds('2023','atr',C.blue),yds('2024','atr',C.cyan),yds('2025','atr',C.green),yds('2026','atr',C.red)]);
+mkChart('cMoaSafra','bar',meses,[yds('2023','moa','#5C6BC0'),yds('2024','moa',C.blue),yds('2025','moa',C.green),yds('2026','moa',C.gold)]);
+mkChart('cEgiSafra','line',meses,[yds('2023','egi',C.blue),yds('2024','egi',C.cyan),yds('2025','egi',C.green),yds('2026','egi',C.gold)]);
+mkChart('cAprov','line',meses,[yds('2024','aprov',C.blue),yds('2025','aprov',C.green),yds('2026','aprov',C.gold)]);
+mkChart('cTchHist','line',SAFRA_DATA.map(s=>s.label),[{label:'TCH',data:SAFRA_DATA.map(s=>s.tch),borderColor:C.green,pointRadius:4,fill:true,backgroundColor:C.green+'15',tension:.3}]);
+mkChart('cAtrHist','line',SAFRA_DATA.map(s=>s.label),[{label:'ATR',data:SAFRA_DATA.map(s=>s.atr),borderColor:C.gold,pointRadius:4,fill:true,backgroundColor:C.gold+'15',tension:.3}]);
 </script>
 </body>
 </html>
