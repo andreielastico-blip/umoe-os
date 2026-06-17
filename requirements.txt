@@ -1,0 +1,5 @@
+openpyxl
+pyxlsb
+pdfplumber
+requests
+python-dotenv
