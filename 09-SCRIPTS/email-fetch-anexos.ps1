@@ -19,11 +19,11 @@ $PrefixarData = $true  # salva como AAAAMMDD_nomeoriginal (mantem historico, evi
 
 # REGRAS: um e-mail casa se (De contem) E (Assunto contem). Vazio = ignora aquele criterio.
 # Para cada e-mail que casa, salva os anexos cujo nome casa com AnexoPattern (curinga -like).
-# >>> PREENCHA/AJUSTE conforme seus e-mails. Exemplos abaixo:
+# Substrings/curingas ASCII casam com texto acentuado (Hist* casa "Historico").
 $Regras = @(
-    @{ Nome = "Solinftec diario"; DeContains = "solinftec";   AssuntoContains = "";          AnexoPattern = "*.csv"  }
-    @{ Nome = "Boletim ATR";      DeContains = "";             AssuntoContains = "ATR";       AnexoPattern = "*.xlsx" }
-    @{ Nome = "Exemplo PDF";      DeContains = "fornecedor.com"; AssuntoContains = "diario";  AnexoPattern = "*.pdf"  }
+    @{ Nome = "Hist Diario Safras";       AssuntoContains = "Safras 2009";  AnexoPattern = "*Hist*Safras*.xlsx"        }
+    @{ Nome = "Relatorio Industrial+Aguas"; AssuntoContains = "Industrial e"; AnexoPattern = "Relat*.pdf"                }
+    @{ Nome = "Indice Pluviometrico";     AssuntoContains = "Pluviom";      AnexoPattern = "*Pluviometrico*.xlsx"      }
 )
 # ====================================================================
 
@@ -53,13 +53,16 @@ function Get-TodasPastas($folder, $caminho) {
 # Filtra no PowerShell (a prova de locale) em vez de usar Restrict por data.
 function Get-MailRecentes($folder, $cutoff) {
     $res = @()
-    $it = $folder.Items
+    $it = $null
+    try { $it = $folder.Items } catch { return $res }
     try { $it.Sort("[ReceivedTime]", $true) } catch {}   # mais novos primeiro
-    foreach ($m in $it) {
-        $rt = $null; try { $rt = $m.ReceivedTime } catch {}
-        if ($rt -ne $null -and $rt -lt $cutoff) { break }   # ordenado desc: resto e mais antigo
-        if ($m.Class -eq 43) { $res += $m }                 # 43 = olMail
-    }
+    try {
+        foreach ($m in $it) {
+            $rt = $null; try { $rt = $m.ReceivedTime } catch {}
+            if ($rt -ne $null -and $rt -lt $cutoff) { break }   # ordenado desc: resto e mais antigo
+            if ($m.Class -eq 43) { $res += $m }                 # 43 = olMail
+        }
+    } catch {}   # erro de RPC/COM numa pasta nao aborta o resto da varredura
     return $res
 }
 
@@ -106,8 +109,15 @@ if ($Listar) {
 }
 # ------------------------------------------------------------------------
 
+# Download: varre TODAS as subpastas da SUA conta padrao (ignora caixas de colegas)
+$raiz = $inbox.Store.GetRootFolder()
+$pastasConta = @([PSCustomObject]@{ Folder = $raiz; Path = $raiz.Name })
+$pastasConta += Get-TodasPastas $raiz $raiz.Name
+Log "Varrendo $($pastasConta.Count) pasta(s) da conta: $($inbox.Store.DisplayName)"
+
 $totSalvos = 0; $totCasou = 0
-foreach ($mail in (Get-MailRecentes $inbox $cutoff)) {
+foreach ($pf in $pastasConta) {
+  foreach ($mail in (Get-MailRecentes $pf.Folder $cutoff)) {
     $assunto = [string]$mail.Subject
     $de = ""
     try { $de = [string]$mail.SenderEmailAddress } catch {}
@@ -132,6 +142,7 @@ foreach ($mail in (Get-MailRecentes $inbox $cutoff)) {
             } catch { Log "  ERRO ao salvar $nome : $($_.Exception.Message)" }
         }
     }
+  }
 }
 
 Log "==== Fim. E-mails que casaram: $totCasou | anexos salvos: $totSalvos ===="
