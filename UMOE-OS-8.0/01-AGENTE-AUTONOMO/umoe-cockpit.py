@@ -186,16 +186,19 @@ if not moa.empty and not moa_mensal.empty:
 tch_estagio = pd.DataFrame(); tah_var = pd.DataFrame()
 if not tch.empty:
     tch["AREA_ESTIMADA"] = num(tch.get("AREA_ESTIMADA",0))
+    tch["AREA_REEST3"]   = num(tch.get("AREA_REESTIMADA3",0))
     tch["PRD_REAL"] = num(tch.get("PRD_REAL",0))
     tch["PRD_ESTIMADA"] = num(tch.get("PRD_ESTIMADA",0))
     col_est = "ESTAGIO_AGRUP" if "ESTAGIO_AGRUP" in tch.columns else ("ESTAGIO_CORTE" if "ESTAGIO_CORTE" in tch.columns else None)
     if col_est:
         g = tch.groupby(col_est).agg(AREA=("AREA_ESTIMADA","sum"),
+                                     AREA_R3=("AREA_REEST3","sum"),
                                      PRD_REAL=("PRD_REAL","sum"),
                                      PRD_EST=("PRD_ESTIMADA","sum")).reset_index()
-        g["TCH_REAL"] = np.where(g["AREA"]>0, g["PRD_REAL"]/g["AREA"], 0)
+        # FORMULA OFICIAL: TCH real = PRD_REAL/AREA_REESTIMADA3 ; TCH est = PRD_ESTIMADA/AREA_ESTIMADA
+        g["TCH_REAL"] = np.where(g["AREA_R3"]>0, g["PRD_REAL"]/g["AREA_R3"], 0)
         g["TCH_EST"]  = np.where(g["AREA"]>0, g["PRD_EST"]/g["AREA"], 0)
-        tch_estagio = g[g["AREA"]>0].sort_values(col_est)
+        tch_estagio = g[(g["AREA"]>0)|(g["AREA_R3"]>0)].sort_values(col_est)
         tch_estagio = tch_estagio.rename(columns={col_est:"ESTAGIO"})
         charts["tch_estagio"] = tch_estagio.to_dict("records")
 if not tah.empty:
@@ -928,7 +931,7 @@ tr:hover td{{background:var(--surf2)}}
   <div class="card"><h3>Inteligencia executiva — conclusoes baseadas em dados reais</h3>{ins_html}</div>
 </div>
 
-<div class="foot">UMOE OS 8.0 | Cockpit Executivo gerado automaticamente de {len(K)} indicadores e {sum(len(x) for x in [moa,atrh,tch,tah,ind,cst]):,} registros Power BI | {HOJE}</div>
+<div class="foot">UMOE OS 8.0 | Cockpit Executivo | {len(K)} indicadores · dados reais Power BI | calculos alinhados ao DAX oficial (ATR, TCH=PRD/AREA_REEST3, TAH=(ACUCAR/CANA_ACUCAR)x(TON/AREA)/1000) | {HOJE}</div>
 
 <script>
 const CT={json.dumps(charts, ensure_ascii=False, default=str)};
