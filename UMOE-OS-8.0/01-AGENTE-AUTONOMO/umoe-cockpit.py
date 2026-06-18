@@ -199,14 +199,19 @@ if not tch.empty:
         tch_estagio = tch_estagio.rename(columns={col_est:"ESTAGIO"})
         charts["tch_estagio"] = tch_estagio.to_dict("records")
 if not tah.empty:
-    tah["AREA_CTT"] = num(tah.get("AREA_CTT",0))
-    tah["ACUCAR"]   = num(tah.get("ACUCAR",0))
-    tah["TON"]      = num(tah.get("TON",0))
+    tah["AREA_CTT"]    = num(tah.get("AREA_CTT",0))
+    tah["ACUCAR"]      = num(tah.get("ACUCAR",0))
+    tah["TON"]         = num(tah.get("TON",0))
+    tah["CANA_ACUCAR"] = num(tah.get("CANA_ACUCAR",0))
     if "DE_VARIED" in tah.columns:
         g = tah.groupby("DE_VARIED").agg(AREA=("AREA_CTT","sum"),
                                          ACUCAR=("ACUCAR","sum"),
+                                         CANA_AC=("CANA_ACUCAR","sum"),
                                          TON=("TON","sum")).reset_index()
-        g["TAH"] = np.where(g["AREA"]>0, g["ACUCAR"]/g["AREA"]/1000.0, 0)  # kg/ha -> t ATR/ha
+        # FORMULA OFICIAL Power BI (Z_CTT_TAH_TAH):
+        # (ACUCAR/CANA_ACUCAR) * (TON/AREA) / 1000
+        g["TAH"] = np.where((g["AREA"]>0)&(g["CANA_AC"]>0),
+                            (g["ACUCAR"]/g["CANA_AC"])*(g["TON"]/g["AREA"])/1000.0, 0)
         g["TCH"] = np.where(g["AREA"]>0, g["TON"]/g["AREA"], 0)
         g = g[g["AREA"] > g["AREA"].sum()*0.01]
         tah_var = g.sort_values("TAH", ascending=False)

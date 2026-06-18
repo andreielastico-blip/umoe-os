@@ -50,3 +50,7 @@ desktop.ini
 *.tmp
 *.bak
 ~$*
+
+# PBIX baixados (enormes, locais)
+UMOE-OS-8.0/Dados-PBI/PBIX/
+*.pbix
