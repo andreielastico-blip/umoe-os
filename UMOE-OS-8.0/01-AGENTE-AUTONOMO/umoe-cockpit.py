@@ -539,6 +539,10 @@ try:
         charts["disp_mensal"]=[{"ym": r["ym"], "disp": float(r["disp"]), "meta": float(r["meta"])} for r in do.get("mensal", [])]
         cats=sorted(do.get("categoria", []), key=lambda r: r.get("disp",100))[:12]
         charts["disp_cat"]=[{"cat": str(r["cat"]), "disp": float(r["disp"]), "meta": float(r.get("meta") or 0)} for r in cats]
+    dpp = PBI_DIR / "MANUT" / "disp_processo.json"
+    if dpp.exists():
+        pr = sorted(json.load(open(dpp, encoding="utf-8")), key=lambda r: r.get("disp",100))
+        charts["disp_proc"]=[{"proc": str(r["proc"]), "disp": float(r["disp"]), "meta": float(r.get("meta") or 0)} for r in pr if str(r["proc"]).strip()]
 except Exception as e:
     print("  manutencao:", e)
 
@@ -980,6 +984,7 @@ tr:hover td{{background:var(--surf2)}}
 
 <div id="t-manut" class="tab">
   <div class="grid one"><div class="card"><h3>Disponibilidade da frota — mensal 2025-2026 (medida oficial) vs meta</h3><div class="chart"><canvas id="cDispMes"></canvas></div></div></div>
+  <div class="grid one"><div class="card"><h3>Disponibilidade por PROCESSO (mes atual) vs meta</h3><div class="chart"><canvas id="cDispProc"></canvas></div></div></div>
   <div class="grid one"><div class="card"><h3>Disponibilidade por categoria (mes atual) — piores 12 vs meta</h3><div class="chart"><canvas id="cDispCat"></canvas></div></div></div>
   <div class="grid">
     <div class="card"><h3>Diesel por categoria (litros, 2026)</h3><div class="chart"><canvas id="cDiesel"></canvas></div></div>
@@ -1083,6 +1088,9 @@ mkPar('cPar'); mkPar('cPar2');
 (()=>{{const d=CT.diesel_cat||[];if(!d.length)return;new Chart(document.getElementById('cDiesel'),{{type:'bar',data:{{labels:d.map(x=>x.cat),datasets:[{{label:'Litros',data:d.map(x=>x.L),backgroundColor:O+'cc',borderColor:O,borderWidth:1}}]}},options:{{...opt,indexAxis:'y'}}}});}})();
 (()=>{{const d=CT.manut_top||[];if(!d.length)return;new Chart(document.getElementById('cManutTop'),{{type:'bar',data:{{labels:d.map(x=>x.eq),datasets:[{{label:'OS',data:d.map(x=>x.OS),backgroundColor:R+'cc',borderColor:R,borderWidth:1}}]}},options:{{...opt,indexAxis:'y'}}}});}})();
 (()=>{{const d=CT.consumo_lh||[];if(!d.length)return;new Chart(document.getElementById('cConsLh'),{{type:'bar',data:{{labels:d.map(x=>x.cat),datasets:[{{label:'L/h',data:d.map(x=>x.lh),backgroundColor:O+'cc',borderColor:O,borderWidth:1}}]}},options:{{...opt,indexAxis:'y'}}}});}})();
+(()=>{{const d=CT.disp_proc||[];if(!d.length)return;new Chart(document.getElementById('cDispProc'),{{type:'bar',data:{{labels:d.map(x=>x.proc),datasets:[
+  {{label:'Disponibilidade %',data:d.map(x=>x.disp),backgroundColor:d.map(x=>x.disp>=x.meta?G+'cc':R+'cc')}},
+  {{label:'Meta %',type:'line',data:d.map(x=>x.meta),borderColor:O,backgroundColor:'transparent',pointRadius:0}}]}},options:{{...opt,scales:{{...opt.scales,y:{{...opt.scales.y,min:60,max:100}}}}}}}});}})();
 (()=>{{const d=CT.disp_cat||[];if(!d.length)return;new Chart(document.getElementById('cDispCat'),{{type:'bar',data:{{labels:d.map(x=>x.cat),datasets:[
   {{label:'Disponibilidade %',data:d.map(x=>x.disp),backgroundColor:d.map(x=>x.disp>=x.meta?G+'cc':R+'cc')}},
   {{label:'Meta %',type:'line',data:d.map(x=>x.meta),borderColor:O,backgroundColor:'transparent',pointRadius:0}}]}},options:opt}});}})();

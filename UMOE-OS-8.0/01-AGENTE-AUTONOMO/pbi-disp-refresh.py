@@ -105,6 +105,19 @@ def main():
             if c and d is not None:
                 cat.append({"cat": str(c), "disp": float(d)*100, "meta": float(me or 0)*100})
     salvar(cat)
+    # por PROCESSO (mes corrente) -> arquivo separado
+    q = f'DEFINE VAR _f = {filtro(ini, fim)} EVALUATE SUMMARIZECOLUMNS(d_equipamentos[PROCESSO], _f, "D", [Disponibilidade (%)], "M", [Disponibilidade Meta (%)])'
+    r = dax(tok, q, timeout=120)
+    if r is not None and r.status_code == 200:
+        proc = []
+        for row in r.json()["results"][0]["tables"][0]["rows"]:
+            c = next((v for k, v in row.items() if k.endswith("[PROCESSO]")), None)
+            d = next((v for k, v in row.items() if k.endswith("[D]")), None)
+            me = next((v for k, v in row.items() if k.endswith("[M]")), None)
+            if c and d is not None:
+                proc.append({"proc": str(c), "disp": float(d)*100, "meta": float(me or 0)*100})
+        (OUT.parent / "disp_processo.json").write_text(json.dumps(proc, ensure_ascii=False, indent=1), encoding="utf-8")
+        print(f"  processos: {len(proc)}")
     print(f"OK -> {OUT} | {len(mensal)} meses, {len(cat)} categorias")
 
 if __name__ == "__main__":
