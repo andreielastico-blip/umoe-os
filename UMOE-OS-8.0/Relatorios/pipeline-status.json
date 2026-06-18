@@ -1,28 +1,28 @@
 {
-  "ultima_execucao": "2026-06-18T09:31:12.043265",
+  "ultima_execucao": "2026-06-18T10:00:11.131595",
   "resultados": [
     {
       "nome": "CHI Engine",
-      "ok": false,
+      "ok": true,
       "duracao_s": 0.1,
       "obrigatorio": false
     },
     {
       "nome": "Clima Engine",
       "ok": true,
-      "duracao_s": 4.4,
+      "duracao_s": 3.3,
       "obrigatorio": false
     },
     {
       "nome": "BI Enterprise",
       "ok": true,
-      "duracao_s": 10.5,
+      "duracao_s": 5.8,
       "obrigatorio": true
     },
     {
       "nome": "Moagem Panel",
       "ok": true,
-      "duracao_s": 1.5,
+      "duracao_s": 1.6,
       "obrigatorio": true
     }
   ],
