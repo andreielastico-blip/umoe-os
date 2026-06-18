@@ -507,6 +507,17 @@ try:
         if mdcol:
             md[mdcol]=num(md[mdcol])
             meta_disp = md[md[mdcol]>0][["CATEGORIA",mdcol]].rename(columns={mdcol:"META_DISP"}).sort_values("META_DISP",ascending=False)
+    # DISPONIBILIDADE REAL OFICIAL (medida DAX, consultada e salva por refresh; mes corrente)
+    dfp = PBI_DIR / "MANUT" / "disponibilidade_oficial.json"
+    if dfp.exists():
+        do = json.load(open(dfp, encoding="utf-8"))
+        ger = next((r for r in do if str(r.get("CATEGORIA_M"))=="_GERAL_"), None)
+        if ger:
+            manut["disp_real"]=float(ger.get("Disp") or 0)*100
+            manut["disp_meta"]=float(ger.get("Meta") or 0)*100
+        cats=[r for r in do if str(r.get("CATEGORIA_M"))!="_GERAL_" and r.get("Disp") is not None]
+        cats=sorted(cats, key=lambda r: r["Disp"])[:12]  # piores primeiro
+        charts["disp_cat"]=[{"cat":str(r["CATEGORIA_M"]),"disp":float(r["Disp"])*100,"meta":float(r.get("Meta") or 0)*100} for r in cats]
 except Exception as e:
     print("  manutencao:", e)
 
@@ -623,11 +634,17 @@ if praga.get("broca") is not None:
 if plantio.get("aderencia"):
     add(f"Plantio: {br(plantio.get('real_ha',0))} ha realizados vs meta {br(plantio.get('meta_ha',0))} ha = "
         f"{br(plantio['aderencia'],0)}% de aderencia.", "verde" if plantio['aderencia']>=90 else "amarelo")
+if manut.get("disp_real") is not None:
+    dd = manut["disp_real"]-manut.get("disp_meta",0)
+    add(f"DISPONIBILIDADE da frota (medida oficial, mes atual): {br(manut['disp_real'],1)}% vs meta {br(manut.get('disp_meta',0),1)}% "
+        f"({'+' if dd>=0 else ''}{br(dd,1)} p.p.). {'ACIMA da meta — frota disponivel' if dd>=0 else 'abaixo da meta'}. "
+        f"Logo, o atraso de moagem NAO e por indisponibilidade de frota — o foco e ritmo/clima/fornecedor.",
+        "verde" if dd>=0 else "vermelho")
 if manut.get("corretiva_pct") is not None:
-    add(f"MANUTENCAO: {br(manut['corretiva_pct'],0)}% das OS sao CORRETIVAS ({br(manut.get('os',0),0)} OS) — manutencao "
-        f"reativa derruba a disponibilidade da frota e trava a moagem. Implementar plano preventivo e o maior alavanca "
-        f"de ritmo. DMT {br(manut.get('dmt',0),1)} km; diesel {br(manut.get('diesel_l',0)/1e6,2)} M L.",
-        "vermelho" if manut['corretiva_pct']>70 else "amarelo")
+    add(f"MANUTENCAO {br(manut['corretiva_pct'],0)}% CORRETIVA ({br(manut.get('os',0),0)} OS) — apesar da disponibilidade OK, "
+        f"a manutencao reativa e RISCO de custo e de quebra futura. Implementar preventiva protege o ritmo. "
+        f"DMT {br(manut.get('dmt',0),1)} km; diesel {br(manut.get('diesel_l',0)/1e6,2)} M L.",
+        "amarelo")
 
 # ── ACOES PRIORIZADAS (onde atuar) ───────────────────────────────────────────
 acoes = []
@@ -650,9 +667,10 @@ if not frentes.empty and "Fabiano (F27)" in frentes.set_index("GRP").index:
          f"ATR {br(frentes.set_index('GRP').loc['Fabiano (F27)','ATR'],1)} kg/t, abaixo da propria e da Lerosa",
          "Equiparar ao padrao das frentes proprias", "Suprimentos/Fornecedores")
 if manut.get("corretiva_pct",0) > 70:
-    acao("ALTA","Implantar manutencao preventiva da frota",
-         f"{br(manut['corretiva_pct'],0)}% das OS sao corretivas (reativa) — derruba disponibilidade e ritmo de moagem",
-         f"Reduzir corretiva; metas DISP: Colhedora 91,6%, Caminhao 92%", "Manutencao Automotiva")
+    acao("MEDIA","Implantar manutencao preventiva da frota",
+         f"{br(manut['corretiva_pct'],0)}% das OS sao corretivas (reativa). Disponibilidade atual OK ({br(manut.get('disp_real',0),0)}%), "
+         f"mas e risco de custo e de quebra futura",
+         "Reduzir corretiva sem perder disponibilidade", "Manutencao Automotiva")
 if not paradas.empty:
     acao("MEDIA","Reduzir paradas do maior ofensor",
          f"'{paradas.iloc[0]['GRUPO']}' = {br(paradas.iloc[0]['HORAS'],0)} h",
@@ -707,10 +725,15 @@ if K.get("perda_real_pct") is not None:
     cards.append(kpi_card("Perda industrial", f"{br(K['perda_real_pct'],2)}%",
                           f"meta {br(K.get('perda_meta_pct',0),2)}%", "vermelho" if dpf>0.2 else "verde",
                           f"{'+' if dpf>=0 else ''}{br(dpf,2)} p.p."))
+if manut.get("disp_real") is not None:
+    dd = manut["disp_real"]-manut.get("disp_meta",0)
+    cards.append(kpi_card("Disponibilidade frota", f"{br(manut['disp_real'],1)}%",
+                          f"meta {br(manut.get('disp_meta',0),1)}% (oficial, mes)", "verde" if dd>=0 else "vermelho",
+                          f"{'+' if dd>=0 else ''}{br(dd,1)} p.p."))
 if manut.get("corretiva_pct") is not None:
     cards.append(kpi_card("Manut. corretiva", f"{br(manut['corretiva_pct'],0)}%",
-                          f"{br(manut.get('os',0),0)} OS | DMT {br(manut.get('dmt',0),0)} km", "vermelho" if manut['corretiva_pct']>70 else "amarelo",
-                          "alvo: + preventiva"))
+                          f"{br(manut.get('os',0),0)} OS | DMT {br(manut.get('dmt',0),0)} km", "amarelo",
+                          "risco/custo (disp. OK)"))
 if manut.get("diesel_l"):
     cards.append(kpi_card("Diesel (frota)", f"{br(manut['diesel_l']/1e6,2)} M L",
                           f"DMT medio {br(manut.get('dmt',0),1)} km", "info"))
@@ -881,6 +904,7 @@ tr:hover td{{background:var(--surf2)}}
 </div>
 
 <div id="t-manut" class="tab">
+  <div class="grid one"><div class="card"><h3>Disponibilidade real vs meta por categoria (medida oficial, mes atual) — piores 12</h3><div class="chart"><canvas id="cDispCat"></canvas></div></div></div>
   <div class="grid">
     <div class="card"><h3>Diesel por categoria (litros, 2026)</h3><div class="chart"><canvas id="cDiesel"></canvas></div></div>
     <div class="card"><h3>Top equipamentos por nº de OS de manutencao</h3><div class="chart"><canvas id="cManutTop"></canvas></div></div>
@@ -981,6 +1005,9 @@ mkPar('cPar'); mkPar('cPar2');
 // Diesel por categoria + manut top
 (()=>{{const d=CT.diesel_cat||[];if(!d.length)return;new Chart(document.getElementById('cDiesel'),{{type:'bar',data:{{labels:d.map(x=>x.cat),datasets:[{{label:'Litros',data:d.map(x=>x.L),backgroundColor:O+'cc',borderColor:O,borderWidth:1}}]}},options:{{...opt,indexAxis:'y'}}}});}})();
 (()=>{{const d=CT.manut_top||[];if(!d.length)return;new Chart(document.getElementById('cManutTop'),{{type:'bar',data:{{labels:d.map(x=>x.eq),datasets:[{{label:'OS',data:d.map(x=>x.OS),backgroundColor:R+'cc',borderColor:R,borderWidth:1}}]}},options:{{...opt,indexAxis:'y'}}}});}})();
+(()=>{{const d=CT.disp_cat||[];if(!d.length)return;new Chart(document.getElementById('cDispCat'),{{type:'bar',data:{{labels:d.map(x=>x.cat),datasets:[
+  {{label:'Disponibilidade %',data:d.map(x=>x.disp),backgroundColor:d.map(x=>x.disp>=x.meta?G+'cc':R+'cc')}},
+  {{label:'Meta %',type:'line',data:d.map(x=>x.meta),borderColor:O,backgroundColor:'transparent',pointRadius:0}}]}},options:opt}});}})();
 </script></body></html>"""
 
 OUT.parent.mkdir(parents=True, exist_ok=True)
