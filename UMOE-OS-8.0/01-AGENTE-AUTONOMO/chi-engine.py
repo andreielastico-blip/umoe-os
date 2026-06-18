@@ -11,6 +11,13 @@ from datetime import datetime, date
 from collections import defaultdict
 from pathlib import Path
 
+# stdout em UTF-8 para nao quebrar com emoji/acentos no Windows (cp1252)
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8")
+except Exception:
+    pass
+
 BASE_DIR = Path(__file__).parent.parent  # UMOE-OS-8.0/
 SOLINFTEC_DIR = BASE_DIR / "Solinftec"
 LOG_DIR = BASE_DIR.parent / "logs"

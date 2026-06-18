@@ -80,6 +80,7 @@ def git_push():
         # Arquivos a commitar
         targets = [
             "UMOE-OS-8.0/Relatorios/",
+            "docs/",
             "UMOE-OS-8.0/01-AGENTE-AUTONOMO/",
             "config/",
             "logs/",
