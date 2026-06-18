@@ -466,6 +466,23 @@ try:
         plantio["aderencia"]= plantio.get("real_ha",0)/plantio["meta_ha"]*100
 except Exception as e: print("  plantio:", e)
 
+# ── ADERENCIA DE TRATOS (ADEREN_ATIVIDADES: area realizada vs prevista) ───────
+ader_proc = pd.DataFrame()
+try:
+    ad = load("BASE_ADEREN_ATIVIDADES")
+    if not ad.empty:
+        ad["AREA"]=num(ad.get("AREA",0)); ad["AREA_REALIZADA"]=num(ad.get("AREA_REALIZADA",0))
+        col = "DESC_PROCESSO" if "DESC_PROCESSO" in ad.columns else ("PROCESSO" if "PROCESSO" in ad.columns else None)
+        if col:
+            g = ad.groupby(col).agg(PREV=("AREA","sum"), REAL=("AREA_REALIZADA","sum")).reset_index().rename(columns={col:"PROC"})
+            g["ADER"] = np.where(g["PREV"]>0, g["REAL"]/g["PREV"]*100, 0)
+            ader_proc = g[g["PREV"]>0].sort_values("PREV", ascending=False).head(14)
+            charts["ader_proc"]=[{"proc":str(r["PROC"]),"prev":float(r["PREV"]),"real":float(r["REAL"]),"ader":float(r["ADER"])} for _,r in ader_proc.iterrows()]
+        tot_prev=ad["AREA"].sum()
+        K["ader_geral"]= float(ad["AREA_REALIZADA"].sum()/tot_prev*100) if tot_prev else 0
+        K["ader_prev_ha"]=float(tot_prev); K["ader_real_ha"]=float(ad["AREA_REALIZADA"].sum())
+except Exception as e: print("  aderencia:", e)
+
 # ── MANUTENCAO / FROTA (workspace Manutencao Premium) ────────────────────────
 manut = {}; diesel_cat = pd.DataFrame(); meta_disp = pd.DataFrame()
 try:
@@ -633,6 +650,11 @@ if praga.get("broca") is not None:
 if plantio.get("aderencia"):
     add(f"Plantio: {br(plantio.get('real_ha',0))} ha realizados vs meta {br(plantio.get('meta_ha',0))} ha = "
         f"{br(plantio['aderencia'],0)}% de aderencia.", "verde" if plantio['aderencia']>=90 else "amarelo")
+if "ader_geral" in K and not ader_proc.empty:
+    pior = ader_proc.sort_values("ADER").iloc[0]
+    add(f"Aderencia de tratos: {br(K['ader_geral'],0)}% geral ({br(K['ader_real_ha'])} de {br(K['ader_prev_ha'])} ha). "
+        f"Processo mais atrasado: {pior['PROC']} ({br(pior['ADER'],0)}%). Tratos em dia sustentam o TCH/TAH das proximas safras.",
+        "vermelho" if K['ader_geral']<60 else "amarelo")
 if manut.get("disp_real") is not None:
     dd = manut["disp_real"]-manut.get("disp_meta",0)
     add(f"DISPONIBILIDADE da frota (medida oficial, mes atual): {br(manut['disp_real'],1)}% vs meta {br(manut.get('disp_meta',0),1)}% "
@@ -765,6 +787,8 @@ acoes_html = "".join(
     f'<td>{a["m"]}</td><td>{a["d"]}</td></tr>' for a in sorted(acoes, key=lambda x:{"ALTA":0,"MEDIA":1,"BAIXA":2}.get(x["p"],3))
 ) or '<tr><td colspan=4>sem acoes</td></tr>'
 
+ader_rows = linhas_tabela(ader_proc, ["PROC","PREV","REAL","ADER"],
+                  [str, lambda v:br(v,0), lambda v:br(v,0), lambda v:br(v,0)+"%"]) if not ader_proc.empty else '<tr><td colspan=4>sem dados</td></tr>'
 md_rows = linhas_tabela(meta_disp, ["CATEGORIA","META_DISP"],
                   [str, lambda v:br(v*100,1)+"%"]) if not meta_disp.empty else '<tr><td colspan=2>sem dados</td></tr>'
 frentes_rows = linhas_tabela(frentes, ["GRP","CANA","META","ADER","ATR"],
@@ -838,6 +862,7 @@ tr:hover td{{background:var(--surf2)}}
   <button onclick="tab('varied',this)">Variedades</button>
   <button onclick="tab('chuva',this)">Chuva & Clima</button>
   <button onclick="tab('pragas',this)">Pragas & Plantio</button>
+  <button onclick="tab('tratos',this)">Aderencia Tratos</button>
   <button onclick="tab('manut',this)">Manutencao & Frota</button>
   <button onclick="tab('custos',this)">Custos</button>
   <button onclick="tab('paradas',this)">Disponibilidade</button>
@@ -900,6 +925,11 @@ tr:hover td{{background:var(--surf2)}}
 
 <div id="t-paradas" class="tab">
   <div class="grid one"><div class="card"><h3>Horas de parada por grupo</h3><div class="chart"><canvas id="cPar"></canvas></div></div></div>
+</div>
+
+<div id="t-tratos" class="tab">
+  <div class="grid one"><div class="card"><h3>Aderencia de tratos por processo — area realizada vs prevista (ha)</h3><div class="chart"><canvas id="cAder"></canvas></div></div></div>
+  <div class="card"><h3>Aderencia por processo</h3><table><tr><th>Processo</th><th>Prevista (ha)</th><th>Realizada (ha)</th><th>Aderencia</th></tr>{ader_rows}</table></div>
 </div>
 
 <div id="t-manut" class="tab">
@@ -1008,6 +1038,9 @@ mkPar('cPar'); mkPar('cPar2');
 (()=>{{const d=CT.disp_cat||[];if(!d.length)return;new Chart(document.getElementById('cDispCat'),{{type:'bar',data:{{labels:d.map(x=>x.cat),datasets:[
   {{label:'Disponibilidade %',data:d.map(x=>x.disp),backgroundColor:d.map(x=>x.disp>=x.meta?G+'cc':R+'cc')}},
   {{label:'Meta %',type:'line',data:d.map(x=>x.meta),borderColor:O,backgroundColor:'transparent',pointRadius:0}}]}},options:opt}});}})();
+(()=>{{const d=CT.ader_proc||[];if(!d.length)return;new Chart(document.getElementById('cAder'),{{type:'bar',data:{{labels:d.map(x=>x.proc),datasets:[
+  {{label:'Prevista (ha)',data:d.map(x=>x.prev),backgroundColor:O+'66',borderColor:O,borderWidth:1}},
+  {{label:'Realizada (ha)',data:d.map(x=>x.real),backgroundColor:G+'cc',borderColor:G,borderWidth:1}}]}},options:{{...opt,indexAxis:'y'}}}});}})();
 (()=>{{const d=CT.disp_mensal||[];if(!d.length)return;new Chart(document.getElementById('cDispMes'),{{type:'line',data:{{labels:d.map(x=>x.ym),datasets:[
   {{label:'Disponibilidade %',data:d.map(x=>x.disp),borderColor:G,backgroundColor:G+'22',fill:true,tension:.3,pointRadius:2}},
   {{label:'Meta %',data:d.map(x=>x.meta),borderColor:O,borderDash:[6,4],backgroundColor:'transparent',pointRadius:0}}]}},options:{{...opt,scales:{{...opt.scales,y:{{...opt.scales.y,min:80,max:100}}}}}}}});}})();
