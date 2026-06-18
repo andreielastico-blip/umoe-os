@@ -118,13 +118,37 @@ def read_table_list(ds):
     return out
 
 
-def extract_dataset(token, ds, force=False):
+def tables_from_info(token, ds_id):
+    """Descobre as tabelas reais do modelo semantico via INFO.TABLES()."""
+    rows, e = execute_dax(token, ds_id, "EVALUATE INFO.TABLES()")
+    if e or not rows:
+        return [], e
+    nomes = []
+    for r in rows:
+        nome = next((v for k, v in r.items() if k.endswith("[Name]")), None)
+        if not nome or "$" in str(nome):
+            continue
+        # ignora tabelas de data automaticas (ruido)
+        if str(nome).startswith(("LocalDateTable_", "DateTableTemplate_")):
+            continue
+        nomes.append(str(nome))
+    return nomes, None
+
+
+def extract_dataset(token, ds, force=False, auto=False):
     ds_id = DATASETS[ds]
-    tables = read_table_list(ds)
-    if not tables:
-        print(f"[{ds}] sem {ds}_TABELAS.txt — pulando")
-        return 0, 0, 0
-    print(f"[{ds}] {len(tables)} tabelas...")
+    if auto:
+        tables, e = tables_from_info(token, ds_id)
+        if e:
+            print(f"[{ds}] INFO.TABLES() falhou: {e}")
+            return 0, 0, 0
+        print(f"[{ds}] {len(tables)} tabelas do modelo (auto)...")
+    else:
+        tables = read_table_list(ds)
+        if not tables:
+            print(f"[{ds}] sem {ds}_TABELAS.txt — pulando")
+            return 0, 0, 0
+        print(f"[{ds}] {len(tables)} tabelas (lista)...")
     ok = empty = err = 0
     for t in tables:
         out = PBI_DIR / f"{ds}_{sanitize(t)}.json"
@@ -178,6 +202,7 @@ def main():
     ap.add_argument("--discover", action="store_true", help="lista tabelas reais (INFO.TABLES)")
     ap.add_argument("--interactive", action="store_true", help="permite device-code (local)")
     ap.add_argument("--user", action="store_true", help="autentica como usuario via device-code (ignora SP)")
+    ap.add_argument("--auto", action="store_true", help="descobre as tabelas direto do modelo (INFO.TABLES) em vez das listas")
     args = ap.parse_args()
 
     print("=" * 60)
@@ -203,7 +228,7 @@ def main():
     tot_ok = tot_empty = tot_err = 0
     sample_err = None
     for ds in targets:
-        ok, empty, err = extract_dataset(token, ds, force=args.force)
+        ok, empty, err = extract_dataset(token, ds, force=args.force, auto=args.auto)
         tot_ok += ok; tot_empty += empty; tot_err += err
 
     # Diagnostico: roda um INFO.TABLES no primeiro dataset para confirmar acesso
