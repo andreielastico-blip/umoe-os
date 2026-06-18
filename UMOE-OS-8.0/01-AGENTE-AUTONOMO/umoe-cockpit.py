@@ -144,6 +144,7 @@ if not moa.empty and not moa_mensal.empty:
         meta_td  = meta_ant + meta_cur
         K["data_analise"] = adt.strftime("%d/%m/%Y")
         K["frac_mes"] = frac
+        K["_cur"] = cur
         # META de ATR ponderada ate a data (peso=TON_EFET; mes corrente pro-rata).
         # A meta de ATR sobe com a safra (mar 118 -> set 152); comparar com a
         # meta cheia (138,66) no inicio e injusto.
@@ -381,6 +382,18 @@ if not his.empty and "CD_FREN_TRAN" in his.columns:
         "CANA": x["QT_CANA_ENT"].sum(),
         "ATR": x["KG_ACUCAR"].sum()/x["QT_CANA_ENT"].sum() if x["QT_CANA_ENT"].sum() else 0})).reset_index()
     frentes = g[g["CANA"]>0].sort_values("CANA", ascending=False)
+    # META OFICIAL de moagem por frente (CTT_META_MOAGEM.TON_EFET), pro-rata a data
+    if not moa.empty and "CD_FREN_TRAN" in moa.columns and "frac_mes" in K:
+        mo = moa.copy(); mo["TON_EFET"]=num(mo.get("TON_EFET",0))
+        mo["GRP"]=pd.to_numeric(mo["CD_FREN_TRAN"],errors="coerce").map(GRP_FRENTE).fillna("Outras")
+        cur=K.get("_cur"); fr=K.get("frac_mes",1.0)
+        mo["w"]=mo["AM"].apply(lambda a: fr if a==cur else (1.0 if (cur and a<cur) else 0.0))
+        mg=mo.groupby("GRP").apply(lambda x:(x["TON_EFET"]*x["w"]).sum()).reset_index()
+        mg.columns=["GRP","META"]
+        frentes=frentes.merge(mg,on="GRP",how="left").fillna({"META":0})
+        frentes["ADER"]=np.where(frentes["META"]>0, frentes["CANA"]/frentes["META"]*100, 0)
+    else:
+        frentes["META"]=0; frentes["ADER"]=0
     charts["frentes"] = frentes.to_dict("records")
 
 # ── PROJECAO DE FIM DE SAFRA (ritmo atual vs meta cheia) ─────────────────────
@@ -493,6 +506,12 @@ if not moagem_pace.empty and (moagem_pace["ANO"]==2026).any():
             f"ATR 26/27 {br(a26,1)} kg/t vs media {br(amed,1)} kg/t.", "verde" if d>=0 else "vermelho")
 
 # Insights operacionais adicionais
+if not frentes.empty and "ADER" in frentes.columns and (frentes["META"]>0).any():
+    fa = frentes[frentes["META"]>0].sort_values("ADER")
+    pior = fa.iloc[0]
+    add(f"Aderencia a meta por frente (realizado vs meta oficial pro-rata): pior e {pior['GRP']} com {br(pior['ADER'],0)}% "
+        f"({br(pior['CANA'])} t vs meta {br(pior['META'])} t). Melhor: {fa.iloc[-1]['GRP']} ({br(fa.iloc[-1]['ADER'],0)}%).",
+        "vermelho" if pior['ADER']<85 else "amarelo")
 if not frentes.empty:
     fr = frentes.set_index("GRP")
     if "Fabiano (F27)" in fr.index and "Lerosa (F10)" in fr.index:
@@ -606,8 +625,8 @@ acoes_html = "".join(
     f'<td>{a["m"]}</td><td>{a["d"]}</td></tr>' for a in sorted(acoes, key=lambda x:{"ALTA":0,"MEDIA":1,"BAIXA":2}.get(x["p"],3))
 ) or '<tr><td colspan=4>sem acoes</td></tr>'
 
-frentes_rows = linhas_tabela(frentes, ["GRP","CANA","ATR"],
-                  [str, lambda v:br(v,0), lambda v:br(v,1)]) if not frentes.empty else '<tr><td colspan=3>sem dados</td></tr>'
+frentes_rows = linhas_tabela(frentes, ["GRP","CANA","META","ADER","ATR"],
+                  [str, lambda v:br(v,0), lambda v:br(v,0), lambda v:br(v,0)+"%", lambda v:br(v,1)]) if not frentes.empty else '<tr><td colspan=5>sem dados</td></tr>'
 
 # Tabelas
 tah_rows = linhas_tabela(tah_var.head(15), ["DE_VARIED","TAH","TCH","AREA"],
@@ -745,7 +764,7 @@ tr:hover td{{background:var(--surf2)}}
     <div class="card"><h3>Moagem por frente — Propria x Lerosa x Fabiano (t)</h3><div class="chart"><canvas id="cFrenMoa"></canvas></div></div>
     <div class="card"><h3>ATR por frente (kg/t) — qualidade da materia-prima</h3><div class="chart"><canvas id="cFrenAtr"></canvas></div></div>
   </div>
-  <div class="card"><h3>Resumo por frente</h3><table><tr><th>Frente</th><th>Cana moida (t)</th><th>ATR (kg/t)</th></tr>{frentes_rows}</table></div>
+  <div class="card"><h3>Resumo por frente — realizado vs meta oficial (pro-rata a data)</h3><table><tr><th>Frente</th><th>Realizado (t)</th><th>Meta (t)</th><th>Aderencia</th><th>ATR (kg/t)</th></tr>{frentes_rows}</table></div>
 </div>
 
 <div id="t-pragas" class="tab">
@@ -811,9 +830,11 @@ function mkPar(cid){{const d=CT.paradas||[];if(!d.length)return;new Chart(docume
 mkPar('cPar'); mkPar('cPar2');
 (()=>{{const d=CT.chuva_ano||[];if(!d.length)return;new Chart(document.getElementById('cChuvaA'),{{type:'bar',data:{{labels:d.map(x=>x.ANO),datasets:[{{label:'Chuva (mm)',data:d.map(x=>x.MM),backgroundColor:C+'aa',borderColor:C,borderWidth:1}}]}},options:opt}});}})();
 (()=>{{const d=CT.chuva_mes||[];if(!d.length)return;new Chart(document.getElementById('cChuvaM'),{{type:'bar',data:{{labels:d.map(x=>x.MES),datasets:[{{label:'mm 2026',data:d.map(x=>x.MM),backgroundColor:B+'aa',borderColor:B,borderWidth:1}}]}},options:opt}});}})();
-// Frentes
+// Frentes: realizado vs meta
 (()=>{{const d=CT.frentes||[];if(!d.length)return;const col=d.map(x=>x.GRP.includes('Propria')?G:(x.GRP.includes('Lerosa')?B:O));
-  new Chart(document.getElementById('cFrenMoa'),{{type:'bar',data:{{labels:d.map(x=>x.GRP),datasets:[{{label:'Cana (t)',data:d.map(x=>x.CANA),backgroundColor:col}}]}},options:opt}});
+  new Chart(document.getElementById('cFrenMoa'),{{type:'bar',data:{{labels:d.map(x=>x.GRP),datasets:[
+    {{label:'Realizado (t)',data:d.map(x=>x.CANA),backgroundColor:G+'cc',borderColor:G,borderWidth:1}},
+    {{label:'Meta (t)',data:d.map(x=>x.META),backgroundColor:O+'66',borderColor:O,borderWidth:1}}]}},options:opt}});
   new Chart(document.getElementById('cFrenAtr'),{{type:'bar',data:{{labels:d.map(x=>x.GRP),datasets:[{{label:'ATR (kg/t)',data:d.map(x=>x.ATR),backgroundColor:col}}]}},options:opt}});}})();
 // Broca top fazendas
 (()=>{{const d=CT.broca_top||[];if(!d.length)return;new Chart(document.getElementById('cBroca'),{{type:'bar',data:{{labels:d.map(x=>x.FAZENDA),datasets:[{{label:'% infest',data:d.map(x=>x.INFEST),backgroundColor:R+'cc',borderColor:R,borderWidth:1}}]}},options:{{...opt,indexAxis:'y'}}}});}})();
