@@ -7,7 +7,8 @@
 # para montar as REGRAS. Aumente a janela com  -Dias 7 .
 param(
     [switch]$Listar,
-    [int]$Dias = 0
+    [int]$Dias = 0,
+    [switch]$NoPipeline   # nao encadear o pipeline ao final
 )
 
 # ============================ CONFIG =================================
@@ -145,14 +146,31 @@ foreach ($pf in $pastasConta) {
   }
 }
 
-Log "==== Fim. E-mails que casaram: $totCasou | anexos salvos: $totSalvos ===="
+Log "==== Fim busca. E-mails que casaram: $totCasou | anexos salvos: $totSalvos ===="
+
+# ---- ENCADEIA O PIPELINE (CHI/Clima/BI/Moagem + git push) ----
+if (-not $NoPipeline) {
+    $pipeline = "C:\01 - UMOE\09 - IA\umoe-os-8\UMOE-OS-8.0\01-AGENTE-AUTONOMO\umoe-pipeline.py"
+    if (Test-Path $pipeline) {
+        Log "Encadeando pipeline: umoe-pipeline.py"
+        try {
+            python -X utf8 "$pipeline" 2>&1 | ForEach-Object { Log "  [pipeline] $_" }
+            Log "Pipeline finalizado (codigo $LASTEXITCODE)"
+        } catch { Log "ERRO ao rodar pipeline: $($_.Exception.Message)" }
+    } else {
+        Log "Pipeline nao encontrado: $pipeline"
+    }
+} else {
+    Log "Pipeline pulado (-NoPipeline)"
+}
+Log "==== Fim total ===="
 
 # ============================ AGENDAR ===============================
-# Rode UMA vez (PowerShell normal) para criar a tarefa diaria as 07:00:
+# Rode UMA vez (PowerShell normal) para criar a tarefa diaria as 09:00:
 #
 #   $acao    = New-ScheduledTaskAction -Execute "powershell.exe" `
 #       -Argument '-NoProfile -ExecutionPolicy Bypass -File "C:\01 - UMOE\09 - IA\umoe-os-8\09-SCRIPTS\email-fetch-anexos.ps1"'
-#   $gatilho = New-ScheduledTaskTrigger -Daily -At 07:00
+#   $gatilho = New-ScheduledTaskTrigger -Daily -At 09:00
 #   Register-ScheduledTask -TaskName "UMOE-Email-Fetch" -Action $acao -Trigger $gatilho `
 #       -Description "Baixa anexos do e-mail UMOE para UMOE-INBOX" -RunLevel Limited
 #
