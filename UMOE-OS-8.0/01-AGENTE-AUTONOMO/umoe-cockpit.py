@@ -130,19 +130,28 @@ if not moa.empty and not moa_mensal.empty:
     charts["meta_mes"] = [{"AM": r["AM"], "META": float(r["META"]), "REAL": float(r["REAL"]),
                            "META_ACUM": float(r["META_ACUM"]), "REAL_ACUM": float(r["REAL_ACUM"])}
                           for _, r in mm.iterrows()]
-    # Compara pelo ULTIMO MES COMPLETO (mes corrente parcial distorce o gap)
-    ult = moa_mensal["AM"].max()
-    ult_dt = base["DT"].max() if "DT" in base.columns else None
-    if ult_dt is not None and pd.notna(ult_dt) and ult_dt.day < 28:
-        ult = (ult_dt.replace(day=1) - pd.Timedelta(days=1)).strftime("%Y-%m")
-    meta_td = float(gm[gm["AM"] <= ult]["META"].sum())
-    real_td = float(moa_mensal[moa_mensal["AM"] <= ult]["TON"].sum())
+    # Aderencia PONDERADA ate a data de analise (= ultima data com realizado).
+    # Mes corrente parcial: a meta do mes e pro-rata pelos dias decorridos,
+    # para meta x real serem comparaveis no mesmo numero de dias.
+    import calendar
+    adt = base["DT"].max() if "DT" in base.columns else None
+    if adt is not None and pd.notna(adt):
+        cur = adt.strftime("%Y-%m")
+        dias_mes = calendar.monthrange(adt.year, adt.month)[1]
+        frac = adt.day / dias_mes
+        meta_ant = float(gm[gm["AM"] < cur]["META"].sum())
+        meta_cur = float(gm[gm["AM"] == cur]["META"].sum()) * frac
+        meta_td  = meta_ant + meta_cur
+        K["data_analise"] = adt.strftime("%d/%m/%Y")
+        K["frac_mes"] = frac
+    else:
+        meta_td = float(gm["META"].sum()); K["data_analise"] = ""
+    real_td = float(K["moagem_total"])   # realizado total ate a data
     K["meta_total"]    = float(gm["META"].sum())
     K["meta_periodo"]  = meta_td
     K["real_periodo"]  = real_td
     K["atend_periodo"] = real_td/meta_td*100 if meta_td else 0
     K["gap_periodo"]   = real_td - meta_td
-    K["ult_mes"]       = ult
 
 # ── TCH / TAH / VARIEDADES ──────────────────────────────────────────────────
 tch_estagio = pd.DataFrame(); tah_var = pd.DataFrame()
@@ -276,6 +285,53 @@ try:
 except Exception as e:
     print("  bd_safras: erro", e)
 
+# ── COMPARATIVO ENTRE SAFRAS POR MES (historico industrial diario) ───────────
+# Fonte: Histórico Industrias Diário Safras.xlsx (1 aba por ano, col2=data,
+# col3=moagem dia, col4=ATR dia). Compara safras no MESMO ponto da safra.
+moagem_pace = pd.DataFrame()
+try:
+    import openpyxl
+    fI = _glob.glob(r"C:\01 - UMOE\03 - Financeiro\Planilhas\Hist*Industri*Safras.xlsx")
+    if fI:
+        wbI = openpyxl.load_workbook(fI[0], read_only=True, data_only=True)
+        anos = [a for a in ["2022","2023","2024","2025","2026"] if a in wbI.sheetnames]
+        regs = []
+        for ano in anos:
+            for r in wbI[ano].iter_rows(min_row=3, values_only=True):
+                dt = r[2] if len(r)>2 else None
+                if dt is None or not hasattr(dt, "month"):
+                    continue
+                mo = float(r[3] or 0) if len(r)>3 and r[3] is not None else 0
+                at = float(r[4] or 0) if len(r)>4 and r[4] is not None else 0
+                regs.append((int(ano), dt.month, dt.day, mo, at))
+        di = pd.DataFrame(regs, columns=["ANO","MES","DIA","MOA","ATR"])
+        # cutoff = ultima data com moagem na safra corrente (2026)
+        cur = di[(di["ANO"]==2026) & (di["MOA"]>0)]
+        if not cur.empty:
+            cmes = int(cur["MES"].max()); cdia = int(cur[cur["MES"]==cmes]["DIA"].max())
+        else:
+            cmes, cdia = 12, 31
+        ate = di[(di["MES"]<cmes) | ((di["MES"]==cmes) & (di["DIA"]<=cdia))]
+        # ATR mensal ponderado por moagem, por safra
+        gm2 = di[di["MOA"]>0].copy(); gm2["AC"]=gm2["MOA"]*gm2["ATR"]
+        am = gm2.groupby(["ANO","MES"]).agg(MOA=("MOA","sum"),AC=("AC","sum")).reset_index()
+        am["ATR"]=am["AC"]/am["MOA"]
+        meses = sorted(am["MES"].unique())
+        charts["atr_mes_safra"] = {"meses": [int(m) for m in meses],
+            "series": {str(a): [float(am[(am["ANO"]==a)&(am["MES"]==m)]["ATR"].sum() or 0) for m in meses] for a in anos}}
+        # Moagem acumulada por safra ate a mesma data (ritmo) + ATR ate a data
+        gp = ate[ate["MOA"]>0].groupby("ANO").agg(MOA=("MOA","sum")).reset_index()
+        gpa = ate.copy(); gpa["AC"]=gpa["MOA"]*gpa["ATR"]
+        atr_ate = gpa.groupby("ANO").apply(lambda x: x["AC"].sum()/x["MOA"].sum() if x["MOA"].sum() else 0)
+        gp["ATR"]=gp["ANO"].map(atr_ate)
+        moagem_pace = gp.sort_values("ANO")
+        charts["moagem_pace"] = [{"safra": f"{a-1 if False else str(a)[2:]}/{str(a+1)[2:]}",
+                                  "MOA": float(moagem_pace[moagem_pace["ANO"]==a]["MOA"].sum()),
+                                  "ATR": float(moagem_pace[moagem_pace["ANO"]==a]["ATR"].sum())} for a in moagem_pace["ANO"]]
+        K["pace_cutoff"] = f"{cdia:02d}/{cmes:02d}"
+except Exception as e:
+    print("  industrial: erro", e)
+
 # ── LOGISTICA / CARGAS (cana queimada, KM medio) ─────────────────────────────
 carga_kpi = {}
 try:
@@ -308,9 +364,9 @@ def add(txt, tipo="info"): insights.append({"t": txt, "tipo": tipo})
 if "moagem_total" in K:
     if "meta_periodo" in K:
         sit = "verde" if K["atend_periodo"]>=98 else ("amarelo" if K["atend_periodo"]>=90 else "vermelho")
-        add(f"Aderencia a meta (ate {K.get('ult_mes','')}, ultimo mes completo): realizado {br(K['real_periodo'])} t vs meta "
-            f"{br(K['meta_periodo'])} t = {br(K['atend_periodo'],1)}% do ritmo. {'Atraso' if K['gap_periodo']<0 else 'Adiantado'} de "
-            f"{br(abs(K['gap_periodo']))} t. Moagem total ate hoje {br(K['moagem_total'])} t; meta cheia {br(K.get('meta_total',META_MOAGEM))} t.", sit)
+        add(f"Aderencia a meta ate {K.get('data_analise','')} (meta pro-rata aos dias decorridos): realizado {br(K['real_periodo'])} t vs "
+            f"meta {br(K['meta_periodo'])} t = {br(K['atend_periodo'],1)}% do ritmo. {'Atraso' if K['gap_periodo']<0 else 'Adiantado'} de "
+            f"{br(abs(K['gap_periodo']))} t. Meta cheia da safra: {br(K.get('meta_total',META_MOAGEM))} t.", sit)
     else:
         add(f"Moagem acumulada de {br(K['moagem_total'])} t = {br(K['atend_meta'],1)}% da meta safra ({br(META_MOAGEM)} t).", "amarelo")
 if "atr_pond" in K and K["atr_pond"]>0:
@@ -349,6 +405,17 @@ if not var_amb.empty:
     top = var_amb.iloc[0]
     add(f"Melhor combinacao variedade x ambiente: {top['VAR']} x Amb.{top['AMB1']} = {br(top['TAH'],2)} t ATR/ha. "
         f"Alocacao por aptidao de ambiente maximiza produtividade.", "verde")
+if not moagem_pace.empty and (moagem_pace["ANO"]==2026).any():
+    m26 = float(moagem_pace[moagem_pace["ANO"]==2026]["MOA"].sum())
+    ant = moagem_pace[moagem_pace["ANO"]<2026]
+    if not ant.empty:
+        med = float(ant["MOA"].mean())
+        d = (m26/med-1)*100 if med else 0
+        a26 = float(moagem_pace[moagem_pace["ANO"]==2026]["ATR"].sum())
+        amed = float(ant["ATR"].mean())
+        add(f"Ritmo vs historico (mesmo ponto, ate {K.get('pace_cutoff','')}): moagem 26/27 {br(m26)} t = "
+            f"{'+' if d>=0 else ''}{br(d,0)}% vs media das ultimas safras ({br(med)} t). "
+            f"ATR 26/27 {br(a26,1)} kg/t vs media {br(amed,1)} kg/t.", "verde" if d>=0 else "vermelho")
 
 print(f"  KPIs={len(K)} insights={len(insights)}")
 print("[3/4] Gerando HTML...")
@@ -366,7 +433,7 @@ if "moagem_total" in K:
     ap = K.get("atend_periodo", K.get("atend_meta",0))
     sit = "verde" if ap>=98 else ("amarelo" if ap>=90 else "vermelho")
     cards.append(kpi_card("Moagem realizada", f"{br(K['moagem_total'])} t",
-                          f"vs meta ate {K.get('ult_mes','')}: {br(K.get('meta_periodo',0))} t", sit,
+                          f"vs meta pro-rata ate {K.get('data_analise','')}: {br(K.get('meta_periodo',0))} t", sit,
                           f"{br(ap,1)}% do ritmo"))
 if "atr_pond" in K and K["atr_pond"]>0:
     d = K["atr_pond"]-META_ATR
@@ -454,7 +521,7 @@ tr:hover td{{background:var(--surf2)}}
 </style></head><body>
 <header>
   <div><h1>UMOE BIOENERGY — Cockpit Executivo</h1><div class="sub">Plano Diretor Agricola | Safra 2026/27 | Dados reais Power BI</div></div>
-  <div style="text-align:right"><span class="tag">{len(K)} KPIs | dados reais</span><div class="sub">Atualizado {HOJE}</div></div>
+  <div style="text-align:right"><span class="tag">dados reais ate {K.get('data_analise', HOJE)}</span><div class="sub">Gerado {HOJE} | safra com dados ate {K.get('data_analise','')}</div></div>
 </header>
 <nav>
   <button class="on" onclick="tab('cockpit',this)">Cockpit</button>
@@ -483,11 +550,12 @@ tr:hover td{{background:var(--surf2)}}
 </div>
 
 <div id="t-comp" class="tab">
+  <div class="grid one"><div class="card"><h3>Moagem acumulada por safra — no MESMO ponto (ate {K.get('pace_cutoff','')})</h3><div class="chart"><canvas id="cPace"></canvas></div></div></div>
+  <div class="grid one"><div class="card"><h3>ATR mensal por safra (kg/t) — curva de maturacao comparada</h3><div class="chart"><canvas id="cAtrMesSaf"></canvas></div></div></div>
   <div class="grid">
-    <div class="card"><h3>ATR por safra (kg/t) — historico + 26/27</h3><div class="chart"><canvas id="cHistATR"></canvas></div></div>
-    <div class="card"><h3>TCH por safra (t/ha)</h3><div class="chart"><canvas id="cHistTCH"></canvas></div></div>
+    <div class="card"><h3>TAH por safra (t ATR/ha) — base historica 8 safras</h3><div class="chart"><canvas id="cHistTAH"></canvas></div></div>
+    <div class="card"><h3>TCH por safra (t/ha) — base historica</h3><div class="chart"><canvas id="cHistTCH"></canvas></div></div>
   </div>
-  <div class="grid one"><div class="card"><h3>TAH por safra (t ATR/ha) — produtividade de acucar</h3><div class="chart"><canvas id="cHistTAH"></canvas></div></div></div>
 </div>
 
 <div id="t-atr" class="tab">
@@ -545,7 +613,15 @@ mkAcum('cAcum'); mkAcum('cAcum2');
   {{label:'Meta',data:d.map(x=>x.META),backgroundColor:O+'66',borderColor:O,borderWidth:1}}]}},options:opt}});}})();
 // Historico por safra
 function mkHist(cid,campo,cor){{const d=CT.hist_safra||[];if(!d.length)return;new Chart(document.getElementById(cid),{{type:'bar',data:{{labels:d.map(x=>x.safra),datasets:[{{label:campo,data:d.map(x=>x[campo]),backgroundColor:d.map(x=>x.safra.includes('*')?R:cor+'cc'),borderColor:cor,borderWidth:1}}]}},options:opt}});}}
-mkHist('cHistATR','ATR',O); mkHist('cHistTCH','TCH',G); mkHist('cHistTAH','TAH',C);
+mkHist('cHistTCH','TCH',G); mkHist('cHistTAH','TAH',C);
+// Moagem acumulada por safra no mesmo ponto + ATR (eixo duplo)
+(()=>{{const d=CT.moagem_pace||[];if(!d.length)return;new Chart(document.getElementById('cPace'),{{type:'bar',data:{{labels:d.map(x=>x.safra),datasets:[
+  {{label:'Moagem acum (t)',data:d.map(x=>x.MOA),backgroundColor:d.map(x=>x.safra.startsWith('26')?G:B+'aa'),borderColor:B,borderWidth:1,yAxisID:'y'}},
+  {{label:'ATR (kg/t)',type:'line',data:d.map(x=>x.ATR),borderColor:O,backgroundColor:'transparent',tension:.3,yAxisID:'y1'}}]}},
+  options:{{...opt,scales:{{x:{{ticks:{{color:M}},grid:{{color:'#1b2848'}}}},y:{{position:'left',ticks:{{color:M}},grid:{{color:'#1b2848'}}}},y1:{{position:'right',ticks:{{color:O}},grid:{{display:false}}}}}}}}}});}})();
+// ATR mensal por safra (multi-linha)
+(()=>{{const d=CT.atr_mes_safra;if(!d||!d.meses)return;const cores={{'2022':M,'2023':B,'2024':C,'2025':O,'2026':G}};const nm={{1:'Jan',2:'Fev',3:'Mar',4:'Abr',5:'Mai',6:'Jun',7:'Jul',8:'Ago',9:'Set',10:'Out',11:'Nov',12:'Dez'}};
+  new Chart(document.getElementById('cAtrMesSaf'),{{type:'line',data:{{labels:d.meses.map(m=>nm[m]||m),datasets:Object.keys(d.series).map(s=>({{label:s,data:d.series[s].map(v=>v||null),borderColor:cores[s]||M,backgroundColor:'transparent',borderWidth:s==='2026'?3:1.5,tension:.3,pointRadius:s==='2026'?3:0,spanGaps:true}}))}},options:opt}});}})();
 (()=>{{const d=CT.atr_dia||[];if(!d.length)return;new Chart(document.getElementById('cAtr'),{{type:'line',data:{{labels:d.map(x=>x.dia),datasets:[{{label:'ATR kg/t',data:d.map(x=>x.ATR),borderColor:O,backgroundColor:O+'22',fill:true,tension:.35,pointRadius:0}}]}},options:opt}});}})();
 (()=>{{const d=CT.tch_estagio||[];if(!d.length)return;new Chart(document.getElementById('cTch'),{{type:'bar',data:{{labels:d.map(x=>x.ESTAGIO),datasets:[{{label:'TCH real',data:d.map(x=>x.TCH_REAL),backgroundColor:G+'cc'}},{{label:'TCH estimado',data:d.map(x=>x.TCH_EST),backgroundColor:O+'cc'}}]}},options:opt}});}})();
 function mkPar(cid){{const d=CT.paradas||[];if(!d.length)return;new Chart(document.getElementById(cid),{{type:'bar',data:{{labels:d.map(x=>x.GRUPO),datasets:[{{label:'Horas',data:d.map(x=>x.HORAS),backgroundColor:R+'cc',borderColor:R,borderWidth:1}}]}},options:{{...opt,indexAxis:'y'}}}});}}
