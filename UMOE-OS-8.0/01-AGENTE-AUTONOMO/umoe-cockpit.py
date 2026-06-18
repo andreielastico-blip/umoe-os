@@ -489,11 +489,16 @@ try:
     # Diesel (f_abastecimento) - foca 2026
     ab = load_manut("f_abastecimento")
     if not ab.empty:
-        ab["LITROS"]=num(ab.get("LITROS",0)); ab["_DT"]=pd.to_datetime(ab.get("DT_OPERACAO"),errors="coerce")
+        ab["LITROS"]=num(ab.get("LITROS",0)); ab["HORA_KM"]=num(ab.get("HORA_KM",0)); ab["_DT"]=pd.to_datetime(ab.get("DT_OPERACAO"),errors="coerce")
         a26 = ab[ab["_DT"].dt.year==2026]
         base_ab = a26 if not a26.empty else ab
         manut["diesel_l"]=float(base_ab["LITROS"].sum())
         dc = base_ab.groupby("CATEGORIA")["LITROS"].sum().reset_index().sort_values("LITROS",ascending=False).head(8)
+        # Consumo especifico L/h (so equipamentos por hora: valores 5-200 L/h)
+        ch = base_ab.groupby("CATEGORIA").agg(L=("LITROS","sum"),H=("HORA_KM","sum")).reset_index()
+        ch["Lh"]=np.where(ch["H"]>0, ch["L"]/ch["H"], 0)
+        ch = ch[(ch["Lh"]>=5)&(ch["Lh"]<=200)&(ch["L"]>3000)].sort_values("Lh",ascending=False).head(10)
+        charts["consumo_lh"]=[{"cat":str(r["CATEGORIA"]),"lh":float(r["Lh"])} for _,r in ch.iterrows()]
         diesel_cat = dc; charts["diesel_cat"]=[{"cat":str(r["CATEGORIA"]),"L":float(r["LITROS"])} for _,r in dc.iterrows()]
     # Produtividade transporte (DMT) - 2026
     fp = load_manut("f_produtividade")
@@ -937,8 +942,9 @@ tr:hover td{{background:var(--surf2)}}
   <div class="grid one"><div class="card"><h3>Disponibilidade por categoria (mes atual) — piores 12 vs meta</h3><div class="chart"><canvas id="cDispCat"></canvas></div></div></div>
   <div class="grid">
     <div class="card"><h3>Diesel por categoria (litros, 2026)</h3><div class="chart"><canvas id="cDiesel"></canvas></div></div>
-    <div class="card"><h3>Top equipamentos por nº de OS de manutencao</h3><div class="chart"><canvas id="cManutTop"></canvas></div></div>
+    <div class="card"><h3>Consumo especifico diesel (L/h) por equipamento</h3><div class="chart"><canvas id="cConsLh"></canvas></div></div>
   </div>
+  <div class="grid one"><div class="card"><h3>Top equipamentos por nº de OS de manutencao</h3><div class="chart"><canvas id="cManutTop"></canvas></div></div></div>
   <div class="grid">
     <div class="card"><h3>Metas oficiais de disponibilidade por categoria</h3>
       <table><tr><th>Categoria</th><th>Meta DISP</th></tr>{md_rows}</table></div>
@@ -1035,6 +1041,7 @@ mkPar('cPar'); mkPar('cPar2');
 // Diesel por categoria + manut top
 (()=>{{const d=CT.diesel_cat||[];if(!d.length)return;new Chart(document.getElementById('cDiesel'),{{type:'bar',data:{{labels:d.map(x=>x.cat),datasets:[{{label:'Litros',data:d.map(x=>x.L),backgroundColor:O+'cc',borderColor:O,borderWidth:1}}]}},options:{{...opt,indexAxis:'y'}}}});}})();
 (()=>{{const d=CT.manut_top||[];if(!d.length)return;new Chart(document.getElementById('cManutTop'),{{type:'bar',data:{{labels:d.map(x=>x.eq),datasets:[{{label:'OS',data:d.map(x=>x.OS),backgroundColor:R+'cc',borderColor:R,borderWidth:1}}]}},options:{{...opt,indexAxis:'y'}}}});}})();
+(()=>{{const d=CT.consumo_lh||[];if(!d.length)return;new Chart(document.getElementById('cConsLh'),{{type:'bar',data:{{labels:d.map(x=>x.cat),datasets:[{{label:'L/h',data:d.map(x=>x.lh),backgroundColor:O+'cc',borderColor:O,borderWidth:1}}]}},options:{{...opt,indexAxis:'y'}}}});}})();
 (()=>{{const d=CT.disp_cat||[];if(!d.length)return;new Chart(document.getElementById('cDispCat'),{{type:'bar',data:{{labels:d.map(x=>x.cat),datasets:[
   {{label:'Disponibilidade %',data:d.map(x=>x.disp),backgroundColor:d.map(x=>x.disp>=x.meta?G+'cc':R+'cc')}},
   {{label:'Meta %',type:'line',data:d.map(x=>x.meta),borderColor:O,backgroundColor:'transparent',pointRadius:0}}]}},options:opt}});}})();
