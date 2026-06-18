@@ -443,6 +443,22 @@ try:
         plantio["aderencia"]= plantio.get("real_ha",0)/plantio["meta_ha"]*100
 except Exception as e: print("  plantio:", e)
 
+# ── FINANCEIRO: receita ATR (CONSECANA) + gap projetado ──────────────────────
+if K.get("atr_pond"):
+    K["receita_real"] = K["moagem_total"] * K["atr_pond"] * PRECO_ATR          # R$ (kg ATR x R$/kg)
+    if K.get("proj_final"):
+        K["receita_proj"] = K["proj_final"] * K.get("meta_atr_full",META_ATR) * PRECO_ATR
+        K["receita_meta"] = K.get("meta_total",META_MOAGEM) * K.get("meta_atr_full",META_ATR) * PRECO_ATR
+        K["receita_gap"]  = K["receita_proj"] - K["receita_meta"]
+
+# ── PERDA INDUSTRIAL (CTT_META_MOAGEM: TON_PERDA real vs PERC_PERDA meta) ─────
+if not moa.empty:
+    moa["TON"] = num(moa.get("TON",0)); moa["TON_PERDA"]=num(moa.get("TON_PERDA",0)); moa["PERC_PERDA"]=num(moa.get("PERC_PERDA",0))
+    tton = moa["TON"].sum()
+    if tton:
+        K["perda_real_pct"] = float(moa["TON_PERDA"].sum()/tton*100)
+        K["perda_meta_pct"] = float((moa["PERC_PERDA"]*moa["TON"]).sum()/tton*100)
+
 # ── INSIGHTS (conclusoes concretas) ─────────────────────────────────────────
 def add(txt, tipo="info"): insights.append({"t": txt, "tipo": tipo})
 
@@ -519,6 +535,16 @@ if not frentes.empty:
             f"Propria {br(fr.loc['Propria','ATR'],1) if 'Propria' in fr.index else '-'}, "
             f"Fabiano (F27) so {br(fr.loc['Fabiano (F27)','ATR'],1)} kg/t — diferenca de "
             f"{br(fr.loc['Lerosa (F10)','ATR']-fr.loc['Fabiano (F27)','ATR'],1)} kg/t. Cobrar maturacao/ponto de corte do fornecedor Fabiano.", "vermelho")
+if K.get("receita_gap") is not None:
+    add(f"FINANCEIRO (CONSECANA R$ {br(PRECO_ATR,2)}/kg ATR): receita realizada ~R$ {br(K['receita_real']/1e6,1)} M. "
+        f"No ritmo atual, projecao de receita ~R$ {br(K['receita_proj']/1e6,0)} M vs meta R$ {br(K['receita_meta']/1e6,0)} M "
+        f"= risco de {br(K['receita_gap']/1e6,0)} M (deficit de moagem se nao recuperado).",
+        "vermelho" if K['receita_gap']<0 else "verde")
+if K.get("perda_real_pct") is not None:
+    dpf = K["perda_real_pct"]-K.get("perda_meta_pct",0)
+    add(f"Perda industrial: {br(K['perda_real_pct'],2)}% real vs meta {br(K.get('perda_meta_pct',0),2)}% "
+        f"({'+' if dpf>=0 else ''}{br(dpf,2)} p.p.). Cada 0,1 p.p. de perda em {br(K['moagem_total'])} t equivale a "
+        f"{br(K['moagem_total']*0.001)} t de cana.", "vermelho" if dpf>0.2 else "verde")
 if "proj_final" in K:
     add(f"PROJECAO fim de safra (ritmo atual {br(K['pace_pct'],0)}%): ~{br(K['proj_final'])} t vs meta cheia "
         f"{br(K['meta_total'])} t = deficit projetado de {br(abs(K['proj_gap']))} t. "
@@ -596,6 +622,15 @@ if "proj_final" in K:
     cards.append(kpi_card("Projecao fim de safra", f"{br(K['proj_final']/1e6,2)} M t",
                           f"no ritmo de {br(K.get('pace_pct',0),0)}%", "vermelho" if K['proj_gap']<0 else "verde",
                           f"deficit {br(K['proj_gap']/1e6,2)} M t"))
+if K.get("receita_real"):
+    cards.append(kpi_card("Receita ATR (realizada)", f"R$ {br(K['receita_real']/1e6,1)} M",
+                          f"CONSECANA {br(PRECO_ATR,2)}/kg", "info",
+                          (f"risco proj. {br(K['receita_gap']/1e6,0)} M" if K.get("receita_gap") is not None else "")))
+if K.get("perda_real_pct") is not None:
+    dpf = K["perda_real_pct"]-K.get("perda_meta_pct",0)
+    cards.append(kpi_card("Perda industrial", f"{br(K['perda_real_pct'],2)}%",
+                          f"meta {br(K.get('perda_meta_pct',0),2)}%", "vermelho" if dpf>0.2 else "verde",
+                          f"{'+' if dpf>=0 else ''}{br(dpf,2)} p.p."))
 if "custo_real" in K:
     dev = (K["custo_real"]-K["custo_orc"])/K["custo_orc"]*100 if K.get("custo_orc") else 0
     cards.append(kpi_card("Custo realizado 2026", f"R$ {br(K['custo_real']/1e6,1)} M",
