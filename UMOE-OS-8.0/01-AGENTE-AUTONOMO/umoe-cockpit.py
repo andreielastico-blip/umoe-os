@@ -144,6 +144,19 @@ if not moa.empty and not moa_mensal.empty:
         meta_td  = meta_ant + meta_cur
         K["data_analise"] = adt.strftime("%d/%m/%Y")
         K["frac_mes"] = frac
+        # META de ATR ponderada ate a data (peso=TON_EFET; mes corrente pro-rata).
+        # A meta de ATR sobe com a safra (mar 118 -> set 152); comparar com a
+        # meta cheia (138,66) no inicio e injusto.
+        moa["KG_ATR"] = num(moa.get("KG_ATR", 0))
+        mw = moa[moa["TON_EFET"] > 0].copy()
+        mw["w"] = mw["TON_EFET"] * mw["AM"].apply(lambda a: frac if a == cur else (1.0 if a < cur else 0.0))
+        wsum = float(mw["w"].sum())
+        K["meta_atr_periodo"] = float((mw["KG_ATR"]*mw["w"]).sum()/wsum) if wsum else META_ATR
+        wfull = float(moa["TON_EFET"][moa["TON_EFET"]>0].sum())
+        K["meta_atr_full"] = float((moa["KG_ATR"]*moa["TON_EFET"]).sum()/wfull) if wfull else META_ATR
+        gatr = mw.groupby("AM").apply(lambda x:(x["KG_ATR"]*x["TON_EFET"]).sum()/x["TON_EFET"].sum() if x["TON_EFET"].sum() else 0).reset_index()
+        gatr.columns=["AM","META_ATR"]
+        charts["meta_atr_mes"] = [{"AM": r["AM"], "META_ATR": float(r["META_ATR"])} for _,r in gatr.iterrows()]
     else:
         meta_td = float(gm["META"].sum()); K["data_analise"] = ""
     real_td = float(K["moagem_total"])   # realizado total ate a data
@@ -429,10 +442,13 @@ if "moagem_total" in K:
     else:
         add(f"Moagem acumulada de {br(K['moagem_total'])} t = {br(K['atend_meta'],1)}% da meta safra ({br(META_MOAGEM)} t).", "amarelo")
 if "atr_pond" in K and K["atr_pond"]>0:
-    d = K["atr_pond"] - META_ATR
-    add(f"ATR ponderado em {br(K['atr_pond'],2)} kg/t vs meta {br(META_ATR,2)} kg/t "
-        f"({'+' if d>=0 else ''}{br(d,2)} kg/t). A R$ {br(PRECO_ATR,2)}/kg, cada kg/t vale ~R$ {br(K.get('moagem_total',0)*PRECO_ATR/1000)} no acumulado.",
-        "verde" if d>=0 else "vermelho")
+    mp = K.get("meta_atr_periodo", META_ATR)
+    d = K["atr_pond"] - mp
+    add(f"ATR realizado {br(K['atr_pond'],2)} kg/t vs META PONDERADA ate a data {br(mp,2)} kg/t "
+        f"({'+' if d>=0 else ''}{br(d,2)} kg/t) — comparacao justa (a meta sobe com a maturacao). "
+        f"Meta da safra cheia: {br(K.get('meta_atr_full',META_ATR),2)} kg/t, atingida com o ATR alto de set-out. "
+        f"Cada kg/t vale ~R$ {br(K.get('moagem_total',0)*PRECO_ATR/1000)} no acumulado a CONSECANA.",
+        "verde" if d>=-1.5 else ("amarelo" if d>=-4 else "vermelho"))
 if not atr_mat.empty:
     top = atr_mat.iloc[0]
     add(f"Maturacao '{top['DE_MATURAC']}' concentra o maior ATR ({br(top['ATR'],1)} kg/t). "
@@ -503,10 +519,15 @@ if K.get("gap_periodo",0) < 0:
     acao("ALTA","Acelerar ritmo de moagem/colheita",
          f"Atraso de {br(abs(K['gap_periodo']))} t vs meta ({br(K.get('atend_periodo',0),0)}% do ritmo); projecao fecha em {br(K.get('proj_final',0))} t",
          "Recuperar o gap ate o fim da safra", "Industrial + CCT (Flavio Faveri)")
-if K.get("atr_pond",0) < META_ATR:
+_mpatr = K.get("meta_atr_periodo", META_ATR)
+if K.get("atr_pond",0) < _mpatr - 1.5:
     acao("ALTA","Elevar ATR via maturacao e ponto de corte",
-         f"ATR {br(K['atr_pond'],1)} kg/t vs meta {br(META_ATR,1)} (gap {br(K['atr_pond']-META_ATR,1)})",
-         f"Priorizar talhoes maduros e maturador; meta {br(META_ATR,1)} kg/t", "Agricola/Maturacao")
+         f"ATR {br(K['atr_pond'],1)} kg/t vs meta ponderada da data {br(_mpatr,1)} (gap {br(K['atr_pond']-_mpatr,1)})",
+         f"Priorizar talhoes maduros + maturador; meta cheia {br(K.get('meta_atr_full',META_ATR),1)} kg/t", "Agricola/Maturacao")
+elif K.get("atr_pond",0) < _mpatr:
+    acao("MEDIA","Acompanhar ATR (levemente abaixo da meta da data)",
+         f"ATR {br(K['atr_pond'],1)} vs meta data {br(_mpatr,1)} (gap {br(K['atr_pond']-_mpatr,1)}) — dentro do esperado p/ a fase",
+         "Sustentar curva de maturacao ate o pico set-out", "Agricola/Maturacao")
 if not frentes.empty and "Fabiano (F27)" in frentes.set_index("GRP").index:
     acao("MEDIA","Cobrar qualidade do fornecedor Fabiano (F27)",
          f"ATR {br(frentes.set_index('GRP').loc['Fabiano (F27)','ATR'],1)} kg/t, abaixo da propria e da Lerosa",
@@ -541,10 +562,12 @@ if "moagem_total" in K:
                           f"vs meta pro-rata ate {K.get('data_analise','')}: {br(K.get('meta_periodo',0))} t", sit,
                           f"{br(ap,1)}% do ritmo"))
 if "atr_pond" in K and K["atr_pond"]>0:
-    d = K["atr_pond"]-META_ATR
+    mp = K.get("meta_atr_periodo", META_ATR)
+    d = K["atr_pond"]-mp
     cards.append(kpi_card("ATR ponderado", f"{br(K['atr_pond'],2)} kg/t",
-                          f"meta {br(META_ATR,2)} (sobe c/ maturacao)", "verde" if d>=-5 else "amarelo",
-                          f"{'+' if d>=0 else ''}{br(d,2)} kg/t"))
+                          f"meta ate data {br(mp,1)} | safra {br(K.get('meta_atr_full',META_ATR),1)}",
+                          "verde" if d>=-1.5 else ("amarelo" if d>=-4 else "vermelho"),
+                          f"{'+' if d>=0 else ''}{br(d,2)} kg/t vs meta data"))
 if "gap_periodo" in K:
     g = K["gap_periodo"]
     cards.append(kpi_card("Aderencia a meta", f"{'+' if g>=0 else ''}{br(g)} t",
@@ -684,7 +707,8 @@ tr:hover td{{background:var(--surf2)}}
 </div>
 
 <div id="t-atr" class="tab">
-  <div class="grid one"><div class="card"><h3>ATR diario (kg/t) — ultimos 45 dias</h3><div class="chart"><canvas id="cAtr"></canvas></div></div></div>
+  <div class="grid one"><div class="card"><h3>ATR — realizado mensal vs meta ponderada (kg/t)</h3><div class="chart"><canvas id="cAtrMeta"></canvas></div></div></div>
+  <div class="grid one"><div class="card"><h3>ATR diario realizado (kg/t) — toda a safra</h3><div class="chart"><canvas id="cAtr"></canvas></div></div></div>
   <div class="card"><h3>ATR por maturacao</h3><table><tr><th>Maturacao</th><th>ATR (kg/t)</th><th>Cana (t)</th></tr>{atrmat_rows}</table></div>
 </div>
 
@@ -776,6 +800,12 @@ mkHist('cHistTCH','TCH',G); mkHist('cHistTAH','TAH',C);
 (()=>{{const d=CT.atr_mes_safra;if(!d||!d.meses)return;const cores={{'2022':M,'2023':B,'2024':C,'2025':O,'2026':G}};const nm={{1:'Jan',2:'Fev',3:'Mar',4:'Abr',5:'Mai',6:'Jun',7:'Jul',8:'Ago',9:'Set',10:'Out',11:'Nov',12:'Dez'}};
   new Chart(document.getElementById('cAtrMesSaf'),{{type:'line',data:{{labels:d.meses.map(m=>nm[m]||m),datasets:Object.keys(d.series).map(s=>({{label:s,data:d.series[s].map(v=>v||null),borderColor:cores[s]||M,backgroundColor:'transparent',borderWidth:s==='2026'?3:1.5,tension:.3,pointRadius:s==='2026'?3:0,spanGaps:true}}))}},options:opt}});}})();
 (()=>{{const d=CT.atr_dia||[];if(!d.length)return;new Chart(document.getElementById('cAtr'),{{type:'line',data:{{labels:d.map(x=>x.dia),datasets:[{{label:'ATR kg/t',data:d.map(x=>x.ATR),borderColor:O,backgroundColor:O+'22',fill:true,tension:.35,pointRadius:0}}]}},options:opt}});}})();
+// ATR realizado mensal vs meta ponderada
+(()=>{{const r=CT.moagem_mes||[],m=CT.meta_atr_mes||[];if(!r.length&&!m.length)return;const labs=(m.length?m:r).map(x=>x.AM||x.MES);
+  const rmap={{}};r.forEach(x=>rmap[x.MES||x.AM]=x.ATR);
+  new Chart(document.getElementById('cAtrMeta'),{{type:'line',data:{{labels:labs,datasets:[
+   {{label:'Realizado',data:labs.map(l=>rmap[l]??null),borderColor:G,backgroundColor:G+'22',fill:true,tension:.3,pointRadius:3,spanGaps:true}},
+   {{label:'Meta (ponderada)',data:m.map(x=>x.META_ATR),borderColor:O,backgroundColor:'transparent',borderDash:[6,4],tension:.3,pointRadius:0}}]}},options:opt}});}})();
 (()=>{{const d=CT.tch_estagio||[];if(!d.length)return;new Chart(document.getElementById('cTch'),{{type:'bar',data:{{labels:d.map(x=>x.ESTAGIO),datasets:[{{label:'TCH real',data:d.map(x=>x.TCH_REAL),backgroundColor:G+'cc'}},{{label:'TCH estimado',data:d.map(x=>x.TCH_EST),backgroundColor:O+'cc'}}]}},options:opt}});}})();
 function mkPar(cid){{const d=CT.paradas||[];if(!d.length)return;new Chart(document.getElementById(cid),{{type:'bar',data:{{labels:d.map(x=>x.GRUPO),datasets:[{{label:'Horas',data:d.map(x=>x.HORAS),backgroundColor:R+'cc',borderColor:R,borderWidth:1}}]}},options:{{...opt,indexAxis:'y'}}}});}}
 mkPar('cPar'); mkPar('cPar2');
