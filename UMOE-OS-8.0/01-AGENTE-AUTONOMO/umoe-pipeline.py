@@ -47,6 +47,12 @@ ETAPAS = [
         "descricao": "Gera HTML BI completo com todos os dados"
     },
     {
+        "nome": "Cockpit Executivo",
+        "script": ROOT / "UMOE-OS-8.0/01-AGENTE-AUTONOMO/umoe-cockpit.py",
+        "obrigatorio": False,
+        "descricao": "Cockpit executivo (moagem/ATR/variedades/chuva/custos) dados reais PBI"
+    },
+    {
         "nome": "Moagem Panel",
         "script": ROOT / "UMOE-OS-8.0/01-AGENTE-AUTONOMO/moagem-panel-engine.py",
         "obrigatorio": True,
