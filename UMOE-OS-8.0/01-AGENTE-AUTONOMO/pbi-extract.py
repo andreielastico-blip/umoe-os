@@ -53,6 +53,46 @@ def load_pbi_auth():
     return mod
 
 
+# Client do Azure CLI: first-party Microsoft, pre-autorizado para a API do
+# Power BI. O antigo client do PBI Desktop (7f67af8a) deixou de ser
+# pre-autorizado neste tenant (AADSTS65002).
+AZURE_CLI_CLIENT = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
+PBI_DEFAULT_SCOPE = ["https://analysis.windows.net/powerbi/api/.default"]
+
+
+def device_code_user(auth):
+    """Device-code como usuario (cliente Azure CLI, escopo .default). Cacheia token."""
+    import msal, webbrowser
+    tenant = os.getenv("PBI_TENANT_ID", "organizations")
+    cache = auth._load_cache()
+    app = msal.PublicClientApplication(
+        AZURE_CLI_CLIENT,
+        authority=f"https://login.microsoftonline.com/{tenant}",
+        token_cache=cache,
+    )
+    accounts = app.get_accounts()
+    if accounts:
+        r = app.acquire_token_silent(PBI_DEFAULT_SCOPE, account=accounts[0])
+        if r and "access_token" in r:
+            auth._save_cache(cache)
+            return r["access_token"], None
+    flow = app.initiate_device_flow(scopes=PBI_DEFAULT_SCOPE)
+    if "user_code" not in flow:
+        return None, flow.get("error_description", "device flow falhou")
+    print("\n" + "=" * 55)
+    print("  AUTENTICACAO POWER BI (sua conta)")
+    print(f"  1. Abra: {flow['verification_uri']}")
+    print(f"  2. Codigo: {flow['user_code']}")
+    print("=" * 55 + "\n")
+    try: webbrowser.open(flow["verification_uri"])
+    except Exception: pass
+    r = app.acquire_token_by_device_flow(flow)
+    auth._save_cache(cache)
+    if "access_token" in r:
+        return r["access_token"], None
+    return None, r.get("error_description", "autenticacao cancelada")
+
+
 def get_token(interactive=False, user=False):
     """Retorna (token|None, erro|None).
 
@@ -62,10 +102,8 @@ def get_token(interactive=False, user=False):
     """
     auth = load_pbi_auth()
     if user:
-        os.environ.pop("PBI_CLIENT_ID", None)   # forca o client publico do PBI
-        print("  Modo usuario: autenticando via Device Code...")
-        token, err = auth.get_pbi_token_device_code()
-        return (token, None) if token else (None, err)
+        print("  Modo usuario: autenticando via Device Code (cliente Azure CLI)...")
+        return device_code_user(auth)
     token, err = auth.get_pbi_token_service_principal()
     if token:
         print("  Auth: Service Principal OK")
