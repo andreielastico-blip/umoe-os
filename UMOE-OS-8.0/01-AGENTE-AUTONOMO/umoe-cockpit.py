@@ -542,6 +542,29 @@ try:
 except Exception as e:
     print("  manutencao:", e)
 
+# ── QUALIDADE DE MOAGEM: impureza mineral/vegetal + perda por tipo ───────────
+perda_tipo = pd.DataFrame()
+try:
+    if not his.empty and "QT_IMPUR_TERRA" in his.columns:
+        imt = num(his["QT_IMPUR_TERRA"]).sum(); imv = num(his.get("QT_IMPUR_VEG",0)).sum()
+        cana = his["QT_CANA_ENT"].sum()
+        if cana:
+            K["imp_mineral"]= float(imt/(cana*1000)*100)
+            K["imp_vegetal"]= float(imv/(cana*1000)*100)
+        mu = load_manut("d_meta_unidade")
+        if not mu.empty:
+            mm=num(mu.get("MINERAL_META",0)); vv=num(mu.get("VEGETAL_META",0))
+            mm=mm[mm>0]; vv=vv[vv>0]
+            if len(mm): K["imp_mineral_meta"]=float(mm.mean())
+            if len(vv): K["imp_vegetal_meta"]=float(vv.mean())
+    pdr = load("BASE_CTT_PERDA")
+    if not pdr.empty:
+        comp=[c for c in ["PALMITO","TOLETE","ESTILHAÇO","CANA_INTEIRA","PEDACO_SOLTO","PEDACO_FIXO","TOCO"] if c in pdr.columns]
+        rows=[{"tipo":c,"val":float(num(pdr[c]).sum())} for c in comp]
+        perda_tipo=pd.DataFrame([r for r in rows if r["val"]>0]).sort_values("val",ascending=False) if rows else pd.DataFrame()
+        if not perda_tipo.empty: charts["perda_tipo"]=perda_tipo.to_dict("records")
+except Exception as e: print("  qualidade:", e)
+
 # ── FINANCEIRO: receita ATR (CONSECANA) + gap projetado ──────────────────────
 if K.get("atr_pond"):
     K["receita_real"] = K["moagem_total"] * K["atr_pond"] * PRECO_ATR          # R$ (kg ATR x R$/kg)
@@ -639,6 +662,11 @@ if K.get("receita_gap") is not None:
         f"No ritmo atual, projecao de receita ~R$ {br(K['receita_proj']/1e6,0)} M vs meta R$ {br(K['receita_meta']/1e6,0)} M "
         f"= risco de {br(K['receita_gap']/1e6,0)} M (deficit de moagem se nao recuperado).",
         "vermelho" if K['receita_gap']<0 else "verde")
+if K.get("imp_vegetal") is not None:
+    add(f"Qualidade da materia-prima: impureza vegetal {br(K['imp_vegetal'],2)}%"
+        + (f" (meta {br(K['imp_vegetal_meta'],2)}%)" if K.get('imp_vegetal_meta') else "")
+        + f", mineral {br(K.get('imp_mineral',0),2)}%. Impureza alta dilui o ATR e aumenta perda — ligada a qualidade de corte/carregamento.",
+        "amarelo")
 if K.get("perda_real_pct") is not None:
     dpf = K["perda_real_pct"]-K.get("perda_meta_pct",0)
     add(f"Perda industrial: {br(K['perda_real_pct'],2)}% real vs meta {br(K.get('perda_meta_pct',0),2)}% "
@@ -751,6 +779,16 @@ if K.get("perda_real_pct") is not None:
     cards.append(kpi_card("Perda industrial", f"{br(K['perda_real_pct'],2)}%",
                           f"meta {br(K.get('perda_meta_pct',0),2)}%", "vermelho" if dpf>0.2 else "verde",
                           f"{'+' if dpf>=0 else ''}{br(dpf,2)} p.p."))
+if K.get("imp_vegetal") is not None:
+    mv=K.get("imp_vegetal_meta")
+    cards.append(kpi_card("Impureza vegetal", f"{br(K['imp_vegetal'],2)}%",
+                          (f"meta {br(mv,2)}%" if mv else "materia estranha vegetal"),
+                          "vermelho" if (mv and K['imp_vegetal']>mv) else "amarelo"))
+if K.get("imp_mineral") is not None:
+    mm=K.get("imp_mineral_meta")
+    cards.append(kpi_card("Impureza mineral", f"{br(K['imp_mineral'],2)}%",
+                          (f"meta {br(mm,2)}%" if mm else "terra"),
+                          "vermelho" if (mm and K['imp_mineral']>mm) else "verde"))
 if manut.get("disp_real") is not None:
     dd = manut["disp_real"]-manut.get("disp_meta",0)
     cards.append(kpi_card("Disponibilidade frota", f"{br(manut['disp_real'],1)}%",
@@ -901,7 +939,10 @@ tr:hover td{{background:var(--surf2)}}
 <div id="t-atr" class="tab">
   <div class="grid one"><div class="card"><h3>ATR — realizado mensal vs meta ponderada (kg/t)</h3><div class="chart"><canvas id="cAtrMeta"></canvas></div></div></div>
   <div class="grid one"><div class="card"><h3>ATR diario realizado (kg/t) — toda a safra</h3><div class="chart"><canvas id="cAtr"></canvas></div></div></div>
-  <div class="card"><h3>ATR por maturacao</h3><table><tr><th>Maturacao</th><th>ATR (kg/t)</th><th>Cana (t)</th></tr>{atrmat_rows}</table></div>
+  <div class="grid">
+    <div class="card"><h3>ATR por maturacao</h3><table><tr><th>Maturacao</th><th>ATR (kg/t)</th><th>Cana (t)</th></tr>{atrmat_rows}</table></div>
+    <div class="card"><h3>Perda de colheita por tipo (CTT_PERDA)</h3><div class="chart"><canvas id="cPerdaTipo"></canvas></div></div>
+  </div>
 </div>
 
 <div id="t-varied" class="tab">
@@ -1045,6 +1086,7 @@ mkPar('cPar'); mkPar('cPar2');
 (()=>{{const d=CT.disp_cat||[];if(!d.length)return;new Chart(document.getElementById('cDispCat'),{{type:'bar',data:{{labels:d.map(x=>x.cat),datasets:[
   {{label:'Disponibilidade %',data:d.map(x=>x.disp),backgroundColor:d.map(x=>x.disp>=x.meta?G+'cc':R+'cc')}},
   {{label:'Meta %',type:'line',data:d.map(x=>x.meta),borderColor:O,backgroundColor:'transparent',pointRadius:0}}]}},options:opt}});}})();
+(()=>{{const d=CT.perda_tipo||[];if(!d.length)return;new Chart(document.getElementById('cPerdaTipo'),{{type:'doughnut',data:{{labels:d.map(x=>x.tipo),datasets:[{{data:d.map(x=>x.val),backgroundColor:[R,O,C,B,G,M,'#a78bfa']}}]}},options:{{responsive:true,maintainAspectRatio:false,plugins:{{legend:{{position:'right',labels:{{color:M,font:{{size:11}}}}}}}}}}}});}})();
 (()=>{{const d=CT.ader_proc||[];if(!d.length)return;new Chart(document.getElementById('cAder'),{{type:'bar',data:{{labels:d.map(x=>x.proc),datasets:[
   {{label:'Prevista (ha)',data:d.map(x=>x.prev),backgroundColor:O+'66',borderColor:O,borderWidth:1}},
   {{label:'Realizada (ha)',data:d.map(x=>x.real),backgroundColor:G+'cc',borderColor:G,borderWidth:1}}]}},options:{{...opt,indexAxis:'y'}}}});}})();
