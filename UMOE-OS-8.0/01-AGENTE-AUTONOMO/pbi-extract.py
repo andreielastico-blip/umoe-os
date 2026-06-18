@@ -124,15 +124,20 @@ def execute_dax(token, dataset_id, dax):
     url = f"{API_BASE}/groups/{WORKSPACE_ID}/datasets/{dataset_id}/executeQueries"
     body = {"queries": [{"query": dax}],
             "serializerSettings": {"includeNulls": True}}
-    try:
-        r = requests.post(url, headers={
-            "Authorization": f"Bearer {token}",
-            "Content-Type": "application/json",
-        }, json=body, timeout=120)
-    except Exception as e:
-        return None, f"rede: {e}"
+    r = None
+    for tentativa in range(3):                 # retry para falhas de rede/DNS transitorias
+        try:
+            r = requests.post(url, headers={
+                "Authorization": f"Bearer {token}",
+                "Content-Type": "application/json",
+            }, json=body, timeout=120)
+            break
+        except Exception as e:
+            if tentativa == 2:
+                return None, f"rede: {e}"
+            time.sleep(2)
     if r.status_code != 200:
-        return None, f"http {r.status_code}: {r.text[:160]}"
+        return None, f"http {r.status_code}: {r.text[:400]}"
     try:
         rows = r.json()["results"][0]["tables"][0]["rows"]
     except (KeyError, IndexError, ValueError) as e:
@@ -175,18 +180,20 @@ def tables_from_info(token, ds_id):
 
 def extract_dataset(token, ds, force=False, auto=False):
     ds_id = DATASETS[ds]
+    tables = []
     if auto:
         tables, e = tables_from_info(token, ds_id)
         if e:
-            print(f"[{ds}] INFO.TABLES() falhou: {e}")
-            return 0, 0, 0
-        print(f"[{ds}] {len(tables)} tabelas do modelo (auto)...")
-    else:
+            print(f"[{ds}] INFO.TABLES() indisponivel ({e[:80]}) -> usando lista estatica")
+            tables = []
+        else:
+            print(f"[{ds}] {len(tables)} tabelas do modelo (auto)...")
+    if not tables:
         tables = read_table_list(ds)
         if not tables:
             print(f"[{ds}] sem {ds}_TABELAS.txt — pulando")
             return 0, 0, 0
-        print(f"[{ds}] {len(tables)} tabelas (lista)...")
+        print(f"[{ds}] {len(tables)} tabelas (lista estatica)...")
     ok = empty = err = 0
     for t in tables:
         out = PBI_DIR / f"{ds}_{sanitize(t)}.json"
