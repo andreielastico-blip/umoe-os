@@ -43,6 +43,21 @@ def load(name):
     df.columns = [c.split("[")[-1].rstrip("]") if "[" in c else c for c in df.columns]
     return df
 
+def load_manut(table):
+    """Carrega tabela do workspace Manutencao (Dados-PBI/MANUT/umoe_dataset__<t>.json)."""
+    p = PBI_DIR / "MANUT" / f"umoe_dataset__{table}.json"
+    if not p.exists():
+        return pd.DataFrame()
+    try:
+        d = json.load(open(p, encoding="utf-8-sig"))
+    except Exception:
+        return pd.DataFrame()
+    if not d:
+        return pd.DataFrame()
+    df = pd.DataFrame(d)
+    df.columns = [c.split("[")[-1].rstrip("]") if "[" in c else c for c in df.columns]
+    return df
+
 def num(s):
     return pd.to_numeric(s, errors="coerce").fillna(0)
 
@@ -443,6 +458,50 @@ try:
         plantio["aderencia"]= plantio.get("real_ha",0)/plantio["meta_ha"]*100
 except Exception as e: print("  plantio:", e)
 
+# ── MANUTENCAO / FROTA (workspace Manutencao Premium) ────────────────────────
+manut = {}; diesel_cat = pd.DataFrame(); meta_disp = pd.DataFrame()
+try:
+    # Diesel (f_abastecimento) - foca 2026
+    ab = load_manut("f_abastecimento")
+    if not ab.empty:
+        ab["LITROS"]=num(ab.get("LITROS",0)); ab["_DT"]=pd.to_datetime(ab.get("DT_OPERACAO"),errors="coerce")
+        a26 = ab[ab["_DT"].dt.year==2026]
+        base_ab = a26 if not a26.empty else ab
+        manut["diesel_l"]=float(base_ab["LITROS"].sum())
+        dc = base_ab.groupby("CATEGORIA")["LITROS"].sum().reset_index().sort_values("LITROS",ascending=False).head(8)
+        diesel_cat = dc; charts["diesel_cat"]=[{"cat":str(r["CATEGORIA"]),"L":float(r["LITROS"])} for _,r in dc.iterrows()]
+    # Produtividade transporte (DMT) - 2026
+    fp = load_manut("f_produtividade")
+    if not fp.empty:
+        for c in ["QT_CANA_ENT","QT_CARGA_ENT","QT_VIAG_ENT","DISTANCIA"]: fp[c]=num(fp.get(c,0))
+        fp["_DT"]=pd.to_datetime(fp.get("DT_HISTORICO"),errors="coerce")
+        p26 = fp[fp["_DT"].dt.year==2026]; bp = p26 if not p26.empty else fp
+        vsum = bp["QT_VIAG_ENT"].sum()
+        manut["dmt"]=float((bp["DISTANCIA"]*bp["QT_VIAG_ENT"]).sum()/vsum) if vsum else float(bp["DISTANCIA"].mean())
+        manut["viagens"]=float(bp["QT_VIAG_ENT"].sum()); manut["cargas"]=float(bp["QT_CARGA_ENT"].sum())
+    # Manutencao (f_manfro) - corretiva vs preventiva, 2026
+    mf = load_manut("f_manfro")
+    if not mf.empty:
+        mf["_DT"]=pd.to_datetime(mf.get("ENTRADA"),errors="coerce")
+        m26 = mf[mf["_DT"].dt.year==2026]; bm = m26 if not m26.empty else mf
+        manut["os"]=int(len(bm))
+        cl = bm["CLASSE_MNT"].astype(str)
+        corr = int(cl.str.contains("orretiv",case=False).sum())
+        manut["corretiva_pct"]=corr/len(bm)*100 if len(bm) else 0
+        manut["horas_parado"]=float(num(bm.get("TEMPO_TOTAL_PARADO",0)).sum()) if "TEMPO_TOTAL_PARADO" in bm.columns else 0
+        # top equipamentos por OS
+        te = bm.groupby("CD_EQUIPTO").size().reset_index(name="OS").sort_values("OS",ascending=False).head(10)
+        charts["manut_top"]=[{"eq":str(r["CD_EQUIPTO"]),"OS":int(r["OS"])} for _,r in te.iterrows()]
+    # Metas de disponibilidade (alvos oficiais)
+    md = load_manut("d_meta_equipamentos")
+    if not md.empty:
+        mdcol = next((c for c in md.columns if "META" in c.upper() and "DISP" in c.upper()), None)
+        if mdcol:
+            md[mdcol]=num(md[mdcol])
+            meta_disp = md[md[mdcol]>0][["CATEGORIA",mdcol]].rename(columns={mdcol:"META_DISP"}).sort_values("META_DISP",ascending=False)
+except Exception as e:
+    print("  manutencao:", e)
+
 # ── FINANCEIRO: receita ATR (CONSECANA) + gap projetado ──────────────────────
 if K.get("atr_pond"):
     K["receita_real"] = K["moagem_total"] * K["atr_pond"] * PRECO_ATR          # R$ (kg ATR x R$/kg)
@@ -556,6 +615,11 @@ if praga.get("broca") is not None:
 if plantio.get("aderencia"):
     add(f"Plantio: {br(plantio.get('real_ha',0))} ha realizados vs meta {br(plantio.get('meta_ha',0))} ha = "
         f"{br(plantio['aderencia'],0)}% de aderencia.", "verde" if plantio['aderencia']>=90 else "amarelo")
+if manut.get("corretiva_pct") is not None:
+    add(f"MANUTENCAO: {br(manut['corretiva_pct'],0)}% das OS sao CORRETIVAS ({br(manut.get('os',0),0)} OS) — manutencao "
+        f"reativa derruba a disponibilidade da frota e trava a moagem. Implementar plano preventivo e o maior alavanca "
+        f"de ritmo. DMT {br(manut.get('dmt',0),1)} km; diesel {br(manut.get('diesel_l',0)/1e6,2)} M L.",
+        "vermelho" if manut['corretiva_pct']>70 else "amarelo")
 
 # ── ACOES PRIORIZADAS (onde atuar) ───────────────────────────────────────────
 acoes = []
@@ -577,6 +641,10 @@ if not frentes.empty and "Fabiano (F27)" in frentes.set_index("GRP").index:
     acao("MEDIA","Cobrar qualidade do fornecedor Fabiano (F27)",
          f"ATR {br(frentes.set_index('GRP').loc['Fabiano (F27)','ATR'],1)} kg/t, abaixo da propria e da Lerosa",
          "Equiparar ao padrao das frentes proprias", "Suprimentos/Fornecedores")
+if manut.get("corretiva_pct",0) > 70:
+    acao("ALTA","Implantar manutencao preventiva da frota",
+         f"{br(manut['corretiva_pct'],0)}% das OS sao corretivas (reativa) — derruba disponibilidade e ritmo de moagem",
+         f"Reduzir corretiva; metas DISP: Colhedora 91,6%, Caminhao 92%", "Manutencao Automotiva")
 if not paradas.empty:
     acao("MEDIA","Reduzir paradas do maior ofensor",
          f"'{paradas.iloc[0]['GRUPO']}' = {br(paradas.iloc[0]['HORAS'],0)} h",
@@ -631,6 +699,13 @@ if K.get("perda_real_pct") is not None:
     cards.append(kpi_card("Perda industrial", f"{br(K['perda_real_pct'],2)}%",
                           f"meta {br(K.get('perda_meta_pct',0),2)}%", "vermelho" if dpf>0.2 else "verde",
                           f"{'+' if dpf>=0 else ''}{br(dpf,2)} p.p."))
+if manut.get("corretiva_pct") is not None:
+    cards.append(kpi_card("Manut. corretiva", f"{br(manut['corretiva_pct'],0)}%",
+                          f"{br(manut.get('os',0),0)} OS | DMT {br(manut.get('dmt',0),0)} km", "vermelho" if manut['corretiva_pct']>70 else "amarelo",
+                          "alvo: + preventiva"))
+if manut.get("diesel_l"):
+    cards.append(kpi_card("Diesel (frota)", f"{br(manut['diesel_l']/1e6,2)} M L",
+                          f"DMT medio {br(manut.get('dmt',0),1)} km", "info"))
 if "custo_real" in K:
     dev = (K["custo_real"]-K["custo_orc"])/K["custo_orc"]*100 if K.get("custo_orc") else 0
     cards.append(kpi_card("Custo realizado 2026", f"R$ {br(K['custo_real']/1e6,1)} M",
@@ -660,6 +735,8 @@ acoes_html = "".join(
     f'<td>{a["m"]}</td><td>{a["d"]}</td></tr>' for a in sorted(acoes, key=lambda x:{"ALTA":0,"MEDIA":1,"BAIXA":2}.get(x["p"],3))
 ) or '<tr><td colspan=4>sem acoes</td></tr>'
 
+md_rows = linhas_tabela(meta_disp, ["CATEGORIA","META_DISP"],
+                  [str, lambda v:br(v*100,1)+"%"]) if not meta_disp.empty else '<tr><td colspan=2>sem dados</td></tr>'
 frentes_rows = linhas_tabela(frentes, ["GRP","CANA","META","ADER","ATR"],
                   [str, lambda v:br(v,0), lambda v:br(v,0), lambda v:br(v,0)+"%", lambda v:br(v,1)]) if not frentes.empty else '<tr><td colspan=5>sem dados</td></tr>'
 
@@ -731,6 +808,7 @@ tr:hover td{{background:var(--surf2)}}
   <button onclick="tab('varied',this)">Variedades</button>
   <button onclick="tab('chuva',this)">Chuva & Clima</button>
   <button onclick="tab('pragas',this)">Pragas & Plantio</button>
+  <button onclick="tab('manut',this)">Manutencao & Frota</button>
   <button onclick="tab('custos',this)">Custos</button>
   <button onclick="tab('paradas',this)">Disponibilidade</button>
   <button onclick="tab('acoes',this)">Onde Atuar</button>
@@ -792,6 +870,25 @@ tr:hover td{{background:var(--surf2)}}
 
 <div id="t-paradas" class="tab">
   <div class="grid one"><div class="card"><h3>Horas de parada por grupo</h3><div class="chart"><canvas id="cPar"></canvas></div></div></div>
+</div>
+
+<div id="t-manut" class="tab">
+  <div class="grid">
+    <div class="card"><h3>Diesel por categoria (litros, 2026)</h3><div class="chart"><canvas id="cDiesel"></canvas></div></div>
+    <div class="card"><h3>Top equipamentos por nº de OS de manutencao</h3><div class="chart"><canvas id="cManutTop"></canvas></div></div>
+  </div>
+  <div class="grid">
+    <div class="card"><h3>Metas oficiais de disponibilidade por categoria</h3>
+      <table><tr><th>Categoria</th><th>Meta DISP</th></tr>{md_rows}</table></div>
+    <div class="card"><h3>Indicadores de frota</h3>
+      <table><tr><th>Indicador</th><th>Valor</th></tr>
+      <tr><td>OS de manutencao (2026)</td><td>{br(manut.get('os',0),0)}</td></tr>
+      <tr><td>% corretiva</td><td>{br(manut.get('corretiva_pct',0),0)}%</td></tr>
+      <tr><td>Diesel total</td><td>{br(manut.get('diesel_l',0)/1e6,2)} M L</td></tr>
+      <tr><td>DMT (distancia media transporte)</td><td>{br(manut.get('dmt',0),1)} km</td></tr>
+      <tr><td>Viagens / Cargas</td><td>{br(manut.get('viagens',0),0)} / {br(manut.get('cargas',0),0)}</td></tr>
+      </table></div>
+  </div>
 </div>
 
 <div id="t-frentes" class="tab">
@@ -873,6 +970,9 @@ mkPar('cPar'); mkPar('cPar2');
   new Chart(document.getElementById('cFrenAtr'),{{type:'bar',data:{{labels:d.map(x=>x.GRP),datasets:[{{label:'ATR (kg/t)',data:d.map(x=>x.ATR),backgroundColor:col}}]}},options:opt}});}})();
 // Broca top fazendas
 (()=>{{const d=CT.broca_top||[];if(!d.length)return;new Chart(document.getElementById('cBroca'),{{type:'bar',data:{{labels:d.map(x=>x.FAZENDA),datasets:[{{label:'% infest',data:d.map(x=>x.INFEST),backgroundColor:R+'cc',borderColor:R,borderWidth:1}}]}},options:{{...opt,indexAxis:'y'}}}});}})();
+// Diesel por categoria + manut top
+(()=>{{const d=CT.diesel_cat||[];if(!d.length)return;new Chart(document.getElementById('cDiesel'),{{type:'bar',data:{{labels:d.map(x=>x.cat),datasets:[{{label:'Litros',data:d.map(x=>x.L),backgroundColor:O+'cc',borderColor:O,borderWidth:1}}]}},options:{{...opt,indexAxis:'y'}}}});}})();
+(()=>{{const d=CT.manut_top||[];if(!d.length)return;new Chart(document.getElementById('cManutTop'),{{type:'bar',data:{{labels:d.map(x=>x.eq),datasets:[{{label:'OS',data:d.map(x=>x.OS),backgroundColor:R+'cc',borderColor:R,borderWidth:1}}]}},options:{{...opt,indexAxis:'y'}}}});}})();
 </script></body></html>"""
 
 OUT.parent.mkdir(parents=True, exist_ok=True)
