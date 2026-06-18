@@ -591,6 +591,23 @@ try:
 except Exception as e:
     print("  manutencao:", e)
 
+# ── CTRL: orcamento YTD (orcado vs realizado) + estoque de insumos ───────────
+ctrl_orc = pd.DataFrame(); ctrl_estoq = pd.DataFrame()
+try:
+    oc = load("CTRL_CST_ORCAMENTO")
+    if not oc.empty and "DE_GRUPO" in oc.columns:
+        oc["VLR_YTD"]=num(oc.get("VLR_YTD",0)); oc["VLR_YTD_R"]=num(oc.get("VLR_YTD_R",0))
+        g = oc.groupby("DE_GRUPO").agg(ORC=("VLR_YTD","sum"), REAL=("VLR_YTD_R","sum")).reset_index()
+        g["EXEC"] = np.where(g["ORC"]>0, g["REAL"]/g["ORC"]*100, 0)
+        ctrl_orc = g[g["ORC"]>0].sort_values("ORC", ascending=False).head(12)
+        K["orc_ytd"]=float(g["ORC"].sum()); K["real_ytd"]=float(g["REAL"].sum())
+    es = load("CTRL_CTRL_ESTOQ_SALDO")
+    if not es.empty and "DE_INSUMO" in es.columns:
+        es["QT_ESTOQUE"]=num(es.get("QT_ESTOQUE",0))
+        g = es.groupby("DE_INSUMO")["QT_ESTOQUE"].sum().reset_index().sort_values("QT_ESTOQUE", ascending=False).head(12)
+        ctrl_estoq = g[g["QT_ESTOQUE"]>0]
+except Exception as e: print("  ctrl:", e)
+
 # ── QUALIDADE DE MOAGEM: impureza mineral/vegetal + perda por tipo ───────────
 perda_tipo = pd.DataFrame()
 try:
@@ -889,6 +906,10 @@ frentes_rows = linhas_tabela(frentes, ["GRP","CANA","META","ADER","ATR"],
 # Tabelas
 tah_rows = linhas_tabela(tah_var.head(15), ["DE_VARIED","TAH","TCH","AREA"],
                          [str, lambda v:br(v,2), lambda v:br(v,1), lambda v:br(v,0)]) if not tah_var.empty else '<tr><td colspan=4>sem dados</td></tr>'
+ctrl_orc_rows = linhas_tabela(ctrl_orc, ["DE_GRUPO","ORC","REAL","EXEC"],
+                  [str, lambda v:"R$ "+br(v), lambda v:"R$ "+br(v), lambda v:br(v,0)+"%"]) if not ctrl_orc.empty else '<tr><td colspan=4>sem dados</td></tr>'
+ctrl_estoq_rows = linhas_tabela(ctrl_estoq, ["DE_INSUMO","QT_ESTOQUE"],
+                  [str, lambda v:br(v,0)]) if not ctrl_estoq.empty else '<tr><td colspan=2>sem dados</td></tr>'
 cst_rows = linhas_tabela(cst_grupo, ["DE_GRUPO","ORC","REAL","DESVIO_PCT"],
                          [str, lambda v:"R$ "+br(v), lambda v:"R$ "+br(v), lambda v:("+" if v>=0 else "")+br(v,1)+"%"]) if not cst_grupo.empty else '<tr><td colspan=4>sem dados</td></tr>'
 atrmat_rows = linhas_tabela(atr_mat, ["DE_MATURAC","ATR","TON"],
@@ -1016,6 +1037,12 @@ tr:hover td{{background:var(--surf2)}}
 <div id="t-custos" class="tab">
   <div class="card"><h3>Top 12 grupos de custo — orcado vs realizado</h3>
     <table><tr><th>Grupo</th><th>Orcado</th><th>Realizado</th><th>Desvio</th></tr>{cst_rows}</table></div>
+  <div class="grid">
+    <div class="card"><h3>Orcamento YTD por grupo — orcado vs realizado (CTRL)</h3>
+      <table><tr><th>Grupo</th><th>Orcado YTD</th><th>Realizado YTD</th><th>% exec</th></tr>{ctrl_orc_rows}</table></div>
+    <div class="card"><h3>Estoque de insumos — maiores saldos (CTRL)</h3>
+      <table><tr><th>Insumo</th><th>Saldo</th></tr>{ctrl_estoq_rows}</table></div>
+  </div>
 </div>
 
 <div id="t-paradas" class="tab">
