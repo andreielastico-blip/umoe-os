@@ -358,6 +358,65 @@ if not ind.empty:
         paradas = g[g["HORAS"]>0].sort_values("HORAS", ascending=False).head(10)
         charts["paradas"] = paradas.to_dict("records")
 
+# ── FRENTES: PROPRIA x LEROSA x FABIANO (moagem + ATR) ───────────────────────
+frentes = pd.DataFrame()
+GRP_FRENTE = {1:"Propria",2:"Propria",3:"Propria",4:"Propria",10:"Lerosa (F10)",27:"Fabiano (F27)"}
+if not his.empty and "CD_FREN_TRAN" in his.columns:
+    hf = his.copy(); hf["CD_FREN_TRAN"]=pd.to_numeric(hf["CD_FREN_TRAN"],errors="coerce")
+    hf["GRP"]=hf["CD_FREN_TRAN"].map(GRP_FRENTE).fillna("Outras")
+    g = hf.groupby("GRP").apply(lambda x: pd.Series({
+        "CANA": x["QT_CANA_ENT"].sum(),
+        "ATR": x["KG_ACUCAR"].sum()/x["QT_CANA_ENT"].sum() if x["QT_CANA_ENT"].sum() else 0})).reset_index()
+    frentes = g[g["CANA"]>0].sort_values("CANA", ascending=False)
+    charts["frentes"] = frentes.to_dict("records")
+
+# ── PROJECAO DE FIM DE SAFRA (ritmo atual vs meta cheia) ─────────────────────
+if K.get("meta_periodo") and K.get("meta_total"):
+    pace = K["real_periodo"]/K["meta_periodo"] if K["meta_periodo"] else 0
+    K["proj_final"] = pace * K["meta_total"]
+    K["proj_gap"]   = K["proj_final"] - K["meta_total"]
+    K["pace_pct"]   = pace*100
+
+# ── ATR FULL POR SAFRA (industrial, inclui 24/25 e 25/26) ────────────────────
+# (di e calculado no bloco COMPARATIVO acima)
+try:
+    if "di" in dir() and not di.empty:
+        gf = di[di["MOA"]>0].copy(); gf["AC"]=gf["MOA"]*gf["ATR"]
+        gy = gf.groupby("ANO").apply(lambda x: pd.Series({
+            "ATR": x["AC"].sum()/x["MOA"].sum(), "MOA": x["MOA"].sum()})).reset_index()
+        gy["LBL"]=gy["ANO"].apply(lambda a: f"{str(a)[2:]}/{str(a+1)[2:]}")
+        charts["atr_safra_full"]=[{"safra":r["LBL"],"ATR":float(r["ATR"]),"MOA":float(r["MOA"])} for _,r in gy.sort_values("ANO").iterrows()]
+except Exception as e: print("  atr_safra_full:", e)
+
+# ── PRAGAS (broca, cigarrinha) ───────────────────────────────────────────────
+praga = {}
+try:
+    brc = load("BASE_CTT_BROCA")
+    if not brc.empty:
+        brc["KG_CANA_ENT"]=num(brc.KG_CANA_ENT); brc["KG_CANA_BROCA"]=num(brc.KG_CANA_BROCA)
+        praga["broca"]= float(brc["KG_CANA_BROCA"].sum()/brc["KG_CANA_ENT"].sum()*100) if brc["KG_CANA_ENT"].sum() else 0
+        bf = brc.groupby("FAZENDA").apply(lambda x: x["KG_CANA_BROCA"].sum()/x["KG_CANA_ENT"].sum()*100 if x["KG_CANA_ENT"].sum() else 0).reset_index()
+        bf.columns=["FAZENDA","INFEST"]; praga["broca_top"]=bf.sort_values("INFEST",ascending=False).head(10).to_dict("records")
+        charts["broca_top"]=praga["broca_top"]
+    cg = load("BASE_AGRO_CIGARRINHA")
+    if not cg.empty:
+        for c in ["QT_ADULTAS","QT_NINFAS","QT_AMOSTRA","QT_AREA_PROD"]: cg[c]=num(cg.get(c,0))
+        praga["cig_total"]= float(cg["QT_ADULTAS"].sum()+cg["QT_NINFAS"].sum())
+        praga["cig_fazendas"]= int(cg["FAZENDA"].nunique()) if "FAZENDA" in cg.columns else 0
+except Exception as e: print("  pragas:", e)
+
+# ── PLANTIO (real vs meta) ───────────────────────────────────────────────────
+plantio = {}
+try:
+    pr = load("BASE_PLANT_REAL"); pm = load("BASE_PLANT_META")
+    if not pr.empty:
+        plantio["real_ha"]= float(num(pr.get("QT_AREA",0)).sum())
+    if not pm.empty and "HA" in pm.columns:
+        plantio["meta_ha"]= float(num(pm["HA"]).sum())
+    if plantio.get("meta_ha"):
+        plantio["aderencia"]= plantio.get("real_ha",0)/plantio["meta_ha"]*100
+except Exception as e: print("  plantio:", e)
+
 # ── INSIGHTS (conclusoes concretas) ─────────────────────────────────────────
 def add(txt, tipo="info"): insights.append({"t": txt, "tipo": tipo})
 
@@ -417,7 +476,53 @@ if not moagem_pace.empty and (moagem_pace["ANO"]==2026).any():
             f"{'+' if d>=0 else ''}{br(d,0)}% vs media das ultimas safras ({br(med)} t). "
             f"ATR 26/27 {br(a26,1)} kg/t vs media {br(amed,1)} kg/t.", "verde" if d>=0 else "vermelho")
 
-print(f"  KPIs={len(K)} insights={len(insights)}")
+# Insights operacionais adicionais
+if not frentes.empty:
+    fr = frentes.set_index("GRP")
+    if "Fabiano (F27)" in fr.index and "Lerosa (F10)" in fr.index:
+        add(f"Qualidade por frente: Lerosa (F10) entrega ATR {br(fr.loc['Lerosa (F10)','ATR'],1)} kg/t, "
+            f"Propria {br(fr.loc['Propria','ATR'],1) if 'Propria' in fr.index else '-'}, "
+            f"Fabiano (F27) so {br(fr.loc['Fabiano (F27)','ATR'],1)} kg/t — diferenca de "
+            f"{br(fr.loc['Lerosa (F10)','ATR']-fr.loc['Fabiano (F27)','ATR'],1)} kg/t. Cobrar maturacao/ponto de corte do fornecedor Fabiano.", "vermelho")
+if "proj_final" in K:
+    add(f"PROJECAO fim de safra (ritmo atual {br(K['pace_pct'],0)}%): ~{br(K['proj_final'])} t vs meta cheia "
+        f"{br(K['meta_total'])} t = deficit projetado de {br(abs(K['proj_gap']))} t. "
+        f"Recuperar exige elevar o ritmo de moagem em {br((K['meta_total']-K['real_periodo'])/max(1,(K['meta_total']-K['meta_periodo']))*100-100 if (K['meta_total']-K['meta_periodo']) else 0,0)}%+ no restante.", "vermelho" if K['proj_gap']<0 else "verde")
+if praga.get("broca") is not None:
+    add(f"Broca: infestacao media {br(praga['broca'],2)}% (referencia critica ~3%). "
+        f"{'Controlado' if praga['broca']<3 else 'ATENCAO - acima do limite'}. Monitorar fazendas-topo.",
+        "verde" if praga['broca']<3 else "vermelho")
+if plantio.get("aderencia"):
+    add(f"Plantio: {br(plantio.get('real_ha',0))} ha realizados vs meta {br(plantio.get('meta_ha',0))} ha = "
+        f"{br(plantio['aderencia'],0)}% de aderencia.", "verde" if plantio['aderencia']>=90 else "amarelo")
+
+# ── ACOES PRIORIZADAS (onde atuar) ───────────────────────────────────────────
+acoes = []
+def acao(prio, titulo, base, meta, dono): acoes.append({"p":prio,"t":titulo,"b":base,"m":meta,"d":dono})
+if K.get("gap_periodo",0) < 0:
+    acao("ALTA","Acelerar ritmo de moagem/colheita",
+         f"Atraso de {br(abs(K['gap_periodo']))} t vs meta ({br(K.get('atend_periodo',0),0)}% do ritmo); projecao fecha em {br(K.get('proj_final',0))} t",
+         "Recuperar o gap ate o fim da safra", "Industrial + CCT (Flavio Faveri)")
+if K.get("atr_pond",0) < META_ATR:
+    acao("ALTA","Elevar ATR via maturacao e ponto de corte",
+         f"ATR {br(K['atr_pond'],1)} kg/t vs meta {br(META_ATR,1)} (gap {br(K['atr_pond']-META_ATR,1)})",
+         f"Priorizar talhoes maduros e maturador; meta {br(META_ATR,1)} kg/t", "Agricola/Maturacao")
+if not frentes.empty and "Fabiano (F27)" in frentes.set_index("GRP").index:
+    acao("MEDIA","Cobrar qualidade do fornecedor Fabiano (F27)",
+         f"ATR {br(frentes.set_index('GRP').loc['Fabiano (F27)','ATR'],1)} kg/t, abaixo da propria e da Lerosa",
+         "Equiparar ao padrao das frentes proprias", "Suprimentos/Fornecedores")
+if not paradas.empty:
+    acao("MEDIA","Reduzir paradas do maior ofensor",
+         f"'{paradas.iloc[0]['GRUPO']}' = {br(paradas.iloc[0]['HORAS'],0)} h",
+         "Plano de acao por motivo de parada", "Industrial/Manutencao")
+if not cst_grupo.empty:
+    est = cst_grupo[cst_grupo['DESVIO']>0].sort_values('DESVIO',ascending=False)
+    if not est.empty:
+        acao("MEDIA","Conter estouro de custo",
+             f"Grupo '{est.iloc[0]['DE_GRUPO']}' +R$ {br(est.iloc[0]['DESVIO'])} vs orcado",
+             "Trazer realizado ao orcado", "Controladoria")
+
+print(f"  KPIs={len(K)} insights={len(insights)} acoes={len(acoes)}")
 print("[3/4] Gerando HTML...")
 
 # ── HTML ─────────────────────────────────────────────────────────────────────
@@ -445,6 +550,10 @@ if "gap_periodo" in K:
     cards.append(kpi_card("Aderencia a meta", f"{'+' if g>=0 else ''}{br(g)} t",
                           f"{'adiantado' if g>=0 else 'atrasado'} vs ritmo", "verde" if g>=0 else "vermelho",
                           f"meta cheia {br(K.get('meta_total',META_MOAGEM)/1e6,2)} M t"))
+if "proj_final" in K:
+    cards.append(kpi_card("Projecao fim de safra", f"{br(K['proj_final']/1e6,2)} M t",
+                          f"no ritmo de {br(K.get('pace_pct',0),0)}%", "vermelho" if K['proj_gap']<0 else "verde",
+                          f"deficit {br(K['proj_gap']/1e6,2)} M t"))
 if "custo_real" in K:
     dev = (K["custo_real"]-K["custo_orc"])/K["custo_orc"]*100 if K.get("custo_orc") else 0
     cards.append(kpi_card("Custo realizado 2026", f"R$ {br(K['custo_real']/1e6,1)} M",
@@ -466,6 +575,16 @@ def linhas_tabela(df, cols, fmts):
 ins_html = "".join(
     f'<div class="insight {i["tipo"]}">{i["t"]}</div>' for i in insights
 ) or '<div class="insight info">Sem dados suficientes para conclusoes.</div>'
+
+_pcor = {"ALTA":"vermelho","MEDIA":"amarelo","BAIXA":"info"}
+acoes_html = "".join(
+    f'<tr><td><span class="badge {_pcor.get(a["p"],"info")}">{a["p"]}</span></td>'
+    f'<td><b>{a["t"]}</b><div class="muted">{a["b"]}</div></td>'
+    f'<td>{a["m"]}</td><td>{a["d"]}</td></tr>' for a in sorted(acoes, key=lambda x:{"ALTA":0,"MEDIA":1,"BAIXA":2}.get(x["p"],3))
+) or '<tr><td colspan=4>sem acoes</td></tr>'
+
+frentes_rows = linhas_tabela(frentes, ["GRP","CANA","ATR"],
+                  [str, lambda v:br(v,0), lambda v:br(v,1)]) if not frentes.empty else '<tr><td colspan=3>sem dados</td></tr>'
 
 # Tabelas
 tah_rows = linhas_tabela(tah_var.head(15), ["DE_VARIED","TAH","TCH","AREA"],
@@ -517,6 +636,9 @@ td{{padding:8px 10px;border-bottom:1px solid #16213d;color:var(--txt)}}
 tr:hover td{{background:var(--surf2)}}
 .insight{{background:var(--surf2);border-left:3px solid var(--blue);border-radius:0 10px 10px 0;padding:13px 16px;margin-bottom:12px;font-size:.9rem;line-height:1.5}}
 .insight.verde{{border-left-color:var(--green)}} .insight.amarelo{{border-left-color:var(--gold)}} .insight.vermelho{{border-left-color:var(--red)}}
+.badge{{padding:3px 10px;border-radius:20px;font-size:.7rem;font-weight:700}}
+.badge.vermelho{{background:rgba(244,63,94,.15);color:#fda4b4}} .badge.amarelo{{background:rgba(250,204,21,.15);color:#fde047}} .badge.info{{background:rgba(59,130,246,.15);color:#93c5fd}}
+.muted{{color:var(--mut);font-size:.76rem;margin-top:3px}}
 .foot{{color:var(--mut);font-size:.72rem;padding:20px 34px;border-top:1px solid var(--line);text-align:center}}
 </style></head><body>
 <header>
@@ -528,10 +650,13 @@ tr:hover td{{background:var(--surf2)}}
   <button onclick="tab('moagem',this)">Moagem vs Meta</button>
   <button onclick="tab('atr',this)">ATR & Qualidade</button>
   <button onclick="tab('comp',this)">Comparativo Safras</button>
+  <button onclick="tab('frentes',this)">Frentes & Fornecedores</button>
   <button onclick="tab('varied',this)">Variedades</button>
   <button onclick="tab('chuva',this)">Chuva & Clima</button>
+  <button onclick="tab('pragas',this)">Pragas & Plantio</button>
   <button onclick="tab('custos',this)">Custos</button>
   <button onclick="tab('paradas',this)">Disponibilidade</button>
+  <button onclick="tab('acoes',this)">Onde Atuar</button>
   <button onclick="tab('intel',this)">Inteligencia</button>
 </nav>
 
@@ -591,6 +716,34 @@ tr:hover td{{background:var(--surf2)}}
   <div class="grid one"><div class="card"><h3>Horas de parada por grupo</h3><div class="chart"><canvas id="cPar"></canvas></div></div></div>
 </div>
 
+<div id="t-frentes" class="tab">
+  <div class="grid">
+    <div class="card"><h3>Moagem por frente — Propria x Lerosa x Fabiano (t)</h3><div class="chart"><canvas id="cFrenMoa"></canvas></div></div>
+    <div class="card"><h3>ATR por frente (kg/t) — qualidade da materia-prima</h3><div class="chart"><canvas id="cFrenAtr"></canvas></div></div>
+  </div>
+  <div class="card"><h3>Resumo por frente</h3><table><tr><th>Frente</th><th>Cana moida (t)</th><th>ATR (kg/t)</th></tr>{frentes_rows}</table></div>
+</div>
+
+<div id="t-pragas" class="tab">
+  <div class="grid">
+    <div class="card"><h3>Broca — top fazendas (% infestacao)</h3><div class="chart"><canvas id="cBroca"></canvas></div></div>
+    <div class="card"><h3>Indicadores agronomicos</h3>
+      <table><tr><th>Indicador</th><th>Valor</th><th>Referencia</th></tr>
+      <tr><td>Broca (infestacao media)</td><td>{br(praga.get('broca',0),2)}%</td><td>critico ~3%</td></tr>
+      <tr><td>Cigarrinha (insetos amostrados)</td><td>{br(praga.get('cig_total',0),0)}</td><td>{praga.get('cig_fazendas',0)} fazendas</td></tr>
+      <tr><td>Plantio realizado</td><td>{br(plantio.get('real_ha',0),0)} ha</td><td>meta {br(plantio.get('meta_ha',0),0)} ha</td></tr>
+      <tr><td>Aderencia de plantio</td><td>{br(plantio.get('aderencia',0),0)}%</td><td>meta 100%</td></tr>
+      </table></div>
+  </div>
+</div>
+
+<div id="t-acoes" class="tab">
+  <div class="card"><h3>Onde atuar — plano de acao priorizado (gerado dos indicadores)</h3>
+    <table><tr><th>Prioridade</th><th>Acao / diagnostico</th><th>Meta</th><th>Responsavel</th></tr>{acoes_html}</table>
+  </div>
+  <div class="card"><h3>Conclusoes de suporte</h3>{ins_html}</div>
+</div>
+
 <div id="t-intel" class="tab">
   <div class="card"><h3>Inteligencia executiva — conclusoes baseadas em dados reais</h3>{ins_html}</div>
 </div>
@@ -628,6 +781,12 @@ function mkPar(cid){{const d=CT.paradas||[];if(!d.length)return;new Chart(docume
 mkPar('cPar'); mkPar('cPar2');
 (()=>{{const d=CT.chuva_ano||[];if(!d.length)return;new Chart(document.getElementById('cChuvaA'),{{type:'bar',data:{{labels:d.map(x=>x.ANO),datasets:[{{label:'Chuva (mm)',data:d.map(x=>x.MM),backgroundColor:C+'aa',borderColor:C,borderWidth:1}}]}},options:opt}});}})();
 (()=>{{const d=CT.chuva_mes||[];if(!d.length)return;new Chart(document.getElementById('cChuvaM'),{{type:'bar',data:{{labels:d.map(x=>x.MES),datasets:[{{label:'mm 2026',data:d.map(x=>x.MM),backgroundColor:B+'aa',borderColor:B,borderWidth:1}}]}},options:opt}});}})();
+// Frentes
+(()=>{{const d=CT.frentes||[];if(!d.length)return;const col=d.map(x=>x.GRP.includes('Propria')?G:(x.GRP.includes('Lerosa')?B:O));
+  new Chart(document.getElementById('cFrenMoa'),{{type:'bar',data:{{labels:d.map(x=>x.GRP),datasets:[{{label:'Cana (t)',data:d.map(x=>x.CANA),backgroundColor:col}}]}},options:opt}});
+  new Chart(document.getElementById('cFrenAtr'),{{type:'bar',data:{{labels:d.map(x=>x.GRP),datasets:[{{label:'ATR (kg/t)',data:d.map(x=>x.ATR),backgroundColor:col}}]}},options:opt}});}})();
+// Broca top fazendas
+(()=>{{const d=CT.broca_top||[];if(!d.length)return;new Chart(document.getElementById('cBroca'),{{type:'bar',data:{{labels:d.map(x=>x.FAZENDA),datasets:[{{label:'% infest',data:d.map(x=>x.INFEST),backgroundColor:R+'cc',borderColor:R,borderWidth:1}}]}},options:{{...opt,indexAxis:'y'}}}});}})();
 </script></body></html>"""
 
 OUT.parent.mkdir(parents=True, exist_ok=True)
