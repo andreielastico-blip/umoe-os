@@ -47,6 +47,13 @@ ETAPAS = [
         "descricao": "Gera HTML BI completo com todos os dados"
     },
     {
+        "nome": "Disponibilidade Refresh",
+        "script": ROOT / "UMOE-OS-8.0/01-AGENTE-AUTONOMO/pbi-disp-refresh.py",
+        "args": ["--atual"],
+        "obrigatorio": False,
+        "descricao": "Atualiza disponibilidade real do mes corrente (medida oficial PBI)"
+    },
+    {
         "nome": "Cockpit Executivo",
         "script": ROOT / "UMOE-OS-8.0/01-AGENTE-AUTONOMO/umoe-cockpit.py",
         "obrigatorio": False,
@@ -60,12 +67,12 @@ ETAPAS = [
     },
 ]
 
-def run_script(script_path, timeout=300):
+def run_script(script_path, timeout=300, args=None):
     """Executa um script Python e retorna (ok, duration_s, output)."""
     t0 = datetime.now()
     try:
         result = subprocess.run(
-            [sys.executable, str(script_path)],
+            [sys.executable, str(script_path)] + (args or []),
             capture_output=True, text=True, timeout=timeout,
             encoding="utf-8", errors="replace"
         )
@@ -155,7 +162,7 @@ def main():
             continue
 
         log.info(f"  [{etapa['nome']}] Iniciando: {etapa['descricao']}")
-        ok, dur, out = run_script(script)
+        ok, dur, out = run_script(script, args=etapa.get("args"))
         status = "OK" if ok else "ERRO"
         log.info(f"  [{etapa['nome']}] {status} em {dur:.1f}s")
         if not ok:

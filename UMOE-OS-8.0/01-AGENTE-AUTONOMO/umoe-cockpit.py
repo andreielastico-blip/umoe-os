@@ -511,13 +511,12 @@ try:
     dfp = PBI_DIR / "MANUT" / "disponibilidade_oficial.json"
     if dfp.exists():
         do = json.load(open(dfp, encoding="utf-8"))
-        ger = next((r for r in do if str(r.get("CATEGORIA_M"))=="_GERAL_"), None)
-        if ger:
-            manut["disp_real"]=float(ger.get("Disp") or 0)*100
-            manut["disp_meta"]=float(ger.get("Meta") or 0)*100
-        cats=[r for r in do if str(r.get("CATEGORIA_M"))!="_GERAL_" and r.get("Disp") is not None]
-        cats=sorted(cats, key=lambda r: r["Disp"])[:12]  # piores primeiro
-        charts["disp_cat"]=[{"cat":str(r["CATEGORIA_M"]),"disp":float(r["Disp"])*100,"meta":float(r.get("Meta") or 0)*100} for r in cats]
+        g = do.get("geral", {}) if isinstance(do, dict) else {}
+        if g.get("disp") is not None:
+            manut["disp_real"]=float(g["disp"]); manut["disp_meta"]=float(g.get("meta") or 0)
+        charts["disp_mensal"]=[{"ym": r["ym"], "disp": float(r["disp"]), "meta": float(r["meta"])} for r in do.get("mensal", [])]
+        cats=sorted(do.get("categoria", []), key=lambda r: r.get("disp",100))[:12]
+        charts["disp_cat"]=[{"cat": str(r["cat"]), "disp": float(r["disp"]), "meta": float(r.get("meta") or 0)} for r in cats]
 except Exception as e:
     print("  manutencao:", e)
 
@@ -904,7 +903,8 @@ tr:hover td{{background:var(--surf2)}}
 </div>
 
 <div id="t-manut" class="tab">
-  <div class="grid one"><div class="card"><h3>Disponibilidade real vs meta por categoria (medida oficial, mes atual) — piores 12</h3><div class="chart"><canvas id="cDispCat"></canvas></div></div></div>
+  <div class="grid one"><div class="card"><h3>Disponibilidade da frota — mensal 2025-2026 (medida oficial) vs meta</h3><div class="chart"><canvas id="cDispMes"></canvas></div></div></div>
+  <div class="grid one"><div class="card"><h3>Disponibilidade por categoria (mes atual) — piores 12 vs meta</h3><div class="chart"><canvas id="cDispCat"></canvas></div></div></div>
   <div class="grid">
     <div class="card"><h3>Diesel por categoria (litros, 2026)</h3><div class="chart"><canvas id="cDiesel"></canvas></div></div>
     <div class="card"><h3>Top equipamentos por nº de OS de manutencao</h3><div class="chart"><canvas id="cManutTop"></canvas></div></div>
@@ -1008,6 +1008,9 @@ mkPar('cPar'); mkPar('cPar2');
 (()=>{{const d=CT.disp_cat||[];if(!d.length)return;new Chart(document.getElementById('cDispCat'),{{type:'bar',data:{{labels:d.map(x=>x.cat),datasets:[
   {{label:'Disponibilidade %',data:d.map(x=>x.disp),backgroundColor:d.map(x=>x.disp>=x.meta?G+'cc':R+'cc')}},
   {{label:'Meta %',type:'line',data:d.map(x=>x.meta),borderColor:O,backgroundColor:'transparent',pointRadius:0}}]}},options:opt}});}})();
+(()=>{{const d=CT.disp_mensal||[];if(!d.length)return;new Chart(document.getElementById('cDispMes'),{{type:'line',data:{{labels:d.map(x=>x.ym),datasets:[
+  {{label:'Disponibilidade %',data:d.map(x=>x.disp),borderColor:G,backgroundColor:G+'22',fill:true,tension:.3,pointRadius:2}},
+  {{label:'Meta %',data:d.map(x=>x.meta),borderColor:O,borderDash:[6,4],backgroundColor:'transparent',pointRadius:0}}]}},options:{{...opt,scales:{{...opt.scales,y:{{...opt.scales.y,min:80,max:100}}}}}}}});}})();
 </script></body></html>"""
 
 OUT.parent.mkdir(parents=True, exist_ok=True)
