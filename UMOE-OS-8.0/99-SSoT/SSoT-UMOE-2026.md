@@ -1133,7 +1133,7 @@ Detalhe unitário R$/t (acumulado):
 ---
 
 ## CLIMA ENGINE — PRECIPITACAO REAL 2026
-### Fonte: 1 - Indice Pluviometrico UMOE.xlsx | Atualizado: 2026-06-15 08:35 | Engine: 2026-06-17 10:00
+### Fonte: 1 - Indice Pluviometrico UMOE.xlsx | Atualizado: 2026-06-15 08:35 | Engine: 2026-06-18 09:02
 ### (*) = mes de safra ativa | CRITICO > 200mm | ATENCAO > 100mm
 
 | Mes | 2026 (mm) | 2025 (mm) | 2024 (mm) | Media Hist. |

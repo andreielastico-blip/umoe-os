@@ -4,6 +4,10 @@
 secrets.json
 credentials.json
 service-account*.json
+# Cache de token MSAL (contem tokens de acesso/refresh do Power BI)
+.token_cache.json
+**/.token_cache.json
+config/.token_cache.json
 
 # ── Python ─────────────────────────────────────────────────────────
 __pycache__/
@@ -20,6 +24,9 @@ build/
 # Planilhas originais (ficam so localmente, não no repo)
 *.xlsb
 *.xlsm
+# Dados brutos extraidos do Power BI (~1GB) ficam locais; pipeline le deles.
+UMOE-OS-8.0/Dados-PBI/*.json
+!UMOE-OS-8.0/Dados-PBI/_extract_status.json
 # Exceção: arquivos gerados pelo pipeline (HTML relatórios)
 !UMOE-OS-8.0/Relatorios/*.html
 !docs/*.html
