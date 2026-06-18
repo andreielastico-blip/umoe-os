@@ -494,6 +494,40 @@ try:
         K["ader_prev_ha"]=float(tot_prev); K["ader_real_ha"]=float(ad["AREA_REALIZADA"].sum())
 except Exception as e: print("  aderencia:", e)
 
+# ── PREPARO DE SOLO (area real vs plano por frente) ──────────────────────────
+prep_frente = pd.DataFrame()
+try:
+    pp = load("BASE_PREPARO")
+    if not pp.empty and "FRENTE" in pp.columns:
+        pp["QT_AREA_REAL"]=num(pp.get("QT_AREA_REAL",0)); pp["QT_AREA_PLANO"]=num(pp.get("QT_AREA_PLANO",0))
+        g = pp.groupby("FRENTE").agg(REAL=("QT_AREA_REAL","sum"), PLANO=("QT_AREA_PLANO","sum")).reset_index()
+        prep_frente = g[g["REAL"]>0].sort_values("REAL", ascending=False)
+        charts["prep_frente"]=[{"fr":str(r["FRENTE"]),"real":float(r["REAL"]),"plano":float(r["PLANO"])} for _,r in prep_frente.iterrows()]
+        K["prep_real_ha"]=float(g["REAL"].sum())
+except Exception as e: print("  preparo:", e)
+
+# ── PARETO DE MANUTENCAO (top pontos por nº de boletins) ─────────────────────
+pareto = pd.DataFrame()
+try:
+    pa = load_manut("PARETOS_PROCESSOS__Paretos") if (PBI_DIR/"MANUT"/"PARETOS_PROCESSOS__Paretos.json").exists() else pd.DataFrame()
+    if pa.empty:
+        import json as _j
+        f=PBI_DIR/"MANUT"/"PARETOS_PROCESSOS__Paretos.json"
+        if f.exists():
+            pa=pd.DataFrame(_j.load(open(f,encoding="utf-8-sig"))); pa.columns=[c.split("[")[-1].rstrip("]") for c in pa.columns]
+    pc=next((c for c in pa.columns if "Ponto" in c and "Descri" in c), None)
+    if pc:
+        g=pa[pc].value_counts().head(10).reset_index(); g.columns=["ponto","qt"]
+        pareto=g; charts["pareto"]=[{"ponto":str(r["ponto"]),"qt":int(r["qt"])} for _,r in g.iterrows()]
+except Exception as e: print("  pareto:", e)
+
+# ── PLANTIO: OC muda (ordens de corte de muda) ───────────────────────────────
+try:
+    oc = load("BASE_PLANT_OCMUDA")
+    if not oc.empty:
+        plantio["ocmuda_ha"]=float(num(oc.get("QT_AREA",0)).sum()); plantio["ocmuda_n"]=int(len(oc))
+except Exception as e: pass
+
 # ── MANUTENCAO / FROTA (workspace Manutencao Premium) ────────────────────────
 manut = {}; diesel_cat = pd.DataFrame(); meta_disp = pd.DataFrame()
 try:
@@ -991,6 +1025,7 @@ tr:hover td{{background:var(--surf2)}}
 <div id="t-tratos" class="tab">
   <div class="grid one"><div class="card"><h3>Aderencia de tratos por processo — area realizada vs prevista (ha)</h3><div class="chart"><canvas id="cAder"></canvas></div></div></div>
   <div class="card"><h3>Aderencia por processo</h3><table><tr><th>Processo</th><th>Prevista (ha)</th><th>Realizada (ha)</th><th>Aderencia</th></tr>{ader_rows}</table></div>
+  <div class="grid one"><div class="card"><h3>Preparo de solo — area real vs plano por frente (ha)</h3><div class="chart"><canvas id="cPrep"></canvas></div></div></div>
 </div>
 
 <div id="t-manut" class="tab">
@@ -1002,6 +1037,7 @@ tr:hover td{{background:var(--surf2)}}
     <div class="card"><h3>Consumo especifico diesel (L/h) por equipamento</h3><div class="chart"><canvas id="cConsLh"></canvas></div></div>
   </div>
   <div class="grid one"><div class="card"><h3>Top equipamentos por nº de OS de manutencao</h3><div class="chart"><canvas id="cManutTop"></canvas></div></div></div>
+  <div class="grid one"><div class="card"><h3>Pareto de manutencao — pontos com mais boletins</h3><div class="chart"><canvas id="cPareto"></canvas></div></div></div>
   <div class="grid">
     <div class="card"><h3>Metas oficiais de disponibilidade por categoria</h3>
       <table><tr><th>Categoria</th><th>Meta DISP</th></tr>{md_rows}</table></div>
@@ -1036,6 +1072,8 @@ tr:hover td{{background:var(--surf2)}}
       <tr><td>Estria vermelha (area)</td><td>{br(praga.get('estria_area',0),0)} ha</td><td>amostrada</td></tr>
       <tr><td>Plantio realizado</td><td>{br(plantio.get('real_ha',0),0)} ha</td><td>meta {br(plantio.get('meta_ha',0),0)} ha</td></tr>
       <tr><td>Aderencia de plantio</td><td>{br(plantio.get('aderencia',0),0)}%</td><td>meta 100%</td></tr>
+      <tr><td>Ordens de corte de muda (OC)</td><td>{br(plantio.get('ocmuda_n',0),0)}</td><td>{br(plantio.get('ocmuda_ha',0),0)} ha</td></tr>
+      <tr><td>Preparo de solo realizado</td><td>{br(K.get('prep_real_ha',0),0)} ha</td><td>frentes de preparo</td></tr>
       </table></div>
   </div>
 </div>
@@ -1112,6 +1150,9 @@ mkPar('cPar'); mkPar('cPar2');
 (()=>{{const d=CT.ader_proc||[];if(!d.length)return;new Chart(document.getElementById('cAder'),{{type:'bar',data:{{labels:d.map(x=>x.proc),datasets:[
   {{label:'Prevista (ha)',data:d.map(x=>x.prev),backgroundColor:O+'66',borderColor:O,borderWidth:1}},
   {{label:'Realizada (ha)',data:d.map(x=>x.real),backgroundColor:G+'cc',borderColor:G,borderWidth:1}}]}},options:{{...opt,indexAxis:'y'}}}});}})();
+(()=>{{const d=CT.prep_frente||[];if(!d.length)return;new Chart(document.getElementById('cPrep'),{{type:'bar',data:{{labels:d.map(x=>x.fr),datasets:[
+  {{label:'Real (ha)',data:d.map(x=>x.real),backgroundColor:G+'cc'}},{{label:'Plano (ha)',data:d.map(x=>x.plano),backgroundColor:O+'66'}}]}},options:opt}});}})();
+(()=>{{const d=CT.pareto||[];if(!d.length)return;new Chart(document.getElementById('cPareto'),{{type:'bar',data:{{labels:d.map(x=>x.ponto),datasets:[{{label:'Boletins',data:d.map(x=>x.qt),backgroundColor:R+'cc',borderColor:R,borderWidth:1}}]}},options:{{...opt,indexAxis:'y'}}}});}})();
 (()=>{{const d=CT.disp_mensal||[];if(!d.length)return;new Chart(document.getElementById('cDispMes'),{{type:'line',data:{{labels:d.map(x=>x.ym),datasets:[
   {{label:'Disponibilidade %',data:d.map(x=>x.disp),borderColor:G,backgroundColor:G+'22',fill:true,tension:.3,pointRadius:2}},
   {{label:'Meta %',data:d.map(x=>x.meta),borderColor:O,borderDash:[6,4],backgroundColor:'transparent',pointRadius:0}}]}},options:{{...opt,scales:{{...opt.scales,y:{{...opt.scales.y,min:80,max:100}}}}}}}});}})();
