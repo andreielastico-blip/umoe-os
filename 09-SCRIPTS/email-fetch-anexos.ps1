@@ -26,6 +26,14 @@ $Regras = @(
     @{ Nome = "Relatorio Industrial+Aguas"; AssuntoContains = "Industrial e"; AnexoPattern = "Relat*.pdf"                }
     @{ Nome = "Indice Pluviometrico";     AssuntoContains = "Pluviom";      AnexoPattern = "*Pluviometrico*.xlsx"      }
 )
+
+# DISTRIBUICAO: apos baixar, copia o anexo mais recente que casa Pattern para
+# DestDir (nome limpo, sem o prefixo de data), sobrescrevendo a versao "atual"
+# que o pipeline le. O arquivo datado original continua na UMOE-INBOX (historico).
+$Distribuir = @(
+    @{ Pattern = "*Hist*Di*Safras*.xlsx";       DestDir = "C:\01 - UMOE\03 - Financeiro\Planilhas" }
+    @{ Pattern = "*Indice Pluviometrico*.xlsx"; DestDir = "C:\01 - UMOE\03 - Financeiro\Planilhas" }
+)
 # ====================================================================
 
 function Log($msg) {
@@ -147,6 +155,21 @@ foreach ($pf in $pastasConta) {
 }
 
 Log "==== Fim busca. E-mails que casaram: $totCasou | anexos salvos: $totSalvos ===="
+
+# ---- DISTRIBUICAO: leva os arquivos baixados para onde o pipeline le ----
+foreach ($d in $Distribuir) {
+    $cand = Get-ChildItem -Path $InboxDir -File -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -like $d.Pattern } |
+            Sort-Object LastWriteTime -Descending | Select-Object -First 1
+    if (-not $cand) { Log "  distribuir: nenhum arquivo casa '$($d.Pattern)'"; continue }
+    if (-not (Test-Path $d.DestDir)) { Log "  distribuir: destino nao existe: $($d.DestDir)"; continue }
+    $nomeLimpo = $cand.Name -replace '^\d{8}_', ''   # remove prefixo AAAAMMDD_
+    $dest = Join-Path $d.DestDir $nomeLimpo
+    try {
+        Copy-Item -LiteralPath $cand.FullName -Destination $dest -Force
+        Log "  distribuido: $($cand.Name) -> $dest"
+    } catch { Log "  ERRO distribuir $($cand.Name): $($_.Exception.Message)" }
+}
 
 # ---- ENCADEIA O PIPELINE (CHI/Clima/BI/Moagem + git push) ----
 if (-not $NoPipeline) {
