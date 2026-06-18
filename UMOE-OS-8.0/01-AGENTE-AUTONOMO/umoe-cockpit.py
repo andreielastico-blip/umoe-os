@@ -452,6 +452,17 @@ try:
         for c in ["QT_ADULTAS","QT_NINFAS","QT_AMOSTRA","QT_AREA_PROD"]: cg[c]=num(cg.get(c,0))
         praga["cig_total"]= float(cg["QT_ADULTAS"].sum()+cg["QT_NINFAS"].sum())
         praga["cig_fazendas"]= int(cg["FAZENDA"].nunique()) if "FAZENDA" in cg.columns else 0
+    mg = load("BASE_AGRO_MIGDOLUS")
+    if not mg.empty and "LARVAS" in mg.columns:
+        lp = num(mg["LARVAS"]).sum(); pt = num(mg.get("QT_PONTOS",0)).sum()
+        praga["migdolus"] = float(lp/pt) if pt else 0
+    sp = load("BASE_AGRO_SPHENOPHORUS")
+    if not sp.empty and "QT_TT_RIZOMAS" in sp.columns:
+        tt = num(sp["QT_TT_RIZOMAS"]).sum(); at = num(sp.get("QT_RIZOMAS_ATAC",0)).sum()
+        praga["sphenophorus"] = float(at/tt*100) if tt else 0
+    ev = load("BASE_ADEREN_ESTRVERM")
+    if not ev.empty:
+        praga["estria_area"] = float(num(ev.get("QT_AREA_PROD",0)).sum())
 except Exception as e: print("  pragas:", e)
 
 # ── PLANTIO (real vs meta) ───────────────────────────────────────────────────
@@ -1020,6 +1031,9 @@ tr:hover td{{background:var(--surf2)}}
       <table><tr><th>Indicador</th><th>Valor</th><th>Referencia</th></tr>
       <tr><td>Broca (infestacao media)</td><td>{br(praga.get('broca',0),2)}%</td><td>critico ~3%</td></tr>
       <tr><td>Cigarrinha (insetos amostrados)</td><td>{br(praga.get('cig_total',0),0)}</td><td>{praga.get('cig_fazendas',0)} fazendas</td></tr>
+      <tr><td>Migdolus (larvas/ponto)</td><td>{br(praga.get('migdolus',0),2)}</td><td>monitoramento</td></tr>
+      <tr><td>Sphenophorus (% rizomas atacados)</td><td>{br(praga.get('sphenophorus',0),1)}%</td><td>monitoramento</td></tr>
+      <tr><td>Estria vermelha (area)</td><td>{br(praga.get('estria_area',0),0)} ha</td><td>amostrada</td></tr>
       <tr><td>Plantio realizado</td><td>{br(plantio.get('real_ha',0),0)} ha</td><td>meta {br(plantio.get('meta_ha',0),0)} ha</td></tr>
       <tr><td>Aderencia de plantio</td><td>{br(plantio.get('aderencia',0),0)}%</td><td>meta 100%</td></tr>
       </table></div>
