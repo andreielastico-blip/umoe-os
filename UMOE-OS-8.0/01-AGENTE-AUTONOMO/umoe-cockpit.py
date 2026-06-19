@@ -1113,6 +1113,10 @@ tr:hover td{{background:var(--surf2)}}
 </div>
 
 <div id="t-intel" class="tab">
+  <div class="card" style="border-color:var(--gold)"><h3>Inteligencia Cruzada (analises preditivas)</h3>
+    <p style="color:var(--mut);font-size:.9rem;line-height:1.6">Cruzamentos avancados (variedade x ambiente x idade, chuva->ATR com defasagem, projecao calibrada) estao na pagina dedicada:</p>
+    <p style="margin-top:10px"><a href="UMOE_Inteligencia_Cruzada.html" style="color:var(--gold);font-weight:700;font-size:1rem">➜ Abrir Inteligencia Cruzada</a></p>
+  </div>
   <div class="card"><h3>Inteligencia executiva — conclusoes baseadas em dados reais</h3>{ins_html}</div>
 </div>
 

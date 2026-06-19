@@ -60,6 +60,12 @@ ETAPAS = [
         "descricao": "Cockpit executivo (moagem/ATR/variedades/chuva/custos) dados reais PBI"
     },
     {
+        "nome": "Inteligencia Cruzada",
+        "script": ROOT / "UMOE-OS-8.0/01-AGENTE-AUTONOMO/umoe-inteligencia.py",
+        "obrigatorio": False,
+        "descricao": "Cruzamentos TCH/ATR/TAH x variedade/ambiente/idade + chuva-lag + projecao calibrada"
+    },
+    {
         "nome": "Moagem Panel",
         "script": ROOT / "UMOE-OS-8.0/01-AGENTE-AUTONOMO/moagem-panel-engine.py",
         "obrigatorio": True,
