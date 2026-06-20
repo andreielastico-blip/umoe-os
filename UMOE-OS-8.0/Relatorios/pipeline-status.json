@@ -1,5 +1,5 @@
 {
-  "ultima_execucao": "2026-06-18T10:00:11.131595",
+  "ultima_execucao": "2026-06-20T12:18:39.658628",
   "resultados": [
     {
       "nome": "CHI Engine",
@@ -10,19 +10,37 @@
     {
       "nome": "Clima Engine",
       "ok": true,
-      "duracao_s": 3.3,
+      "duracao_s": 5.2,
       "obrigatorio": false
     },
     {
       "nome": "BI Enterprise",
       "ok": true,
-      "duracao_s": 5.8,
+      "duracao_s": 5.1,
       "obrigatorio": true
+    },
+    {
+      "nome": "Disponibilidade Refresh",
+      "ok": true,
+      "duracao_s": 104.7,
+      "obrigatorio": false
+    },
+    {
+      "nome": "Cockpit Executivo",
+      "ok": true,
+      "duracao_s": 9.0,
+      "obrigatorio": false
+    },
+    {
+      "nome": "Inteligencia Cruzada",
+      "ok": true,
+      "duracao_s": 8.1,
+      "obrigatorio": false
     },
     {
       "nome": "Moagem Panel",
       "ok": true,
-      "duracao_s": 1.6,
+      "duracao_s": 1.8,
       "obrigatorio": true
     }
   ],
