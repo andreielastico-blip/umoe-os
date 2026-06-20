@@ -58,6 +58,48 @@ def load_manut(table):
     df.columns = [c.split("[")[-1].rstrip("]") if "[" in c else c for c in df.columns]
     return df
 
+import re
+_HOJE_D = datetime.now().date()
+_FRESH_CACHE = {}
+def _maxdate(name, manut=False):
+    """Maior data REAL (<= hoje) dentro do JSON da fonte. None se sem datas."""
+    key = (name, manut)
+    if key in _FRESH_CACHE: return _FRESH_CACHE[key]
+    p = (PBI_DIR / "MANUT" / f"{name}.json") if manut else (PBI_DIR / f"{name}.json")
+    best = None
+    if p.exists():
+        try:
+            d = json.load(open(p, encoding="utf-8-sig"))
+            if isinstance(d, dict): d = d.get("rows", [])
+            for r in (d or []):
+                if not isinstance(r, dict): continue
+                for v in r.values():
+                    if isinstance(v, str) and re.match(r"20\d\d-\d\d-\d\d", v):
+                        dd = v[:10]
+                        if dd <= _HOJE_D.isoformat() and (best is None or dd > best):
+                            best = dd
+        except Exception: pass
+    _FRESH_CACHE[key] = best
+    return best
+
+def selo(*nomes, manut=False, rotulo="origem"):
+    """Selo colorido com a data mais recente entre as fontes informadas.
+    verde=hoje/ontem, amarelo<=7d, laranja<=30d, vermelho>30d ou sem data."""
+    datas = [d for d in (_maxdate(n, manut=manut) for n in nomes) if d]
+    if not datas:
+        return f'<span class="selo s-cinza" title="fonte sem coluna de data">sem data</span>'
+    md = max(datas)
+    try:
+        delta = (_HOJE_D - datetime.strptime(md, "%Y-%m-%d").date()).days
+    except Exception:
+        delta = 999
+    dd = datetime.strptime(md, "%Y-%m-%d").strftime("%d/%m")
+    if delta <= 1:   cor, txt = "s-verde",   f"{rotulo}: {dd}"
+    elif delta <= 7: cor, txt = "s-amarelo", f"{rotulo}: {dd}"
+    elif delta <= 30:cor, txt = "s-laranja", f"{rotulo}: {dd} ({delta}d)"
+    else:            cor, txt = "s-vermelho", f"{rotulo}: {dd} ({delta}d atras)"
+    return f'<span class="selo {cor}" title="ultima data no sistema de origem">{txt}</span>'
+
 def num(s):
     return pd.to_numeric(s, errors="coerce").fillna(0)
 
@@ -919,6 +961,40 @@ varhist_rows = linhas_tabela(var_hist.head(15), ["VAR","TAH","TCH","AREA"],
 varamb_rows = linhas_tabela(var_amb.head(15), ["VAR","AMB1","TAH","AREA"],
                          [str, str, lambda v:br(v,2), lambda v:br(v,0)]) if not var_amb.empty else '<tr><td colspan=4>sem dados</td></tr>'
 
+# ── Painel de frescor das fontes (ultima data REAL no sistema de origem) ─────
+_FONTES = [
+    ("Moagem / cargas",      ["BASE_CTT_CARGAS_ENTRADA"],                 False),
+    ("ATR / producao",       ["BASE_CTT_HISTPRD"],                        False),
+    ("Disponibilidade real", ["BASE_CTT_INDISPONIB_REAL"],                False),
+    ("Ordem de corte",       ["BASE_CTT_ORDEMCORTE"],                     False),
+    ("TCH",                  ["BASE_CTT_TCH"],                            False),
+    ("TAH",                  ["BASE_CTT_TAH"],                            False),
+    ("Perda colheita",       ["BASE_CTT_PERDA"],                          False),
+    ("Aderencia tratos",     ["BASE_ADEREN_ATIVIDADES"],                  False),
+    ("Qualidade operac.",    ["BASE_AGRO_QLD_OPERAC"],                    False),
+    ("Cigarrinha",           ["BASE_AGRO_CIGARRINHA"],                    False),
+    ("Pragas de solo",       ["BASE_AGRO_MIGDOLUS","BASE_AGRO_SPHENOPHORUS"], False),
+    ("Broca",                ["BASE_CTT_BROCA"],                          False),
+    ("Custos (CST)",         ["CST_FUNC_BI_REAL"],                        False),
+    ("Plantio",              ["BASE_PLANT_REAL"],                         False),
+    ("Preparo de solo",      ["BASE_PREPARO"],                            False),
+    ("Materiais manut.",     ["Materiais_Aplicados___Por_Equi__Materiais_Aplicados"], True),
+    ("Abastec. diesel",      ["umoe_dataset__f_abastecimento"],          True),
+    ("Paretos manut.",       ["PARETOS_PROCESSOS__Paretos"],             True),
+    ("OS manut.",            ["Ordem_de_Serviços_Abertas_Inte__Base_O_S"], True),
+]
+_fr_items = []
+for lab, fontes, mn in _FONTES:
+    _fr_items.append(f'<div class="frescor-item"><b>{lab}</b>{selo(*fontes, manut=mn)}</div>')
+frescor_html = '<div class="frescor-grid">' + "".join(_fr_items) + '</div>'
+frescor_legenda = ('<div class="muted" style="margin-top:12px">Selo = <b>ultima data do dado no sistema de origem</b> (Power BI), '
+                   'nao a data da extracao. '
+                   '<span class="selo s-verde">hoje/ontem</span> '
+                   '<span class="selo s-amarelo">ate 7 dias</span> '
+                   '<span class="selo s-laranja">ate 30 dias</span> '
+                   '<span class="selo s-vermelho">parado &gt;30 dias na origem</span> '
+                   f'&nbsp;|&nbsp; Extracao do Power BI: <b>{HOJE} {datetime.now().strftime("%H:%M")}</b>.</div>')
+
 html = f"""<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>UMOE | Cockpit Executivo 2026/27</title>
@@ -949,7 +1025,16 @@ nav button.on,nav button:hover{{color:#fff;border-bottom-color:var(--gold)}}
 .grid.one{{grid-template-columns:1fr}}
 @media(max-width:900px){{.grid{{grid-template-columns:1fr}}}}
 .card{{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:20px}}
-.card h3{{font-size:.82rem;color:var(--gold);text-transform:uppercase;letter-spacing:.8px;margin-bottom:16px;font-weight:700}}
+.card h3{{font-size:.82rem;color:var(--gold);text-transform:uppercase;letter-spacing:.8px;margin-bottom:16px;font-weight:700;display:flex;align-items:center;gap:10px;flex-wrap:wrap}}
+.selo{{font-size:.62rem;font-weight:700;letter-spacing:.3px;text-transform:none;padding:2px 8px;border-radius:20px;border:1px solid transparent;white-space:nowrap}}
+.s-verde{{background:rgba(34,197,94,.14);color:#4ade80;border-color:rgba(34,197,94,.35)}}
+.s-amarelo{{background:rgba(234,179,8,.14);color:#fde047;border-color:rgba(234,179,8,.35)}}
+.s-laranja{{background:rgba(249,115,22,.14);color:#fb923c;border-color:rgba(249,115,22,.4)}}
+.s-vermelho{{background:rgba(239,68,68,.16);color:#f87171;border-color:rgba(239,68,68,.45)}}
+.s-cinza{{background:rgba(148,163,184,.12);color:#94a3b8;border-color:rgba(148,163,184,.3)}}
+.frescor-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}}
+.frescor-item{{display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:.78rem}}
+.frescor-item b{{color:#e7e7ea;font-weight:600}}
 .chart{{position:relative;height:280px}}
 table{{width:100%;border-collapse:collapse;font-size:.82rem}}
 th{{text-align:left;color:var(--mut);font-size:.7rem;text-transform:uppercase;letter-spacing:.5px;padding:8px 10px;border-bottom:1px solid var(--line)}}
@@ -985,15 +1070,16 @@ tr:hover td{{background:var(--surf2)}}
 
 <div id="t-cockpit" class="tab on">
   <div class="kpis">{''.join(cards) or '<div class="kpi"><div class="kpi-val">sem dados</div></div>'}</div>
+  <div class="card" style="margin-bottom:18px"><h3>Frescor das fontes — ultima atualizacao na ORIGEM</h3>{frescor_html}{frescor_legenda}</div>
   <div class="grid">
-    <div class="card"><h3>Moagem acumulada — realizado vs meta (t)</h3><div class="chart"><canvas id="cAcum"></canvas></div></div>
-    <div class="card"><h3>ATR por maturacao (kg/t)</h3><table><tr><th>Maturacao</th><th>ATR</th><th>Cana (t)</th></tr>{atrmat_rows}</table></div>
+    <div class="card"><h3>Moagem acumulada — realizado vs meta (t) {selo('BASE_CTT_CARGAS_ENTRADA','BASE_CTT_HISTPRD')}</h3><div class="chart"><canvas id="cAcum"></canvas></div></div>
+    <div class="card"><h3>ATR por maturacao (kg/t) {selo('BASE_CTT_HISTPRD_ATR_HIST','BASE_CTT_HISTPRD')}</h3><table><tr><th>Maturacao</th><th>ATR</th><th>Cana (t)</th></tr>{atrmat_rows}</table></div>
   </div>
   <div class="card"><h3>Conclusoes (calculadas dos dados)</h3>{ins_html}</div>
 </div>
 
 <div id="t-moagem" class="tab">
-  <div class="grid one"><div class="card"><h3>Moagem mensal — realizado vs meta (t)</h3><div class="chart"><canvas id="cMetaMes"></canvas></div></div></div>
+  <div class="grid one"><div class="card"><h3>Moagem mensal — realizado vs meta (t) {selo('BASE_CTT_CARGAS_ENTRADA','BASE_CTT_HISTPRD')}</h3><div class="chart"><canvas id="cMetaMes"></canvas></div></div></div>
   <div class="grid one"><div class="card"><h3>Curva acumulada — realizado vs meta (t)</h3><div class="chart"><canvas id="cAcum2"></canvas></div></div></div>
 </div>
 
@@ -1007,7 +1093,7 @@ tr:hover td{{background:var(--surf2)}}
 </div>
 
 <div id="t-atr" class="tab">
-  <div class="grid one"><div class="card"><h3>ATR — realizado mensal vs meta ponderada (kg/t)</h3><div class="chart"><canvas id="cAtrMeta"></canvas></div></div></div>
+  <div class="grid one"><div class="card"><h3>ATR — realizado mensal vs meta ponderada (kg/t) {selo('BASE_CTT_HISTPRD_ATR_HIST','BASE_CTT_HISTPRD')}</h3><div class="chart"><canvas id="cAtrMeta"></canvas></div></div></div>
   <div class="grid one"><div class="card"><h3>ATR diario realizado (kg/t) — toda a safra</h3><div class="chart"><canvas id="cAtr"></canvas></div></div></div>
   <div class="grid">
     <div class="card"><h3>ATR por maturacao</h3><table><tr><th>Maturacao</th><th>ATR (kg/t)</th><th>Cana (t)</th></tr>{atrmat_rows}</table></div>
@@ -1017,8 +1103,8 @@ tr:hover td{{background:var(--surf2)}}
 
 <div id="t-varied" class="tab">
   <div class="grid">
-    <div class="card"><h3>TCH real vs estimado por estagio</h3><div class="chart"><canvas id="cTch"></canvas></div></div>
-    <div class="card"><h3>Top variedades por TAH — safra atual (t ATR/ha)</h3><table><tr><th>Variedade</th><th>TAH</th><th>TCH</th><th>Area (ha)</th></tr>{tah_rows}</table></div>
+    <div class="card"><h3>TCH real vs estimado por estagio {selo('BASE_CTT_TCH')}</h3><div class="chart"><canvas id="cTch"></canvas></div></div>
+    <div class="card"><h3>Top variedades por TAH — safra atual (t ATR/ha) {selo('BASE_CTT_TAH')}</h3><table><tr><th>Variedade</th><th>TAH</th><th>TCH</th><th>Area (ha)</th></tr>{tah_rows}</table></div>
   </div>
   <div class="grid">
     <div class="card"><h3>Ranking historico de variedades — 8 safras (t ATR/ha)</h3><table><tr><th>Variedade</th><th>TAH</th><th>TCH</th><th>Area (ha)</th></tr>{varhist_rows}</table></div>
@@ -1035,7 +1121,7 @@ tr:hover td{{background:var(--surf2)}}
 </div>
 
 <div id="t-custos" class="tab">
-  <div class="card"><h3>Top 12 grupos de custo — orcado vs realizado</h3>
+  <div class="card"><h3>Top 12 grupos de custo — orcado vs realizado {selo('CST_FUNC_BI_REAL')}</h3>
     <table><tr><th>Grupo</th><th>Orcado</th><th>Realizado</th><th>Desvio</th></tr>{cst_rows}</table></div>
   <div class="grid">
     <div class="card"><h3>Orcamento YTD por grupo — orcado vs realizado (CTRL)</h3>
@@ -1050,7 +1136,7 @@ tr:hover td{{background:var(--surf2)}}
 </div>
 
 <div id="t-tratos" class="tab">
-  <div class="grid one"><div class="card"><h3>Aderencia de tratos por processo — area realizada vs prevista (ha)</h3><div class="chart"><canvas id="cAder"></canvas></div></div></div>
+  <div class="grid one"><div class="card"><h3>Aderencia de tratos por processo — area realizada vs prevista (ha) {selo('BASE_ADEREN_ATIVIDADES')}</h3><div class="chart"><canvas id="cAder"></canvas></div></div></div>
   <div class="card"><h3>Aderencia por processo</h3><table><tr><th>Processo</th><th>Prevista (ha)</th><th>Realizada (ha)</th><th>Aderencia</th></tr>{ader_rows}</table></div>
   <div class="grid one"><div class="card"><h3>Preparo de solo — area real vs plano por frente (ha)</h3><div class="chart"><canvas id="cPrep"></canvas></div></div></div>
 </div>
@@ -1060,7 +1146,7 @@ tr:hover td{{background:var(--surf2)}}
   <div class="grid one"><div class="card"><h3>Disponibilidade por PROCESSO (mes atual) vs meta</h3><div class="chart"><canvas id="cDispProc"></canvas></div></div></div>
   <div class="grid one"><div class="card"><h3>Disponibilidade por categoria (mes atual) — piores 12 vs meta</h3><div class="chart"><canvas id="cDispCat"></canvas></div></div></div>
   <div class="grid">
-    <div class="card"><h3>Diesel por categoria (litros, 2026)</h3><div class="chart"><canvas id="cDiesel"></canvas></div></div>
+    <div class="card"><h3>Diesel por categoria (litros, 2026) {selo('umoe_dataset__f_abastecimento', manut=True)}</h3><div class="chart"><canvas id="cDiesel"></canvas></div></div>
     <div class="card"><h3>Consumo especifico diesel (L/h) por equipamento</h3><div class="chart"><canvas id="cConsLh"></canvas></div></div>
   </div>
   <div class="grid one"><div class="card"><h3>Top equipamentos por nº de OS de manutencao</h3><div class="chart"><canvas id="cManutTop"></canvas></div></div></div>
@@ -1089,8 +1175,8 @@ tr:hover td{{background:var(--surf2)}}
 
 <div id="t-pragas" class="tab">
   <div class="grid">
-    <div class="card"><h3>Broca — top fazendas (% infestacao)</h3><div class="chart"><canvas id="cBroca"></canvas></div></div>
-    <div class="card"><h3>Indicadores agronomicos</h3>
+    <div class="card"><h3>Broca — top fazendas (% infestacao) {selo('BASE_CTT_BROCA')}</h3><div class="chart"><canvas id="cBroca"></canvas></div></div>
+    <div class="card"><h3>Indicadores agronomicos {selo('BASE_AGRO_CIGARRINHA','BASE_AGRO_MIGDOLUS','BASE_AGRO_SPHENOPHORUS','BASE_CTT_BROCA')}</h3>
       <table><tr><th>Indicador</th><th>Valor</th><th>Referencia</th></tr>
       <tr><td>Broca (infestacao media)</td><td>{br(praga.get('broca',0),2)}%</td><td>critico ~3%</td></tr>
       <tr><td>Cigarrinha (insetos amostrados)</td><td>{br(praga.get('cig_total',0),0)}</td><td>{praga.get('cig_fazendas',0)} fazendas</td></tr>
