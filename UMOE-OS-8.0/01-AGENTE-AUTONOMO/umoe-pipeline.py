@@ -29,6 +29,14 @@ log = logging.getLogger("pipeline")
 # ─── ETAPAS ──────────────────────────────────────────────────────────────────
 ETAPAS = [
     {
+        "nome": "Extracao Power BI",
+        "script": ROOT / "UMOE-OS-8.0/01-AGENTE-AUTONOMO/pbi-extract.py",
+        "args": ["--silent", "--auto", "--force"],
+        "timeout": 420,
+        "obrigatorio": False,
+        "descricao": "Puxa dados FRESCOS do Power BI (token cache, sem prompt) antes de gerar os paineis"
+    },
+    {
         "nome": "CHI Engine",
         "script": ROOT / "UMOE-OS-8.0/01-AGENTE-AUTONOMO/chi-engine.py",
         "obrigatorio": False,
@@ -168,7 +176,7 @@ def main():
             continue
 
         log.info(f"  [{etapa['nome']}] Iniciando: {etapa['descricao']}")
-        ok, dur, out = run_script(script, args=etapa.get("args"))
+        ok, dur, out = run_script(script, timeout=etapa.get("timeout", 300), args=etapa.get("args"))
         status = "OK" if ok else "ERRO"
         log.info(f"  [{etapa['nome']}] {status} em {dur:.1f}s")
         if not ok:

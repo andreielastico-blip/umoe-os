@@ -1,6 +1,12 @@
 {
-  "ultima_execucao": "2026-06-20T12:18:39.658628",
+  "ultima_execucao": "2026-06-20T12:35:07.537237",
   "resultados": [
+    {
+      "nome": "Extracao Power BI",
+      "ok": true,
+      "duracao_s": 164.1,
+      "obrigatorio": false
+    },
     {
       "nome": "CHI Engine",
       "ok": true,
@@ -10,37 +16,37 @@
     {
       "nome": "Clima Engine",
       "ok": true,
-      "duracao_s": 5.2,
+      "duracao_s": 47.3,
       "obrigatorio": false
     },
     {
       "nome": "BI Enterprise",
       "ok": true,
-      "duracao_s": 5.1,
+      "duracao_s": 5.3,
       "obrigatorio": true
     },
     {
       "nome": "Disponibilidade Refresh",
       "ok": true,
-      "duracao_s": 104.7,
+      "duracao_s": 109.4,
       "obrigatorio": false
     },
     {
       "nome": "Cockpit Executivo",
       "ok": true,
-      "duracao_s": 9.0,
+      "duracao_s": 9.3,
       "obrigatorio": false
     },
     {
       "nome": "Inteligencia Cruzada",
       "ok": true,
-      "duracao_s": 8.1,
+      "duracao_s": 8.7,
       "obrigatorio": false
     },
     {
       "nome": "Moagem Panel",
       "ok": true,
-      "duracao_s": 1.8,
+      "duracao_s": 1.5,
       "obrigatorio": true
     }
   ],

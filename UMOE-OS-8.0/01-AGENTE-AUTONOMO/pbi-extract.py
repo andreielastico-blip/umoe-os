@@ -93,14 +93,35 @@ def device_code_user(auth):
     return None, r.get("error_description", "autenticacao cancelada")
 
 
-def get_token(interactive=False, user=False):
+def token_silencioso(auth):
+    """Token de usuario SO do cache (sem device-code). Para uso no pipeline diario.
+    Tenta SP primeiro (se tiver acesso); senao usa o cache do usuario. Nao prompta."""
+    import msal
+    tok, _ = auth.get_pbi_token_service_principal()
+    if tok:
+        # confirma que o SP enxerga o workspace (senao usa cache do usuario)
+        import requests
+        r = requests.get("https://api.powerbi.com/v1.0/myorg/groups", headers={"Authorization": f"Bearer {tok}"}, timeout=30)
+        if r.status_code == 200 and r.json().get("value"):
+            return tok, None
+    cache = auth._load_cache()
+    app = msal.PublicClientApplication(AZURE_CLI_CLIENT, authority=f"https://login.microsoftonline.com/{os.getenv('PBI_TENANT_ID','organizations')}", token_cache=cache)
+    accs = app.get_accounts()
+    if accs:
+        r = app.acquire_token_silent(PBI_DEFAULT_SCOPE, account=accs[0])
+        if r and "access_token" in r:
+            auth._save_cache(cache); return r["access_token"], None
+    return None, "sem token (SP sem acesso e cache de usuario ausente/expirado)"
+
+
+def get_token(interactive=False, user=False, silent=False):
     """Retorna (token|None, erro|None).
 
-    user=True: autentica COMO O USUARIO via device-code usando o client
-    publico do Power BI (ignora o Service Principal). Util quando o SP ainda
-    nao tem acesso ao workspace. Nao serve para CI (exige login interativo).
+    user=True: device-code (interativo). silent=True: so cache (pipeline diario).
     """
     auth = load_pbi_auth()
+    if silent:
+        return token_silencioso(auth)
     if user:
         print("  Modo usuario: autenticando via Device Code (cliente Azure CLI)...")
         return device_code_user(auth)
@@ -247,6 +268,7 @@ def main():
     ap.add_argument("--discover", action="store_true", help="lista tabelas reais (INFO.TABLES)")
     ap.add_argument("--interactive", action="store_true", help="permite device-code (local)")
     ap.add_argument("--user", action="store_true", help="autentica como usuario via device-code (ignora SP)")
+    ap.add_argument("--silent", action="store_true", help="token so do cache (pipeline diario, nao prompta)")
     ap.add_argument("--auto", action="store_true", help="descobre as tabelas direto do modelo (INFO.TABLES) em vez das listas")
     args = ap.parse_args()
 
@@ -254,7 +276,7 @@ def main():
     print("  UMOE OS 8.0 | Power BI Extractor (Service Principal)")
     print("=" * 60)
 
-    token, auth_err = get_token(interactive=args.interactive, user=args.user)
+    token, auth_err = get_token(interactive=args.interactive, user=args.user, silent=args.silent)
     if not token:
         print("\n  ERRO: nao foi possivel obter token. Verifique os secrets "
               "PBI_TENANT_ID / PBI_CLIENT_ID / PBI_CLIENT_SECRET e se o Service "
