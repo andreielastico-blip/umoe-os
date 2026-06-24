@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-06-23T10:03:36.780099",
+  "timestamp": "2026-06-24T09:54:12.077971",
   "safra": "2026/27",
   "arquivo_fonte": "C:\\01 - UMOE\\03 - Financeiro\\Planilhas\\1 - Indice Pluviometrico UMOE.xlsx",
-  "arquivo_modificado": "2026-06-15T08:35:12.882241",
+  "arquivo_modificado": "2026-06-24T09:44:06.175590",
   "historico_anual_mm": {
     "2011": 943.0,
     "2012": 1728.8,
@@ -19,7 +19,7 @@
     "2023": 1536.5,
     "2024": 1453.0,
     "2025": 1412.0,
-    "2026": 893.0
+    "2026": 930.0
   },
   "media_historica_mm": {
     "Abril": 113.2,
@@ -28,7 +28,7 @@
     "Fevereiro": 147.9,
     "Janeiro": 180.9,
     "Julho": 39.7,
-    "Junho": 96.5,
+    "Junho": 98.8,
     "Maio": 118.0,
     "Marco": 139.7,
     "Novembro": 151.3,
@@ -67,13 +67,13 @@
     "Abril": 112.0,
     "Fevereiro": 63.0,
     "Janeiro": 229.0,
-    "Junho": 33.0,
+    "Junho": 70.0,
     "Maio": 365.0,
     "Marco": 91.0
   },
-  "total_anual_2026_acum_mm": 893.0,
+  "total_anual_2026_acum_mm": 930.0,
   "safra_2026": {
-    "total_safra_acum_mm": 601.0,
+    "total_safra_acum_mm": 638.0,
     "meses_com_dados": [
       "Abril",
       "Fevereiro",
@@ -90,7 +90,7 @@
       "Novembro"
     ],
     "projecao_restante_mm_media_hist": 507.4,
-    "projecao_safra_completa_mm": 1108.4,
+    "projecao_safra_completa_mm": 1145.4,
     "alertas": [
       {
         "mes": "Abril",
