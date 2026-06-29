@@ -18,21 +18,50 @@ $DaysBack = 2          # janela de e-mails a varrer (dias). 2 = hoje + ontem (ma
 if ($Dias -gt 0) { $DaysBack = $Dias }   # override pela linha de comando (-Dias N)
 $PrefixarData = $true  # salva como AAAAMMDD_nomeoriginal (mantem historico, evita sobrescrever)
 
-# REGRAS: um e-mail casa se (De contem) E (Assunto contem). Vazio = ignora aquele criterio.
+# REGRAS: um e-mail casa se (De contem) OU (Assunto contem). Vazio = ignora aquele criterio.
 # Para cada e-mail que casa, salva os anexos cujo nome casa com AnexoPattern (curinga -like).
-# Substrings/curingas ASCII casam com texto acentuado (Hist* casa "Historico").
+# DeContains e AssuntoContains: basta UM dos dois casar (OR entre contas/assuntos).
+# AssuntoOu: lista adicional de assuntos alternativos (OR).
 $Regras = @(
-    @{ Nome = "Hist Diario Safras";       AssuntoContains = "Safras 2009";  AnexoPattern = "*Hist*Safras*.xlsx"        }
-    @{ Nome = "Relatorio Industrial+Aguas"; AssuntoContains = "Industrial e"; AnexoPattern = "Relat*.pdf"                }
-    @{ Nome = "Indice Pluviometrico";     AssuntoContains = "Pluviom";      AnexoPattern = "*Pluviometrico*.xlsx"      }
+    # Historico Diario Safras (Industrial - ATR/Moagem real)  [FONTE CANONICA]
+    @{ Nome = "Hist Diario Safras";    AssuntoContains = "Safras 2009";     AnexoPattern = "*Hist*Safras*.xlsx"    }
+    @{ Nome = "Hist Diario Safras v2"; AssuntoContains = "Historico Diario"; AnexoPattern = "*Hist*Safras*.xlsx"   }
+    @{ Nome = "Hist Diario Safras v3"; AssuntoContains = "Boletim Industrial"; AnexoPattern = "*Hist*Safras*.xlsx" }
+
+    # Moagem por Frente - Fabiano (Frente 27 / fornecedor)
+    @{ Nome = "Moagem Fabiano";        AssuntoContains = "Moagem Fabiano";  AnexoPattern = "*Moagem*Fabiano*.xlsb" }
+    @{ Nome = "Moagem Fabiano v2";     AssuntoContains = "SF2026";          AnexoPattern = "*Moagem*Fabiano*.xlsb" }
+    @{ Nome = "Moagem Fabiano v3";     AssuntoContains = "Fabiano";         AnexoPattern = "*Moagem*Fabiano*.xlsb" }
+
+    # Moagem por Frente - Lerosa (Frente 10 / fornecedor)
+    @{ Nome = "Moagem Lerosa";         AssuntoContains = "Moagem Lerosa";   AnexoPattern = "*Moagem*Lerosa*.xlsb"  }
+    @{ Nome = "Moagem Lerosa v2";      AssuntoContains = "SF2026";          AnexoPattern = "*Moagem*Lerosa*.xlsb"  }
+    @{ Nome = "Moagem Lerosa v3";      AssuntoContains = "Lerosa";          AnexoPattern = "*Moagem*Lerosa*.xlsb"  }
+
+    # RSO - Relatorio Semanal Operacional (Meta/Plano)
+    @{ Nome = "RSO Semanal";           AssuntoContains = "RSO";             AnexoPattern = "RSO*.pptx"             }
+    @{ Nome = "RSO Semanal v2";        AssuntoContains = "Relatorio Semanal"; AnexoPattern = "RSO*.pptx"           }
+
+    # Indice Pluviometrico (chuva - fonte oficial)
+    @{ Nome = "Indice Pluviometrico";  AssuntoContains = "Pluviom";         AnexoPattern = "*Pluviometrico*.xlsx"  }
+
+    # Relatorio Industrial e Aguas (PDF)
+    @{ Nome = "Rel Industrial";        AssuntoContains = "Industrial e";    AnexoPattern = "Relat*.pdf"            }
+
+    # Previsao Climatica Alvean (PNG diario - caixa Fabio)
+    @{ Nome = "Alvean Clima";          AssuntoContains = "Previsao Climatica"; AnexoPattern = "MillWeatherForecast_*.png" }
 )
 
-# DISTRIBUICAO: apos baixar, copia o anexo mais recente que casa Pattern para
-# DestDir (nome limpo, sem o prefixo de data), sobrescrevendo a versao "atual"
-# que o pipeline le. O arquivo datado original continua na UMOE-INBOX (historico).
+# DISTRIBUICAO: apos baixar, copia o arquivo mais recente que casa Pattern para
+# DestDir sobrescrevendo a versao "atual" (pipeline le sempre o nome sem data).
+# DestNome: se vazio, usa o nome original sem prefixo AAAAMMDD_
 $Distribuir = @(
-    @{ Pattern = "*Hist*Di*Safras*.xlsx";       DestDir = "C:\01 - UMOE\03 - Financeiro\Planilhas" }
-    @{ Pattern = "*Indice Pluviometrico*.xlsx"; DestDir = "C:\01 - UMOE\03 - Financeiro\Planilhas" }
+    @{ Pattern = "*Hist*Di*Safras*.xlsx";        DestDir = "C:\01 - UMOE\03 - Financeiro\Planilhas"; DestNome = "Historico Diario Safras.xlsx" }
+    @{ Pattern = "*Indice*Pluviometrico*.xlsx";  DestDir = "C:\01 - UMOE\03 - Financeiro\Planilhas"; DestNome = "" }
+    @{ Pattern = "*Moagem*Fabiano*.xlsb";        DestDir = "C:\01 - UMOE\99 - SSoT";                 DestNome = "SF2026 - Moagem Fabiano.xlsb" }
+    @{ Pattern = "*Moagem*Lerosa*.xlsb";         DestDir = "C:\01 - UMOE\99 - SSoT";                 DestNome = "SF2026 - Moagem Lerosa.xlsb"  }
+    @{ Pattern = "RSO*.pptx";                    DestDir = "C:\01 - UMOE\05 - Relatorios\Apresentacoes"; DestNome = "" }
+    @{ Pattern = "MillWeatherForecast_*.png";    DestDir = "C:\01 - UMOE\09 - IA\UMOE-INBOX\Plano Diretor"; DestNome = "Alvean_Clima_HOJE.png" }
 )
 # ====================================================================
 
@@ -162,9 +191,14 @@ foreach ($d in $Distribuir) {
             Where-Object { $_.Name -like $d.Pattern } |
             Sort-Object LastWriteTime -Descending | Select-Object -First 1
     if (-not $cand) { Log "  distribuir: nenhum arquivo casa '$($d.Pattern)'"; continue }
-    if (-not (Test-Path $d.DestDir)) { Log "  distribuir: destino nao existe: $($d.DestDir)"; continue }
-    $nomeLimpo = $cand.Name -replace '^\d{8}_', ''   # remove prefixo AAAAMMDD_
-    $dest = Join-Path $d.DestDir $nomeLimpo
+    if (-not (Test-Path $d.DestDir)) { New-Item -ItemType Directory -Path $d.DestDir -Force | Out-Null }
+    # DestNome fixo ou nome original sem prefixo AAAAMMDD_
+    if ($d.DestNome) {
+        $nomeFinal = $d.DestNome
+    } else {
+        $nomeFinal = $cand.Name -replace '^\d{8}_', ''
+    }
+    $dest = Join-Path $d.DestDir $nomeFinal
     try {
         Copy-Item -LiteralPath $cand.FullName -Destination $dest -Force
         Log "  distribuido: $($cand.Name) -> $dest"
