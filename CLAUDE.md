@@ -72,3 +72,39 @@ GitHub: andreielastico-blip/umoe-os | Ãšltimo commit: 3dabe8c
 3. umoe-pipeline.py â€” pipeline end-to-end CSVâ†’CHIâ†’SSoTâ†’Push
 4. anomalia-detector.py â€” alertas vs histÃ³rico 16 safras
 5. dashboard.html â€” gerado automaticamente da SSoT
+
+# ==============================================================================
+# KARPATHY GUIDELINES — CAMADA DE COMPORTAMENTO DO AGENTE
+# Fonte: github.com/multica-ai/andrej-karpathy-skills (MIT License)
+# Integrado ao UMOE OS V5.0 em: 2026-06-25
+# ==============================================================================
+
+## DIRETRIZ K-1 — PENSAR ANTES DE CODIFICAR
+Antes de qualquer implementacao: declare premissas explicitamente, apresente
+interpretacoes alternativas, questione quando ambiguo. Nunca infira estrutura
+de pastas, esquema de planilha ou logica de negocio sem confirmacao explicita.
+Aplicacao UMOE: vale para formulas, scripts PowerShell, logica TCH/ATR/area.
+
+## DIRETRIZ K-2 — SIMPLICIDADE PRIMEIRO
+Codigo minimo que resolve o problema. Sem features especulativas, sem abstracoes
+para uso unico, sem flexibilidade nao solicitada. Se escreveu 200 linhas e
+poderia ser 50, reescreva. Aplicacao UMOE: ebitda-engine.py e sync-umoe.ps1
+devem resolver exatamente o escopo declarado, sem camadas extras.
+
+## DIRETRIZ K-3 — MUDANCAS CIRURGICAS
+Toque apenas o necessario. Nao refatore o que nao esta quebrado. Mantenha o
+estilo existente. Toda linha alterada deve ser rastreavel a solicitacao.
+Aplicacao UMOE: correcoes de bug = commit atomico no GitHub UMOE, alterando
+apenas o bloco com falha, nunca modulos adjacentes funcionais.
+
+## DIRETRIZ K-4 — EXECUCAO ORIENTADA A METAS
+Transforme tarefas vagas em criterios de sucesso verificaveis. Para tarefas
+multi-etapa, declare o plano antes de executar: [Passo] -> verificar: [check].
+Aplicacao UMOE: relatorios, dashboards e scripts sempre com criterio de aceite
+declarado e validacao final contra a SSoT antes de considerar concluido.
+
+## MAPEAMENTO KARPATHY x REGRAS UMOE
+K-1 <-> UMOE-002 + UMOE-013
+K-2 <-> UMOE-007 + UMOE-019
+K-3 <-> UMOE-015 + UMOE-023
+K-4 <-> UMOE-006 + UMOE-021
