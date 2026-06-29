@@ -1,15 +1,14 @@
-# ── Credenciais e segredos ─────────────────────────────────────────
+# -- Credenciais e segredos ---------------------------------------------------
 .env
 *.env
 secrets.json
 credentials.json
 service-account*.json
-# Cache de token MSAL (contem tokens de acesso/refresh do Power BI)
 .token_cache.json
 **/.token_cache.json
 config/.token_cache.json
 
-# ── Python ─────────────────────────────────────────────────────────
+# -- Python -------------------------------------------------------------------
 __pycache__/
 *.py[cod]
 *.pyo
@@ -20,25 +19,45 @@ env/
 dist/
 build/
 
-# ── Dados sensíveis / grandes arquivos locais ──────────────────────
-# Planilhas originais (ficam so localmente, não no repo)
+# -- Planilhas / binarios Office (ficam local, nunca no repo) -----------------
+*.xlsx
 *.xlsb
 *.xlsm
-# Dados brutos extraidos do Power BI (~1GB) ficam locais; pipeline le deles.
-UMOE-OS-8.0/Dados-PBI/*.json
-!UMOE-OS-8.0/Dados-PBI/_extract_status.json
-# Exceção: arquivos gerados pelo pipeline (HTML relatórios)
-!UMOE-OS-8.0/Relatorios/*.html
-!docs/*.html
+*.xlsm
+*.pbix
 
-# ── Logs granulares (manter só os gerados pelo pipeline) ──────────
+# -- Dados brutos Power BI (~1 GB, regeneraveis) ------------------------------
+UMOE-OS-8.0/Dados-PBI/*.json
+UMOE-OS-8.0/Dados-PBI/MANUT/
+UMOE-OS-8.0/Dados-PBI/PBIX/
+UMOE-OS-8.0/Dados-PBI/_tmp/
+# Excecao: status da ultima extracao (pequeno, util para auditoria)
+!UMOE-OS-8.0/Dados-PBI/_extract_status.json
+
+# -- Solinftec CSVs (dados brutos diarios, regeneraveis do sistema) -----------
+UMOE-OS-8.0/Solinftec/*.csv
+
+# -- Snapshots JSON gerados pelo pipeline (regeneraveis, causam churn) --------
+UMOE-OS-8.0/99-SSoT/umoe-*-snapshot.json
+UMOE-OS-8.0/Relatorios/pipeline-status.json
+
+# -- Relatorios HTML gerados (regeneraveis, grandes, causam churn) ------------
+# Regra: o codigo que os gera fica no repo; os HTMLs ficam local.
+UMOE-OS-8.0/Relatorios/*.html
+UMOE-OS-8.0/Relatorios/*.pdf
+docs/*.html
+# Excecao: paginas de navegacao estaticas (nao geradas pelo pipeline)
+!docs/index.html
+!docs/pbi-hub.html
+
+# -- PDFs (originais grandes, ficam local) ------------------------------------
+*.pdf
+
+# -- Logs (gerados localmente, nao versionados) -------------------------------
 logs/*.log
 !logs/.gitkeep
 
-# ── PDFs originais (grandes, ficam local) ─────────────────────────
-*.pdf
-
-# ── OS / IDE ───────────────────────────────────────────────────────
+# -- OS / IDE -----------------------------------------------------------------
 .DS_Store
 Thumbs.db
 desktop.ini
@@ -46,11 +65,7 @@ desktop.ini
 .vscode/settings.json
 *.swp
 
-# ── Temporários ────────────────────────────────────────────────────
+# -- Temporarios --------------------------------------------------------------
 *.tmp
 *.bak
 ~$*
-
-# PBIX baixados (enormes, locais)
-UMOE-OS-8.0/Dados-PBI/PBIX/
-*.pbix

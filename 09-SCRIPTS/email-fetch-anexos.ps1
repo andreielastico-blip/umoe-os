@@ -222,6 +222,13 @@ if (-not $NoPipeline) {
 }
 Log "==== Fim total ===="
 
+# ---- LIMPEZA DE STORAGE (roda sempre ao final, independente do pipeline) ----
+$cleanup = "C:\01 - UMOE\09 - IA\umoe-os-8\09-SCRIPTS\umoe-limpeza-storage.ps1"
+if (Test-Path $cleanup) {
+    Log "Limpeza de storage..."
+    powershell -NoProfile -ExecutionPolicy Bypass -File $cleanup 2>&1 | ForEach-Object { Log "  [cleanup] $_" }
+}
+
 # ============================ AGENDAR ===============================
 # Rode UMA vez (PowerShell normal) para criar a tarefa diaria as 09:00:
 #
