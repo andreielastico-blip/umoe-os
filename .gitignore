@@ -53,6 +53,8 @@ docs/*.html
 !docs/pbi-hub.html
 # Excecao: catalogo DAX (referencia estavel das formulas, muda raramente)
 !docs/UMOE_Catalogo_DAX.html
+# Excecao: dashboard espelho do BI (KPIs com regras DAX oficiais)
+!docs/UMOE_Dashboard_BI.html
 
 # -- PDFs (originais grandes, ficam local) ------------------------------------
 *.pdf

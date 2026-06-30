@@ -68,6 +68,12 @@ ETAPAS = [
         "descricao": "Cockpit executivo (moagem/ATR/variedades/chuva/custos) dados reais PBI"
     },
     {
+        "nome": "Dashboard Espelho do BI",
+        "script": ROOT / "UMOE-OS-8.0/01-AGENTE-AUTONOMO/umoe-dashboard-bi.py",
+        "obrigatorio": False,
+        "descricao": "KPIs calculados com as regras DAX oficiais do BI (100% fiel)"
+    },
+    {
         "nome": "Inteligencia Cruzada",
         "script": ROOT / "UMOE-OS-8.0/01-AGENTE-AUTONOMO/umoe-inteligencia.py",
         "obrigatorio": False,
