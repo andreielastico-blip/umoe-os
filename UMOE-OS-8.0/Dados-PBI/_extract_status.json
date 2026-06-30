@@ -1,15 +1,6 @@
 {
-  "auth_ok": true,
-  "auth_error": null,
-  "extracted": 101,
-  "empty": 9,
-  "errors": 4,
-  "datasets": [
-    "BASE",
-    "CST",
-    "CTRL"
-  ],
-  "probe_tables": 0,
-  "probe_error": "http 400: {\"error\":{\"code\":\"DatasetExecuteQueriesError\",\"pbi.error\":{\"code\":\"DatasetExecuteQueriesError\",\"parameters\":{},\"details\":[{\"code\":\"DetailsMessage\",\"detail\":{\"type\":1,\"value\":\"Failed to execute the DAX query.\"}},{\"code\":\"AnalysisServicesErrorCode\",\"detail\":{\"type\":1,\"value\":\"3239575574\"}}]}}}",
-  "timestamp": "2026-06-29T13:02:57.702900+00:00"
+  "auth_ok": false,
+  "auth_error": "Variaveis PBI_TENANT_ID / PBI_CLIENT_ID / PBI_CLIENT_SECRET nao definidas",
+  "extracted": 0,
+  "timestamp": "2026-06-30T16:27:55.133153+00:00"
 }
