@@ -1132,6 +1132,107 @@ Detalhe unitário R$/t (acumulado):
 
 ---
 
+## TOPO — MAPAS FAZENDAS SF2026 (BASE SIG)
+### Fonte: TOPO_Mapas_Fazendas_SF2026_v1.xlsx | Atualizado: 2026-06-30 | Origem: Geotecnologia / SIG
+
+### Visao Geral — Universo Mapeado SF2026/27
+
+| Indicador | Valor |
+|-----------|-------|
+| Fazendas mapeadas | 217 |
+| Talhoes totais | 2.325 |
+| Safra | 26/27 |
+| Area produtiva total | 45.607,9 ha |
+| Area total (talhao) | 45.747,4 ha |
+| Mecanizabilidade | 100% Mecanizavel |
+
+### Distribuicao por Ambiente de Producao
+
+| Ambiente | Talhoes | Area (ha) | % Area | Solo Dominante |
+|---------|---------|-----------|--------|---------------|
+| D | 1.144 | 23.843,6 | **55,7%** | LVd3.15 / LVAd3.15 / LVa3.3 |
+| E | 436 | 8.949,1 | **20,9%** | PVAd4.4 / LVAd4.15 / LVd4.15 |
+| C | 427 | 7.953,6 | **18,6%** | LVd3.3 / PVd3.1 / LVAd3.3 |
+| B | 56 | 1.371,8 | 3,2% | PVe3.1 / PVe4.10 / PVAe3.1 |
+| A | 35 | 677,7 | 1,6% | LVe1.1 / LVef1.1 |
+| Sem ambiente | 227 | — | 9,8% dos talhoes | 20 fazendas — acao pendente Pedro/SIG |
+
+> Ambiente D e E representam 76,6% da area — solos de textura media a argilosa (LV, PVA, PV), declividade moderada.
+
+### Distribuicao por Declividade
+
+| Faixa | Talhoes | Area (ha) | % Area |
+|-------|---------|-----------|--------|
+| 0 – 5% | 1.170 | 26.184,2 | 57,4% |
+| 5 – 12% | 1.144 | 19.368,4 | 42,5% |
+| 12 – 20% | 10 | 54,9 | 0,1% |
+
+> 99,9% da area em declividade mecanizavel (< 20%). Area em 12-20% (54,9 ha) requer atencao em planejamento de frente.
+
+### Terraceamento
+
+| Terraco | Talhoes | % |
+|---------|---------|---|
+| SIM | 1.786 | 76,8% |
+| NAO | 539 | 23,2% |
+
+| Ambiente | Com Terraco | Sem Terraco |
+|---------|------------|------------|
+| A | 32 | 3 |
+| B | 46 | 10 |
+| C | 347 | 80 |
+| D | 930 | 214 |
+| E | 398 | 38 |
+
+### DV — Declividade Valor (escala SIG: 1-19)
+
+Coluna exclusiva do TOPO_Mapas — indice numerico continuo de declividade gerado pelo SIG (1 = mais plano, 19 = mais inclinado).
+
+| DV | Talhoes | Interpretacao |
+|----|---------|--------------|
+| 1 – 3 | 565 | Plano a suave (< 3%) |
+| 4 – 6 | 1.136 | Ondulado leve (3-8%) — maioria |
+| 7 – 9 | 541 | Ondulado moderado (8-15%) |
+| 10 – 12 | 78 | Ondulado forte (15-20%) |
+| 13 – 19 | 4 | Forte ondulado (> 20%) — monitorar |
+
+> DV adicionado ao BASE DE DADOS como coluna DV_SIG para uso em analise de TCH ponderado por terreno.
+
+### Top 10 Fazendas por Area
+
+| CodFaz | Fazenda | Talhoes | Area (ha) | Ambiente Dom. |
+|--------|---------|---------|-----------|--------------|
+| 20314 | Fazenda Agua Mansa | 161 | 3.332,6 | C |
+| 20305 | Fazenda Vista Bonita | 79 | 1.870,9 | D |
+| 20511 | Fazenda Mercedina | 61 | 1.692,9 | D |
+| 20432 | Fazenda Vista Bonita | 48 | 1.479,1 | C |
+| 20716 | Fazenda Sossego | 29 | 851,5 | D |
+| 20100 | Fazenda Boa Esperanca Frefer | 25 | 828,9 | D |
+| 30101 | Fazenda Santa Virginia (Fabiano) | 30 | 789,4 | D |
+| 20569 | Fazenda Boa Esperanca-Taquarucu | 40 | 763,9 | D |
+| 20705 | Fazenda Taquarussu | 68 | 761,5 | D* |
+| 20462 | Fazenda Santa Irene III | 33 | 714,2 | D |
+
+> *20705 e 20813 e 20713 sao as 3 fazendas prioritarias sem AMBIENTE (228 talhoes / 1.926 ha sem classificacao).
+
+### Qualidade dos Dados — Pontos de Atencao
+
+| Item | Status | Acao |
+|------|--------|------|
+| 227 talhoes sem AMBIENTE | PENDENTE | Solicitar SIG/Pedro — 20 fazendas afetadas |
+| 1 talhao sem DV | MINOR | Verificar geometria no SIG |
+| NOME_FAZ vs Nome_Fazenda | INFO | 115 fazendas com grafia diferente (maiusc/acentos) — Nome_Fazenda padronizado e correto na BASE |
+
+### Integracao BASE DE DADOS
+
+BASE DE DADOS UMOE_2026.xlsx agora com 30 colunas:
+- Colunas originais SIG (25): Layer, CodFaz, ..., MEC
+- Adicionadas via join TOPO lookup (3): Nome_Fazenda, Municipio, Proprietario
+- Adicionadas via PAV (3): SAFRA, Modulo_PAV, Dose_m3ha_PAV
+- Adicionadas via TOPO_Mapas (2): **DV_SIG**, **NOME_FAZ_SIG**
+
+---
+
 ## TOPO — PLANO PAV SAFRA 2026/27
 ### Fonte: TOPO_PAV_Fazendas_SF2026_v1.xlsx | Atualizado: 2026-06-30 | Integrado ao BASE DE DADOS UMOE_2026.xlsx
 
