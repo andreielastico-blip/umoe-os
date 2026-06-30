@@ -51,6 +51,8 @@ docs/*.html
 # Excecao: paginas de navegacao estaticas (nao geradas pelo pipeline)
 !docs/index.html
 !docs/pbi-hub.html
+# Excecao: catalogo DAX (referencia estavel das formulas, muda raramente)
+!docs/UMOE_Catalogo_DAX.html
 
 # -- PDFs (originais grandes, ficam local) ------------------------------------
 *.pdf
