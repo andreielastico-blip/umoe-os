@@ -1,4 +1,8 @@
-# Medidas DAX — BI_AGR_01_BASE (455)
+# DAX (negocio) — BI_AGR_01_BASE
+Medidas: 455 | Colunas calculadas: 287 | Tabelas calculadas: 9 | Negocio: 751 | Auto date tables omitidas: 749
+
+
+## MEDIDAS (455)
 
 ### CHUVA.QTDE_CHUVA_MÉD
 ```dax
@@ -6225,4 +6229,3477 @@ SWITCH(
     TRUE(),
     ISINSCOPE('CATAÇÃO_TLH'[FAZENDA]),TLH
 )
+```
+
+## COLUNAS CALCULADAS (287)
+
+### PLATIV_OS_ABERTA.GESTOR_REDUZ
+```dax
+IF(LEFT([GESTOR],3)="CAD","CC - " & [CC_FUNC],LEFT([GESTOR],SEARCH(" ",[GESTOR],1)-1))
+```
+### CTT_CARGAS_SAIDA.DESCFAZENDA
+```dax
+[CD_UPNIVEL1] & " - " &
+SUBSTITUTE(
+            SUBSTITUTE([DE_UPNIVEL1],"Fazenda","Faz."),"Nossa Senhora", "N.S. ")
+```
+### AGRO_QLD_OPERAC.QTDE_PONTO_ADERENTE
+```dax
+
+IF(VALUE(LEFT([STATUS],1))=2,0.0000000001,
+    IF([CD_OPERACAO]=1345,[VL_REAL],
+        If(VALUE(LEFT([STATUS],1))=1,
+        IF(AND([CD_OPERACAO]=1380,
+            OR([CD_INDICADOR]=3,[CD_INDICADOR]=4)),
+            [QTDE_PONTO]*(1+[VL_VARIAC_PERC]),
+        /*IF(AND([CD_OPERACAO]=1380,[CD_INDICADOR]=5),
+            -[VL_DIFERENÇA],*/
+                [QTDE_PONTO]
+        /*)*/))
+    )
+)
+```
+### AGRO_QLD_OPERAC.QTDE_PONTO_NAOADERENTE
+```dax
+If(VALUE(LEFT([STATUS],1))=2,[QTDE_PONTO],0)
+```
+### AGRO_QLD_OPERAC.QLD_META_ADERENCIA
+```dax
+
+IF(AND(OR(VALUE(LEFT([DE_OPERACAO],3))=101,VALUE(LEFT([DE_OPERACAO],3))=102),[CD_INDICADOR]<99),0.95,
+IF(AND(OR(VALUE(LEFT([DE_OPERACAO],3))=101,VALUE(LEFT([DE_OPERACAO],3))=102),[CD_INDICADOR]=99),0.90,
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=103,OR([CD_INDICADOR]<=2,[CD_INDICADOR]>=5)),0.90,
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=103,AND([CD_INDICADOR]>=3,[CD_INDICADOR]<=4)),0.95,
+IF(VALUE(LEFT([DE_OPERACAO],3))=111,0.95*0+0.90,
+IF(VALUE(LEFT([DE_OPERACAO],3))=115,0.90,
+IF(VALUE(LEFT([DE_OPERACAO],3))=116,0.90,
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=122,[CD_OPERACAO]=1385),0.95*0+0.90,
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=122,[CD_OPERACAO]=1388),0.90,
+IF(VALUE(LEFT([DE_OPERACAO],3))=123,0.95*0+0.90,
+IF(VALUE(LEFT([DE_OPERACAO],3))=124,0.90,
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=130,OR([CD_INDICADOR]=9,[CD_INDICADOR]=13)),0.85,
+IF(VALUE(LEFT([DE_OPERACAO],3))=130,0.95,
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=131,[CD_OPERACAO]=1375),0.95,
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=131,[CD_OPERACAO]=1382),[CD_INDICADOR]<=2),0.90,
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=131,[CD_OPERACAO]=1382),[CD_INDICADOR]>=3),0.95,
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=131,[CD_OPERACAO]=1383),[CD_INDICADOR]<=2),0.90,
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=131,[CD_OPERACAO]=1383),[CD_INDICADOR]>=3),0.95,
+IF(VALUE(LEFT([DE_OPERACAO],3))=132,0.90,
+IF(VALUE(LEFT([DE_OPERACAO],3))=133,0.90,
+IF(VALUE(LEFT([DE_OPERACAO],3))=134,0.90,
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=135,[CD_OPERACAO]=1380),0.95,
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=135,AND([CD_OPERACAO]=1381,[CD_INDICADOR]<3)),0.90,
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=135,AND([CD_OPERACAO]=1381,[CD_INDICADOR]>4)),0.95,
+IF(VALUE(LEFT([DE_OPERACAO],3))=161,0.80,
+IF(AND([CD_INDICADOR] = 1,
+    AND(VALUE(LEFT([DE_OPERACAO],3))>=162,VALUE(LEFT([DE_OPERACAO],3))<=164)),0.75,
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))>=162,VALUE(LEFT([DE_OPERACAO],3))<=164),0.85,
+0)))))))))))))))))))))))))))
+```
+### AGRO_QLD_OPERAC.OPER_AVALIACAO
+```dax
+[DE_OPERACAO] & " - " & [DE_INDICADOR]
+```
+### AGRO_QLD_OPERAC.QTDE_PONTO_CALC
+```dax
+
+/*IF(AND([CD_OPERACAO]=1380,[CD_INDICADOR]=5),
+        [VL_META],*/
+        [QTDE_PONTO]
+/*)*/
+```
+### AGRO_QLD_OPERAC.OPER_QLD
+```dax
+LEFT([DE_OPERACAO],3)*1
+```
+### CTT_META_MOAGEM.HR_MOAGEM_EFET
+```dax
+[HR_MOAG_DISP] * [EFIC]
+```
+### CTT_HISTPRD.QT_CANA_TERRA
+```dax
+IF([QT_IMPUR_TERRA]>0,[QT_CANA_ENT],0)
+```
+### CTT_HISTPRD.QT_CANA_VEGETAL
+```dax
+IF([QT_IMPUR_VEG]>0,[QT_CANA_ENT],0)
+```
+### CTT_HISTPRD.QT_CANA_ACUCAR
+```dax
+IF([KG_ACUCAR]>0,[QT_CANA_ENT],0)
+```
+### PLANT_MUDA.AGRP_MUDA
+```dax
+"Muda"
+```
+### PLANT_REAL.AGRP_TX_REAL
+```dax
+"Ha Plantado / Ha Muda"
+```
+### CTT_MATURADOR.DIAS_APLICxMOAGEM
+```dax
+
+IF(ISBLANK([DT_APLICACAO]),BLANK(),
+            CTT_MATURADOR[DT_MOAGEM] - CTT_MATURADOR[DT_APLICACAO]
+)
+```
+### CTT_MATURADOR.SITUACAO_MAUTRADOR
+```dax
+
+VAR MES_MOAG = MONTH([DT_MOAGEM])
+RETURN
+
+IF(ISBLANK([DT_APLICACAO]),"0-Sem Matur",
+IF(MES_MOAG <= 6,
+    IF([DT_MOAGEM] < ([DT_APLICACAO] + [DD_MIN_MAT]), "3-Abaixo",
+    IF([DT_MOAGEM] > ([DT_APLICACAO] + [DD_MAX_MAT]), "1-Acima", "2-Aderente"))
+    ,
+    IF([DT_MOAGEM] < ([DT_APLICACAO] + 30), "3-Abaixo",
+    IF([DT_MOAGEM] > ([DT_APLICACAO] + 45), "1-Acima", "2-Aderente"))
+))
+
+/*
+IF(ISBLANK([DT_APLICACAO]),"0-Sem Matur",
+IF([DT_MOAGEM]<([DT_APLICACAO]+[DD_MIN_MAT]),"3-Abaixo",
+IF([DT_MOAGEM]>([DT_APLICACAO]+[DD_MAX_MAT]),"1-Acima","2-Aderente")))
+*/
+```
+### CTT_MATURADOR.TON_PREATR
+```dax
+IF([PRE_ATR] = 0, 0,[TON_TOTAL])
+```
+### CTT_MATURADOR.TON_PREATR_KG
+```dax
+IF([PRE_ATR] = 0, 0, [TON_TOTAL] * [PRE_ATR])
+```
+### CTT_MATURADOR.FAZENDA_ABREV
+```dax
+
+SUBSTITUTE(
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE([FAZENDA],"Fazenda","Faz."),
+            "Sítio","Sít."),
+        "Sitio","Sít."),
+    "Nossa Senhora","N.S.")
+```
+### CTT_CARGAS_SAIDA.VELOC_ESTIM_POND
+```dax
+IF(ISBLANK([TON_EFET] * [VELOC_ESTIM]),0,[TON_EFET] * [VELOC_ESTIM])
+```
+### CTT_CARGAS_SAIDA.VELOC_BORDO_POND
+```dax
+IF(ISBLANK([TON_EFET] * [VELOC_BORDO]),0,[TON_EFET] * [VELOC_BORDO])
+```
+### FRENPLANT.FRENTE_SISTEMA
+```dax
+"F"&[CD_FREN_PLAN]&" - S"&[CD_SIST_PLAN]
+```
+### PLANT_META.FRENTE_SISTEMA
+```dax
+"F"&[CD_FREN_PLANT]&" - S"&[CD_SIST_PLAN]
+```
+### PLANT_REAL.FRENTE_SISTEMA
+```dax
+"F"&[CD_FREN_PLAN]&" - S"&[CD_SIST_PLAN]
+```
+### CTT_ENTRADA_SAIDA.ORD_HORA
+```dax
+FORMAT([ORD_HR],"00") & " | " & FORMAT([HORA],"00") & "h"
+```
+### CTT_ENTRADA_SAIDA.ÚLTIMOS_3_DIAS
+```dax
+
+IF([DT_MOVIMENTO]=MAX([DT_MOVIMENTO]),1,
+IF([DT_MOVIMENTO]=(MAX([DT_MOVIMENTO])-1),2,
+IF([DT_MOVIMENTO]=(MAX([DT_MOVIMENTO])-2),3,0)))
+```
+### CTT_ENTRADA_SAIDA.DT_ÚLTIMO_3_DIAS
+```dax
+
+IF([ÚLTIMOS_3_DIAS]=0,"",[ÚLTIMOS_3_DIAS]-1 & " - " & [DT_MOVIMENTO])
+```
+### CTT_ENTRADA_SAIDA.TURNO
+```dax
+
+IF(VALUE([ORD_HR])<=8,"A",
+IF(VALUE([ORD_HR])<=16,"B","C"))
+```
+### CTT_MATURADOR.Z_CTT_MATURA_GRP
+```dax
+"Resumo"
+```
+### CTT_TAH.FAZENDA
+```dax
+
+[CD_UPNIVEL1] & " - " & 
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE(
+                SUBSTITUTE(
+                    SUBSTITUTE([DE_UPNIVEL1],"Fazenda","Faz."),
+                    "Sítio","Sít."),
+                "Estância","Est."),
+            "Nossa Senhora", "N.S."),
+        "Esperanca","Esp.")
+```
+### CTT_TAH.MES
+```dax
+EOMONTH([DT_OCORREN],-1)+1
+```
+### CTT_TAH.POND_IDADE_TON
+```dax
+(([DT_OCORREN]-[ULT_DT_OCORREN])/(30.5)) * [TON]
+```
+### CTT_TAH.CORTE
+```dax
+
+IF([NO_CORTE] >= 6, "6+", FORMAT([NO_CORTE],"@"))
+```
+### CARREADORES.ID_RETORNO
+```dax
+
+IF(AND([NO_CORTE]=1,[DT_PLANTIO]>=[DT_OPERACAO]),"10-PLA_PLANTIO+90",
+IF(AND([NO_CORTE]=1,[DT_PLANTIO]<[DT_OPERACAO]),"11-PLA_OPERACAO+90",
+IF(AND([NO_CORTE]>1,[DT_COLHEITA]>=[DT_OPERACAO]),"20-CTT_CTT+90",
+IF(AND([NO_CORTE]>1,[DT_COLHEITA]<[DT_OPERACAO]),"21-CTT_OPERCAO+90",
+IF(AND([NO_CORTE]=0,[DT_COLHEITA]>=[DT_OPERACAO]),"30-REF_REFORMA+90",
+IF(AND([NO_CORTE]=0,[DT_COLHEITA]<[DT_OPERACAO]),"31-REF_OPERCAO+90",
+    BLANK()
+))))))
+```
+### CARREADORES.DT_RETORNO
+```dax
+
+IF(AND([NO_CORTE]=1,[DT_PLANTIO]>=[DT_OPERACAO]),[DT_PLANTIO]+90,
+IF(AND([NO_CORTE]=1,[DT_PLANTIO]<[DT_OPERACAO]),[DT_OPERACAO]+90,
+IF(AND([NO_CORTE]>1,[DT_COLHEITA]>=[DT_OPERACAO]),[DT_COLHEITA]+90,
+IF(AND([NO_CORTE]>1,[DT_COLHEITA]<[DT_OPERACAO]),[DT_OPERACAO]+90,
+IF(AND([NO_CORTE]=0,[DT_COLHEITA]>=[DT_OPERACAO]),[DT_COLHEITA]+90,
+IF(AND([NO_CORTE]=0,[DT_COLHEITA]<[DT_OPERACAO]),[DT_OPERACAO]+90,
+    BLANK()
+))))))
+```
+### CARREADORES.ESTAGIO_TIPO
+```dax
+
+IF([NO_CORTE] = 0, "1-Reforma",
+IF([NO_CORTE] = 1,"2-Cana Planta","3-Cana Soca"))
+```
+### CARREADORES.QT_DIAS
+```dax
+
+INT(NOW())
+-
+[DT_RETORNO]
+
+/*IF([DT_PROG_CTT]>0,
+    IF(([DT_PROG_CTT]-30)<=[DT_RETORNO],[DT_PROG_CTT]+120,[DT_RETORNO]),
+    [DT_RETORNO]
+    )*/
+```
+### CARREADORES.FX_DIAS
+```dax
+
+IF([QT_DIAS]<=-30,"1-Aderente <= -30",
+IF([QT_DIAS]<=  0,"2-Aderente <= 0",
+IF([QT_DIAS]<=30,"3-Acima <= 30",
+IF([QT_DIAS]> 30,"4-Acima > 30",BLANK()
+))))
+```
+### CARREADORES.FAZENDA
+```dax
+
+[CD_UP1] & " - " & 
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE(
+                SUBSTITUTE(
+                    SUBSTITUTE([DE_UPNIVEL1],"Fazenda","Faz."),
+                    "Sítio","Sít."),
+                "Estância","Est."),
+            "Nossa Senhora", "N.S."),
+        "Esperanca","Esp.")
+```
+### CARREADORES.FX_QT_DIAS
+```dax
+
+IF([QT_DIAS]<=-30,1,
+IF([QT_DIAS]<=  0,1,
+IF([QT_DIAS]<=30,1,
+IF([QT_DIAS]> 30,1,BLANK()
+))))
+```
+### CARREADORES.POND_DIAS
+```dax
+[QT_DIAS] * [QT_AREA_CARREADOR]
+```
+### CARREADORES.DT_COLH_TLH
+```dax
+
+IF(ISBLANK([DT_PROG_CTT]),"00/00/00 - " & [TLH],
+    FORMAT([DT_PROG_CTT],"DD/MM/YY") & " - " & [TLH]
+)
+```
+### CTT_PRE_ANALISE.FAZENDA
+```dax
+
+[CD_UPNIVEL1] & " - " & 
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE(
+                SUBSTITUTE(
+                    SUBSTITUTE([DE_UPNIVEL1],"Fazenda","Faz."),
+                    "Sítio","Sít."),
+                "Estância","Est."),
+            "Nossa Senhora", "N.S."),
+        "Esperanca","Esp.")
+```
+### CTT_PRE_ANALISE.TAMANHO_BOLHA
+```dax
+
+IF(ISBLANK([DT_PEN_AMOST]),1,
+IF([ATR_ULT_AMOST]>=[ATR_PEN_AMOST],1,2))
+```
+### CTT_PRE_ANALISE.LEGENDA
+```dax
+
+IF(ISBLANK([DT_PEN_AMOST]),"1ª Amostra",
+                            "2ª Amostra " & IF([ATR_ULT_AMOST]>=[ATR_PEN_AMOST],"ATR >=", "ATR <")
+)
+```
+### CTT_HISTPRD.ESTAGIO_CORTE
+```dax
+
+IF([NO_CORTE]<=7,FORMAT([NO_CORTE],"00"),"08+")
+```
+### CTT_TCH.ESTAGIO_CORTE
+```dax
+
+IF(VALUE(LEFT([ESTAGIO],2))<=7, [ESTAGIO], "08 - 8ºC +")
+```
+### CTT_PRE_ANALISE.LEGENDA_ULT_AMOST_DIAS
+```dax
+
+IF((INT(NOW())-[DT_ULT_AMOST])<=30,"00-30 Dias",
+IF((INT(NOW())-[DT_ULT_AMOST])<=60,"31-60 Dias","61+ Dias"))
+```
+### CTT_INDISPONIB.DATA_BASE
+```dax
+
+IF(ISBLANK([DT]),[DT_MOVIMENTO],[DT])
+```
+### CTT_INDISPONIB.AGRP_PARADA
+```dax
+
+IF(ISBLANK([TIPO]),[GRUPO],
+                    IF([TIPO]="EFIC_CLIMA","Clima",
+                    IF([TIPO]="EFIC_AGR","Agrícola",
+                    IF([TIPO]="EFIC_IND","Indústria","Moagem (Rotação)")))
+)
+```
+### CTT_INDISPONIB.HR_PARADA_META
+```dax
+[HR_DIA] * [PERC]
+```
+### CTT_INDISPONIB.HR_PARADA_REAL
+```dax
+[HORAS_DEC]
+```
+### CTT_ORDEMCORTE.AREA_SALDO
+```dax
+ROUND([AREA_PRD] - [MUDA_AREA_ENC] - [MUDA_AREA_ABE] - [SAFRA_AREA_ENC] - [SAFRA_AREA_ABE],2)
+```
+### CTT_ORDEMCORTE.FAZENDA
+```dax
+
+[CD_UPNIVEL1] & " - " &
+SUBSTITUTE(
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE([DE_UPNIVEL1],"Fazenda","Faz."),
+            "Sítio","Sít."),
+        "Sitio","Sít."),
+    "Nossa Senhora","N.S.")
+```
+### CTT_ORDEMCORTE.AREA_ENCERRADA
+```dax
+[MUDA_AREA_ENC] + [SAFRA_AREA_ENC]
+```
+### CTT_ORDEMCORTE.STATUS
+```dax
+
+IF(([MUDA_AREA_ABE]+[SAFRA_AREA_ABE])>0,"1-Aberto",
+IF(AND([AREA_ENCERRADA]>0,[AREA_SALDO]>0),"2-Parcial",
+IF([AREA_SALDO]>0,"3-Saldo","4-Fechados")))
+```
+### CTT_ORDEMCORTE.AREA_STATUS
+```dax
+
+IF(([MUDA_AREA_ABE]+[SAFRA_AREA_ABE])>0,[MUDA_AREA_ABE]+[SAFRA_AREA_ABE],
+IF(AND([AREA_SALDO]=0,([MUDA_AREA_ABE]+[SAFRA_AREA_ABE])=0),[AREA_ENCERRADA],
+IF(AND([AREA_ENCERRADA]>0,[AREA_SALDO]>0),[AREA_PRD]-[AREA_ENCERRADA]-[MUDA_AREA_ABE]-[SAFRA_AREA_ABE],
+                                        [AREA_PRD]-[AREA_ENCERRADA]-[MUDA_AREA_ABE]-[SAFRA_AREA_ABE])))
+```
+### CTT_ORDEMCORTE_ABERTA.TAMANHO
+```dax
+
+IF((INT(NOW())-[DT_QUEIMA])<=7,1,
+IF((INT(NOW())-[DT_QUEIMA])<=15,2,3
+))
+```
+### CTT_ORDEMCORTE_ABERTA.LEGENDA
+```dax
+
+IF((INT(NOW())-[DT_QUEIMA])<=7,"00-07 Dias",
+IF((INT(NOW())-[DT_QUEIMA])<=15,"08-15 Dias","16+ Dias"))
+```
+### CTT_ORDEMCORTE_ABERTA.DIAS
+```dax
+INT(NOW())-[DT_QUEIMA]
+```
+### CTT_ORDEMCORTE_ABERTA.FAZENDA
+```dax
+
+[CD_UPNIVEL1] & " - " &
+SUBSTITUTE(
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE([DE_UPNIVEL1],"Fazenda","Faz."),
+            "Sítio","Sít."),
+        "Sitio","Sít."),
+    "Nossa Senhora","N.S.")
+```
+### PLANT_OCMUDA.TAMANHO
+```dax
+
+IF((INT(NOW())-[DT_ORDEM])<=7,1,
+IF((INT(NOW())-[DT_ORDEM])<=15,2,3
+))
+```
+### PLANT_OCMUDA.LEGENDA
+```dax
+
+IF((INT(NOW())-[DT_ORDEM])<=7,"00-07 Dias",
+IF((INT(NOW())-[DT_ORDEM])<=15,"08-15 Dias","16+ Dias"))
+```
+### PLANT_OCMUDA.DIAS
+```dax
+INT(NOW()) - [DT_ORDEM]
+```
+### PLANT_OCMUDA.FAZENDA
+```dax
+
+[CD_UPNIVEL1] & " - " &
+SUBSTITUTE(
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE([DE_UPNIVEL1],"Fazenda","Faz."),
+            "Sítio","Sít."),
+        "Sitio","Sít."),
+    "Nossa Senhora","N.S.")
+```
+### PREPARO.FAZENDA_PREPARO
+```dax
+
+[CD_FAZ] & " - " & 
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE(
+                SUBSTITUTE(
+                    SUBSTITUTE([DE_FAZ],"Fazenda","Faz."),
+                    "Sítio","Sít."),
+                "Estância","Est."),
+            "Nossa Senhora", "N.S."),
+        "Esperanca","Esp.")
+```
+### PREPARO.FAZENDA_MUDA
+```dax
+
+[FAZ_MUDA] & " - " & 
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE(
+                SUBSTITUTE(
+                    SUBSTITUTE([DE_FAZ_MUDA],"Fazenda","Faz."),
+                    "Sítio","Sít."),
+                "Estância","Est."),
+            "Nossa Senhora", "N.S."),
+        "Esperanca","Esp.")
+```
+### PREPARO.DESC_OPERACAO
+```dax
+FORMAT([ORD],"00") & " - " & [DE_OPER]
+```
+### AGRO_QLD_OPERAC.DESC_FAZENDA
+```dax
+
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE(
+                SUBSTITUTE(
+                    SUBSTITUTE([FAZENDA],"Fazenda","Faz."),
+                    "Sítio","Sít."),
+                "Estância","Est."),
+            "Nossa Senhora", "N.S."),
+        "Esperanca","Esp.")
+```
+### AGRO_CIGARRINHA.CORTE
+```dax
+
+IF([NO_CORTE]<5,[NO_CORTE]&"ºC","5ºC+")
+```
+### AGRO_CIGARRINHA.CORTE_TLH
+```dax
+
+[CORTE] & " | TLH: " & [TLH]
+```
+### AGRO_MIGDOLUS.CORTE
+```dax
+
+IF([NO_CORTE]<5,[NO_CORTE]&"ºC","5ºC+")
+```
+### AGRO_MIGDOLUS.CORTE_TLH
+```dax
+
+[CORTE] & " | TLH: " & [CD_UPNIVEL3]
+```
+### AGRO_SPHENOPHORUS.CORTE
+```dax
+
+IF([NO_CORTE]<5,[NO_CORTE]&"ºC","5ºC+")
+```
+### AGRO_SPHENOPHORUS.CORTE_TLH
+```dax
+
+[CORTE] & " | TLH: " & [CD_UPNIVEL3]
+```
+### AGRO_OUTR_PRAGAS.CORTE
+```dax
+
+IF([NO_CORTE]<5,[NO_CORTE]&"ºC","5ºC+")
+```
+### AGRO_OUTR_PRAGAS.CORTE_TLH
+```dax
+
+[CORTE] & " | TLH: " & [CD_UPNIVEL3]
+```
+### AGRO_OUTR_PRAGAS.DESC_FAZENDA
+```dax
+
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE(
+                SUBSTITUTE(
+                    SUBSTITUTE([FAZENDA],"Fazenda","Faz."),
+                    "Sítio","Sít."),
+                "Estância","Est."),
+            "Nossa Senhora", "N.S."),
+        "Esperanca","Esp.")
+```
+### AGRO_SPHENOPHORUS.DESC_FAZENDA
+```dax
+
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE(
+                SUBSTITUTE(
+                    SUBSTITUTE([FAZENDA],"Fazenda","Faz."),
+                    "Sítio","Sít."),
+                "Estância","Est."),
+            "Nossa Senhora", "N.S."),
+        "Esperanca","Esp.")
+```
+### AGRO_MIGDOLUS.DESC_FAZENDA
+```dax
+
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE(
+                SUBSTITUTE(
+                    SUBSTITUTE([FAZENDA],"Fazenda","Faz."),
+                    "Sítio","Sít."),
+                "Estância","Est."),
+            "Nossa Senhora", "N.S."),
+        "Esperanca","Esp.")
+```
+### AGRO_CIGARRINHA.DESC_FAZENDA
+```dax
+
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE(
+                SUBSTITUTE(
+                    SUBSTITUTE([FAZENDA],"Fazenda","Faz."),
+                    "Sítio","Sít."),
+                "Estância","Est."),
+            "Nossa Senhora", "N.S."),
+        "Esperanca","Esp.")
+```
+### AGRO_QLD_OPERAC.PARAM
+```dax
+
+IF(AND(
+       AND(OR(VALUE(LEFT([DE_OPERACAO],3))=101,VALUE(LEFT([DE_OPERACAO],3))=102),
+           OR([CD_OPERACAO]=1360,[CD_OPERACAO]=1362)),
+        [CD_INDICADOR]=1),"45 cm", --ARADO/SUBSOLA | PROFUNDIDADE
+IF(AND(
+       AND(OR(VALUE(LEFT([DE_OPERACAO],3))=101,VALUE(LEFT([DE_OPERACAO],3))=102),
+           OR([CD_OPERACAO]=1360,[CD_OPERACAO]=1362)),
+        [CD_INDICADOR]=2),"0", --ARADO/SUBSOLA | TORRÃO
+IF(AND(
+       AND(OR(VALUE(LEFT([DE_OPERACAO],3))=101,VALUE(LEFT([DE_OPERACAO],3))=102),
+           OR([CD_OPERACAO]=1361,[CD_OPERACAO]=1363)),
+        [CD_INDICADOR]=99),"+/- 10%", --ARADO/SUBSOLA | DOSE
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=103,OR([CD_INDICADOR]<=2,[CD_INDICADOR]>=5)),"+/- 10%", --CORRETIVO | DOSE
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=103,AND([CD_INDICADOR]>=3,[CD_INDICADOR]<=4)),"S | N", --CORRETIVO | ALETAS
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=111,[CD_INDICADOR]=3),"1,45 | 1,55 cm", --SULCAÇÃO | ESPAÇAMENTO
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=111,[CD_INDICADOR]=5),
+    IF([DT_AMOSTRA]>=DATE(2024,1,1),"25 | 40 cm","25 | 35 cm"), --SULCAÇÃO | PROFUNDIDADE
+IF(VALUE(LEFT([DE_OPERACAO],3))=115,"+/- 20%", --SULCA TORTA | DOSE
+IF(VALUE(LEFT([DE_OPERACAO],3))=116,"+/- 10%", --SULCA MINERAL | DOSE
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=122,[CD_OPERACAO]=1385),
+    IF([DT_AMOSTRA]>=DATE(2024,1,1),"5 |  8 (out-abr) cm 
+                                     5 | 10 (mai-set) cm","5 | 8 cm"), --COBRIÇÃO | ALTURA
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=122,[CD_OPERACAO]=1388),"+/- 10%", --COBRIÇÃO | DOSE
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=123,OR([CD_OPERACAO]=1386,[CD_OPERACAO]=1387)),[CD_INDICADOR]=10),"<= 11 t", --MUDA | CONSUMO
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=123,OR([CD_OPERACAO]=1386,[CD_OPERACAO]=1387)),[CD_INDICADOR]=2),"<= 50 cm", --MUDA | DISTRIBUIÇAO
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=123,OR([CD_OPERACAO]=1386,[CD_OPERACAO]=1387)),[CD_INDICADOR]=1),"<= 6%", --MUDA | GEMAS DANIFICADAS
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=123,OR([CD_OPERACAO]=1386,[CD_OPERACAO]=1387)),[CD_INDICADOR]=4),
+    IF([DT_AMOSTRA]>=DATE(2025,1,1),"12 | 18 gemas",IF([DT_AMOSTRA]>=DATE(2024,1,1),"12 | 24 gemas","12 | 18 gemas")), --MUDA | GEMAS VIÁVEIS
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=123,[CD_OPERACAO]=1392),"40 | 70 cm", --MUDA | TAMANHO TOLETE
+IF(VALUE(LEFT([DE_OPERACAO],3))=124,
+    IF([CD_INDICADOR]=1,"<= 5 cm",  --MUDA | ALTURA BASE CORTE
+    IF([CD_INDICADOR]=2,"<= 50%",   --MUDA | DESPALHA
+    IF([CD_INDICADOR]=4,">= 50%",   --MUDA | LIMPEZA LEIRA
+    IF([CD_INDICADOR]=8,">= 1 m",   --MUDA | ESPAÇO DOS MONTES
+    IF([CD_INDICADOR]=11,"<= 72 h", --MUDA | HORAS DE CORTE
+        BLANK()))))),
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=131,[CD_OPERACAO]=1375),[CD_INDICADOR]=12)," ", --QUEBRA LOMBO | DANO
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=131,[CD_OPERACAO]=1375),[CD_INDICADOR]<=3),"<= 10 cm", --QUEBRA LOMBO | NIVELAMENTO
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=131,[CD_OPERACAO]=1375),[CD_INDICADOR]=5),"0", --QUEBRA LOMBO | PISOTEIO
+IF(AND(and(VALUE(LEFT([DE_OPERACAO],3))=131,OR([CD_OPERACAO]=1382,[CD_OPERACAO]=1383)),[CD_INDICADOR]=2),"+/- 10%", --QUEBRA LOMBO | DOSE
+IF(AND(and(VALUE(LEFT([DE_OPERACAO],3))=131,OR([CD_OPERACAO]=1382,[CD_OPERACAO]=1383)),[CD_INDICADOR]=3),"S | N", --QUEBRA LOMBO | ANTIGOTEJO
+IF(VALUE(LEFT([DE_OPERACAO],3))=132,"+/- 10%", --ADUBAÇÃO | DOSE
+IF(VALUE(LEFT([DE_OPERACAO],3))=133,"+/- 10%", --HERBICIDA | DOSE
+IF(VALUE(LEFT([DE_OPERACAO],3))=134,"+/- 10%", --HERB CARREADOR | DOSE
+IF(AND([CD_OPERACAO] = 1380, OR([CD_INDICADOR] = 9, [CD_INDICADOR] = 11)), "1,45cm | 1,55cm",   --CORTE SOQUEIRA | ESPAÇAMENTO
+IF(AND([CD_OPERACAO] = 1380, [CD_INDICADOR] = 10), "0,85cm | 0,95cm",                           --CORTE SOQUEIRA | ESPAÇAMENTO
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=135,[CD_OPERACAO]=1380),[CD_INDICADOR]=5)," ",          --CORTE SOQUEIRA | ABALO
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=135,[CD_OPERACAO]=1380),[CD_INDICADOR]<=2),"8 | 15 cm", --CORTE SOQUEIRA | PROFUNDIDADE
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=135,[CD_OPERACAO]=1380),[CD_INDICADOR]<=4)," ",         --CORTE SOQUEIRA | DIRECIONAMENTO
+IF(AND(and(VALUE(LEFT([DE_OPERACAO],3))=135,[CD_OPERACAO]=1381),[CD_INDICADOR]<=2),"+/- 10%",   --CORTE SOQUEIRA | DOSE
+IF(AND(and(VALUE(LEFT([DE_OPERACAO],3))=135,[CD_OPERACAO]=1381),[CD_INDICADOR]>=5),"S | N",     --CORTE SOQUEIRA | DOSE
+IF(VALUE(LEFT([DE_OPERACAO],3))=161,"+/- 20%", --ADUBAÇÃO ORGÂNICA | DOSE
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))>=162,VALUE(LEFT([DE_OPERACAO],3))<=164)," ", --FERTIRRIGAÇÃO / IRRIGAÇÃO | VOLUME
+" "))))))))))))))))))))))))))))))))))
+```
+### PREPARO.QT_AREA_PLANO
+```dax
+
+IF([OPERACAO]="FG_PRARADO",[QT_AREA_PIMS]*0.7,
+IF([OPERACAO]="FG_PRSUBSOLA",[QT_AREA_PIMS]*0.3,
+IF(AND(AND([TALHAO]>=2000,[TALHAO]<=2999),[OPERACAO]="FG_RTPPI"),[QT_AREA_PIMS],
+IF([EXEC_OPER]<>"N",[QT_AREA_PIMS],0))))
+```
+### AGRO_QLD_OPERAC.QTDE_PONTO_NA_ABAIXO
+```dax
+
+IF(AND(
+    AND(
+        AND(
+            AND(OR(VALUE(LEFT([DE_OPERACAO],3))=101,VALUE(LEFT([DE_OPERACAO],3))=102),
+                OR([CD_OPERACAO]=1360,[CD_OPERACAO]=1362)),
+            [CD_INDICADOR]=1),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --ARADO/SUBSOLA | PROFUNDIDADE
+IF(AND(
+    AND(
+        AND(
+            AND(OR(VALUE(LEFT([DE_OPERACAO],3))=101,VALUE(LEFT([DE_OPERACAO],3))=102),
+                OR([CD_OPERACAO]=1360,[CD_OPERACAO]=1362)),
+            [CD_INDICADOR]=2),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --ARADO/SUBSOLA | TORRÃO
+IF(AND(
+    AND(
+        AND(
+            AND(OR(VALUE(LEFT([DE_OPERACAO],3))=101,VALUE(LEFT([DE_OPERACAO],3))=102),
+                OR([CD_OPERACAO]=1361,[CD_OPERACAO]=1363)),
+            [CD_INDICADOR]=99),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --ARADO/SUBSOLA | DOSE
+IF(AND(
+    AND(
+        AND(
+            AND(OR(VALUE(LEFT([DE_OPERACAO],3))=101,VALUE(LEFT([DE_OPERACAO],3))=102),
+                OR([CD_OPERACAO]=1361,[CD_OPERACAO]=1363)),
+            AND([CD_INDICADOR]>=3, [CD_INDICADOR]<=10)),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --ARADO/SUBSOLA | DOSE
+IF(AND(
+    AND(VALUE(LEFT([DE_OPERACAO],3))=103,
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --CORRETIVO | DOSE
+IF(AND(
+    AND(
+        AND(VALUE(LEFT([DE_OPERACAO],3))=111,
+            [CD_INDICADOR]=3),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --SULCAÇÃO | ESPAÇAMENTO
+IF(AND(
+    AND(
+        AND(VALUE(LEFT([DE_OPERACAO],3))=111,
+            [CD_INDICADOR]=5),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --SULCAÇÃO | PROFUNDIDADE
+IF(AND(
+    AND(VALUE(LEFT([DE_OPERACAO],3))=115,
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --SULCA TORTA | DOSE
+IF(AND(
+    AND(VALUE(LEFT([DE_OPERACAO],3))=116,
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --SULCA MINERAL | DOSE
+IF(AND(
+    AND(
+        AND(VALUE(LEFT([DE_OPERACAO],3))=122,
+            [CD_OPERACAO]=1385),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --COBRIÇÃO | ALTURA
+IF(AND(
+    AND(
+        AND(VALUE(LEFT([DE_OPERACAO],3))=122,
+            [CD_OPERACAO]=1388),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --COBRIÇÃO | DOSE
+IF(AND(
+    AND(
+        AND(
+            AND(VALUE(LEFT([DE_OPERACAO],3))=123,
+                OR([CD_OPERACAO]=1386,[CD_OPERACAO]=1387)),
+            [CD_INDICADOR]=10),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --MUDA | CONSUMO
+IF(AND(
+    AND(
+        AND(
+            AND(VALUE(LEFT([DE_OPERACAO],3))=123,
+                OR([CD_OPERACAO]=1386,[CD_OPERACAO]=1387)),
+            [CD_INDICADOR]=2),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --MUDA | DISTRIBUIÇAO
+IF(AND(
+    AND(
+        AND(
+            AND(VALUE(LEFT([DE_OPERACAO],3))=123,
+                OR([CD_OPERACAO]=1386,[CD_OPERACAO]=1387)),
+            [CD_INDICADOR]=1),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --MUDA | GEMAS DANIFICADAS
+IF(AND(
+    AND(
+        AND(
+            AND(VALUE(LEFT([DE_OPERACAO],3))=123,
+                OR([CD_OPERACAO]=1386,[CD_OPERACAO]=1387)),
+            [CD_INDICADOR]=4),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --MUDA | GEMAS VIÁVEIS
+IF(AND(
+    AND(
+        AND(VALUE(LEFT([DE_OPERACAO],3))=123,
+            [CD_OPERACAO]=1392),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --MUDA | TAMANHO TOLETE
+IF(AND(
+    AND(
+        AND(
+            AND(VALUE(LEFT([DE_OPERACAO],3))=131,
+                [CD_OPERACAO]=1375),
+            [CD_INDICADOR]=12),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --QUEBRA LOMBO | DANO
+IF(AND(
+    AND(
+        AND(
+            AND(VALUE(LEFT([DE_OPERACAO],3))=131,
+                [CD_OPERACAO]=1375),
+            [CD_INDICADOR]<=3),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --QUEBRA LOMBO | NIVELAMENTO
+IF(AND(
+    AND(
+        AND(
+            AND(VALUE(LEFT([DE_OPERACAO],3))=131,
+                [CD_OPERACAO]=1375),
+            [CD_INDICADOR]=5),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --QUEBRA LOMBO | PISOTEIO
+IF(AND(
+    AND(
+        AND(VALUE(LEFT([DE_OPERACAO],3))=131,
+            OR([CD_OPERACAO]=1382,
+                [CD_OPERACAO]=1383)
+            ),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --QUEBRA LOMBO | DOSE
+IF(AND(
+    AND(VALUE(LEFT([DE_OPERACAO],3))=132,
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --ADUBAÇÃO | DOSE
+IF(AND(
+    AND(VALUE(LEFT([DE_OPERACAO],3))=133,
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --HERBICIDA | DOSE
+IF(AND(
+    AND(VALUE(LEFT([DE_OPERACAO],3))=134,
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --HERB CARREADOR | DOSE
+IF(AND(
+    AND(
+        AND(
+            AND(VALUE(LEFT([DE_OPERACAO],3))=135,
+                [CD_OPERACAO]=1380),
+            [CD_INDICADOR]=5),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_VARIAC_PERC]<=5),0, --CORTE SOQUEIRA | ABALO
+IF(AND(
+    AND(
+        AND(
+            AND(VALUE(LEFT([DE_OPERACAO],3))=135,
+                [CD_OPERACAO]=1380),
+            [CD_INDICADOR]<=2),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --CORTE SOQUEIRA | PROFUNDIDADE
+IF(AND(
+    AND(
+        AND(
+            AND(VALUE(LEFT([DE_OPERACAO],3))=135,
+                [CD_OPERACAO]=1380),
+            [CD_INDICADOR]<=4),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --CORTE SOQUEIRA | DIRECIONAMENTO
+IF(AND(
+    AND(
+        AND(VALUE(LEFT([DE_OPERACAO],3))=135,
+            [CD_OPERACAO]=1381),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --CORTE SOQUEIRA | DOSE
+IF(AND(
+    AND(VALUE(LEFT([DE_OPERACAO],3))=161,
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --ADUBAÇÃO ORGÂNICA | DOSE
+IF(AND(
+    AND(AND(VALUE(LEFT([DE_OPERACAO],3))>=162,VALUE(LEFT([DE_OPERACAO],3))<=164),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]<[VL_META]),1, --FERTIRRIGAÇÃO, IRRIGAÇÃO, BLEND | VOLUME
+0)))))))))))))))))))))))))))))
+```
+### AGRO_QLD_OPERAC.QTDE_PONTO_NA_ACIMA
+```dax
+
+IF(AND(
+    AND(
+        AND(
+            AND(OR(VALUE(LEFT([DE_OPERACAO],3))=101,VALUE(LEFT([DE_OPERACAO],3))=102),
+                OR([CD_OPERACAO]=1360,[CD_OPERACAO]=1362)),
+            [CD_INDICADOR]=1),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --ARADO/SUBSOLA | PROFUNDIDADE
+IF(AND(
+    AND(
+        AND(
+            AND(OR(VALUE(LEFT([DE_OPERACAO],3))=101,VALUE(LEFT([DE_OPERACAO],3))=102),
+                OR([CD_OPERACAO]=1360,[CD_OPERACAO]=1362)),
+            [CD_INDICADOR]=2),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --ARADO/SUBSOLA | TORRÃO
+IF(AND(
+    AND(
+        AND(
+            AND(OR(VALUE(LEFT([DE_OPERACAO],3))=101,VALUE(LEFT([DE_OPERACAO],3))=102),
+                OR([CD_OPERACAO]=1361,[CD_OPERACAO]=1363)),
+            [CD_INDICADOR]=99),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --ARADO/SUBSOLA | DOSE
+IF(AND(
+    AND(VALUE(LEFT([DE_OPERACAO],3))=103,
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --CORRETIVO | DOSE
+IF(AND(
+    AND(
+        AND(VALUE(LEFT([DE_OPERACAO],3))=111,
+            [CD_INDICADOR]=3),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --SULCAÇÃO | ESPAÇAMENTO
+IF(AND(
+    AND(
+        AND(VALUE(LEFT([DE_OPERACAO],3))=111,
+            [CD_INDICADOR]=5),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --SULCAÇÃO | PROFUNDIDADE
+IF(AND(
+    AND(VALUE(LEFT([DE_OPERACAO],3))=115,
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --SULCA TORTA | DOSE
+IF(AND(
+    AND(VALUE(LEFT([DE_OPERACAO],3))=116,
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --SULCA MINERAL | DOSE
+IF(AND(
+    AND(
+        AND(VALUE(LEFT([DE_OPERACAO],3))=122,
+            [CD_OPERACAO]=1385),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --COBRIÇÃO | ALTURA
+IF(AND(
+    AND(
+        AND(VALUE(LEFT([DE_OPERACAO],3))=122,
+            [CD_OPERACAO]=1388),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --COBRIÇÃO | DOSE
+IF(AND(
+    AND(
+        AND(
+            AND(VALUE(LEFT([DE_OPERACAO],3))=123,
+                OR([CD_OPERACAO]=1386,[CD_OPERACAO]=1387)),
+            [CD_INDICADOR]=10),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --MUDA | CONSUMO
+IF(AND(
+    AND(
+        AND(
+            AND(VALUE(LEFT([DE_OPERACAO],3))=123,
+                OR([CD_OPERACAO]=1386,[CD_OPERACAO]=1387)),
+            [CD_INDICADOR]=2),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --MUDA | DISTRIBUIÇAO
+IF(AND(
+    AND(
+        AND(
+            AND(VALUE(LEFT([DE_OPERACAO],3))=123,
+                OR([CD_OPERACAO]=1386,[CD_OPERACAO]=1387)),
+            [CD_INDICADOR]=1),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --MUDA | GEMAS DANIFICADAS
+IF(AND(
+    AND(
+        AND(
+            AND(VALUE(LEFT([DE_OPERACAO],3))=123,
+                OR([CD_OPERACAO]=1386,[CD_OPERACAO]=1387)),
+            [CD_INDICADOR]=4),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --MUDA | GEMAS VIÁVEIS
+IF(AND(
+    AND(
+        AND(VALUE(LEFT([DE_OPERACAO],3))=123,
+            [CD_OPERACAO]=1392),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --MUDA | TAMANHO TOLETE
+IF(AND(
+    AND(
+        AND(
+            AND(VALUE(LEFT([DE_OPERACAO],3))=131,
+                [CD_OPERACAO]=1375),
+            [CD_INDICADOR]=12),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --QUEBRA LOMBO | DANO
+IF(AND(
+    AND(
+        AND(
+            AND(VALUE(LEFT([DE_OPERACAO],3))=131,
+                [CD_OPERACAO]=1375),
+            [CD_INDICADOR]<=3),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --QUEBRA LOMBO | NIVELAMENTO
+IF(AND(
+    AND(
+        AND(
+            AND(VALUE(LEFT([DE_OPERACAO],3))=131,
+                [CD_OPERACAO]=1375),
+            [CD_INDICADOR]=5),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --QUEBRA LOMBO | PISOTEIO
+IF(AND(
+    AND(
+        AND(VALUE(LEFT([DE_OPERACAO],3))=131,
+            OR([CD_OPERACAO]=1382,
+                [CD_OPERACAO]=1383)
+            ),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --QUEBRA LOMBO | DOSE
+IF(AND(
+    AND(VALUE(LEFT([DE_OPERACAO],3))=132,
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --ADUBAÇÃO | DOSE
+IF(AND(
+    AND(VALUE(LEFT([DE_OPERACAO],3))=133,
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --HERBICIDA | DOSE
+IF(AND(
+    AND(VALUE(LEFT([DE_OPERACAO],3))=134,
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --HERB CARREADOR | DOSE
+IF(AND(
+    AND(
+        AND(
+            AND(VALUE(LEFT([DE_OPERACAO],3))=135,
+                [CD_OPERACAO]=1380),
+            [CD_INDICADOR]=5),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_VARIAC_PERC]>5),1, --CORTE SOQUEIRA | ABALO
+IF(AND(
+    AND(
+        AND(
+            AND(VALUE(LEFT([DE_OPERACAO],3))=135,
+                [CD_OPERACAO]=1380),
+            [CD_INDICADOR]<=2),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --CORTE SOQUEIRA | PROFUNDIDADE
+IF(AND(
+    AND(
+        AND(
+            AND(VALUE(LEFT([DE_OPERACAO],3))=135,
+                [CD_OPERACAO]=1380),
+            [CD_INDICADOR]<=4),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --CORTE SOQUEIRA | DIRECIONAMENTO
+IF(AND(
+    AND(
+        AND(VALUE(LEFT([DE_OPERACAO],3))=135,
+            [CD_OPERACAO]=1381),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --CORTE SOQUEIRA | DOSE
+IF(AND(
+    AND(VALUE(LEFT([DE_OPERACAO],3))=161,
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --ADUBAÇÃO ORGÂNICA | DOSE
+IF(AND(
+    AND(AND(VALUE(LEFT([DE_OPERACAO],3))>=162,VALUE(LEFT([DE_OPERACAO],3))<=164),
+        [QTDE_PONTO_NAOADERENTE]=1),
+    [VL_REAL]>[VL_META]),1, --FERTIRRIGAÇÃO, IRRIGAÇÃO, BLEND | VOLUME
+0))))))))))))))))))))))))))))
+```
+### ADEREN_ESTRVERM.POND_IDADE
+```dax
+
+((NOW()-[DT_INI])/30.5)*[QT_AREA_PROD]
+```
+### ADEREN_ESTRVERM.POND_IDADE_APLIC
+```dax
+
+IF(ISBLANK([DT_OPERACAO]),BLANK(),
+IF([DT_OPERACAO]>=[DT_INI],(([DT_OPERACAO]-[DT_INI])/30.5)*[QT_AREA_PROD],BLANK()))
+```
+### ADEREN_ESTRVERM.MESES_STATUS_ID
+```dax
+
+IF(ISBLANK([POND_IDADE_APLIC]),
+        IF(([POND_IDADE]/[QT_AREA_PROD])<5,1,
+        IF(([POND_IDADE]/[QT_AREA_PROD])<6,2,3)),
+    4
+)
+```
+### ADEREN_ESTRVERM.MESES_STATUS
+```dax
+
+IF(ISBLANK([POND_IDADE_APLIC]),
+        IF(([POND_IDADE]/[QT_AREA_PROD])<5,"Até 5 meses",
+        IF(([POND_IDADE]/[QT_AREA_PROD])<6,"Até 6 meses","Mais de 6 meses")),
+    "Realizado"
+)
+```
+### ADEREN_ESTRVERM.DESC_FAZENDA
+```dax
+
+[CD_UPNIVEL1] & " - " &
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE(
+                SUBSTITUTE(
+                    SUBSTITUTE([DE_UPNIVEL1],"Fazenda","Faz."),
+                    "Sítio","Sít."),
+                "Estância","Est."),
+            "Nossa Senhora", "N.S."),
+        "Esperanca","Esp.")
+```
+### ADEREN_ESTRVERM.POND_IDADE_STATUS
+```dax
+
+IF(ISBLANK([POND_IDADE_APLIC]),
+    ((NOW()-[DT_INI])/30.5)*[QT_AREA_PROD],
+    (([DT_OPERACAO]-[DT_INI])/30.5)*[QT_AREA_PROD]
+)
+```
+### PLANT_SEQ.DESC_FAZENDA
+```dax
+
+[CD_UPNIVEL1] & " - " &
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE(
+                SUBSTITUTE(
+                    SUBSTITUTE([DE_UPNIVEL1],"Fazenda","Faz."),
+                    "Sítio","Sít."),
+                "Estância","Est."),
+            "Nossa Senhora", "N.S."),
+        "Esperanca","Esp.")
+```
+### PLANT_SEQ.DESC_FAZENDA_MUDA
+```dax
+
+[FAZ_MUDA] & " - " &
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE(
+                SUBSTITUTE(
+                    SUBSTITUTE([DE_UPNIVEL12],"Fazenda","Faz."),
+                    "Sítio","Sít."),
+                "Estância","Est."),
+            "Nossa Senhora", "N.S."),
+        "Esperanca","Esp.")
+```
+### PLANT_SEQ.DE_SISTPLAN
+```dax
+
+IF([CD_SISTPLAN]=1,"Esparrame","Meiosi")
+```
+### PLANT_SEQ.DE_ROTACAO
+```dax
+
+IF([CD_ROTACAO]=1,FORMAT([CD_ROTACAO],"00") & " - Amendoim",
+IF([CD_ROTACAO]=2,FORMAT([CD_ROTACAO],"00") & " - Crotalária",
+IF([CD_ROTACAO]=3,FORMAT([CD_ROTACAO],"00") & " - Milheto",
+IF([CD_ROTACAO]=4,FORMAT([CD_ROTACAO],"00") & " - Soja",
+IF([CD_ROTACAO]=9,FORMAT([CD_ROTACAO],"00") & " - Mix",
+IF([CD_ROTACAO]=99,FORMAT([CD_ROTACAO],"00") & " - Sem Rotação",""))))))
+```
+### PLANT_SEQ.POND_KM_MUDA
+```dax
+
+IF([CD_SISTPLAN]=1,[QT_AREA_PROD]*[KM_MUDA],BLANK())
+```
+### PREPARO.FIMMES
+```dax
+EOMONTH([DATA],0)
+```
+### PREPARO.FAZENDA_SEQUENCIA
+```dax
+
+FORMAT([SEQ],"000") & " - " &
+[CD_FAZ] & "-" & 
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE(
+                SUBSTITUTE(
+                    SUBSTITUTE([DE_FAZ],"Fazenda","Faz."),
+                    "Sítio","Sít."),
+                "Estância","Est."),
+            "Nossa Senhora", "N.S."),
+        "Esperanca","Esp.")
+```
+### PLANT_SEQ.FIMMES
+```dax
+EOMONTH([DATA],0)
+```
+### PLANT_REAL.FAZENDA
+```dax
+
+[CD_UPNIVEL1] & " - " &
+SUBSTITUTE(
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE([DE_UPNIVEL1],"Fazenda","Faz."),
+            "Sítio","Sít."),
+        "Sitio","Sít."),
+    "Nossa Senhora","N.S.")
+```
+### AGRO_QLD_OPERAC.DE_OPERACAO_ENG
+```dax
+
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))>=111,VALUE(LEFT([DE_OPERACAO],3))<=116),VALUE(LEFT([DE_OPERACAO],3))&"-Groove",
+IF(VALUE(LEFT([DE_OPERACAO],3))=122,VALUE(LEFT([DE_OPERACAO],3))&"-Colvering",
+IF(VALUE(LEFT([DE_OPERACAO],3))=123,VALUE(LEFT([DE_OPERACAO],3))&"-Seed",
+BLANK()
+)))
+
+```
+### AGRO_QLD_OPERAC.DE_INDICADOR_ENG
+```dax
+
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=111,[CD_INDICADOR]=3),"Spacing (cm)",
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=111,[CD_INDICADOR]=5),"Depth (cm)",
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=115,[CD_INDICADOR]=1),"Compost LS",
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=115,[CD_INDICADOR]=2),"Compost RS",
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=116,[CD_INDICADOR]=1),"Fertilizer LS",
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=116,[CD_INDICADOR]=3),"Fertilizer RS",
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=122,[CD_UNIMED]="cm"),"Height",
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=122,[CD_UNIMED]<>"cm"),[CD_INDICADOR]=1),"Inseticide LS",
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=122,[CD_UNIMED]<>"cm"),[CD_INDICADOR]=3),"Inseticide RS",
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=123,[CD_UNIMED]="cm"),[CD_INDICADOR]=1),"Billet",
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=123,[CD_UNIMED]<>"cm"),[CD_INDICADOR]=1),
+    IF(RIGHT([DE_INDICADOR],7)="(Geral)", "Damaged Gems (General)",
+    IF(RIGHT([DE_INDICADOR],6)="(Oper)", "Damaged Gems (Operation)", "Damaged Gems (Seed)")),
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=123,[CD_INDICADOR]=2),"Distribuition",
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=123,[CD_INDICADOR]=4),"Viable Gems",
+BLANK()
+)))))))))))))
+```
+### AGRO_QLD_OPERAC.PARAM_ENG
+```dax
+
+IF(AND(
+       AND(OR(VALUE(LEFT([DE_OPERACAO],3))=101,VALUE(LEFT([DE_OPERACAO],3))=102),
+           OR([CD_OPERACAO]=1360,[CD_OPERACAO]=1362)),
+        [CD_INDICADOR]=1),"45 cm", --ARADO/SUBSOLA | PROFUNDIDADE
+IF(AND(
+       AND(OR(VALUE(LEFT([DE_OPERACAO],3))=101,VALUE(LEFT([DE_OPERACAO],3))=102),
+           OR([CD_OPERACAO]=1360,[CD_OPERACAO]=1362)),
+        [CD_INDICADOR]=2),"0", --ARADO/SUBSOLA | TORRÃO
+IF(AND(
+       AND(OR(VALUE(LEFT([DE_OPERACAO],3))=101,VALUE(LEFT([DE_OPERACAO],3))=102),
+           OR([CD_OPERACAO]=1361,[CD_OPERACAO]=1363)),
+        [CD_INDICADOR]=99),"+/- 10%", --ARADO/SUBSOLA | DOSE
+IF(VALUE(LEFT([DE_OPERACAO],3))=103,"+/- 10%", --CORRETIVO | DOSE
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=111,[CD_INDICADOR]=3),"1,45 | 1,55 cm", --SULCAÇÃO | ESPAÇAMENTO
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=111,[CD_INDICADOR]=5),
+    IF([DT_AMOSTRA]>=DATE(2024,1,1),"25 | 40 cm","25 | 35 cm"), --SULCAÇÃO | PROFUNDIDADE
+IF(VALUE(LEFT([DE_OPERACAO],3))=115,"+/- 20%", --SULCA TORTA | DOSE
+IF(VALUE(LEFT([DE_OPERACAO],3))=116,"+/- 10%", --SULCA MINERAL | DOSE
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=122,[CD_OPERACAO]=1385),
+    IF([DT_AMOSTRA]>=DATE(2024,1,1),"5 |  8 (oct-apr) cm 
+                                     5 | 10 (may-sep) cm","5 | 8 cm"), --COBRIÇÃO | ALTURA
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=122,[CD_OPERACAO]=1388),"+/- 10%", --COBRIÇÃO | DOSE
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=123,[CD_OPERACAO]=1386),[CD_INDICADOR]=10),"<= 11 t", --MUDA | CONSUMO
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=123,[CD_OPERACAO]=1386),[CD_INDICADOR]=2),"<= 50 cm", --MUDA | DISTRIBUIÇAO
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=123,[CD_OPERACAO]=1386),[CD_INDICADOR]=1),"<= 6%", --MUDA | GEMAS DANIFICADAS
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=123,[CD_OPERACAO]=1386),[CD_INDICADOR]=4),
+    IF([DT_AMOSTRA]>=DATE(2025,1,1),"12 | 18 gems",IF([DT_AMOSTRA]>=DATE(2024,1,1),"12 | 24 gems","12 | 18 gems")), --MUDA | GEMAS VIÁVEIS
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=123,[CD_OPERACAO]=1392),"40 | 70 cm", --MUDA | TAMANHO TOLETE
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=131,[CD_OPERACAO]=1375),[CD_INDICADOR]=12)," ", --QUEBRA LOMBO | DANO
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=131,[CD_OPERACAO]=1375),[CD_INDICADOR]<=3),"<= 10 cm", --QUEBRA LOMBO | NIVELAMENTO
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=131,[CD_OPERACAO]=1375),[CD_INDICADOR]=5),"0", --QUEBRA LOMBO | PISOTEIO
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=131,OR([CD_OPERACAO]=1382,[CD_OPERACAO]=1383)),"+/- 10%", --QUEBRA LOMBO | DOSE
+IF(VALUE(LEFT([DE_OPERACAO],3))=132,"+/- 10%", --ADUBAÇÃO | DOSE
+IF(VALUE(LEFT([DE_OPERACAO],3))=133,"+/- 10%", --HERBICIDA | DOSE
+IF(VALUE(LEFT([DE_OPERACAO],3))=134,"+/- 10%", --HERB CARREADOR | DOSE
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=135,[CD_OPERACAO]=1380),[CD_INDICADOR]=5)," ", --CORTE SOQUEIRA | ABALO
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=135,[CD_OPERACAO]=1380),[CD_INDICADOR]<=2),"8 | 15 cm", --CORTE SOQUEIRA | PROFUNDIDADE
+IF(AND(AND(VALUE(LEFT([DE_OPERACAO],3))=135,[CD_OPERACAO]=1380),[CD_INDICADOR]<=4)," ", --CORTE SOQUEIRA | DIRECIONAMENTO
+IF(AND(VALUE(LEFT([DE_OPERACAO],3))=135,[CD_OPERACAO]=1381),"+/- 10%", --CORTE SOQUEIRA | DOSE
+IF(VALUE(LEFT([DE_OPERACAO],3))=161,"+/- 20%", --ADUBAÇÃO ORGÂNICA | DOSE
+IF(VALUE(LEFT([DE_OPERACAO],3))=162," ", --FERTIRRIGAÇÃO | VOLUME
+" "))))))))))))))))))))))))))))
+```
+### PLANT_DATA.PLANT_META_HA
+```dax
+
+VAR DT = [DT]
+VAR MX_DT = CALCULATE(MAX(PLANT_META[DT]),
+                    FILTER(ALL(PLANT_META), PLANT_META[CD_SIST_PLAN] <> 2)
+                )
+RETURN
+IF(DT > MX_DT, BLANK(),
+                CALCULATE(SUM(PLANT_META[HA_EFET]),
+                        FILTER(ALL(PLANT_META),PLANT_META[DT] <= DT),
+                        FILTER(ALL(PLANT_META),PLANT_META[CD_SIST_PLAN] <> 2)
+                        )
+)
+```
+### PLANT_DATA.PLANT_REAL_HA
+```dax
+
+VAR DT = [DT]
+VAR DTREF = [Z_PLANT_DATA_DTREF]
+RETURN
+IF(DT > DTREF,BLANK(),
+                CALCULATE(SUM(PLANT_REAL[QT_AREA]),
+                            FILTER(ALL(PLANT_REAL), PLANT_REAL[DT_PLANTIO] <= PLANT_DATA[DT]),
+                            FILTER(ALL(PLANT_REAL), PLANT_REAL[CD_SIST_PLAN] <> 2)/*,
+                            FILTER(ALL(PLANT_REAL), PLANT_REAL[FG_REPLANTIO] = "P")*/
+                )
+)
+```
+### AGRO_QLD_OPERAC_GEMAS.DESC_FAZENDA
+```dax
+
+[CD_UPNIVEL1] &" - "&
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE(
+                SUBSTITUTE(
+                    SUBSTITUTE([DE_UPNIVEL1],"Fazenda","Faz."),
+                    "Sítio","Sít."),
+                "Estância","Est."),
+            "Nossa Senhora", "N.S."),
+        "Esperanca","Esp.")
+```
+### AGRO_QLD_OPERAC_GEMAS.DE_INDICADOR_2
+```dax
+
+LEFT([GRP_TIPO],2) &
+UPPER(MID([DE_INDICADOR],7,1)) & MID([DE_INDICADOR],8,50)
+```
+### FRENPLANT.DESC_FRENTE
+```dax
+
+IF(ISBLANK([TP_PLANT]),BLANK(),
+    IF([CD_SIST_PLAN]=2,LEFT([TP_PLANT],4),
+    IF([CD_SIST_PLAN]=8,LEFT([TP_PLANT],10),
+        [TP_PLANT]))
+    & " | F" & FORMAT([CD_FREN_PLAN],"00"))
+```
+### PLANT_PROJETA.FG_HADIA_ZERO
+```dax
+
+VAR HAACUM = LOOKUPVALUE(PLANT_PROJETA[HA_ACUM],PLANT_PROJETA[DT],[DT]-1)
+RETURN
+IF(AND([HA_DIA]=0,[HA_ACUM]<[HA_DIF]),"S",
+IF(AND([HA_DIA]>0,HAACUM<=[HA_DIF]),"S","N"
+))
+```
+### CTT_META_REUNIAO.HR_MOAGEM_EFET
+```dax
+[HR_MOAG_DISP] * [EFIC]
+```
+### CTT_META_REUNIAO.DIA_EFET_META
+```dax
+[DIA_FRENTE] * [EFIC]
+```
+### CTT_HISTPRD_ATR_HIST.DT_PADRAO
+```dax
+
+DATE(YEAR(NOW()),MONTH([DT_HISTORICO]),DAY([DT_HISTORICO]))
+```
+### CTT_HISTPRD_ATR_HIST.QT_CANA_ACUCAR
+```dax
+IF([KG_ACUCAR]>0,[QT_CANA_ENT],0)
+```
+### CTT_HISTPRD_ATR.ATR_SF_ANT
+```dax
+
+DIVIDE(
+    CALCULATE(SUM(CTT_HISTPRD_ATR_HIST[KG_ACUCAR]),
+                FILTER(ALL(CTT_HISTPRD_ATR_HIST), CTT_HISTPRD_ATR_HIST[DT_PADRAO] >  (CTT_HISTPRD_ATR[SEMANA]-7)),
+                FILTER(ALL(CTT_HISTPRD_ATR_HIST), CTT_HISTPRD_ATR_HIST[DT_PADRAO] <= (CTT_HISTPRD_ATR[SEMANA])),
+                FILTER(ALL(CTT_HISTPRD_ATR_HIST),CTT_HISTPRD_ATR_HIST[DT_HISTORICO] <= DATE(YEAR(CTT_HISTPRD_ATR[SEMANA])-1,
+                                                                                            MONTH(CTT_HISTPRD_ATR[SEMANA]),
+                                                                                            DAY(CTT_HISTPRD_ATR[SEMANA])))
+            ),
+    CALCULATE(SUM(CTT_HISTPRD_ATR_HIST[QT_CANA_ACUCAR]),
+                FILTER(ALL(CTT_HISTPRD_ATR_HIST), CTT_HISTPRD_ATR_HIST[DT_PADRAO] >  (CTT_HISTPRD_ATR[SEMANA]-7)),
+                FILTER(ALL(CTT_HISTPRD_ATR_HIST), CTT_HISTPRD_ATR_HIST[DT_PADRAO] <= (CTT_HISTPRD_ATR[SEMANA])),
+                FILTER(ALL(CTT_HISTPRD_ATR_HIST),CTT_HISTPRD_ATR_HIST[DT_HISTORICO] <= DATE(YEAR(CTT_HISTPRD_ATR[SEMANA])-1,
+                                                                                            MONTH(CTT_HISTPRD_ATR[SEMANA]),
+                                                                                            DAY(CTT_HISTPRD_ATR[SEMANA])))
+            )
+)
+```
+### CTT_HISTPRD_ATR.ATR_SF_META
+```dax
+
+DIVIDE(
+    CALCULATE(SUM(CTT_META_REUNIAO[TON_KG_ATR]),
+                FILTER(ALL(CTT_META_REUNIAO), CTT_META_REUNIAO[DT] >  (CTT_HISTPRD_ATR[SEMANA]-7)),
+                FILTER(ALL(CTT_META_REUNIAO), CTT_META_REUNIAO[DT] <= (CTT_HISTPRD_ATR[SEMANA]))
+            ),
+    CALCULATE(SUM(CTT_META_REUNIAO[TON_EFET]),
+                FILTER(ALL(CTT_META_REUNIAO), CTT_META_REUNIAO[DT] >  (CTT_HISTPRD_ATR[SEMANA]-7)),
+                FILTER(ALL(CTT_META_REUNIAO), CTT_META_REUNIAO[DT] <= (CTT_HISTPRD_ATR[SEMANA]))
+            )
+)
+```
+### CTT_HISTPRD_ATR.ATR_SF_REAL
+```dax
+
+DIVIDE(
+    CALCULATE(SUM(CTT_HISTPRD_ATR_HIST[KG_ACUCAR]),
+                FILTER(ALL(CTT_HISTPRD_ATR_HIST), CTT_HISTPRD_ATR_HIST[DT_HISTORICO] >  (CTT_HISTPRD_ATR[SEMANA]-7)),
+                FILTER(ALL(CTT_HISTPRD_ATR_HIST), CTT_HISTPRD_ATR_HIST[DT_HISTORICO] <= (CTT_HISTPRD_ATR[SEMANA]))
+            ),
+    CALCULATE(SUM(CTT_HISTPRD_ATR_HIST[QT_CANA_ACUCAR]),
+                FILTER(ALL(CTT_HISTPRD_ATR_HIST), CTT_HISTPRD_ATR_HIST[DT_HISTORICO] >  (CTT_HISTPRD_ATR[SEMANA]-7)),
+                FILTER(ALL(CTT_HISTPRD_ATR_HIST), CTT_HISTPRD_ATR_HIST[DT_HISTORICO] <= (CTT_HISTPRD_ATR[SEMANA]))
+            )
+)
+```
+### CTT_DATA.CTT_AREA_PLANO_DIA
+```dax
+
+VAR ANO = [Z_CTT_DATA_ANOSAFRA]
+RETURN
+IF(OR([DT]<DATE(ANO,3,1),[DT]>DATE(ANO,11,30)),BLANK(),
+    CALCULATE(SUM(CTT_PROGCOL[QT_AREA]),
+                FILTER(ALL(CTT_PROGCOL),CTT_PROGCOL[DATA] = CTT_DATA[DT])))
+```
+### CTT_DATA.CTT_AREA_PLANO
+```dax
+
+VAR ANO = [Z_CTT_DATA_ANOSAFRA]
+RETURN
+IF(OR([DT]<DATE(ANO,3,1),[DT]>DATE(ANO,11,30)),BLANK(),
+    CALCULATE(SUM(CTT_PROGCOL[QT_AREA]),
+                FILTER(ALL(CTT_PROGCOL),CTT_PROGCOL[DATA] <= CTT_DATA[DT])))
+```
+### CTT_DATA.CTT_AREA_REAL
+```dax
+
+VAR ANO = [Z_CTT_DATA_ANOSAFRA]
+RETURN
+IF(OR([DT]<DATE(ANO,3,1),[DT]>(NOW())),BLANK(),
+    CALCULATE(SUM(CTT_ORDEMCORTE[SAFRA_AREA_ENC]),
+                FILTER(ALL(CTT_ORDEMCORTE),CTT_ORDEMCORTE[MXDT] <= CTT_DATA[DT])))
+```
+### CTT_DATA.CTT_PROJ
+```dax
+
+
+VAR ANO = [Z_CTT_DATA_ANOSAFRA] //MAX([Z_CTT_DATA_ANOSAFRA])
+VAR Hoje = TODAY()
+
+VAR DtInicio = DATE(ANO, 3, 5)
+VAR DtFim    = DATE(ANO, 11, 30)
+VAR Dt60Dias = DtFim - 59
+
+VAR DiasPeriodo = DtFim - DtInicio + 1
+
+VAR CapacidadeMedia =
+    DIVIDE(SUM(CTT_PROGCOL[QT_AREA]), DiasPeriodo)
+VAR Capacidade60Dias = CALCULATE(AVERAGE([CTT_AREA_PLANO_DIA]), CTT_DATA[DT] >= Dt60Dias, CTT_DATA[DT] <= DtFim)
+
+VAR AreaPlanoHoje =
+    CALCULATE(
+        MAX(CTT_DATA[CTT_AREA_PLANO]),
+        CTT_DATA[DT] <= Hoje
+    )
+
+VAR AreaRealHoje =
+    CALCULATE(
+        MAX(CTT_DATA[CTT_AREA_REAL]),
+        CTT_DATA[DT] <= Hoje
+    )
+
+VAR AreaFalta = AreaPlanoHoje - AreaRealHoje
+VAR DiasNecessarios = DIVIDE(AreaFalta, CapacidadeMedia)
+VAR DtPrevisao = DtFim + ROUNDUP(DiasNecessarios, 0)
+
+VAR AreaPeriodo = CALCULATE(SUM([CTT_AREA_PLANO_DIA]), CTT_DATA[DT] >= Hoje || CTT_DATA[DT] <= DtPrevisao)
+VAR AreaPlan_aRealizar = CALCULATE(SUM([CTT_AREA_PLANO_DIA]), CTT_DATA[DT] >= Hoje || CTT_DATA[DT] <= DtFim)
+
+RETURN
+
+IF([DT] < DtInicio , BLANK(),
+IF(AND(AreaFalta > 0, AND([DT] > DtFim, [DT] <= DtPrevisao)), DIVIDE(AreaFalta, DiasNecessarios),
+IF(AND(AreaFalta < 0, AND([DT] >= Hoje, [DT] <= DtPrevisao)), DIVIDE(CTT_DATA[CTT_AREA_PLANO_DIA], AreaPeriodo) * (AreaPlan_aRealizar + AreaFalta),
+    CTT_DATA[CTT_AREA_PLANO_DIA]
+)))
+```
+### CTT_DATA.CTT_PROJ_ACUM
+```dax
+
+VAR DtRef = [DT]
+VAR Hoje = TODAY()
+VAR AreaHoje = CALCULATE(MAX([CTT_AREA_REAL]), CTT_DATA[DT] <= Hoje)
+VAR AreaPlano = SUM(CTT_PROGCOL[QT_AREA])
+VAR AreaReal = [CTT_AREA_REAL]
+VAR AreaProjetada = AreaHoje + CALCULATE(SUM([CTT_PROJ]), CTT_DATA[DT] >= Hoje, CTT_DATA[DT] <= DtRef)
+VAR AreaProj = [CTT_PROJ]
+VAR FatorTermino = DIVIDE((AreaPlano - AreaProjetada), AreaProj)
+
+RETURN
+IF([DT] < (Hoje+1), BLANK(),
+    IF((ROUND(AreaProjetada,2) - ROUND(AreaProj,2)) = ROUND(AreaPlano,2), BLANK(),
+    IF(FatorTermino < 0, AreaPlano,
+    If(AreaProjetada > AreaPlano, BLANK(), AreaProjetada)
+)))
+```
+### CTT_DATA.CTT_AREA_PROJETA
+```dax
+
+IF(AND([CTT_PROJ_ACUM] > 0, [DT_GRAFICO] = "S"), [CTT_PROJ_ACUM], BLANK())
+```
+### CTT_DATA.CTT_AREA_ABERTA
+```dax
+
+IF(CTT_DATA[DT]<>INT(NOW()),BLANK(),
+            SUM(CTT_ORDEMCORTE_ABERTA[QT_AREA])
+)
+```
+### INSETIC_BROCA.FAZENDA
+```dax
+
+[CD_UPNIVEL1] & " - " &
+SUBSTITUTE(
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE([DE_UPNIVEL1],"Fazenda","Faz."),
+            "Sítio","Sít."),
+        "Sitio","Sít."),
+    "Nossa Senhora","N.S.")
+```
+### INSETIC_BROCA.PRODUTO
+```dax
+
+IF(OR(ISBLANK([DT_FIM_RESID]),ISBLANK([DT_APLICACAO])),BLANK(),
+IF(([DT_FIM_RESID]-[DT_APLICACAO])=60,"Altacor",
+IF(([DT_FIM_RESID]-[DT_APLICACAO])=40,"Belt","Certero")))
+```
+### INSETIC_BROCA.DIAS_OCORREN
+```dax
+
+INT(NOW())-[DT_OCORREN]
+```
+### INSETIC_BROCA.DIAS_FIMRESID
+```dax
+
+INT(NOW())-
+IF(ISBLANK([DT_FIM_RESID]),0,[DT_FIM_RESID])
+```
+### INSETIC_BROCA.DIAS_AMOSTRA
+```dax
+
+INT(NOW())-
+IF(ISBLANK([DT_AMOST]),0,[DT_AMOST])
+```
+### INSETIC_BROCA.STATUS
+```dax
+
+IF([NO_CORTE]=0,"Reforma",
+IF([DIAS_OCORREN]<80,"1-Aguardar",
+IF(AND([DIAS_OCORREN]>=80,AND(ISBLANK([DT_FIM_RESID]),ISBLANK([DT_AMOST]))),"2-Amostrar",
+IF(AND([DIAS_OCORREN]>=80,AND(ISBLANK([DT_FIM_RESID]),AND(ISBLANK([DT_AMOST])=FALSE(),[QT_BROCA]>0))),"3-Aplicar",
+IF(AND([DIAS_OCORREN]>=80,AND(ISBLANK([DT_FIM_RESID]),[DIAS_AMOSTRA]>=20)),"2-Amostrar",
+IF(AND([DIAS_OCORREN]>=80,AND(ISBLANK([DT_FIM_RESID]),[DIAS_AMOSTRA]<20)),"1-Aguardar",
+IF(AND([DIAS_OCORREN]>=80,AND([DIAS_FIMRESID]>=0,[DIAS_FIMRESID]<[DIAS_AMOSTRA])),"2-Amostrar",
+IF(AND([DIAS_OCORREN]>=80,AND([DIAS_FIMRESID]>=0,AND([DIAS_FIMRESID]>[DIAS_AMOSTRA],[QT_BROCA]>0))),"3-Aplicar",
+IF(AND([DIAS_OCORREN]>=80,AND([DIAS_FIMRESID]>=0,AND([DIAS_FIMRESID]>[DIAS_AMOSTRA],[DIAS_AMOSTRA]<20))),"1-Aguardar",
+IF(AND([DIAS_OCORREN]>=80,AND([DIAS_FIMRESID]>=0,AND([DIAS_FIMRESID]>[DIAS_AMOSTRA],[DIAS_AMOSTRA]>=20))),"2-Amostrar",
+IF(AND([DIAS_OCORREN]>=80,AND([DIAS_FIMRESID]<0,AND([DIAS_FIMRESID]>=-20,AND([DIAS_AMOSTRA]<=20,[QT_BROCA]>0)))),"3-Aplicar",
+IF(AND([DIAS_OCORREN]>=80,AND([DIAS_FIMRESID]<0,[DIAS_FIMRESID]>=-5)),"2-Amostrar","1-Aguardar"
+
+))))))))))))
+```
+### INSETIC_BROCA.STATUS_LEGENDA
+```dax
+
+IF(AND([STATUS]="2-Amostrar",[DIAS_AMOSTRA]>5),"3-Atrasado",
+IF(AND([STATUS]="2-Amostrar",[DIAS_AMOSTRA]<=5),"2-Ideal",
+IF(AND([STATUS]="3-Aplicar",[DIAS_FIMRESID]>10),"3-Atrasado",
+IF(AND([STATUS]="3-Aplicar",[DIAS_FIMRESID]<=10),"2-Ideal",
+"1-Aguardar"
+))))
+```
+### INSETIC_BROCA.QTDE_DIAS
+```dax
+
+IF([STATUS]="2-Amostrar",[DIAS_AMOSTRA],
+IF([STATUS]="3-Aplicar",[DIAS_FIMRESID],
+BLANK()
+))
+```
+### INSETIC_BROCA.IDADE_CANAVIAL
+```dax
+
+ROUND((INT(NOW())-[DT_OCORREN]+1)/30.5,2)
+```
+### INSETIC_BROCA.IDADE_RANGE
+```dax
+
+IF([IDADE_CANAVIAL] <04,"01-03 Meses",
+IF([IDADE_CANAVIAL] <07,"04-06 Meses",
+IF([IDADE_CANAVIAL] <10,"07-09 Meses",
+IF([IDADE_CANAVIAL]>=10,"10-99 Meses",
+BLANK()
+))))
+```
+### ADEREN_ATIVIDADES.DESC_FAZENDA
+```dax
+
+[FAZENDA] & " - " &
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE(
+                SUBSTITUTE(
+                    SUBSTITUTE([DE_UPNIVEL1],"Fazenda","Faz."),
+                    "Sítio","Sít."),
+                "Estância","Est."),
+            "Nossa Senhora", "N.S."),
+        "Esperanca","Esp.")
+```
+### ADEREN_ATIVIDADES.AREA_REALIZADA
+```dax
+
+IF(ISBLANK([PROD_REAL]),0,
+IF([PROD_REAL]>[AREA],[AREA],[PROD_REAL]
+))
+```
+### ADEREN_ATIVIDADES.AREA_SALDO
+```dax
+
+IF(OR([EXECUTA]="N",[REFORMA]="S"),0,
+IF(ISBLANK([PROD_REAL]),ROUND([AREA],2),
+IF(ROUND([PROD_REAL],2)>ROUND([AREA],2),0,ROUND([AREA],2)-ROUND([PROD_REAL],2)
+)))
+```
+### ADEREN_ATIVIDADES.DIAS_REALIZADO
+```dax
+
+VAR OPERAC = [CD_OPER]
+VAR DTMIN = 
+            IF(OR(OPERAC="01-Enleiramento",OPERAC="02-Herbicida"), 7,
+            IF(OPERAC="03-Q.Lombo", 90,
+            IF(OR(OR(OR(OPERAC="04-Adubação",OPERAC="05-Fertirriga"),OPERAC="06-Composto"),OPERAC="07-Corretivo"), 20,
+            IF(OPERAC="08-Corte Soqueira", 30,
+            IF(OPERAC="09-Irrigação", 20, BLANK()
+            )))))
+
+RETURN
+
+IF([AREA_REALIZADA]=0,BLANK(),
+IF(AND([AREA_REALIZADA]>0,[DT_SERVICO]>=[DT_BASE]),[DT_SERVICO]-[DT_BASE],
+IF(AND([AREA_REALIZADA]>0,[DT_SERVICO]<[DT_BASE]), DTMIN /*INT(NOW()) - [DT_BASE]*/,
+BLANK()
+)))
+```
+### ADEREN_ATIVIDADES.DIAS_SALDO
+```dax
+
+IF(OR(OR([EXECUTA]="N",[AREA_SALDO]=0),[REFORMA]="S"),BLANK(),
+IF(AND([AREA_SALDO]>0,OR(ISBLANK([DT_SERVICO]),[DT_SERVICO]<[DT_BASE])),INT(NOW())-[DT_BASE],
+IF(AND([AREA_SALDO]>0,[DT_SERVICO]>=[DT_BASE]),[DT_SERVICO]-[DT_BASE],
+BLANK()
+)))
+```
+### ADEREN_ATIVIDADES.POND_AREA_REALIZADA
+```dax
+
+[AREA_REALIZADA] * [DIAS_REALIZADO]
+```
+### ADEREN_ATIVIDADES.POND_AREA_SALDO
+```dax
+
+[AREA_SALDO] * [DIAS_SALDO]
+```
+### ADEREN_ATIVIDADES.ADEREN_REALIZADO
+```dax
+
+IF(ISBLANK([DIAS_REALIZADO]),BLANK(),
+IF(OR([CD_OPER]="01-Enleiramento",[CD_OPER]="02-Herbicida"),
+    IF([DIAS_REALIZADO]<=7,"Ideal",
+    IF([DIAS_REALIZADO]<=15,"Atenção","Crítico")),
+IF([CD_OPER]="03-Q.Lombo",
+    IF([DIAS_REALIZADO]<=60,"Atenção",
+    IF([DIAS_REALIZADO]<=90,"Ideal","Crítico")),
+IF(OR(OR(OR([CD_OPER]="04-Adubação",[CD_OPER]="05-Fertirriga"),[CD_OPER]="06-Composto"),[CD_OPER]="07-Corretivo"),
+    IF([DIAS_REALIZADO]<=20,"Ideal",
+    IF([DIAS_REALIZADO]<=30,"Atenção","Crítico")),
+IF([CD_OPER]="08-Corte Soqueira",
+    IF([DIAS_REALIZADO]<=30,"Ideal",
+    IF([DIAS_REALIZADO]<=50,"Atenção","Crítico")),
+IF([CD_OPER]="09-Irrigação",
+    IF([DIAS_REALIZADO]<=10,"Atenção",
+    IF([DIAS_REALIZADO]<=20,"Ideal","Crítico")),
+BLANK()
+))))))
+```
+### ADEREN_ATIVIDADES.ADEREN_SALDO
+```dax
+
+IF(ISBLANK([DIAS_SALDO]),BLANK(),
+IF(OR([CD_OPER]="01-Enleiramento",[CD_OPER]="02-Herbicida"),
+    IF([DIAS_SALDO]<=7,"Ideal",
+    IF([DIAS_SALDO]<=15,"Atenção","Crítico")),
+IF([CD_OPER]="03-Q.Lombo",
+    IF([DIAS_SALDO]<=60,"Atenção",
+    IF([DIAS_SALDO]<=90,"Ideal","Crítico")),
+IF([CD_OPER]="06-Composto",
+    IF([DIAS_SALDO]<=40,"Atenção",
+    IF([DIAS_SALDO]<=60,"Ideal","Crítico")),
+IF(OR(OR([CD_OPER]="04-Adubação",[CD_OPER]="05-Fertirriga"),[CD_OPER]="07-Corretivo"),
+    IF([DIAS_SALDO]<=20,"Ideal",
+    IF([DIAS_SALDO]<=30,"Atenção","Crítico")),
+IF([CD_OPER]="08-Corte Soqueira",
+    IF([DIAS_SALDO]<=30,"Ideal",
+    IF([DIAS_SALDO]<=50,"Atenção","Crítico")),
+IF([CD_OPER]="09-Irrigação",
+    IF([DIAS_SALDO]<=10,"Atenção",
+    IF([DIAS_SALDO]<=20,"Ideal","Crítico")),
+BLANK()
+)))))))
+```
+### ADEREN_ATIVIDADES.DESC_PROCESSO
+```dax
+
+IF([PROCESSO]="01","Tratos Planta","Tratos Soca")
+```
+### ADEREN_ATIVIDADES.FAZ_TLH
+```dax
+
+[FAZENDA] & [TALHAO] & " " & LEFT([CD_OPER],2)
+```
+### ADEREN_ATIVIDADES.ADUBA_CORTESOQ_DIF
+```dax
+
+VAR A_ADUBO = LOOKUPVALUE(ADEREN_ATIVIDADES[AREA_SALDO],ADEREN_ATIVIDADES[FAZ_TLH],LEFT([FAZ_TLH],LEN([FAZ_TLH])-2),
+                          ADEREN_ATIVIDADES[SAFRA],INT([SAFRA]) & "04")
+VAR A_CORTE = LOOKUPVALUE(ADEREN_ATIVIDADES[AREA_SALDO],ADEREN_ATIVIDADES[FAZ_TLH],LEFT([FAZ_TLH],LEN([FAZ_TLH])-2),
+                          ADEREN_ATIVIDADES[SAFRA],INT([SAFRA])& "08")
+VAR E_ADUBO = LOOKUPVALUE(ADEREN_ATIVIDADES[EXECUTA],ADEREN_ATIVIDADES[FAZ_TLH],LEFT([FAZ_TLH],LEN([FAZ_TLH])-2),
+                          ADEREN_ATIVIDADES[SAFRA],INT([SAFRA]) & "04")
+VAR E_CORTE = LOOKUPVALUE(ADEREN_ATIVIDADES[EXECUTA],ADEREN_ATIVIDADES[FAZ_TLH],LEFT([FAZ_TLH],LEN([FAZ_TLH])-2),
+                          ADEREN_ATIVIDADES[SAFRA],INT([SAFRA]) & "08")
+RETURN
+IF(OR(LEFT([CD_OPER],2)="04",LEFT([CD_OPER],2)="08"),
+    IF(AND(A_ADUBO<>A_CORTE,AND(E_ADUBO="S",E_CORTE="S")),"Verificar",BLANK())
+)
+```
+### ADEREN_ATIVIDADES.QT_FAZTLHOPER
+```dax
+
+VAR CD = [FAZ_TLH]
+RETURN
+CALCULATE(COUNT([FAZ_TLH]),FILTER(ADEREN_ATIVIDADES,ADEREN_ATIVIDADES[FAZ_TLH] = CD))
+```
+### AGRO_QLD_OPERAC.TP_MODELO_EQ
+```dax
+
+IF(ISBLANK([DE_MODELO]),BLANK(),
+        LEFT([DE_MODELO],SEARCH(" ",[DE_MODELO],1)-1)
+)
+```
+### ADEREN_ATIVIDADES_EMAIL.FAZ_TLH
+```dax
+LEFT([DESC_FAZENDA],5) & [TALHAO]
+```
+### ADEREN_ATIVIDADES.FAZ_TLH_SF_OP
+```dax
+
+[FAZENDA] & [TALHAO] & " " & [SAFRA] & " " & LEFT([CD_OPER],2)
+```
+### ADEREN_ATIVIDADES.ADEREN_SALDO_COD
+```dax
+
+IF(ISBLANK([DIAS_SALDO]),BLANK(),
+IF(OR([CD_OPER]="01-Enleiramento",[CD_OPER]="02-Herbicida"),
+    IF([DIAS_SALDO]<=7,1,
+    IF([DIAS_SALDO]<=15,2,3)),
+IF([CD_OPER]="03-Q.Lombo",
+    IF([DIAS_SALDO]<=60,1,
+    IF([DIAS_SALDO]<=90,2,3)),
+IF(OR(OR(OR([CD_OPER]="04-Adubação",[CD_OPER]="05-Fertirriga"),[CD_OPER]="06-Composto"),[CD_OPER]="07-Corretivo"),
+    IF([DIAS_SALDO]<=20,1,
+    IF([DIAS_SALDO]<=30,2,3)),
+IF([CD_OPER]="08-Corte Soqueira",
+    IF([DIAS_SALDO]<=30,1,
+    IF([DIAS_SALDO]<=50,2,3)),
+BLANK()
+)))))
+```
+### APTO_PRODUCOES.SEMANA
+```dax
+
+IF(WEEKNUM([DT_BOLETIM],2) = (WEEKNUM(NOW(),2)-2),
+    "S"& WEEKNUM(NOW()-WEEKDAY(NOW(),2),2)-2 &" - "&
+    FORMAT(NOW()-WEEKDAY(NOW(),2)-13,"DD/MM") &" - "& FORMAT(NOW()+7-WEEKDAY(NOW(),2)-14,"DD/MM/YY"),
+IF(WEEKNUM([DT_BOLETIM],2) = (WEEKNUM(NOW(),2)-1),
+    "S"& WEEKNUM(NOW()-WEEKDAY(NOW(),2),2)-1 &" - "&
+    FORMAT(NOW()-WEEKDAY(NOW(),2)-6,"DD/MM") &" - "& FORMAT(NOW()+7-WEEKDAY(NOW(),2)-7,"DD/MM/YY"),
+IF(WEEKNUM([DT_BOLETIM],2) = (WEEKNUM(NOW(),2)),
+    "S"& WEEKNUM(NOW()-WEEKDAY(NOW(),2),2) &" - "&
+    FORMAT(NOW()-WEEKDAY(NOW(),2)+1,"DD/MM") &" - "& FORMAT(NOW()+7-WEEKDAY(NOW(),2),"DD/MM/YY"),
+    BLANK()
+)))
+```
+### APTO_PRODUCOES.TP_SERVICO
+```dax
+
+IF(OR([CD_TRANSP]=26323, ISBLANK([CD_TRANSP])),"Próprio","Terceiro")
+```
+### INSETIC_BROCA.CHECK_VARIEDADE
+```dax
+
+IF(RIGHT(TRIM([DE_VARIED]),2)="BT","BT","Outras")
+```
+### INSETIC_BROCA.CHAVE
+```dax
+
+[FAZENDA] & " " & [STATUS] & " " & [STATUS_LEGENDA] & " " & [IDADE_RANGE]
+```
+### INSETIC_BROCA_TLHS.CHAVE
+```dax
+
+[FAZENDA] & " " & [STATUS] & " " & [STATUS_LEGENDA] & " " & [IDADE_RANGE]
+```
+### PATIO_COMPOSTO.LEIRA_ORD
+```dax
+
+FORMAT([LEIRA],"000") &" - "& FORMAT([ORD],"0000000000")
+```
+### PATIO_COMPOSTO.OPER_COD
+```dax
+VALUE(LEFT([OPER],2))
+```
+### PATIO_COMPOSTO.DT_FORMACAO
+```dax
+
+VAR CD_LEIRA = [LEIRA]
+RETURN
+IF([LEIRA]=0,BLANK(),
+    CALCULATE(MAX(PATIO_COMPOSTO_FILTROS[DT]),
+                PATIO_COMPOSTO_FILTROS[LEIRA] = CD_LEIRA,
+                PATIO_COMPOSTO_FILTROS[OPER] = "FORMAÇÃO"
+    )
+)
+```
+### PATIO_COMPOSTO.DT_TRANSPORTADA
+```dax
+
+VAR CD_LEIRA = [LEIRA]
+RETURN
+IF([LEIRA]=0,BLANK(),
+    CALCULATE(MAX(PATIO_COMPOSTO_FILTROS[DT]),
+                PATIO_COMPOSTO_FILTROS[LEIRA] = CD_LEIRA,
+                PATIO_COMPOSTO_FILTROS[OPER] = "TRANSPORTE"
+    )
+)
+```
+### PATIO_COMPOSTO.DIAS
+```dax
+
+IF([LEIRA]=0,BLANK(),
+IF([OPER_COD]<=30,NOW()-[DT_FORMACAO],
+IF([OPER_COD]=40,[DT_APTO]-[DT_FORMACAO],BLANK()
+)))
+```
+### PATIO_COMPOSTO.PROCESSO
+```dax
+
+IF([OPER_COD] = 10,"1-Formação",
+IF(AND([OPER_COD] < 30, AND((NOW()-[DT_FORMACAO]) >= 24, AND(ISBLANK([DT_CINZA]) = FALSE(),
+    AND([BATIDA_LEIRA] >= 5, AND([VL_UMIDADE] > 0, [VL_UMIDADE] <= 45))))),"3-Pronta",
+IF([OPER_COD] < 30,"2-Preparo",
+IF([OPER_COD] = 30,"4-Transporte",
+IF([OPER_COD]=40,"5-Livre",BLANK()
+)))))
+```
+### PREPARO.STATUS_OCORREN_TLH
+```dax
+
+IF(YEAR([DT_PLANTIO])>=(VALUE(20&LEFT(RIGHT([CD_SAFRA],4),2))-2),"Plantado",
+IF([FG_OCORREN]="C","à Colher",
+IF([FG_OCORREN]="Q","Colhendo",
+IF([FG_OCORREN]="I","Inativo","Reforma"
+))))
+ //& " - " & [CD_SAFRA]
+```
+### PREPARO.MES_LIB_PREPARO
+```dax
+
+IF([STATUS_OCORREN_TLH] <> "Reforma", DATE(9999,12,31),
+    IF(EOMONTH([DT_OCORREN],0)<=EOMONTH(NOW(),-1),EOMONTH(NOW(),-1),EOMONTH([DT_OCORREN],0))
+    )
+```
+### PREPARO.DT_ROTACAO
+```dax
+
+IF([ROTACAO]="Amendoim",BLANK(),
+IF([ROTACAO]="Soja",BLANK(),
+IF([ROTACAO]="Sem Rotação",BLANK(),
+    [DATA_MIN]-120
+)))
+```
+### FRENTRANSP.FRENTE_ATIVA
+```dax
+
+VAR FRENTE = [CD_FREN_TRAN]
+RETURN
+IF(
+    (CALCULATE(SUM(CTT_META_REUNIAO[TON_EFET]),
+            CTT_META_MOAGEM[CD_FREN_TRAN] = FRENTE,
+            CTT_META_MOAGEM[DT] >= (TRUNC(NOW())-1)
+            )
+    +CALCULATE(SUM(CTT_CARGAS_SAIDA[TON_EFET]),
+            CTT_CARGAS_SAIDA[CD_FREN_TRAN] = FRENTE,
+            CTT_CARGAS_SAIDA[DT_MOVIMENTO] >= (TRUNC(NOW())-1)
+            )        
+    )>0,1,0)
+```
+### CTT_ROTACAO.RPM_DESC
+```dax
+
+IF([TIPO]="ROTAÇÃO", FORMAT([DATA],"DD/MM/YYYY HH:MM") & "   |   RPM: ",
+   "Ton/hr " & [DESCRICAO]&": "
+)
+```
+### CTT_ROTACAO.RPM_VL_ATUAL
+```dax
+
+IF([TIPO]="ROTAÇÃO", ROUND([SETPOINT_RPM],1),
+    ROUND(
+        CALCULATE(SUM(CTT_CARGAS_SAIDA[TON_EFET]),
+                    FILTER(CTT_CARGAS_SAIDA,CTT_CARGAS_SAIDA[DT_MOVIMENTO] = IF([SETPOINT_RPM]<=6,INT([DATA])-1,INT([DATA]))),
+                    FILTER(CTT_CARGAS_SAIDA,CTT_CARGAS_SAIDA[CD_FREN_TRAN] = VALUE(TRIM(RIGHT([DESCRICAO],2))))
+                )/
+        LOOKUPVALUE(CTT_HORA24H[ORD_HR],CTT_HORA24H[HR],[SETPOINT_RPM])
+        ,2)
+)
+```
+### CTT_ROTACAO.RPM_VL_META
+```dax
+
+IF([TIPO]="ROTAÇÃO", 
+    IF(VALUE(FORMAT(NOW(),"MM")) = 1, 0,
+    IF(VALUE(FORMAT(NOW(),"MM")) = 2, 0,
+    IF(VALUE(FORMAT(NOW(),"MM")) = 3, 6.6,
+    IF(VALUE(FORMAT(NOW(),"MM")) = 4, 6.8,
+    IF(VALUE(FORMAT(NOW(),"MM")) = 5, 6.8,
+    IF(VALUE(FORMAT(NOW(),"MM")) = 6, 7.0,
+    IF(VALUE(FORMAT(NOW(),"MM")) = 7, 7.0,
+    IF(VALUE(FORMAT(NOW(),"MM")) = 8, 7.0,
+    IF(VALUE(FORMAT(NOW(),"MM")) = 9, 7.0,
+    IF(VALUE(FORMAT(NOW(),"MM")) = 10, 6.8,
+    IF(VALUE(FORMAT(NOW(),"MM")) = 11, 6.8,0
+    ))))))))))),
+    (
+        LOOKUPVALUE(CTT_META_MOAGEM[TON_EFET],CTT_META_MOAGEM[DT],IF([SETPOINT_RPM]<=6,INT([DATA])-1,INT([DATA])),
+                    CTT_META_MOAGEM[CD_FREN_TRAN],INT(VALUE(TRIM(RIGHT([DESCRICAO],2)))))
+     /24)*
+    LOOKUPVALUE(CTT_HORA24H[ORD_HR],CTT_HORA24H[HR],[SETPOINT_RPM])
+)
+```
+### CTT_ROTACAO.RPM_VL_DIF
+```dax
+[RPM_VL_ATUAL] - [RPM_VL_META]
+```
+### PLANT_DATA.DSEMANA
+```dax
+
+WEEKDAY([DT],2)
+
+```
+### PREPARO_S.DIA_SEMANA
+```dax
+
+WEEKDAY([DT],2)
+```
+### PREPARO_S.EFIC_PREPARO
+```dax
+
+[EFIC_CHUVA] * [EFIC_SECA]
+```
+### PREPARO_S.PREPARO_QTEQUIPTO
+```dax
+
+//IF(AND([MES]>=3,[MES]<=5),3,4)
+3
+```
+### PREPARO_S.PREPARO_PRDDIA
+```dax
+
+IF([DIA_SEMANA] = 7, 0,
+    10.35 * [PREPARO_QTEQUIPTO] * [EFIC_PREPARO]
+    )
+```
+### PREPARO_S.PREPARO_PRDACM
+```dax
+
+VAR Z_DT = [DT]
+RETURN
+CALCULATE(SUM([PREPARO_PRDDIA]),
+            FILTER(PREPARO_S,[DT] <= Z_DT)
+)
+```
+### PREPARO_S.PREPARO_META
+```dax
+
+VAR DT = [DT]-1
+RETURN
+IF([PREPARO_PRDACM] < 5536, [PREPARO_PRDACM],
+IF(AND([PREPARO_PRDACM] > 5536,LOOKUPVALUE(PREPARO_S[PREPARO_PRDACM],PREPARO_S[DT],DT) < 5536), 5536,
+    BLANK()
+))
+```
+### PREPARO_S.PREPARO_ARACAO
+```dax
+
+VAR DT = [DT]
+VAR HJ = INT(NOW())-1
+RETURN
+IF([DT] > HJ, BLANK(),
+    CALCULATE(SUM(APTO_PRODUCOES[AREA_APONTADA]),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[CD_OPERACAO] = 2032),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[DT_BOLETIM] >= DATE(2026,4,1)),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[DT_BOLETIM] <= DT)
+    ) +
+    CALCULATE(SUM(APTO_PRODUCOES[AREA_APONTADA]),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[CD_OPERACAO] = 2036),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[DT_BOLETIM] >= DATE(2026,4,1)),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[DT_BOLETIM] <= DT)
+    )
+)
+
+```
+### PREPARO_S.PREPARO_ARACAO_PROJACM
+```dax
+
+VAR DT = [DT]
+VAR HJ = INT(NOW())-1
+VAR PRPRR = LOOKUPVALUE(PREPARO_S[PREPARO_ARACAO],PREPARO_S[DT],HJ)
+VAR PRPRD = CALCULATE(SUM(PREPARO_S[PREPARO_PRDDIA]),
+                    FILTER(PREPARO_S,PREPARO_S[DT] > HJ),
+                    FILTER(PREPARO_S,PREPARO_S[DT] <= DT)
+                    )
+RETURN
+IF([DT] <= HJ, BLANK(),PRPRD + PRPRR)
+
+```
+### PREPARO_S.PREPARO_ARACAO_PROJ
+```dax
+
+VAR DT = [DT]-1
+RETURN
+IF([PREPARO_ARACAO_PROJACM] < 5536, [PREPARO_ARACAO_PROJACM],
+IF(AND([PREPARO_ARACAO_PROJACM] > 5536,LOOKUPVALUE(PREPARO_S[PREPARO_ARACAO_PROJACM],PREPARO_S[DT],DT) < 5536), 5536,
+    BLANK()
+))
+```
+### PREPARO_S_OPER.META
+```dax
+
+VAR DT = INT(NOW())-1
+RETURN
+CALCULATE(SUM(PREPARO_S[PREPARO_PRDDIA]),
+        FILTER(PREPARO_S,PREPARO_S[DT] <= DT),
+        FILTER(PREPARO_S,PREPARO_S[PREPARO_META] > 0)
+)
+```
+### PREPARO_S_OPER.REAL
+```dax
+
+VAR DT = INT(NOW())-1
+RETURN
+IF(VALUE(LEFT([OPER],1)) = 1, 
+    CALCULATE(SUM(APTO_PRODUCOES[AREA_APONTADA]),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[PROCESSO] = "Preparo"),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[CD_OPERACAO] >= 2010),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[CD_OPERACAO] <= 2019),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[DT_BOLETIM] >= DATE(2026,4,1)),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[CD_OPERACAO] <= DT)
+    ),
+IF(VALUE(LEFT([OPER],1)) = 2, 
+    CALCULATE(SUM(APTO_PRODUCOES[AREA_APONTADA]),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[PROCESSO] = "Preparo"),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[CD_OPERACAO] = 2642),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[DT_BOLETIM] >= DATE(2026,4,1)),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[CD_OPERACAO] <= DT)
+    ),
+IF(VALUE(LEFT([OPER],1)) = 3, 
+    CALCULATE(SUM(APTO_PRODUCOES[AREA_APONTADA]),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[PROCESSO] = "Preparo"),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[CD_OPERACAO] = 2645),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[DT_BOLETIM] >= DATE(2026,4,1)),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[CD_OPERACAO] <= DT)
+    ),
+IF(VALUE(LEFT([OPER],1)) = 4, 
+    CALCULATE(SUM(APTO_PRODUCOES[AREA_APONTADA]),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[PROCESSO] = "Preparo"),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[CD_OPERACAO] = 2032),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[DT_BOLETIM] >= DATE(2026,4,1)),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[CD_OPERACAO] <= DT)
+    )+
+    CALCULATE(SUM(APTO_PRODUCOES[AREA_APONTADA]),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[PROCESSO] = "Preparo"),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[CD_OPERACAO] = 2036),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[DT_BOLETIM] >= DATE(2026,4,1)),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[CD_OPERACAO] <= DT)
+    ),
+IF(VALUE(LEFT([OPER],1)) = 5, 
+    CALCULATE(SUM(APTO_PRODUCOES[AREA_APONTADA]),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[PROCESSO] = "Preparo"),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[CD_OPERACAO] = 2643),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[DT_BOLETIM] >= DATE(2026,4,1)),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[CD_OPERACAO] <= DT)
+    ),
+IF(VALUE(LEFT([OPER],1)) = 6, 
+    CALCULATE(SUM(APTO_PRODUCOES[AREA_APONTADA]),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[PROCESSO] = "Preparo"),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[CD_OPERACAO] = 2648),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[DT_BOLETIM] >= DATE(2026,4,1)),
+                FILTER(APTO_PRODUCOES,APTO_PRODUCOES[CD_OPERACAO] <= DT)
+    ), BLANK()
+))))))
+```
+### PREPARO_S_OPER.DIF
+```dax
+
+[REAL] - [META]
+```
+### ADEREN_ATIVIDADES_AGRONO.COD_OPER
+```dax
+VALUE(LEFT([CD_OPER],2))
+```
+### ADEREN_ATIVIDADES_AGRONO.DT_REFER
+```dax
+
+VAR FAZ     = [FAZENDA]
+VAR TLH     = [TALHAO]
+VAR COD_ANT = [COD_OPER] - 1
+VAR DTBASE  = [DT_BASE]
+VAR PROC    = [PROCESSO]
+
+-- Busca única do DT_SERVICO da operação anterior
+VAR PrevServ =
+    LOOKUPVALUE(
+        ADEREN_ATIVIDADES_AGRONO[DT_SERVICO],
+        ADEREN_ATIVIDADES_AGRONO[FAZENDA],  FAZ,
+        ADEREN_ATIVIDADES_AGRONO[TALHAO],   TLH,
+        ADEREN_ATIVIDADES_AGRONO[PROCESSO], PROC,
+        ADEREN_ATIVIDADES_AGRONO[COD_OPER], COD_ANT
+    )
+
+-- Busca única do DDA da operação anterior
+VAR PrevDDA =
+    LOOKUPVALUE(
+        ADEREN_ATIVIDADES_AGRONO[DDA],
+        ADEREN_ATIVIDADES_AGRONO[FAZENDA],  FAZ,
+        ADEREN_ATIVIDADES_AGRONO[TALHAO],   TLH,
+        ADEREN_ATIVIDADES_AGRONO[PROCESSO], PROC,
+        ADEREN_ATIVIDADES_AGRONO[COD_OPER], COD_ANT
+    )
+
+VAR Data180 = DTBASE + 217
+VAR Limite  = DATE(2026, 10, 19)
+
+RETURN
+SWITCH(
+    TRUE(),
+    [COD_OPER] = 21, DTBASE + 90,
+    [COD_OPER] = 26 && Data180 < Limite, Limite,
+    [COD_OPER] = 26 && Data180 >= Limite, Data180,
+    [EXECUTA] = "S" && NOT ISBLANK(PrevServ), PrevServ + PrevDDA,
+    BLANK()
+)
+```
+### ADEREN_ATIVIDADES_AGRONO.AREA_REALIZADA
+```dax
+
+IF(ISBLANK([PROD_REAL]),0,
+IF([PROD_REAL]>[AREA],[AREA],
+IF([PROD_REAL] >= ([AREA] * 0.85), [AREA],
+    [PROD_REAL]
+)))
+```
+### ADEREN_ATIVIDADES_AGRONO.AREA_SALDO
+```dax
+
+IF(OR(ISBLANK([DT_REFER]),OR([EXECUTA]="N",[REFORMA]="S")),0,
+IF(ISBLANK([PROD_REAL]),ROUND([AREA],2),
+IF([AREA_REALIZADA]>0,0,ROUND([AREA],2)-ROUND([PROD_REAL],2)
+)))
+```
+### ADEREN_ATIVIDADES_AGRONO.DIAS_REALIZADO
+```dax
+
+IF([AREA_REALIZADA]=0,BLANK(),
+IF([AREA_REALIZADA]>0,[DT_SERVICO]-[DT_REFER],
+BLANK()
+))
+```
+### ADEREN_ATIVIDADES_AGRONO.DIAS_SALDO
+```dax
+
+IF(OR(OR([EXECUTA]="N",[AREA_SALDO]=0),[REFORMA]="S"),BLANK(),
+IF([AREA_SALDO]>0,INT(NOW())-[DT_REFER],
+BLANK()
+))
+```
+### ADEREN_ATIVIDADES_AGRONO.POND_AREA_REALIZADA
+```dax
+
+[AREA_REALIZADA] * [DIAS_REALIZADO]
+```
+### ADEREN_ATIVIDADES_AGRONO.POND_AREA_SALDO
+```dax
+
+[AREA_SALDO] * [DIAS_SALDO]
+```
+### ADEREN_ATIVIDADES_AGRONO.ADEREN_REALIZADO
+```dax
+
+IF(ISBLANK([DIAS_REALIZADO]),BLANK(),
+IF(AND([COD_OPER] >= 21, [COD_OPER] <= 25),
+    IF([DIAS_REALIZADO]<-7,"Atenção",
+    IF([DIAS_REALIZADO]>7,"Crítico","Ideal")),
+IF(AND([COD_OPER] >= 26, [COD_OPER] <= 27),
+    IF([DIAS_REALIZADO]<-7,"Atenção",
+    IF([DIAS_REALIZADO]>7,"Crítico","Ideal")),
+BLANK()
+)))
+```
+### ADEREN_ATIVIDADES_AGRONO.ADEREN_SALDO
+```dax
+
+IF(ISBLANK([DIAS_SALDO]),BLANK(),
+IF(AND([COD_OPER] >= 21, [COD_OPER] <= 25),
+    IF([DIAS_SALDO]<-7,"Atenção",
+    IF([DIAS_SALDO]>7,"Crítico","Ideal")),
+IF(AND([COD_OPER] >= 26, [COD_OPER] <= 27),
+    IF([DIAS_SALDO]<-7,"Atenção",
+    IF([DIAS_SALDO]>7,"Crítico","Ideal")),
+BLANK()
+)))
+```
+### ADEREN_ATIVIDADES_AGRONO.DESC_FAZENDA
+```dax
+
+[FAZENDA] & " - " &
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE(
+                SUBSTITUTE(
+                    SUBSTITUTE([DE_UPNIVEL1],"Fazenda","Faz."),
+                    "Sítio","Sít."),
+                "Estância","Est."),
+            "Nossa Senhora", "N.S."),
+        "Esperanca","Esp.")
+```
+### ADEREN_ATIVIDADES_AGRONO.DESC_PROCESSO
+```dax
+
+IF([PROCESSO]="01","Tratos Planta","Tratos Soca")
+```
+### CTT_TCH.ESTAGIO_AGRUP
+```dax
+VALUE(LEFT([ESTAGIO_CORTE],2))
+```
+### ADEREN_ATIVIDADES_MATURAC.COD_OPER
+```dax
+VALUE(LEFT([CD_OPER],2))
+```
+### ADEREN_ATIVIDADES_MATURAC.DT_REFER
+```dax
+
+VAR MES = MONTH([DATA])
+VAR COD = [COD_OPER]
+RETURN
+[DATA] - 30
+/*
+// PRÉ MATURADOR
+IF(COD = 30,
+    IF(MES <= 6, [DATA] - 75,
+    IF(MES <= 8, [DATA] - 60, [DATA] - 30)),
+// MATURADOR
+    IF(MES <= 6, [DATA] - 45,
+    IF(MES <= 8, [DATA] - 30, [DATA] - 30))
+)
+*/
+```
+### ADEREN_ATIVIDADES_MATURAC.AREA_REALIZADA
+```dax
+
+IF(OR([TLH_ENC] = "S", AND([TLH_ENC] = "N", [FG_OCORREN] <> "C")), [QT_AREA],
+IF([PROD_REAL] > 0, [PROD_REAL], 0
+))
+```
+### ADEREN_ATIVIDADES_MATURAC.AREA_SALDO
+```dax
+
+IF(OR([TLH_ENC] = "S", AND([TLH_ENC] = "N", [FG_OCORREN] <> "C")), 0,
+IF([AREA_REALIZADA] > 0, 0, ROUND([QT_AREA],2)-ROUND([PROD_REAL],2)
+))
+```
+### ADEREN_ATIVIDADES_MATURAC.DIAS_REALIZADO
+```dax
+
+IF([AREA_REALIZADA] = 0, BLANK(),
+IF(AND([TLH_ENC] = "S", ISBLANK([PROD_REAL])), 0,
+IF(AND([TLH_ENC] = "N", [FG_OCORREN] <> "C"), 0,
+IF([AREA_REALIZADA] > 0, [DT_SERVICO] - [DT_REFER],
+    BLANK()
+))))
+```
+### ADEREN_ATIVIDADES_MATURAC.DIAS_SALDO
+```dax
+
+IF([AREA_SALDO] > 0, INT(NOW()) - [DT_REFER],
+    BLANK()
+)
+```
+### ADEREN_ATIVIDADES_MATURAC.POND_AREA_REALIZADA
+```dax
+
+[AREA_REALIZADA] * [DIAS_REALIZADO]
+ 
+```
+### ADEREN_ATIVIDADES_MATURAC.POND_AREA_SALDO
+```dax
+
+[AREA_SALDO] * [DIAS_SALDO]
+```
+### ADEREN_ATIVIDADES_MATURAC.ADEREN_REALIZADO
+```dax
+
+IF(ISBLANK([DIAS_REALIZADO]), BLANK(),
+IF(AND([TLH_ENC] = "S", ISBLANK([PROD_REAL])), BLANK(),
+IF(AND(AND([TLH_ENC] = "N", [FG_OCORREN] <> "C"), [PROD_REAL] = 0), BLANK(),
+IF([COD_OPER] = 30,
+    IF([DIAS_REALIZADO] < -7, "Atenção",
+    IF([DIAS_REALIZADO] > 7, "Crítico", "Ideal")),
+IF([COD_OPER] = 31,
+    IF([DIAS_REALIZADO] < -7, "Atenção",
+    IF([DIAS_REALIZADO] > 7, "Crítico", "Ideal")),
+BLANK()
+)))))
+```
+### ADEREN_ATIVIDADES_MATURAC.ADEREN_SALDO
+```dax
+
+IF(ISBLANK([DIAS_SALDO]), BLANK(),
+IF([COD_OPER] = 30,
+    IF([DIAS_SALDO] < -7, "Atenção",
+    IF([DIAS_SALDO] > 7, "Crítico", "Ideal")),
+IF([COD_OPER] = 31,
+    IF([DIAS_SALDO] < -7, "Atenção",
+    IF([DIAS_SALDO] > 7, "Crítico", "Ideal")),
+BLANK()
+)))
+```
+### ADEREN_ATIVIDADES_MATURAC.DESC_FAZENDA
+```dax
+
+[FAZENDA] & " - " &
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE(
+                SUBSTITUTE(
+                    SUBSTITUTE([DE_UPNIVEL1],"Fazenda","Faz."),
+                    "Sítio","Sít."),
+                "Estância","Est."),
+            "Nossa Senhora", "N.S."),
+        "Esperanca","Esp.")
+```
+### ADEREN_ATIVIDADES_MATURAC.STATUS
+```dax
+
+IF(AND([TLH_ENC] = "S", ISBLANK([PROD_REAL])), "Sem Aplicar",
+IF(AND(AND([TLH_ENC] = "N", [FG_OCORREN] <> "C"), [PROD_REAL] = 0), "Sem Aplicar", 
+IF([AREA_REALIZADA] > 0, "Aplicado",
+    "Planejado"
+)))
+```
+### ADEREN_ATIVIDADES_MATURAC.DIAS_NAO_APLICADOS
+```dax
+
+DIVIDE(CALCULATE(SUM(ADEREN_ATIVIDADES_MATURAC[POND_AREA_REALIZADA]),
+                FILTER(ADEREN_ATIVIDADES_MATURAC,ADEREN_ATIVIDADES_MATURAC[PROD_REAL] > 0 )
+            ),
+        CALCULATE(SUM(ADEREN_ATIVIDADES_MATURAC[AREA_REALIZADA]),
+                FILTER(ADEREN_ATIVIDADES_MATURAC,ADEREN_ATIVIDADES_MATURAC[PROD_REAL] > 0 )
+            )
+)
+```
+### CTT_DATA.DT_GRAFICO
+```dax
+
+VAR AreaPlano = [CTT_AREA_PLANO]
+VAR AreaReal = [CTT_AREA_REAL]
+VAR AreaProj = [CTT_PROJ_ACUM]
+VAR AreaTotal = SUM(CTT_PROGCOL[QT_AREA])
+VAR DtRef = [DT]
+VAR QtRepete = CALCULATE(COUNT([CTT_PROJ_ACUM]), CTT_DATA[DT] <= DtRef, CTT_DATA[CTT_PROJ_ACUM] = AreaTotal)
+RETURN
+IF(QtRepete > 1, BLANK(),
+IF(Or(AreaPlano > 0, Or(AreaReal > 0, AreaProj > 0)), "S", "N"
+))
+```
+### ADEREN_ATIVIDADES_MATURAC.DIAS_DEZENA
+```dax
+
+[ADEREN_SALDO]  & " >= " &
+INT([DIAS_SALDO]/7) * 7 & " dias"
+```
+### ADEREN_ATIVIDADES_AGRONO.DIAS_DEZENA
+```dax
+
+[ADEREN_SALDO]  & " >= " &
+INT([DIAS_SALDO]/7) * 7 & " dias"
+```
+### ADEREN_ATIVIDADES.DIAS_DEZENA
+```dax
+
+[ADEREN_SALDO]  & " >= " &
+INT([DIAS_SALDO]/7) * 7 & " dias"
+```
+### AGRO_QLD_MUDA.DEZENA
+```dax
+
+IF(DAY([DT_AMOSTRA]) <= 10, YEAR([DT_AMOSTRA]) & FORMAT(MONTH([DT_AMOSTRA]),"00") & "10",
+IF(DAY([DT_AMOSTRA]) <= 20, YEAR([DT_AMOSTRA]) & FORMAT(MONTH([DT_AMOSTRA]),"00") & "20",
+                            YEAR([DT_AMOSTRA]) & FORMAT(MONTH([DT_AMOSTRA]),"00") & "30"
+))
+```
+### CTT_OC_ABERTA.DESC_FAZENDA
+```dax
+
+[CD_UPNIVEL1] & " - " &
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE(
+                SUBSTITUTE(
+                    SUBSTITUTE([DE_UPNIVEL1],"Fazenda","Faz."),
+                    "Sítio","Sít."),
+                "Estância","Est."),
+            "Nossa Senhora", "N.S."),
+        "Esperanca","Esp.")
+```
+### CTT_OC_ABERTA.DIAS_ABERTO
+```dax
+
+INT(UTCNOW() - (3/24)) - [DT_QUEIMA]
+```
+### PATIO_COMPOSTO.DT_REVOLVER
+```dax
+
+VAR CD_LEIRA = [LEIRA]
+RETURN
+IF([LEIRA]=0,BLANK(),
+    CALCULATE(MAX(PATIO_COMPOSTO_FILTROS[DT]),
+                PATIO_COMPOSTO_FILTROS[LEIRA] = CD_LEIRA,
+                PATIO_COMPOSTO_FILTROS[OPER] = "REVOLVER"
+    )
+)
+```
+### PATIO_COMPOSTO.DT_UMIDADE
+```dax
+
+VAR CD_LEIRA = [LEIRA]
+RETURN
+IF([LEIRA]=0,BLANK(),
+    CALCULATE(MAX(PATIO_COMPOSTO_FILTROS[DT]),
+                PATIO_COMPOSTO_FILTROS[LEIRA] = CD_LEIRA,
+                PATIO_COMPOSTO_FILTROS[OPER] = "UMIDADE"
+    )
+)
+```
+### PATIO_COMPOSTO.DT_TEMPERATURA
+```dax
+
+VAR LR = [LEIRA]
+RETURN
+IF([LEIRA]=0,BLANK(),
+    CALCULATE(MAX(PATIO_COMPOSTO_FILTROS[DT]),
+                PATIO_COMPOSTO_FILTROS[OPER] = "TEMPERATURA",
+                PATIO_COMPOSTO_FILTROS[LEIRA] = LR
+    )
+)
+```
+### PATIO_COMPOSTO.VL_REVOLVER
+```dax
+
+VAR NLEIRA = [LEIRA]
+VAR DTREVOLVER = CALCULATE(MAX(PATIO_COMPOSTO_FILTROS[DT]),
+                    FILTER(PATIO_COMPOSTO_FILTROS,PATIO_COMPOSTO_FILTROS[OPER] = "REVOLVER"),
+                    FILTER(PATIO_COMPOSTO_FILTROS,PATIO_COMPOSTO_FILTROS[LEIRA] = NLEIRA)
+)
+VAR MXREVOLVER = CALCULATE(MAX(PATIO_COMPOSTO_FILTROS[VALOR]),
+                    FILTER(PATIO_COMPOSTO_FILTROS,PATIO_COMPOSTO_FILTROS[DT] = DTREVOLVER),
+                    FILTER(PATIO_COMPOSTO_FILTROS,PATIO_COMPOSTO_FILTROS[OPER] = "REVOLVER"),
+                    FILTER(PATIO_COMPOSTO_FILTROS,PATIO_COMPOSTO_FILTROS[LEIRA] = NLEIRA)
+)
+RETURN
+IF(ISBLANK(MXREVOLVER), BLANK(), MXREVOLVER)
+```
+### PATIO_COMPOSTO.VL_UMIDADE
+```dax
+
+VAR DT = [DT_UMIDADE]
+VAR LR = [LEIRA]
+
+RETURN
+
+CALCULATE(MIN(PATIO_COMPOSTO_FILTROS[VALOR]),
+                FILTER(PATIO_COMPOSTO_FILTROS,PATIO_COMPOSTO_FILTROS[OPER] = "UMIDADE"),
+                FILTER(PATIO_COMPOSTO_FILTROS,PATIO_COMPOSTO_FILTROS[DT] = DT),
+                FILTER(PATIO_COMPOSTO_FILTROS,PATIO_COMPOSTO_FILTROS[LEIRA] = LR)
+            )
+```
+### PATIO_COMPOSTO.VL_TEMPERATURA
+```dax
+
+VAR DT = [DT_TEMPERATURA]
+VAR LR = [LEIRA]
+
+RETURN
+
+CALCULATE(MIN(PATIO_COMPOSTO_FILTROS[VALOR]),
+                FILTER(PATIO_COMPOSTO_FILTROS,PATIO_COMPOSTO_FILTROS[OPER] = "TEMPERATURA"),
+                FILTER(PATIO_COMPOSTO_FILTROS,PATIO_COMPOSTO_FILTROS[DT] = DT),
+                FILTER(PATIO_COMPOSTO_FILTROS,PATIO_COMPOSTO_FILTROS[LEIRA] = LR)
+            )
+```
+### PATIO_COMPOSTO.DT_CINZA
+```dax
+
+VAR CD_LEIRA = [LEIRA]
+RETURN
+IF([LEIRA]=0,BLANK(),
+    CALCULATE(MAX(PATIO_COMPOSTO_FILTROS[DT]),
+                PATIO_COMPOSTO_FILTROS[LEIRA] = CD_LEIRA,
+                PATIO_COMPOSTO_FILTROS[OPER] = "CINZA"
+    )
+)
+```
+### PATIO_COMPOSTO.STATUS
+```dax
+
+IF(OR([ORD] > 1, [OPER_COD] = 40), BLANK(),
+IF(AND(ISBLANK([DT_CINZA]), (INT(NOW()) - [DT_FORMACAO]) >= 14), "Pendência (s)", //INCORPORAR CINZAS
+IF(AND(ISBLANK([DT_TEMPERATURA]), (INT(NOW()) - [DT_FORMACAO]) >= 10), "Pendência (s)", //MEDIR TEMPERATURA
+IF(AND(ISBLANK([DT_TEMPERATURA])=FALSE(), (INT(NOW()) - [DT_TEMPERATURA]) >= 10), "Pendência (s)", //MEDIR TEMPERATURA
+IF(AND(ISBLANK([DT_TEMPERATURA])=FALSE(), AND((INT(NOW()) - [DT_TEMPERATURA]) >= 1, [VL_TEMPERATURA] > 50)), "Pendência (s)", //MEDIR TEMPERATURA
+IF(AND(ISBLANK([DT_UMIDADE]), (INT(NOW()) - [DT_FORMACAO]) >= 24), "Pendência (s)", //MEDIR UMIDADE
+IF(AND(ISBLANK([DT_UMIDADE])=FALSE(), AND((INT(NOW()) - [DT_UMIDADE]) >= 1, [VL_UMIDADE] > 45)), "Pendência (s)", //MEDIR UMIDADE
+IF(AND(ISBLANK([DT_REVOLVER]), (INT(NOW()) - [DT_FORMACAO]) >= 3), "Pendência (s)",  //REVOLVER LEIRA
+IF(AND(ISBLANK([DT_REVOLVER])=FALSE(), AND([VL_REVOLVER] < 3, (INT(NOW()) - [DT_REVOLVER]) >= 3)), "Pendência (s)",  //REVOLVER LEIRA
+IF(AND(ISBLANK([DT_REVOLVER])=FALSE(), AND([VL_REVOLVER] >= 3, (INT(NOW()) - [DT_REVOLVER]) >= 5)), "Pendência (s)",  //REVOLVER LEIRA
+BLANK()
+))))))))))
+```
+### PATIO_COMPOSTO.ULT_INFO
+```dax
+
+
+IF([ORD] > 1, BLANK(),
+IF([OPER_COD] = 40, "Leira Concluída!",
+IF(ISBLANK([DT_FORMACAO]),      BLANK(),    "Formação " & [DIAS] & " dia(s), desde " & [DT_FORMACAO]) &
+IF(ISBLANK([DT_REVOLVER]),      BLANK(), " | Revolvido: " & [VL_REVOLVER] & "º em " & [DT_REVOLVER]) &
+IF(ISBLANK([DT_TEMPERATURA]),   BLANK(), " | Temperatura: " & FORMAT([VL_TEMPERATURA],"0.0") & "º em " & [DT_TEMPERATURA]) &
+IF(ISBLANK([DT_CINZA]),         BLANK(), " | Incorp. Cinza: " & [DT_CINZA]) &
+IF(ISBLANK([DT_UMIDADE]),       BLANK(), " | Umidade: " & FORMAT([VL_UMIDADE],"0.0") & "% em " & [DT_UMIDADE])
+))
+```
+### PATIO_COMPOSTO.CHECK_REVOLVER
+```dax
+
+
+IF(OR([ORD] > 1, [OPER_COD] = 40), BLANK(),
+IF(AND(ISBLANK([DT_REVOLVER]), (INT(NOW()) - [DT_FORMACAO]) >= 3), "Pendente",  //REVOLVER LEIRA
+IF(AND(ISBLANK([DT_REVOLVER])=FALSE(), AND([VL_REVOLVER] < 3, (INT(NOW()) - [DT_REVOLVER]) >= 3)), "Pendente",  //REVOLVER LEIRA
+IF(AND(ISBLANK([DT_REVOLVER])=FALSE(), AND([VL_REVOLVER] >= 3, (INT(NOW()) - [DT_REVOLVER]) >= 5)), "Pendente",  //REVOLVER LEIRA
+BLANK()
+))))
+```
+### PATIO_COMPOSTO.CHECK_CINZA
+```dax
+
+IF(OR([ORD] > 1, [OPER_COD] = 40), BLANK(),
+IF(AND(ISBLANK([DT_CINZA]), (INT(NOW()) - [DT_FORMACAO]) >= 14), "Pendente", //INCORPORAR CINZAS
+BLANK()
+))
+```
+### PATIO_COMPOSTO.CHECK_TEMPERATURA
+```dax
+
+
+IF(OR([ORD] > 1, [OPER_COD] = 40), BLANK(),
+IF(AND(ISBLANK([DT_TEMPERATURA]), (INT(NOW()) - [DT_FORMACAO]) >= 10), "Pendente", //MEDIR TEMPERATURA
+IF(AND(ISBLANK([DT_TEMPERATURA])=FALSE(), (INT(NOW()) - [DT_TEMPERATURA]) >= 10), "Pendente", //MEDIR TEMPERATURA
+IF([VL_TEMPERATURA] > 50, "Pendente", //MEDIR TEMPERATURA
+BLANK()
+))))
+```
+### PATIO_COMPOSTO.CHECK_UMIDADE
+```dax
+
+
+IF(OR([ORD] > 1, [OPER_COD] = 40), BLANK(),
+IF(AND(ISBLANK([DT_UMIDADE]), (INT(NOW()) - [DT_FORMACAO]) >= 24), "Pendente", //MEDIR UMIDADE
+IF(AND(ISBLANK([DT_UMIDADE])=FALSE(), AND((INT(NOW()) - [DT_UMIDADE]) >= 1, [VL_UMIDADE] > 45)), "Pendente", //MEDIR UMIDADE
+BLANK()
+)))
+```
+### ADEREN_ATIVIDADES_MATURAC.FG_STATUS_TLH
+```dax
+
+IF([TLH_ENC] = "S", "03- ENCERRADO",
+IF(AND([TLH_ENC] = "N", [FG_OCORREN] = "C"), "01- À COLHER", "02- COLHENDO"
+))
+```
+### ENERGIA_SOLAR.QT_KWH
+```dax
+
+
+VAR DT_ATUAL = [DT_MOVIMENTO]
+VAR DT_ANT = [DT_MOVIMENTO] - 1
+VAR ESTAC = [CD_ESTACAO]
+VAR MEDIDOR = [CD_MEDIDOR]
+VAR INIC = CALCULATE(COUNT(ENERGIA_SOLAR[TIPO]),
+                    FILTER(ENERGIA_SOLAR, ENERGIA_SOLAR[TIPO]           = "INICIAL"),
+                    FILTER(ENERGIA_SOLAR, ENERGIA_SOLAR[CD_ESTACAO]     = ESTAC),
+                    FILTER(ENERGIA_SOLAR, ENERGIA_SOLAR[CD_MEDIDOR]     = MEDIDOR),
+                    FILTER(ENERGIA_SOLAR, ENERGIA_SOLAR[DT_MOVIMENTO]   = DT_ATUAL))
+VAR VL_ANT = CALCULATE(MAX(ENERGIA_SOLAR[TT_ACM]),
+                    FILTER(ENERGIA_SOLAR, ENERGIA_SOLAR[CD_ESTACAO]     = ESTAC),
+                    FILTER(ENERGIA_SOLAR, ENERGIA_SOLAR[CD_MEDIDOR]     = MEDIDOR),
+                    FILTER(ENERGIA_SOLAR, ENERGIA_SOLAR[DT_MOVIMENTO]   = DT_ANT))
+RETURN
+IF(INIC > 0, 0, [TT_ACM] - VL_ANT)
+```
+### CARREADORES.TP_ADEREN
+```dax
+
+IF([QT_DIAS] <=-30, 4, --ATENÇÃO
+IF([QT_DIAS] <=0,   3, --ADERENTE
+IF([QT_DIAS] <=30,  2, --CRÍTICO
+                    1  --CRÍTICO
+)))
+```
+### CARREADORES.STATUS_ADEREN
+```dax
+
+VAR QNZ = FORMAT(INT([QT_DIAS]/15) * 15,"0000")
+RETURN
+IF([TP_ADEREN] <= 2, "3-Crítico >= " & QNZ & " dias",
+IF([TP_ADEREN] = 3, "2-Aderente >= " & QNZ & " dias",
+                    "1-Atenção >= " & QNZ & " dias"
+))
+```
+### CARREADORES.TLH
+```dax
+
+VAR FZ = [CD_UP1]
+VAR DI = [QT_DIAS]
+RETURN
+CONCATENATEX(
+    FILTER(CARREADORES,CARREADORES[CD_UP1] = FZ && CARREADORES[QT_DIAS] = DI),
+    CARREADORES[CD_UP3],", ", CARREADORES[CD_UP3],ASC)
+--CONCATENATEX(PATIO_COMPOSTO,[LEIRA],", ",[LEIRA],ASC)
+--CONCATENATEX( VALUES(CARREADORES[CD_UP3]), CARREADORES[CD_UP3], ",")
+
+```
+### CTT_MATURADOR.QUINZENA_APLIC_MOAGEM
+```dax
+
+IF(ISBLANK([DIAS_APLICxMOAGEM]), 999,
+    (INT([DIAS_APLICxMOAGEM]/15) * 15) + 15
+)
+```
+### CTT_MATURADOR.TLH
+```dax
+
+VAR FZ = [FAZENDA]
+VAR DI = [QUINZENA_APLIC_MOAGEM]
+VAR VR = [DE_VARIED]
+VAR ST = [SITUACAO_MAUTRADOR]
+VAR IM = [DE_INSUMO]
+VAR DT = [DT_MOAGEM]
+VAR DA = [ULT_AMOSTRA]
+RETURN
+CONCATENATEX(
+    FILTER(CTT_MATURADOR,CTT_MATURADOR[FAZENDA] = FZ && CTT_MATURADOR[QUINZENA_APLIC_MOAGEM] = DI &&
+            CTT_MATURADOR[DE_VARIED] = VR && CTT_MATURADOR[SITUACAO_MAUTRADOR] = ST && CTT_MATURADOR[DE_INSUMO] = IM &&
+            CTT_MATURADOR[DT_MOAGEM] = DT && CTT_MATURADOR[ULT_AMOSTRA] = DA),
+            VALUE(CTT_MATURADOR[CD_UPNIVEL3]),", ", CTT_MATURADOR[CD_UPNIVEL3],ASC)
+```
+### ADEREN_ATIVIDADES_AGRONO.DT_SEMANA
+```dax
+
+IF(ISBLANK([DT_REFER]), BLANK(), [DT_REFER] + 7 - WEEKDAY([DT_REFER],2))
+```
+### AGRO_CIGARRINHA.ANO_MES
+```dax
+FORMAT(EOMONTH([DT_AMOSTRA],0),"YYYY-MM")
+```
+### AGRO_MIGDOLUS.ANO_MES
+```dax
+FORMAT(EOMONTH([DT_COLETA],0),"YYYY-MM")
+```
+### AGRO_OUTR_PRAGAS.ANO_MES
+```dax
+FORMAT(EOMONTH([DT_AMOSTRA],0),"YYYY-MM")
+```
+### AGRO_SPHENOPHORUS.ANO_MES
+```dax
+FORMAT(EOMONTH([DT_AMOSTRA],0),"YYYY-MM")
+```
+### PLANT_DATA.EFIC_MES
+```dax
+
+VAR DT = [DT]
+RETURN
+CALCULATE(AVERAGE(PLANT_META[EFIC]),
+            FILTER(PLANT_META, PLANT_META[DT] >= EOMONTH(DT,-1)+1 && PLANT_META[DT] <= EOMONTH(DT,0))
+)
+```
+### PLANT_DATA.HA_MANUAL
+```dax
+
+VAR DTREF = [DT]
+VAR DSEMANA = [DSEMANA]
+VAR DATA = [Z_PLANT_DATA_DTREF]
+
+VAR HA_META = CALCULATE(SUM(PLANT_META[HA_EFET]), PLANT_META[DT] = DTREF, PLANT_META[CD_SIST_PLAN] IN {1,8,9})
+VAR HA_REAL = CALCULATE(SUM(PLANT_REAL[QT_AREA]), PLANT_REAL[DT_PLANTIO] = DTREF, PLANT_REAL[CD_SIST_PLAN] IN {1,8,9}/*, PLANT_REAL[FG_REPLANTIO] = "P"*/)
+
+VAR HA_META_ACM = CALCULATE(SUM(PLANT_META[HA_EFET]), FILTER(ALL(PLANT_META), PLANT_META[DT] <= DATA && PLANT_META[CD_SIST_PLAN] IN {1,8,9}))
+VAR HA_REAL_ACM = CALCULATE(SUM(PLANT_REAL[QT_AREA]), FILTER(ALL(PLANT_REAL), PLANT_REAL[DT_PLANTIO] <= DATA && PLANT_REAL[CD_SIST_PLAN] IN {1,8,9} 
+                                                                        /*&& PLANT_REAL[FG_REPLANTIO] = "P"*/))
+VAR HA_SALDO = HA_META_ACM - HA_REAL_ACM
+
+VAR DTINI = DATE(2026,6,16)
+VAR DTFIM = CALCULATE(MIN(PLANT_DATA[DT]), PLANT_DATA[DT] >= DTINI, PLANT_DATA[DSEMANA] < 7)
+VAR HA_MEDIO = 44.9047 //4 TURMAS NO MANUAL E 4 TURMAS NA DESDOBRA
+//VAR HA_MEDIO = 20.7 //HA_MECANIZADO
+
+RETURN
+IF(DTREF < DATA, HA_REAL,
+IF(AND(AND(DTREF >= DTFIM, DSEMANA < 7), HA_SALDO > 0),
+        IF(HA_SALDO <= (HA_MEDIO * [EFIC_MES]), HA_SALDO,
+            (HA_MEDIO * [EFIC_MES])),
+    HA_META
+))
+```
+### PLANT_DATA.HA_MANUAL_ACUM
+```dax
+
+VAR DTREF = [DT]
+VAR DSEMANA = [DSEMANA]
+VAR DATA = [Z_PLANT_DATA_DTREF]
+
+VAR HA_META = CALCULATE(SUM(PLANT_META[HA_EFET]), PLANT_META, PLANT_META[CD_SIST_PLAN] IN {1,8,9})
+VAR HA_META_ACM = CALCULATE(SUM(PLANT_DATA[HA_MANUAL]), FILTER(ALL(PLANT_DATA), PLANT_DATA[DT] <= DTREF))
+VAR HA_META_ACM_ANT = CALCULATE(SUM(PLANT_DATA[HA_MANUAL]), FILTER(ALL(PLANT_DATA), PLANT_DATA[DT] <= (DTREF -1)))
+
+RETURN
+IF(DTREF <= DATA, BLANK(), 
+IF(AND(HA_META_ACM > HA_META, HA_META_ACM_ANT < HA_META), HA_META,
+IF(ISBLANK([HA_MANUAL]), BLANK(), HA_META_ACM_ANT
+)))
+```
+### PLANT_DATA.HA_MECANIZADO
+```dax
+
+VAR DTREF = [DT]
+VAR DSEMANA = [DSEMANA]
+VAR DATA = [Z_PLANT_DATA_DTREF]
+
+VAR HA_META = CALCULATE(SUM(PLANT_META[HA_EFET]), PLANT_DATA[DT] = DTREF, PLANT_META[CD_SIST_PLAN] IN {3})
+VAR HA_REAL = CALCULATE(SUM(PLANT_REAL[QT_AREA]), PLANT_REAL[DT_PLANTIO] = DTREF, PLANT_REAL[CD_SIST_PLAN] IN {3}/*, PLANT_REAL[FG_REPLANTIO] = "P"*/)
+
+VAR HA_META_ACM = CALCULATE(SUM(PLANT_META[HA_EFET]), FILTER(ALL(PLANT_META), PLANT_META[DT] <= DATA && PLANT_META[CD_SIST_PLAN] IN {3}))
+VAR HA_REAL_ACM = CALCULATE(SUM(PLANT_REAL[QT_AREA]), FILTER(ALL(PLANT_REAL), PLANT_REAL[DT_PLANTIO] <= DATA && PLANT_REAL[CD_SIST_PLAN] IN {3}
+                                                                        /*&& PLANT_REAL[FG_REPLANTIO] = "P"*/))
+VAR HA_SALDO = HA_META_ACM - HA_REAL_ACM
+
+VAR DTINI = DATE(2026,7,1)
+VAR DTFIM = CALCULATE(MIN(PLANT_DATA[DT]), PLANT_DATA[DT] >= DTINI)
+//VAR HA_MEDIO = 56.9 //4 TURMAS NO MANUAL E 4 TURMAS NA DESDOBRA
+VAR HA_MEDIO = 20.7 //HA_MECANIZADO
+
+RETURN
+IF(DTREF < DATA, HA_REAL,
+IF(DTREF >= DTFIM,
+        IF(HA_SALDO <= (HA_MEDIO * [EFIC_MES]), HA_SALDO,
+            (HA_MEDIO * [EFIC_MES])),
+    HA_META
+))
+```
+### PLANT_DATA.HA_MECANIZADO_ACUM
+```dax
+
+VAR DTREF = [DT]
+VAR DSEMANA = [DSEMANA]
+VAR DATA = [Z_PLANT_DATA_DTREF]
+
+VAR HA_META = CALCULATE(SUM(PLANT_META[HA_EFET]), FILTER(ALL(PLANT_META), PLANT_META[CD_SIST_PLAN] IN {3}))
+VAR HA_META_ACM = CALCULATE(SUM(PLANT_DATA[HA_MECANIZADO]), FILTER(ALL(PLANT_DATA), PLANT_DATA[DT] <= DTREF))
+VAR HA_META_ACM_ANT = CALCULATE(SUM(PLANT_DATA[HA_MECANIZADO]), FILTER(ALL(PLANT_DATA), PLANT_DATA[DT] <= (DTREF -1)))
+
+RETURN
+IF(DTREF <= DATA, BLANK(), 
+IF(AND(HA_META_ACM > HA_META, HA_META_ACM_ANT < HA_META), HA_META,
+IF(HA_META_ACM > HA_META, HA_META, HA_META_ACM
+)))
+```
+### PLANT_DATA.HA_PROJETADO
+```dax
+
+VAR DTHOJE = INT(UTCNOW() - 3/24)
+VAR PRD_META = SUM(PLANT_META[HA_EFET])
+VAR PRD_MAN = MAX(PLANT_DATA[HA_MANUAL_ACUM])
+VAR PRD_MEC = MAX(PLANT_DATA[HA_MECANIZADO_ACUM])
+VAR DTMAN = CALCULATE(MIN(PLANT_DATA[DT]), FILTER(ALL(PLANT_DATA), PLANT_DATA[HA_MANUAL_ACUM] = PRD_MAN))
+VAR DTMEC = CALCULATE(MIN(PLANT_DATA[DT]), FILTER(ALL(PLANT_DATA), PLANT_DATA[HA_MECANIZADO_ACUM] = PRD_MEC))
+
+RETURN
+IF([DT] < DTHOJE, BLANK(),
+IF([DT] <= DTMAN, PLANT_DATA[HA_MANUAL_ACUM] + PLANT_DATA[HA_MECANIZADO_ACUM],
+IF([DT] <= DTMEC, PLANT_DATA[HA_MANUAL_ACUM] + PLANT_DATA[HA_MECANIZADO_ACUM],
+    BLANK()
+)))
+```
+### PLANT_DATA.HA_MANUAL_META
+```dax
+
+VAR DTREF = [DT]
+VAR DSEMANA = [DSEMANA]
+VAR DATA = [Z_PLANT_DATA_DTREF]
+
+VAR HA_META = CALCULATE(SUM(PLANT_META[HA_EFET]), 
+                        FILTER(ALL(PLANT_META), PLANT_META[DT] <= DTREF), 
+                        FILTER(ALL(PLANT_META), PLANT_META[CD_SIST_PLAN] IN {1,8,9}))
+VAR HA_META_ANT = CALCULATE(SUM(PLANT_META[HA_EFET]), 
+                            FILTER(ALL(PLANT_META), PLANT_META[DT] <= DTREF -1), 
+                            FILTER(ALL(PLANT_META), PLANT_META[CD_SIST_PLAN] IN {1,8,9}))
+
+RETURN
+IF(HA_META = HA_META_ANT, BLANK(), HA_META)
+```
+### PLANT_DATA.HA_MANUAL_REAL
+```dax
+
+VAR DTREF = [DT]
+VAR DSEMANA = [DSEMANA]
+VAR DATA = [Z_PLANT_DATA_DTREF]
+
+VAR HA_REAL = CALCULATE(SUM(PLANT_REAL[QT_AREA]),
+                        FILTER(ALL(PLANT_REAL), PLANT_REAL[DT_PLANTIO] <= DTREF),
+                        FILTER(ALL(PLANT_REAL), PLANT_REAL[CD_SIST_PLAN] IN {1,8,9})/*,
+                        FILTER(ALL(PLANT_REAL), PLANT_REAL[FG_REPLANTIO] = "P")*/
+                        )
+
+RETURN
+IF([DT] <= DATA, HA_REAL, BLANK())
+```
+### PLANT_DATA.HA_MANUAL_PROJ
+```dax
+
+VAR DTREF = [DT]
+VAR DSEMANA = [DSEMANA]
+VAR DATA = [Z_PLANT_DATA_DTREF]
+
+VAR HA_META = CALCULATE(SUM(PLANT_META[HA_EFET]), FILTER(ALL(PLANT_META),PLANT_META[CD_SIST_PLAN] IN {1,8,9}))
+VAR HA_META_ACM = CALCULATE(SUM(PLANT_DATA[HA_MANUAL]), FILTER(ALL(PLANT_DATA), PLANT_DATA[DT] <= DTREF))
+VAR HA_META_ACM_ANT = CALCULATE(SUM(PLANT_DATA[HA_MANUAL]), FILTER(ALL(PLANT_DATA), PLANT_DATA[DT] <= (DTREF -1)))
+
+RETURN
+IF(DTREF <= DATA, BLANK(),
+IF(AND(HA_META_ACM <= HA_META, HA_META_ACM <> HA_META_ACM_ANT), HA_META_ACM,
+IF(HA_META_ACM_ANT = HA_META, BLANK(),
+IF(AND(HA_META_ACM_ANT < HA_META, HA_META_ACM > HA_META), HA_META, BLANK()
+))))
+```
+### PLANT_DATA.HA_MECANIZADO_META
+```dax
+
+VAR DTREF = [DT]
+VAR DSEMANA = [DSEMANA]
+VAR DATA = [Z_PLANT_DATA_DTREF]
+
+VAR HA_META = CALCULATE(SUM(PLANT_META[HA_EFET]), FILTER(ALL(PLANT_META), PLANT_META[DT] <= DTREF), FILTER(ALL(PLANT_META), PLANT_META[CD_SIST_PLAN] IN {3}))
+VAR HA_META_ANT = CALCULATE(SUM(PLANT_META[HA_EFET]), FILTER(ALL(PLANT_META), PLANT_META[DT] <= DTREF -1), FILTER(ALL(PLANT_META), PLANT_META[CD_SIST_PLAN] IN {3}))
+
+RETURN
+IF(HA_META = HA_META_ANT, BLANK(), HA_META)
+```
+### PLANT_DATA.HA_MECANIZADO_REAL
+```dax
+
+VAR DTREF = [DT]
+VAR DSEMANA = [DSEMANA]
+VAR DATA = [Z_PLANT_DATA_DTREF]
+
+VAR HA_REAL = CALCULATE(SUM(PLANT_REAL[QT_AREA]),
+                        FILTER(ALL(PLANT_REAL), PLANT_REAL[DT_PLANTIO] <= DTREF),
+                        FILTER(ALL(PLANT_REAL), PLANT_REAL[CD_SIST_PLAN] IN {3})/*,
+                        FILTER(ALL(PLANT_REAL), PLANT_REAL[FG_REPLANTIO] = "P")*/
+                        )
+
+RETURN
+IF([DT] <= DATA, HA_REAL, BLANK())
+```
+### PLANT_DATA.HA_MECANIZADO_PROJ
+```dax
+
+VAR DTREF = [DT]
+VAR DSEMANA = [DSEMANA]
+VAR DATA = [Z_PLANT_DATA_DTREF]
+
+VAR HA_META = CALCULATE(SUM(PLANT_META[HA_EFET]), PLANT_META, PLANT_META[CD_SIST_PLAN] IN {3})
+VAR HA_META_ACM = CALCULATE(SUM(PLANT_DATA[HA_MECANIZADO]), FILTER(ALL(PLANT_DATA), PLANT_DATA[DT] <= DTREF))
+VAR HA_META_ACM_ANT = CALCULATE(SUM(PLANT_DATA[HA_MECANIZADO]), FILTER(ALL(PLANT_DATA), PLANT_DATA[DT] <= (DTREF -1)))
+
+RETURN
+IF(DTREF <= DATA, BLANK(),
+IF(AND(HA_META_ACM <= HA_META, HA_META_ACM <> HA_META_ACM_ANT), HA_META_ACM,
+IF(HA_META_ACM_ANT = HA_META, BLANK(),
+IF(AND(HA_META_ACM_ANT < HA_META, HA_META_ACM > HA_META), HA_META, BLANK()
+))))
+```
+### PLANT_REAL.FG_REPLANT
+```dax
+IF([FG_REPLANTIO]="P", "Plantio", "Replantio")
+```
+### PLANT_REAL.ANOMES
+```dax
+FORMAT([DT_PLANTIO],"YYYY-MM")
+```
+### VARIEDADES.FG_VARIED_PLANTIO
+```dax
+
+VAR VARIED = [CD_VARIED]
+VAR QTDE = CALCULATE(COUNT(PLANT_REAL[CD_VARIED]),FILTER(ALL(PLANT_REAL), PLANT_REAL[CD_VARIED] = VARIED))
+RETURN
+IF(QTDE > 0, "S", "N")
+```
+### AGRO_CIGARRINHA.ANO
+```dax
+FORMAT(EOMONTH([DT_AMOSTRA],0),"YYYY")
+```
+### AGRO_MIGDOLUS.ANO
+```dax
+FORMAT(EOMONTH([DT_COLETA],0),"YYYY")
+```
+### AGRO_SPHENOPHORUS.ANO
+```dax
+FORMAT(EOMONTH([DT_AMOSTRA],0),"YYYY")
+```
+### AGRO_OUTR_PRAGAS.ANO
+```dax
+FORMAT(EOMONTH([DT_AMOSTRA],0),"YYYY")
+```
+### AGRO_QLD_MUDA.VARIEDADE_ESTAGIO
+```dax
+[DE_VARIED] &" - "& [DE_ESTAGIO]
+```
+### CARREADOR_TLH.ORDEM
+```dax
+
+[CD_UPNIVEL1] & FORMAT([CD_UPNIVEL3],"0000") &"_"& [SEQ]
+```
+### CARREADOR_TLH.DATA_APLIC
+```dax
+
+VAR Fazenda = [CD_UPNIVEL1]
+VAR Talhao = [CD_UPNIVEL3]
+VAR DataBase = [DT_BASE]
+VAR Sequencia = [SEQ]
+
+-- Seq 1
+VAR Seq1 =
+    CALCULATE(
+        MIN(CARREADOR_APLIC[DT_OPERACAO]),
+        FILTER(
+            CARREADOR_APLIC,
+            CARREADOR_APLIC[CD_UPNIVEL1] = Fazenda &&
+            CARREADOR_APLIC[CD_UPNIVEL3] = Talhao &&
+            CARREADOR_APLIC[DT_OPERACAO] >= DataBase
+        )
+    )
+
+-- Seq 2
+VAR Seq2 =
+    CALCULATE(
+        MIN(CARREADOR_APLIC[DT_OPERACAO]),
+        FILTER(
+            CARREADOR_APLIC,
+            CARREADOR_APLIC[CD_UPNIVEL1] = Fazenda &&
+            CARREADOR_APLIC[CD_UPNIVEL3] = Talhao &&
+            CARREADOR_APLIC[DT_OPERACAO] > IF(ISBLANK(Seq1), DATE(9999,12,31), Seq1)
+        )
+    )
+
+-- Seq 3
+VAR Seq3 =
+    CALCULATE(
+        MIN(CARREADOR_APLIC[DT_OPERACAO]),
+        FILTER(
+            CARREADOR_APLIC,
+            CARREADOR_APLIC[CD_UPNIVEL1] = Fazenda &&
+            CARREADOR_APLIC[CD_UPNIVEL3] = Talhao &&
+            CARREADOR_APLIC[DT_OPERACAO] > IF(ISBLANK(Seq2), DATE(9999,12,31), Seq2)
+        )
+    )
+
+-- Seq 4
+VAR Seq4 =
+    CALCULATE(
+        MIN(CARREADOR_APLIC[DT_OPERACAO]),
+        FILTER(
+            CARREADOR_APLIC,
+            CARREADOR_APLIC[CD_UPNIVEL1] = Fazenda &&
+            CARREADOR_APLIC[CD_UPNIVEL3] = Talhao &&
+            CARREADOR_APLIC[DT_OPERACAO] > IF(ISBLANK(Seq3), DATE(9999,12,31), Seq3)
+        )
+    )
+
+-- Seq 5
+VAR Seq5 =
+    CALCULATE(
+        MIN(CARREADOR_APLIC[DT_OPERACAO]),
+        FILTER(
+            CARREADOR_APLIC,
+            CARREADOR_APLIC[CD_UPNIVEL1] = Fazenda &&
+            CARREADOR_APLIC[CD_UPNIVEL3] = Talhao &&
+            CARREADOR_APLIC[DT_OPERACAO] > IF(ISBLANK(Seq4), DATE(9999,12,31), Seq4)
+        )
+    )
+
+RETURN
+SWITCH(
+    Sequencia,
+    1, Seq1,
+    2, Seq2,
+    3, Seq3,
+    4, Seq4,
+    5, Seq5
+)
+```
+### CARREADOR_TLH.DATA_META
+```dax
+
+VAR SEQ = [SEQ]  -1
+VAR FAZ = [CD_UPNIVEL1]
+VAR TLH = [CD_UPNIVEL3]
+VAR DTS = LOOKUPVALUE(CARREADOR_TLH[DATA_APLIC], CARREADOR_TLH[CD_UPNIVEL1], FAZ, CARREADOR_TLH[CD_UPNIVEL3], TLH, CARREADOR_TLH[SEQ], SEQ)
+RETURN
+IF([SEQ] = 1, 
+    IF([NO_CORTE] > 0, [DT_BASE] + 90, [DT_BASE] + 90/*180*/),
+    IF(ISBLANK(DTS), BLANK(), DTS + 90)
+)
+```
+### CARREADOR_TLH.QT_AREA_APLIC
+```dax
+
+VAR FAZ = [CD_UPNIVEL1]
+VAR TLH = [CD_UPNIVEL3]
+VAR DT = [DATA_APLIC]
+VAR AREA = CALCULATE(SUM(CARREADOR_APLIC[QT_AREA]), FILTER(CARREADOR_APLIC, CARREADOR_APLIC[CD_UPNIVEL1] = FAZ && CARREADOR_APLIC[CD_UPNIVEL3] = TLH &&
+                                                            CARREADOR_APLIC[DT_OPERACAO] = DT)
+            )
+RETURN
+IF(ISBLANK(DT), BLANK(), AREA)
+```
+### CARREADOR_TLH.DIAS_PENDENTE
+```dax
+
+VAR SEQ = [SEQ]  -1
+VAR FAZ = [CD_UPNIVEL1]
+VAR TLH = [CD_UPNIVEL3]
+VAR DTS = LOOKUPVALUE(CARREADOR_TLH[DATA_APLIC], CARREADOR_TLH[CD_UPNIVEL1], FAZ, CARREADOR_TLH[CD_UPNIVEL3], TLH, CARREADOR_TLH[SEQ], SEQ)
+RETURN
+IF(AND([SEQ] = 1, [DATA_APLIC] = 0), 
+    INT(NOW()) - [DT_BASE],
+IF(AND([DATA_META] > 0, [DATA_APLIC] = 0), INT(NOW()) - DTS, 
+    BLANK()
+))
+```
+### CARREADOR_TLH.DIAS_REALIZADO
+```dax
+
+VAR SEQ = [SEQ]  -1
+VAR FAZ = [CD_UPNIVEL1]
+VAR TLH = [CD_UPNIVEL3]
+VAR DTS = LOOKUPVALUE(CARREADOR_TLH[DATA_META], CARREADOR_TLH[CD_UPNIVEL1], FAZ, CARREADOR_TLH[CD_UPNIVEL3], TLH, CARREADOR_TLH[SEQ], SEQ)
+RETURN
+IF(AND([SEQ] = 1, [DATA_APLIC] > 0), 
+    [DATA_APLIC] - [DT_BASE],
+IF([DATA_APLIC] > 0, [DATA_APLIC] - DTS, 
+    BLANK()
+))
+```
+### CARREADOR_TLH.ADEREN_PENDENTE
+```dax
+
+IF(ISBLANK([DIAS_PENDENTE]), BLANK(),
+    IF([DIAS_PENDENTE] < 90, "Atenção",
+    IF([DIAS_PENDENTE] < 105, "Aderente", "Crítico"
+)))
+```
+### CARREADOR_TLH.ADEREN_REALIZADO
+```dax
+
+IF(ISBLANK([DIAS_REALIZADO]), BLANK(),
+    IF([DIAS_REALIZADO] < 90, "Atenção",
+    IF([DIAS_REALIZADO] < 105, "Ideal", "Crítico"
+)))
+```
+### CARREADOR_TLH.DIAS_PENDENTE_POND
+```dax
+
+IF(ISBLANK([DIAS_PENDENTE]), BLANK(), [DIAS_PENDENTE] * [QT_AREA])
+```
+### CARREADOR_TLH.DIAS_REALIZADO_POND
+```dax
+
+IF(ISBLANK([DIAS_REALIZADO]), BLANK(), [DIAS_REALIZADO] * [QT_AREA])
+```
+### CARREADOR_TLH.DIAS_RANGE
+```dax
+
+IF([DIAS_PENDENTE] > 0, ">= " & FORMAT(INT([DIAS_PENDENTE] / 15) * 15, "000") & " dias",
+IF([DIAS_REALIZADO] > 0, ">= " & FORMAT(INT([DIAS_REALIZADO] / 15) * 15, "000") & " dias",
+    BLANK()
+))
+```
+### CARREADOR_TLH.FAZENDA
+```dax
+
+VAR FAZ =  SUBSTITUTE(
+                SUBSTITUTE(
+                    SUBSTITUTE(
+                        SUBSTITUTE(
+                            SUBSTITUTE([DE_UPNIVEL1],"Fazenda","Faz."),
+                            "Sítio","Sít."),
+                        "Estância","Est."),
+                    "Nossa Senhora", "N.S."),
+                "Esperanca","Esp.")
+
+RETURN
+[CD_UPNIVEL1] & " - " & FAZ & " - Corte: " & [NO_CORTE]
+```
+### CARREADOR_TLH.ADERÊNCIA_DIAS
+```dax
+
+IF(ISBLANK([ADEREN_PENDENTE])=FALSE(), [ADEREN_PENDENTE]  & "  " & [DIAS_RANGE],
+IF(ISBLANK([ADEREN_REALIZADO]) = FALSE(), [ADEREN_REALIZADO] & "  " & [DIAS_RANGE], 
+BLANK()
+))
+```
+### CATAÇÃO_TLH.ORDEM
+```dax
+
+[CD_UPNIVEL1] & FORMAT([CD_UPNIVEL3],"0000")
+```
+### CATAÇÃO_TLH.DATA_APLIC
+```dax
+
+VAR Fazenda = [CD_UPNIVEL1]
+VAR Talhao = [CD_UPNIVEL3]
+VAR DataBase = [DT_BASE]
+
+-- Seq 1
+VAR Seq1 =
+    CALCULATE(
+        MIN('CATAÇÃO_APLIC'[DT_OPERACAO]),
+        FILTER(
+            'CATAÇÃO_APLIC',
+            'CATAÇÃO_APLIC'[CD_UPNIVEL1] = Fazenda &&
+            'CATAÇÃO_APLIC'[CD_UPNIVEL3] = Talhao &&
+            'CATAÇÃO_APLIC'[FG_AREA] = "S" &&
+            'CATAÇÃO_APLIC'[DT_OPERACAO] >= DataBase
+        )
+    )
+
+RETURN
+IF(ISBLANK(Seq1), BLANK(), Seq1)
+```
+### CATAÇÃO_TLH.DATA_META
+```dax
+[DT_BASE]
+```
+### CATAÇÃO_TLH.QT_AREA_APLIC
+```dax
+
+VAR FAZ = [CD_UPNIVEL1]
+VAR TLH = [CD_UPNIVEL3]
+VAR DT = [DATA_APLIC]
+VAR AREA = CALCULATE(SUM('CATAÇÃO_APLIC'[QT_AREA]), FILTER('CATAÇÃO_APLIC', 'CATAÇÃO_APLIC'[CD_UPNIVEL1] = FAZ && 'CATAÇÃO_APLIC'[CD_UPNIVEL3] = TLH &&
+                                                            'CATAÇÃO_APLIC'[DT_OPERACAO] = DT && 'CATAÇÃO_APLIC'[FG_AREA] = "S")
+            )
+RETURN
+IF(ISBLANK(DT), BLANK(), AREA)
+```
+### CATAÇÃO_APLIC.ORD
+```dax
+
+[CD_UPNIVEL1] & FORMAT([CD_UPNIVEL3],"0000") & "_" & FORMAT([SEQ],"000")
+```
+### CATAÇÃO_APLIC.FG_AREA
+```dax
+
+IF(ROUND([QT_AREA_TLH],2) = ROUND([QT_AREA],2), "S", "N")
+```
+### CATAÇÃO_TLH.DIAS_PENDENTE
+```dax
+
+IF(ISBLANK([DATA_APLIC]), INT(NOW()) - [DATA_META], BLANK())
+```
+### CATAÇÃO_TLH.DIAS_REALIZADO
+```dax
+
+IF(ISBLANK([DATA_APLIC]) = FALSE(), [DATA_APLIC] - [DATA_META], BLANK())
+```
+### CATAÇÃO_TLH.DIAS_PENDENTE_POND
+```dax
+
+IF(ISBLANK([DIAS_PENDENTE]), BLANK(), [DIAS_PENDENTE] * [QT_AREA])
+```
+### CATAÇÃO_TLH.DIAS_REALIZADO_POND
+```dax
+
+IF(ISBLANK([DIAS_REALIZADO]), BLANK(), [DIAS_REALIZADO] * [QT_AREA])
+```
+### CATAÇÃO_TLH.ADERENCIA
+```dax
+
+VAR ADEREN = IF(ISBLANK([DIAS_PENDENTE]),
+                IF([DIAS_REALIZADO] < 40, "Atenção",
+                IF([DIAS_REALIZADO] < 60, "Ideal", "Crítico")),
+                
+                IF([DIAS_PENDENTE] < 40, "Atenção",
+                IF([DIAS_PENDENTE] < 60, "Ideal", "Crítico"))
+            )
+
+VAR DIAS = IF(ISBLANK([DIAS_PENDENTE]),
+                FORMAT(INT([DIAS_REALIZADO] / 20) * 20, "000"),
+                FORMAT(INT([DIAS_PENDENTE] / 20) * 20, "000")
+            )
+RETURN
+ADEREN
+```
+### CATAÇÃO_TLH.ADERENCIA_DIAS
+```dax
+
+VAR ADEREN = IF(ISBLANK([DIAS_PENDENTE]),
+                IF([DIAS_REALIZADO] < 40, "Atenção",
+                IF([DIAS_REALIZADO] < 60, "Ideal", "Crítico")),
+                
+                IF([DIAS_PENDENTE] < 40, "Atenção",
+                IF([DIAS_PENDENTE] < 60, "Ideal", "Crítico"))
+            )
+
+VAR DIAS = IF(ISBLANK([DIAS_PENDENTE]),
+                FORMAT(INT([DIAS_REALIZADO] / 20) * 20, "000"),
+                FORMAT(INT([DIAS_PENDENTE] / 20) * 20, "000")
+            )
+RETURN
+ADEREN & "  >= " & DIAS & " dias"
+```
+### CATAÇÃO_TLH.STATUS
+```dax
+
+IF(ISBLANK([DIAS_PENDENTE]), "Realizado", "Pendente")
+```
+### CATAÇÃO_TLH.FAZENDA
+```dax
+
+VAR FAZ =  SUBSTITUTE(
+                SUBSTITUTE(
+                    SUBSTITUTE(
+                        SUBSTITUTE(
+                            SUBSTITUTE([DE_UPNIVEL1],"Fazenda","Faz."),
+                            "Sítio","Sít."),
+                        "Estância","Est."),
+                    "Nossa Senhora", "N.S."),
+                "Esperanca","Esp.")
+
+RETURN
+[CD_UPNIVEL1] & " - " & FAZ & " - Corte: " & [NO_CORTE]
+```
+
+## TABELAS CALCULADAS (9)
+
+### QDIAS_CALC.QDIAS_CALC
+```dax
+GENERATESERIES(-365, 365, 1)
+```
+### AGRO_QLD_OPERAC_PARAM_FILTRO.AGRO_QLD_OPERAC_PARAM_FILTRO
+```dax
+{
+    ("Frente", NAMEOF('AGRO_QLD_OPERAC'[CD_FREN_TRAN]), 0),
+    ("Turma", NAMEOF('AGRO_QLD_OPERAC'[CD_TURMA]), 1)
+}
+```
+### ADEREN_ATIVIDADES_EMAIL.ADEREN_ATIVIDADES_EMAIL
+```dax
+
+    SUMMARIZE(
+        FILTER(ADEREN_ATIVIDADES,ADEREN_ATIVIDADES[ADUBA_CORTESOQ_DIF] = "Verificar"),
+        ADEREN_ATIVIDADES[DESC_FAZENDA],
+        ADEREN_ATIVIDADES[TALHAO],
+        ADEREN_ATIVIDADES[DESC_PROCESSO],
+        "SALDO_AREA_ADUBACAO",  FORMAT(
+                                    CALCULATE(ROUND(SUM(ADEREN_ATIVIDADES[AREA_SALDO]),2),
+                                        FILTER(ADEREN_ATIVIDADES,ADEREN_ATIVIDADES[CD_OPER] = "04-Adubação")
+                                        ),"Standard"),
+        "SALDO_AREA_CSOQ",      FORMAT(
+                                    CALCULATE(ROUND(SUM(ADEREN_ATIVIDADES[AREA_SALDO]),2),
+                                        FILTER(ADEREN_ATIVIDADES,ADEREN_ATIVIDADES[CD_OPER] = "08-Corte Soqueira")
+                                        ),"Standard")
+        
+    )
+```
+### INSETIC_BROCA_TLHS.INSETIC_BROCA_TLHS
+```dax
+
+SUMMARIZE(
+    INSETIC_BROCA,
+    INSETIC_BROCA[FAZENDA],
+    INSETIC_BROCA[STATUS],
+    INSETIC_BROCA[STATUS_LEGENDA],
+    INSETIC_BROCA[IDADE_RANGE],
+    "TALHOES",CONCATENATEX(
+                INSETIC_BROCA,VALUE(TRIM(INSETIC_BROCA[CD_UPNIVEL3])),", ",VALUE(TRIM(INSETIC_BROCA[CD_UPNIVEL3])),ASC
+                )
+)
+```
+### PATIO_COMPOSTO_FILTROS.PATIO_COMPOSTO_FILTROS
+```dax
+
+UNION(
+        SELECTCOLUMNS(FILTER(PATIO_COMPOSTO,PATIO_COMPOSTO[OPER_COD] = 10),
+            "LEIRA",                PATIO_COMPOSTO[LEIRA],
+            "DT",                   PATIO_COMPOSTO[DT_APTO],
+            "OPER",                 "FORMAÇÃO",
+            "VALOR",                BLANK()
+        ),
+
+        SELECTCOLUMNS(FILTER(PATIO_COMPOSTO,PATIO_COMPOSTO[OPER_COD] = 15),
+            "LEIRA",                PATIO_COMPOSTO[LEIRA],
+            "DT",                   PATIO_COMPOSTO[DT_APTO],
+            "OPER",                 "REVOLVER",
+            "VALOR",                PATIO_COMPOSTO[BATIDA_LEIRA]
+        ),
+
+        SELECTCOLUMNS(FILTER(PATIO_COMPOSTO,PATIO_COMPOSTO[OPER_COD] = 20),
+            "LEIRA",                PATIO_COMPOSTO[LEIRA],
+            "DT",                   PATIO_COMPOSTO[DT_APTO],
+            "OPER",                 "CINZA",
+            "VALOR",                BLANK()
+        ),
+
+        SELECTCOLUMNS(FILTER(PATIO_COMPOSTO,PATIO_COMPOSTO[OPER_COD] = 30),
+            "LEIRA",                PATIO_COMPOSTO[LEIRA],
+            "DT",                   PATIO_COMPOSTO[DT_APTO],
+            "OPER",                 "TRANSPORTE",
+            "VALOR",                BLANK()
+        ),
+
+        SELECTCOLUMNS(FILTER(PATIO_COMPOSTO,PATIO_COMPOSTO[UMIDADE] > 0),
+            "LEIRA",                PATIO_COMPOSTO[LEIRA],
+            "DT",                   PATIO_COMPOSTO[DT_APTO],
+            "OPER",                 "UMIDADE",
+            "VALOR",                PATIO_COMPOSTO[UMIDADE]
+        ),
+
+        SELECTCOLUMNS(FILTER(PATIO_COMPOSTO,PATIO_COMPOSTO[TEMPERATURA] > 0),
+            "LEIRA",                PATIO_COMPOSTO[LEIRA],
+            "DT",                   PATIO_COMPOSTO[DT_APTO],
+            "OPER",                 "TEMPERATURA",
+            "VALOR",                PATIO_COMPOSTO[TEMPERATURA]
+        )
+)
+```
+### Z_LEGENDAS.Z_LEGENDAS
+```dax
+Row("Column", DATE(2026,3,1) - INT(NOW() - (3/24)))
+```
+### PATIO_COMPOSTO_ALERTA.PATIO_COMPOSTO_ALERTA
+```dax
+
+UNION(
+    SUMMARIZE(
+        FILTER(PATIO_COMPOSTO,PATIO_COMPOSTO[ORD] = 1 && PATIO_COMPOSTO[CHECK_REVOLVER] = "Pendente"),
+        "ATIVIDADE",            "Revolver",
+        "STATUS",               "Pendente",
+        "LEIRAS",               CONCATENATEX(PATIO_COMPOSTO,[LEIRA],", ",[LEIRA],ASC)
+    ),
+    SUMMARIZE(
+        FILTER(PATIO_COMPOSTO,PATIO_COMPOSTO[ORD] = 1 && PATIO_COMPOSTO[CHECK_CINZA] = "Pendente"),
+        "ATIVIDADE",            "Cinza",
+        "STATUS",               "Pendente",
+        "LEIRAS",               CONCATENATEX(PATIO_COMPOSTO,[LEIRA],", ",[LEIRA],ASC)
+    ),
+    SUMMARIZE(
+        FILTER(PATIO_COMPOSTO,PATIO_COMPOSTO[ORD] = 1 && PATIO_COMPOSTO[CHECK_UMIDADE] = "Pendente"),
+        "ATIVIDADE",            "Umidade",
+        "STATUS",               "Pendente",
+        "LEIRAS",               CONCATENATEX(PATIO_COMPOSTO,[LEIRA],", ",[LEIRA],ASC)
+    ),
+    SUMMARIZE(
+        FILTER(PATIO_COMPOSTO,PATIO_COMPOSTO[ORD] = 1 && PATIO_COMPOSTO[CHECK_TEMPERATURA] = "Pendente"),
+        "ATIVIDADE",            "Temperatura",
+        "STATUS",               "Pendente",
+        "LEIRAS",               CONCATENATEX(PATIO_COMPOSTO,[LEIRA],", ",[LEIRA],ASC)
+    ),
+    SUMMARIZE(
+        FILTER(PATIO_COMPOSTO,PATIO_COMPOSTO[ORD] = 1 && PATIO_COMPOSTO[PROCESSO] = "1-Formação"),
+        "ATIVIDADE",            ">>>",
+        "STATUS",               "1-Formação",
+        "LEIRAS",               CONCATENATEX(PATIO_COMPOSTO,[LEIRA],", ",[LEIRA],ASC)
+    ),
+    SUMMARIZE(
+        FILTER(PATIO_COMPOSTO,PATIO_COMPOSTO[ORD] = 1 && PATIO_COMPOSTO[PROCESSO] = "2-Preparo"),
+        "ATIVIDADE",            ">>>",
+        "STATUS",               "2-Preparo",
+        "LEIRAS",               CONCATENATEX(PATIO_COMPOSTO,[LEIRA],", ",[LEIRA],ASC)
+    ),
+    SUMMARIZE(
+        FILTER(PATIO_COMPOSTO,PATIO_COMPOSTO[ORD] = 1 && PATIO_COMPOSTO[PROCESSO] = "3-Pronta"),
+        "ATIVIDADE",            ">>>",
+        "STATUS",               "3-Pronta",
+        "LEIRAS",               CONCATENATEX(PATIO_COMPOSTO,[LEIRA],", ",[LEIRA],ASC)
+    ),
+    SUMMARIZE(
+        FILTER(PATIO_COMPOSTO,PATIO_COMPOSTO[ORD] = 1 && PATIO_COMPOSTO[PROCESSO] = "4-Transporte"),
+        "ATIVIDADE",            ">>>",
+        "STATUS",               "4-Transporte",
+        "LEIRAS",               CONCATENATEX(PATIO_COMPOSTO,[LEIRA],", ",[LEIRA],ASC)
+    ),
+    SUMMARIZE(
+        FILTER(PATIO_COMPOSTO,PATIO_COMPOSTO[ORD] = 1 && PATIO_COMPOSTO[PROCESSO] = "5-Livre"),
+        "ATIVIDADE",            ">>>",
+        "STATUS",               "5-Livre",
+        "LEIRAS",               CONCATENATEX(PATIO_COMPOSTO,[LEIRA],", ",[LEIRA],ASC)
+    )
+)
+```
+### ADEREN_ATIVIDADES_AGRONO_EMAIL.ADEREN_ATIVIDADES_AGRONO_EMAIL
+```dax
+
+VAR _BASE =
+    SUMMARIZE(
+        FILTER(
+            ADEREN_ATIVIDADES_AGRONO,
+            ADEREN_ATIVIDADES_AGRONO[CD_OPER] = "27-Foliar 2ª" &&
+            ADEREN_ATIVIDADES_AGRONO[DT_REFER] >= DATE(2025,1,1)
+        ),
+        [DESC_FAZENDA],
+        [DT_REFER],
+        [DT_SEMANA],
+        [DT_SERVICO],
+        "AREA_PLANO", ROUND(SUM(ADEREN_ATIVIDADES_AGRONO[AREA]),2),
+        "AREA_REAL", ROUND(SUM(ADEREN_ATIVIDADES_AGRONO[AREA_REALIZADA]),2),
+        "AREA_SALDO", ROUND(SUM(ADEREN_ATIVIDADES_AGRONO[AREA_SALDO]),2),
+        "TALHOES",
+            CONCATENATEX(
+                VALUES(ADEREN_ATIVIDADES_AGRONO[TALHAO]),
+                ADEREN_ATIVIDADES_AGRONO[TALHAO],
+                ", ",
+                ADEREN_ATIVIDADES_AGRONO[TALHAO],
+                ASC
+            )
+    )
+RETURN
+-- retorna todas as linhas de _BASE, ordenadas por DT_SEMANA, DESC_FAZENDA, DT_REFER e TALHOES
+TOPN(
+    COUNTROWS(_BASE),
+    _BASE,
+    [DT_SEMANA], ASC,
+    [DESC_FAZENDA], ASC,
+    [DT_REFER], ASC,
+    [TALHOES], ASC
+)
+```
+### PLANT_TIPO.PLANT_TIPO
+```dax
+
+DATATABLE("Tipo", STRING,
+        {
+            {"Manual"} ,
+            {"Mecanizado"}/*,
+            {"Meiosi"}*/
+        }
+        )
 ```

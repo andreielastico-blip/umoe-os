@@ -1,0 +1,51 @@
+[
+ {
+  "Kind": "Coluna calculada",
+  "Table": "DateTableTemplate_0ed63488-ea8e-40ae-ba8e-bf7aac174d37",
+  "Name": "Ano",
+  "Auto": true,
+  "Expression": "YEAR([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "DateTableTemplate_0ed63488-ea8e-40ae-ba8e-bf7aac174d37",
+  "Name": "MonthNo",
+  "Auto": true,
+  "Expression": "MONTH([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "DateTableTemplate_0ed63488-ea8e-40ae-ba8e-bf7aac174d37",
+  "Name": "Mês",
+  "Auto": true,
+  "Expression": "FORMAT([Date], \"MMMM\")"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "DateTableTemplate_0ed63488-ea8e-40ae-ba8e-bf7aac174d37",
+  "Name": "QuarterNo",
+  "Auto": true,
+  "Expression": "INT(([MonthNo] + 2) / 3)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "DateTableTemplate_0ed63488-ea8e-40ae-ba8e-bf7aac174d37",
+  "Name": "Trimestre",
+  "Auto": true,
+  "Expression": "\"Trim \" & [QuarterNo]"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "DateTableTemplate_0ed63488-ea8e-40ae-ba8e-bf7aac174d37",
+  "Name": "Dia",
+  "Auto": true,
+  "Expression": "DAY([Date])"
+ },
+ {
+  "Kind": "Tabela calculada",
+  "Table": "DateTableTemplate_0ed63488-ea8e-40ae-ba8e-bf7aac174d37",
+  "Name": "DateTableTemplate_0ed63488-ea8e-40ae-ba8e-bf7aac174d37",
+  "Auto": true,
+  "Expression": "Calendar(Date(2015,1,1), Date(2015,1,1))"
+ }
+]

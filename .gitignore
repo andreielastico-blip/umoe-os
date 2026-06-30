@@ -33,6 +33,8 @@ UMOE-OS-8.0/Dados-PBI/PBIX/
 UMOE-OS-8.0/Dados-PBI/_tmp/
 # Excecao: status da ultima extracao (pequeno, util para auditoria)
 !UMOE-OS-8.0/Dados-PBI/_extract_status.json
+# Excecao: catalogo de formulas DAX (pequeno, fonte de verdade dos calculos)
+!UMOE-OS-8.0/Dados-PBI/MEDIDAS_DAX_*.json
 
 # -- Solinftec CSVs (dados brutos diarios, regeneraveis do sistema) -----------
 UMOE-OS-8.0/Solinftec/*.csv

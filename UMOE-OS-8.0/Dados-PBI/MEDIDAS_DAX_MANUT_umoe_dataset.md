@@ -1,4 +1,8 @@
-# Medidas DAX — MANUT_umoe_dataset (157)
+# DAX (negocio) — MANUT_umoe_dataset
+Medidas: 157 | Colunas calculadas: 79 | Tabelas calculadas: 6 | Negocio: 242 | Auto date tables omitidas: 0
+
+
+## MEDIDAS (157)
 
 ### medidas.Disponibilidade (%)
 ```dax
@@ -2091,5 +2095,1085 @@ IF (
     ),
     "#FFFFFF",
     "#252423"
+)
+```
+
+## COLUNAS CALCULADAS (79)
+
+### f_atualizado.AGORA 2
+```dax
+
+FORMAT(DATE(YEAR([AGORA5]),MONTH([AGORA5]),DAY([AGORA5]))+TIME(HOUR([AGORA5]),0,0),"dd/mm/yy hh:mm")
+```
+### f_atualizado.AGORA5
+```dax
+
+[AGORA]+0.0034722222
+```
+### f_atualizado.agora0
+```dax
+DATE(YEAR([AGORA5]),MONTH([AGORA5]),DAY([AGORA5]))+TIME(HOUR([AGORA5]),0,0)
+```
+### d_criterio_disponibilidade.Gera Indisponibilidade
+```dax
+
+IF([Considerar]="N","Não Gera Indisponibilidade","Gera Indisponibilidade")
+```
+### f_manfro.TEMPO_TOTAL_PARADO
+```dax
+
+VAR AGORA =
+MAX(f_atualizado[AGORA5])
+RETURN
+COALESCE([SAIDA],AGORA)-COALESCE([INICIO_ANDAMENTO],[ENTRADA])
+```
+### f_manfro.TEXTO
+```dax
+
+VAR FRT = 
+RELATED(d_equipamentos[FRENTE])
+VAR DIAS =
+ROUNDDOWN([TEMPO_TOTAL_PARADO],0)
+VAR HORAS =
+ROUNDDOWN(([TEMPO_TOTAL_PARADO]-DIAS)*24,0)
+VAR MINUTOS =
+ROUNDDOWN((([TEMPO_TOTAL_PARADO]-DIAS)*24-HORAS)*60,0)
+VAR TEMPO =
+IF(DIAS>0,DIAS&"d ")
+&HORAS&"h"&MINUTOS&"m"
+VAR TEXTO_QRM =
+TRIM(LEFT([SERVICO],23))
+VAR QRM_MOTIVO =
+UPPER(IF(TEXTO_QRM="",[DE_MOTENTR],TEXTO_QRM))
+RETURN
+IF([STATUS]="Andamento",
+    FRT&" | "&[CD_EQUIPTO]&" | "&QRM_MOTIVO&" | "&TEMPO
+)
+```
+### f_manfro.INICIAL
+```dax
+
+VAR CALCULO =
+RELATED(d_criterio_disponibilidade[Cálculo])
+RETURN
+IF(CALCULO=1,[ENTRADA],[INICIO_ANDAMENTO])
+```
+### f_manfro.FINAL
+```dax
+
+VAR AGORA = 
+MAX(f_atualizado[AGORA5])
+RETURN
+COALESCE(
+    [SAIDA]
+    ,AGORA
+)
+```
+### f_manfro.DESCONTO_INICIAL
+```dax
+
+DIVIDE(
+    MINUTE([INICIAL])
+    ,60
+)
++DIVIDE(
+    SECOND([INICIAL])
+    ,60*60
+)
+```
+### f_manfro.ACRESCIMO_FINAL
+```dax
+
+DIVIDE(
+    MINUTE([FINAL])
+    ,60
+)
++
+DIVIDE(
+    SECOND([FINAL])
+    ,60*60
+)
+```
+### f_manfro.HORA_INICIAL
+```dax
+[INICIAL]-[DESCONTO_INICIAL]/24
+```
+### f_manfro.HORA_FINAL
+```dax
+[FINAL]-[ACRESCIMO_FINAL]/24
+```
+### f_manfro.TEXTO_2
+```dax
+
+VAR FRT = 
+RELATED(d_equipamentos[FRENTE])
+VAR DIAS =
+ROUNDDOWN([TEMPO_TOTAL_PARADO],0)
+VAR HORAS =
+ROUNDDOWN(([TEMPO_TOTAL_PARADO]-DIAS)*24,0)
+VAR MINUTOS =
+ROUNDDOWN((([TEMPO_TOTAL_PARADO]-DIAS)*24-HORAS)*60,0)
+VAR TEMPO =
+IF(DIAS>0,DIAS&"d ")
+&HORAS&"h"&MINUTOS&"m"
+VAR TEXTO_QRM =
+TRIM(LEFT([SERVICO],70))
+VAR QRM_MOTIVO =
+UPPER(IF(TEXTO_QRM="",[DE_MOTENTR],TEXTO_QRM))
+RETURN
+SUBSTITUTE(
+    IF([STATUS]="Andamento",
+        [BOLETIM]&" | "&FRT&" | "&[CD_EQUIPTO]&" | "&QRM_MOTIVO&" | "&TEMPO
+    )
+    ,"
+"
+    ,""
+)
+```
+### f_manfro.CATEGORIA_2
+```dax
+COALESCE(
+    RELATED(d_equipamentos[CATEGORIA])
+    ,"Outros"
+    )
+```
+### d_equipamentos.CATEGORIA_2
+```dax
+COALESCE(
+    [CATEGORIA]
+    ,"Outros"
+    )
+```
+### d_equipamentos.GRUPO_2
+```dax
+COALESCE(
+    [GRUPO]
+    ,"Outros"
+    )
+```
+### d_equipamentos.FRENTE_UP
+```dax
+
+IF(
+    UPPER([FRENTE]) = ""
+    ,"SEM FRENTE"
+    ,UPPER([FRENTE])
+)
+```
+### d_equipamentos.PROCESSO_2
+```dax
+COALESCE(
+    UPPER([PROCESSO])
+    ,"OUTRO"
+    )
+```
+### f_ordem_compra.CHAVE_DOC_APROV
+```dax
+FORMAT([NUM_DOCERP],"00000000")&[SEQUENCIA]&IF(LEN([SEQUENCIA])>2,""," ")&[CD_MATERIAL]
+```
+### f_ordem_compra.BOLETIM_MANFRO_TEXTO
+```dax
+UPPER([NO_BOLETIM])
+```
+### f_ordem_compra.DT_APROVA_PEDIDO_1
+```dax
+
+VAR vChave = [CHAVE_DOC_APROV]
+VAR vSC = [NUM_DOCERP]
+VAR vPC = [PEDIDO]
+RETURN
+CALCULATE(
+    MAXX(f_pend_aprov,[DT_APROVA]+[HORA_APROVACAO])
+    ,FILTER(f_pend_aprov
+        ,f_pend_aprov[CHAVE_DOC]=vPC
+        &&[SEQ_APROV] = 1
+    )
+)
+```
+### f_ordem_compra.DT_APROVA_PEDIDO_2
+```dax
+
+VAR vChave = [CHAVE_DOC_APROV]
+VAR vSC = [NUM_DOCERP]
+VAR vPC = [PEDIDO]
+RETURN
+CALCULATE(
+    MAXX(f_pend_aprov,[DT_APROVA]+[HORA_APROVACAO])
+    ,FILTER(f_pend_aprov
+        ,f_pend_aprov[CHAVE_DOC]=vPC
+        &&[SEQ_APROV] = 2
+    )
+)
+```
+### f_ordem_compra.DT_APROVA_REQUISIÇÃO
+```dax
+
+VAR vChave = [CHAVE_DOC_APROV]
+VAR vSC = [NUM_DOCERP]
+VAR vPC = [PEDIDO]
+RETURN
+CALCULATE(
+    MAXX(f_pend_aprov,[DT_APROVA]+[HORA_APROVACAO])
+    ,FILTER(f_pend_aprov
+        ,([CHAVE_DOC]=vChave || [CHAVE_DOC]=vSC)
+        &&[SEQ_APROV] = 1
+    )
+)
+```
+### f_ordem_compra.DT_GERACAO_PEDIDO_1
+```dax
+
+VAR vChave = [CHAVE_DOC_APROV]
+VAR vSC = [NUM_DOCERP]
+VAR vPC = [PEDIDO]
+RETURN
+CALCULATE(
+    MAXX(f_pend_aprov,[DT_GERACAO]+[HORA_GERACAO])
+    ,FILTER(f_pend_aprov
+        ,f_pend_aprov[CHAVE_DOC]=vPC
+        &&[SEQ_APROV] = 1
+    )
+)
+```
+### f_ordem_compra.DT_GERACAO_PEDIDO_2
+```dax
+
+VAR vChave = [CHAVE_DOC_APROV]
+VAR vSC = [NUM_DOCERP]
+VAR vPC = [PEDIDO]
+RETURN
+CALCULATE(
+    MAXX(f_pend_aprov,[DT_GERACAO]+[HORA_GERACAO])
+    ,FILTER(f_pend_aprov
+        ,f_pend_aprov[CHAVE_DOC]=vPC
+        &&[SEQ_APROV] = 2
+    )
+)
+```
+### f_ordem_compra.DT_GERACAO_REQUISIÇÃO
+```dax
+
+VAR vChave = [CHAVE_DOC_APROV]
+VAR vSC = [NUM_DOCERP]
+VAR vPC = [PEDIDO]
+RETURN
+    CALCULATE(
+        MAXX(f_pend_aprov,[DT_GERACAO]+[HORA_GERACAO])
+        ,FILTER(f_pend_aprov
+            ,([CHAVE_DOC]=vChave || [CHAVE_DOC]=vSC)
+        )
+    )
+```
+### d_equipamentos.EQUIPAMENTO_TEXTO
+```dax
+UPPER([CD_EQUIPTO])
+```
+### f_manfro.BOLETIM_TEXTO
+```dax
+UPPER([BOLETIM])
+```
+### f_ordem_compra.DATA_ENVIO_AJUSTE
+```dax
+
+DATE(YEAR([DT_ENVIO]),MONTH([DT_ENVIO]),DAY([DT_ENVIO]))
+```
+### f_ordem_compra.STATUS_REQ_AJUSTE
+```dax
+
+SWITCH(TRUE()
+    ,[FG_STATUS_ERP]<>BLANK() && [FG_STATUS_ERP]<>"",[FG_STATUS_ERP]
+    ,[PEDIDO]<>"","PE"
+    ,"SO"
+)
+```
+### f_ordem_compra.DATA_RECEBIMENTO
+```dax
+
+VAR vOrdem = [NUMERO_ORDEM]
+VAR vItem = [CD_MATERIAL]
+RETURN
+CALCULATE(
+    MAX(f_recebimento[DATA_MOVTO])
+    ,FILTER(f_recebimento
+        ,[NUMERO_ORDEM]=vOrdem
+        &&[IT_CODIGO]=vItem
+    )
+)
+```
+### f_ordem_compra.DATA_FATURAMENTO
+```dax
+
+VAR vOrdem = [NUMERO_ORDEM]
+VAR vItem = [CD_MATERIAL]
+RETURN
+CALCULATE(
+    MAX(f_recebimento[DATA_NOTA])
+    ,FILTER(f_recebimento
+        ,[NUMERO_ORDEM]=vOrdem
+        &&[IT_CODIGO]=vItem
+    )
+)
+```
+### f_ordem_compra.STATUS REQUISICAO
+```dax
+
+SWITCH(TRUE()
+    ,[DATA_RECEBIMENTO]<>BLANK(),"RECEBIDO"
+    ,[DT_APROVA_PEDIDO_2]<>BLANK(),"PEDIDO APROVADO"
+    ,[DATA_PEDIDO]<>BLANK(),"PEDIDO GERADO"
+    ,[EMISSAO_OC]<>BLANK(),"AGUARDANDO PEDIDO"
+    ,"AGUARDANDO ORDEM"
+)
+```
+### f_ordem_compra.APROVADOR_RC
+```dax
+
+VAR vChave = [CHAVE_DOC_APROV]
+VAR vSC = [NUM_DOCERP]
+VAR vPC = [PEDIDO]
+VAR vAprovador =
+COALESCE(
+    CALCULATE(
+        FIRSTNONBLANK(f_pend_aprov[COD_USUAR],0)
+        ,FILTER(f_pend_aprov
+            ,([CHAVE_DOC]=vChave || [CHAVE_DOC]=vSC)
+            &&[SEQ_APROV] = 1
+        )
+    )
+    ,CALCULATE(
+        FIRSTNONBLANK(f_pend_aprov[COD_USUAR_ALTERN],0)
+        ,FILTER(f_pend_aprov
+            ,([CHAVE_DOC]=vChave || [CHAVE_DOC]=vSC)
+            &&[SEQ_APROV] = 1
+        )
+    )
+)
+RETURN
+COALESCE(
+    CALCULATE(
+        FIRSTNONBLANK(d_aprovadores[NOME_USUAR],0)
+        ,FILTER(d_aprovadores
+            ,[COD_USUAR]=vAprovador
+        )
+    )
+    ,"SEM APROVADOR"
+)
+```
+### f_ordem_compra.APROVADOR_PEDIDO_1
+```dax
+
+VAR vChave = [CHAVE_DOC_APROV]
+VAR vSC = [NUM_DOCERP]
+VAR vPC = [PEDIDO]
+VAR vAprovador =
+COALESCE(
+    CALCULATE(
+        FIRSTNONBLANK(f_pend_aprov[COD_USUAR],0)
+        ,FILTER(f_pend_aprov
+            ,f_pend_aprov[CHAVE_DOC]=vPC
+            &&[SEQ_APROV] = 1
+        )
+    )
+    ,CALCULATE(
+        FIRSTNONBLANK(f_pend_aprov[COD_USUAR_ALTERN],0)
+        ,FILTER(f_pend_aprov
+            ,f_pend_aprov[CHAVE_DOC]=vPC
+            &&[SEQ_APROV] = 1
+        )
+    )
+)
+RETURN
+COALESCE(
+    CALCULATE(
+        FIRSTNONBLANK(d_aprovadores[NOME_USUAR],0)
+        ,FILTER(d_aprovadores
+            ,[COD_USUAR]=vAprovador
+        )
+    )
+    ,"SEM APROVADOR"
+)
+```
+### f_ordem_compra.APROVADOR_PEDIDO_2
+```dax
+
+VAR vChave = [CHAVE_DOC_APROV]
+VAR vSC = [NUM_DOCERP]
+VAR vPC = [PEDIDO]
+VAR vAprovador =
+COALESCE(
+    CALCULATE(
+        FIRSTNONBLANK(f_pend_aprov[COD_USUAR],0)
+        ,FILTER(f_pend_aprov
+            ,f_pend_aprov[CHAVE_DOC]=vPC
+            &&[SEQ_APROV] = 2
+        )
+    )
+    ,CALCULATE(
+        FIRSTNONBLANK(f_pend_aprov[COD_USUAR_ALTERN],0)
+        ,FILTER(f_pend_aprov
+            ,f_pend_aprov[CHAVE_DOC]=vPC
+            &&[SEQ_APROV] = 2
+        )
+    )
+)
+RETURN
+COALESCE(
+    CALCULATE(
+        FIRSTNONBLANK(d_aprovadores[NOME_USUAR],0)
+        ,FILTER(d_aprovadores
+            ,[COD_USUAR]=vAprovador
+        )
+    )
+    ,"SEM APROVADOR"
+)
+```
+### f_ordem_compra.COMPRADOR
+```dax
+
+VAR vCod = RIGHT([COD_COMPRADO],4)
+RETURN
+CALCULATE(
+    FIRSTNONBLANK(d_compradores[NOME],0)
+    ,FILTER(d_compradores
+        ,RIGHT([COD_COMPRADO],4)=vCod
+    )
+)
+```
+### f_ordem_compra.STATUS DE ENTREGA
+```dax
+
+SWITCH(TRUE()
+    ,[DATA_RECEBIMENTO]<>BLANK() && [DATA_FATURAMENTO]<=[DATA_FAT_PROMETIDA_AJUSTE],"RECEBIDO NO PRAZO"
+    ,[DATA_RECEBIMENTO]<>BLANK() && [DATA_FATURAMENTO]>[DATA_FAT_PROMETIDA_AJUSTE],"RECEBIDO FORA DO PRAZO"
+    ,[DATA_FAT_PROMETIDA_AJUSTE]=BLANK(),"SEM PRAZO"
+    ,[DATA_RECEBIMENTO]=BLANK() && TODAY()<=[DATA_FAT_PROMETIDA_AJUSTE],"AGUARD. NO PRAZO"
+    ,[DATA_RECEBIMENTO]=BLANK() && TODAY()>[DATA_FAT_PROMETIDA_AJUSTE],"AGUARD. FORA DO PRAZO"
+)
+```
+### f_ordem_compra.DATA_FAT_PROMETIDA_AJUSTE
+```dax
+
+COALESCE([DATA_FATURAMENTO_PROMETIDA],[DATA_PREVISAO_ENTREGA])
+```
+### f_lubrificante.FIM_MES_ANO
+```dax
+
+EOMONTH([DT_OPERACAO],0)
+```
+### f_ordem_compra.EQUIPAMENTO_TEXTO
+```dax
+UPPER([CD_EQUIPTO])
+```
+### f_produtividade.FIM_MES_ANO
+```dax
+
+EOMONTH([DT_HISTORICO],0)
+```
+### f_abastecimento.FIM_MES_ANO
+```dax
+
+EOMONTH([DT_OPERACAO],0)
+```
+### d_equipamentos.CD_FREN_TRAN
+```dax
+
+    SWITCH(
+        TRUE(),
+        d_equipamentos[FRENTE_UP] = "FRENTE 1", "1",
+        d_equipamentos[FRENTE_UP] = "FRENTE 2", "2",
+        d_equipamentos[FRENTE_UP] = "FRENTE 3", "3",
+        d_equipamentos[FRENTE_UP] = "FRENTE 4", "4",
+        d_equipamentos[FRENTE_UP] = "FRENTE 5", "5",
+        BLANK()
+    )
+
+```
+### f_abastecimento.CATEGORIA
+```dax
+RELATED(d_equipamentos[CATEGORIA])
+```
+### d_equipamentos.CATEGORIA_M
+```dax
+UPPER(d_equipamentos[CATEGORIA_2])
+```
+### f_ordem_compra.DATA_CHEGADA_ESPERADA
+```dax
+RELATED(d_transportadoras[DIAS])+[DATA_FATURAMENTO_PROMETIDA]
+```
+### d_emitente.LEADTIME_TRANSP_EMITENTE
+```dax
+
+ROUNDUP(
+    CALCULATE(
+        AVERAGEX(
+            f_recebimento
+            ,MAX([DATA_MOVTO]-[DATA_NOTA],0)
+        )
+    )
+    ,0
+)
+```
+### d_emitente.LEADTIME_CIDADE
+```dax
+
+VAR vCidade = [CIDADE]
+VAR vQ2 =
+CALCULATE(
+    PERCENTILE.INC(d_emitente[LEADTIME_TRANSP_EMITENTE],0.1)
+    ,FILTER(
+        d_emitente
+        ,[CIDADE]=vCidade
+        &&[LEADTIME_TRANSP_EMITENTE] >0
+    )
+)
+VAR vQ3 =
+CALCULATE(
+    PERCENTILE.INC(d_emitente[LEADTIME_TRANSP_EMITENTE],0.9)
+    ,FILTER(
+        d_emitente
+        ,[CIDADE]=vCidade
+        &&[LEADTIME_TRANSP_EMITENTE] >0
+    )
+)
+RETURN
+CALCULATE(
+    AVERAGE(d_emitente[LEADTIME_TRANSP_EMITENTE])
+    ,FILTER(
+        d_emitente
+        ,[CIDADE]=vCidade
+        &&[LEADTIME_TRANSP_EMITENTE] >= vQ2
+        &&[LEADTIME_TRANSP_EMITENTE] <= vQ3
+    )
+)
+```
+### f_tch.FIM_MES
+```dax
+EOMONTH([DT_FECHEMENTO],0)
+```
+### d_calendar.SEMANA_PIMS
+```dax
+
+VAR vData = [DATA]
+RETURN
+SWITCH(TRUE()
+    ,[DATA]>=DATE(2024,12,29),"S-"&FORMAT(WEEKNUM(vData,1),"00")
+    ,"S-"&FORMAT(WEEKNUM(vData,1),"00")
+)
+```
+### d_equipamentos.DATA.1
+```dax
+
+CALCULATE(
+    MIN(d_datas_ignorar[DATA.1])
+)
+```
+### d_equipamentos.DATA.2
+```dax
+
+CALCULATE(
+    MIN(d_datas_ignorar[DATA.2])
+)
+```
+### d_equipamentos.FRT
+```dax
+SUBSTITUTE([FRENTE_UP],"FRENTE ","F-")
+```
+### d_equipamentos.CONSUMO DIESEL
+```dax
+
+VAR vEquipto = [CD_EQUIPTO]
+RETURN
+IF(
+    CALCULATE(
+        SUM(f_abastecimento[LITROS])
+        ,FILTER(f_abastecimento
+            ,[CD_MATERIAL] IN {89500,89838,104542}
+            &&[CD_EQUIPTO] = vEquipto
+        )
+    )>0
+    ,"SIM"
+    ,"NÃO"
+)
+```
+### f_abastecimento.META_CONSUMO
+```dax
+"META: "&FORMAT([MD_CONSUMO],"0")
+```
+### d_equipamentos.META_CONSUMO
+```dax
+"META: "&FORMAT(CALCULATE(MAX(f_abastecimento[MD_CONSUMO])),"0.00")
+```
+### d_equipamentos.MD_CONSUMO
+```dax
+CALCULATE(MAX(f_abastecimento[MD_CONSUMO]))
+```
+### d_equipamentos.GRUPO EQP
+```dax
+
+SWITCH(TRUE()
+    ,FIND("CM",[CATEGORIA_M],1,0)>0,"CAMINHÕES"
+    ,FIND("PRANCHA",[CATEGORIA_M],1,0)>0,"CAMINHÕES"
+    ,FIND("TRATOR",[CATEGORIA_M],1,0)>0,"TRATORES"
+    ,FIND("UNIPORT",[CATEGORIA_M],1,0)>0,"UNIPORT HERBIC"
+    ,FIND("MOTOBOMBA",[CATEGORIA_M],1,0)>0,"MOTOBOMBA"
+    ,FIND("LEVES",[CATEGORIA_M],1,0)>0,"VEICULOS LEVES"
+    ,FIND("PÁ CARREGADEIRA",[CATEGORIA_M],1,0)>0,"PÁ CARREGADEIRA"
+    ,[CATEGORIA_M]
+)   
+```
+### f_manfro.ORIGEM
+```dax
+
+SWITCH(
+    TRUE()
+    ,[ORIGEM_OS]="C","Campo"
+    ,[ORIGEM_OS]="I","Interna"
+    ,[ORIGEM_OS]="T","Terceiro"
+    ,"Outro")
+```
+### f_manfro.DATA_OS
+```dax
+DATE(YEAR([ENTRADA]),MONTH([ENTRADA]),DAY([ENTRADA]))
+```
+### d_criterio_disponibilidade.CLASSE
+```dax
+
+SUBSTITUTE([Descrição],"Manutenção ","")
+```
+### f_manfro.DATA_INICIAL
+```dax
+ROUNDDOWN([INICIAL]-MAX(d_inicio_turno[HORA_INICIAL])/24,0)
+```
+### f_manfro.DATA_FINAL
+```dax
+ROUNDDOWN([FINAL]-MAX(d_inicio_turno[HORA_INICIAL])/24,0)
+```
+### f_manfro.DESCONTO_DIA
+```dax
+
+ROUND(
+    DIVIDE(
+        HOUR([INICIAL]-MAX(d_inicio_turno[HORA_INICIAL])/24)
+        ,24
+    )
+    +DIVIDE(
+        MINUTE([INICIAL])
+        ,24*60
+    )
+    +DIVIDE(
+        SECOND([INICIAL])
+        ,24*60*60
+    )
+    ,4
+)
+```
+### f_manfro.ACRESCIMO_DIA
+```dax
+
+ROUND(
+    DIVIDE(
+        HOUR([FINAL]-MAX(d_inicio_turno[HORA_INICIAL])/24)
+        ,24
+    )
+    +
+    DIVIDE(
+        MINUTE([FINAL])
+        ,24*60
+    )
+    +
+    DIVIDE(
+        SECOND([FINAL])
+        ,24*60*60
+    )
+    ,4
+)
+```
+### d_funcionario.FUNC
+```dax
+UPPER([CD_FUNC])&" - "&[NOME_.1]
+```
+### d_orcamento_reais.INICIO_MES
+```dax
+
+VAR __ano = 2025
+RETURN
+VALUE(1&"/"&[Atributo]&"/"&IF([Atributo] IN {"JAN","FEV","MAR"}, __ano+1,__ano))
+```
+### d_equipamentos_sistema.CENTRO DE CUSTO
+```dax
+UPPER([CD_CCUSTO])
+```
+### d_equipamentos_sistema.QTD_EQP
+```dax
+
+VAR __ccusto = [CENTRO DE CUSTO]
+RETURN
+COUNTROWS(
+    FILTER(d_equipamentos_sistema
+        ,[CENTRO DE CUSTO]=__ccusto
+    )
+)
+```
+### d_equipamentos.CCUSTO_SIS
+```dax
+RELATED(d_equipamentos_sistema[CENTRO DE CUSTO])
+```
+### d_equipamentos.QTD_EQP
+```dax
+
+VAR __ccusto = [CCUSTO_SIS]
+RETURN
+COUNTROWS(
+    FILTER(d_equipamentos
+        ,[CCUSTO_SIS]=__ccusto
+    )
+)
+```
+### d_equipamentos.DE_CCUSTO
+```dax
+RELATED(d_equipamentos_sistema[DE_CCUSTO])
+```
+### f_ordem_compra.VALOR_APLICADO_AJUSTADO
+```dax
+
+[PRECO_UNIT2]*[QTD_MAT_APLICADO]
+```
+### f_ordem_compra.PRECO_UNIT2
+```dax
+
+VAR __ITEM = [CD_MATERIAL]
+RETURN
+CALCULATE(
+    AVERAGE(d_preco_unit[Preço])
+    ,FILTER(
+        d_preco_unit
+        ,[Item]=__ITEM
+    )
+)
+```
+### d_equipamentos.Grupo Equip.
+```dax
+
+VAR __ccusto = [CD_CCUSTO]
+RETURN
+CALCULATE(
+    FIRSTNONBLANK(d_orcamento_reais[Grupo Equip.],1)
+    ,FILTER(d_orcamento_reais
+        ,[Cód.]=__ccusto
+    )
+)
+```
+### d_equipamentos_sistema.Grupo Equip.
+```dax
+
+VAR __ccusto = [CD_CCUSTO]
+RETURN
+CALCULATE(
+    FIRSTNONBLANK(d_orcamento_reais[Grupo Equip.],1)
+    ,FILTER(d_orcamento_reais
+        ,[Cód.]=__ccusto
+    )
+)
+```
+### d_orcamento_reais.Coluna
+```dax
+[Orçamento R$ EQP]
+```
+### d_equipamentos_sistema.EQUIPAMENTO
+```dax
+UPPER(d_equipamentos_sistema[CD_EQUIPTO])
+```
+
+## TABELAS CALCULADAS (6)
+
+### d_calendar.d_calendar
+```dax
+
+VAR VIRA_DIA =
+IF(HOUR(MAX(f_atualizado[AGORA5]))-1<MAX(d_inicio_turno[HORA_INICIAL]),-1,0)
+VAR MAXMOV = 
+DATE(YEAR(MAX(f_atualizado[AGORA5]))+1,3,31)+VIRA_DIA
+VAR MAXMOV2 =
+DATE(YEAR(MAX(f_atualizado[AGORA5])),MONTH(MAX(f_atualizado[AGORA5])),DAY(MAX(f_atualizado[AGORA5])))+1+VIRA_DIA
+RETURN
+VAR DATAMIN = 
+CALCULATE(
+    MIN(f_manfro[ENTRADA])
+    ,FILTER(f_manfro
+        ,[ENTRADA]>0
+    )
+)
+RETURN
+ADDCOLUMNS (
+    CALENDAR(EOMONTH(DATAMIN,-1)-1,EOMONTH(MAXMOV-1,0))
+    ,"FILTRO"
+    ,SWITCH(
+        TRUE()
+        ,[DATE]=MAXMOV2-1,1
+        ,[DATE]=MAXMOV2-2,2
+        ,[DATE]=MAXMOV2-3,3
+        ,[DATE]=MAXMOV2-4,4
+        ,[DATE]=MAXMOV2-5,5
+        ,[DATE]=MAXMOV2-6,6
+        ,[DATE]=MAXMOV2-7,7
+        ,0
+    )
+    ,"FILTRO_TEXTO"
+    ,SWITCH(
+        TRUE()
+        ,[DATE]=MAXMOV2-1,"Hoje"
+        ,[DATE]=MAXMOV2-2,"D-1"
+        ,[DATE]=MAXMOV2-3,FORMAT([DATE],"DD/MM/YYYY")
+        ,[DATE]=MAXMOV2-4,FORMAT([DATE],"DD/MM/YYYY")
+        ,[DATE]=MAXMOV2-5,FORMAT([DATE],"DD/MM/YYYY")
+        ,[DATE]=MAXMOV2-6,FORMAT([DATE],"DD/MM/YYYY")
+        ,[DATE]=MAXMOV2-7,FORMAT([DATE],"DD/MM/YYYY")
+        ,FORMAT([DATE],"DD/MM/YYYY")
+    )
+    ,"EVENTOS"
+    ,SWITCH(
+        TRUE()
+        ,[DATE]=DATAMIN,"Início Safra"
+        ,""
+    )
+    ,"TEXTO_DATA"
+    ,UPPER(FORMAT([Date],"DDD, DD/MMM"))
+    ,"DATA_BRASIL"
+    ,UPPER(FORMAT([Date],"DD/MM/YYYY"))
+    ,"DATA_BRASIL_RESUMIDA"
+    ,UPPER(FORMAT([Date],"DD/MM"))
+    ,"ORDENA_DATA_BRASIL_RESUMIDA"
+    ,VALUE(FORMAT([Date],"MM")&","&FORMAT([Date],"MM"))
+    ,"ANO"
+    ,UPPER(FORMAT([Date],"YYYY"))
+    ,"MES"
+    ,UPPER(FORMAT([Date],"MMM"))
+    ,"MES_ANO"
+    ,UPPER(FORMAT([Date],"MMM, YYYY"))
+    ,"INICIO_MES_ANO"
+    ,DATE(YEAR([Date]),MONTH([Date]),DAY(EOMONTH([Date],-1)+1))
+    ,"FIM_MES_ANO"
+    ,DATE(YEAR([Date]),MONTH([Date]),DAY(EOMONTH([Date],0)))
+    ,"MES_NUM"
+    ,MONTH([Date])
+    ,"DIA_SEMANA"
+    ,UPPER(FORMAT([Date],"DDD"))
+    ,"DIA_SEMANA_COMPLETO"
+    ,UPPER(FORMAT([Date],"DDDD"))
+    ,"DIA_SEMANA_NUM"
+    ,WEEKDAY([Date],1)
+    ,"DIA_SEMANA_NUM_CORINGA"
+    ,SWITCH(TRUE()
+        ,WEEKDAY([Date],1)=1,"D"
+        ,WEEKDAY([Date],1)=2,"S"
+        ,WEEKDAY([Date],1)=3,"T"
+        ,WEEKDAY([Date],1)=4,"Q"
+        ,WEEKDAY([Date],1)=5,"Q "
+        ,WEEKDAY([Date],1)=6,"S "
+        ,WEEKDAY([Date],1)=7," S "
+    )
+    ,"DIA_MES"
+    ,DAY([Date])
+    ,"SEMANA_ANO"
+    ,WEEKNUM([Date],1)
+    ,"ANO_SEMANA"
+    ,VALUE(FORMAT([Date],"YYYY")+(VALUE(WEEKNUM([Date],1))/100))
+    ,"FILTRO_MES"
+    ,IF(MONTH(MAXMOV-2)=MONTH([Date])
+        ,1
+        ,0
+    )
+)
+```
+### d_data_hora.d_data_hora
+```dax
+
+VAR vInicioTurno = MAX(d_inicio_turno[HORA_INICIAL])
+VAR MAXMOV = DATE(YEAR(MAX(f_atualizado[AGORA5])),MONTH(MAX(f_atualizado[AGORA5])),DAY(MAX(f_atualizado[AGORA5])))+1
+VAR DATAMIN = 
+CALCULATE(
+    MIN(f_manfro[ENTRADA])
+    ,FILTER(f_manfro
+        ,[ENTRADA]>0
+    )
+)
+VAR AGORA =
+MAX(f_atualizado[AGORA5])
+RETURN
+ADDCOLUMNS(
+    CROSSJOIN(
+        CALENDAR(DATAMIN,EOMONTH(MAXMOV,0))
+        ,CALCULATETABLE(VALUES(d_hora[HORA]),FILTER(d_hora,[HORA]>=0))
+    )
+    ,"FECHAMENTO"
+    ,IF(
+        [HORA]<vInicioTurno
+        ,[DATE]-1
+        ,[DATE]
+    )
+    ,"FECHAMENTO_HORA"
+    ,IF(
+        [HORA]<vInicioTurno
+        ,[DATE]-1
+        ,[DATE]
+    )+TIME([HORA],0,0)
+    ,"DATA_HORA"
+    ,[DATE]+TIME([HORA],0,0)
+    ,"HORA_HORA"
+    ,FORMAT(TIME([HORA],0,0),"HH:MM")&"-"&FORMAT(TIME([HORA],59,59),"HH:MM")
+    ,"HORA_FECHA"
+    ,IF([HORA]+1=24,0,[HORA]+1)
+    ,"HR_ORDENADOR"
+    ,IF([HORA]<vInicioTurno
+        ,[HORA]+(24-vInicioTurno)
+        ,[HORA]-vInicioTurno
+    )
+    ,"DATA_BRASIL"
+    ,UPPER(FORMAT([Date],"DD/MM/YYYY"))
+    ,"FECHAMENTO_BRASIL"
+    ,UPPER(FORMAT(
+        IF(
+            [HORA]<vInicioTurno
+            ,[DATE]-1
+            ,[DATE]
+        )
+        ,"DD/MM/YYYY")
+    )
+    ,"FILTRO_10HS"
+    ,IF(AND([DATE]+TIME([HORA],0,0)<=AGORA,[DATE]+TIME([HORA],0,0)>=AGORA-0.42),1,0)
+    ,"FILTRO_ANTES_AGORA"
+    ,IF([DATE]+TIME([HORA],0,0)+DIVIDE(1,24)<AGORA,1,0)
+    ,"TURNO"
+    ,SWITCH(
+        TRUE()
+        ,[HORA]>=7 && [HORA]<15, "A"
+        ,[HORA]>=15 && [HORA]<23, "B"
+        ,"C"
+    )
+)
+```
+### d_meses.d_meses
+```dax
+SUMMARIZECOLUMNS(d_calendar[ANO],d_calendar[MES],d_calendar[FIM_MES_ANO])
+```
+### d_calendar_metas.d_calendar_metas
+```dax
+
+VAR ANO_ATUAL = 2026
+VAR MAXMOV = 
+DATE(ANO_ATUAL+1,3,31)
+VAR MAXMOV2 = 
+DATE(ANO_ATUAL+1,3,31)
+VAR DATAMIN = 
+DATE(2024,4,1)
+RETURN
+ADDCOLUMNS (
+    CALENDAR(DATAMIN,MAXMOV)
+    ,"FILTRO"
+    ,SWITCH(
+        TRUE()
+        ,[DATE]=MAXMOV-1,1
+        ,[DATE]=MAXMOV-2,2
+        ,[DATE]=MAXMOV-3,3
+        ,[DATE]=MAXMOV-4,4
+        ,[DATE]=MAXMOV-5,5
+        ,[DATE]=MAXMOV-6,6
+        ,[DATE]=MAXMOV-7,7
+        ,0
+    )
+    ,"FILTRO_TEXTO"
+    ,SWITCH(
+        TRUE()
+        ,[DATE]=MAXMOV2-1,"Hoje"
+        ,[DATE]=MAXMOV2-2,"D-1"
+        ,[DATE]=MAXMOV2-3,FORMAT([DATE],"DD/MM/YYYY")
+        ,[DATE]=MAXMOV2-4,FORMAT([DATE],"DD/MM/YYYY")
+        ,[DATE]=MAXMOV2-5,FORMAT([DATE],"DD/MM/YYYY")
+        ,[DATE]=MAXMOV2-6,FORMAT([DATE],"DD/MM/YYYY")
+        ,[DATE]=MAXMOV2-7,FORMAT([DATE],"DD/MM/YYYY")
+        ,FORMAT([DATE],"DD/MM/YYYY")
+    )
+    ,"EVENTOS"
+    ,SWITCH(
+        TRUE()
+        ,[DATE]=DATAMIN,"Início Safra"
+        ,""
+    )
+    ,"TEXTO_DATA"
+    ,UPPER(FORMAT([Date],"DDD, DD/MMM"))
+    ,"DATA_BRASIL"
+    ,UPPER(FORMAT([Date],"DD/MM/YYYY"))
+    ,"DATA_BRASIL_RESUMIDA"
+    ,UPPER(FORMAT([Date],"DD/MM"))
+    ,"ORDENA_DATA_BRASIL_RESUMIDA"
+    ,VALUE(FORMAT([Date],"MM")&","&FORMAT([Date],"MM"))
+    ,"ANO"
+    ,UPPER(FORMAT([Date],"YYYY"))
+    ,"MES"
+    ,UPPER(FORMAT([Date],"MMM"))
+    ,"MES_ANO"
+    ,UPPER(FORMAT([Date],"MMM, YYYY"))
+    ,"INICIO_MES_ANO"
+    ,DATE(YEAR([Date]),MONTH([Date]),DAY(EOMONTH([Date],-1)+1))
+    ,"FIM_MES_ANO"
+    ,DATE(YEAR([Date]),MONTH([Date]),DAY(EOMONTH([Date],0)))
+    ,"MES_NUM"
+    ,MONTH([Date])
+    ,"DIA_SEMANA"
+    ,UPPER(FORMAT([Date],"DDD"))
+    ,"DIA_SEMANA_COMPLETO"
+    ,UPPER(FORMAT([Date],"DDDD"))
+    ,"DIA_SEMANA_NUM"
+    ,WEEKDAY([Date],1)
+    ,"DIA_SEMANA_NUM_CORINGA"
+    ,SWITCH(TRUE()
+        ,WEEKDAY([Date],1)=1,"D"
+        ,WEEKDAY([Date],1)=2,"S"
+        ,WEEKDAY([Date],1)=3,"T"
+        ,WEEKDAY([Date],1)=4,"Q"
+        ,WEEKDAY([Date],1)=5,"Q "
+        ,WEEKDAY([Date],1)=6,"S "
+        ,WEEKDAY([Date],1)=7," S "
+    )
+    ,"DIA_MES"
+    ,DAY([Date])
+    ,"SEMANA_ANO"
+    ,WEEKNUM([Date],1)
+    ,"ANO_SEMANA"
+    ,VALUE(FORMAT([Date],"YYYY")+(VALUE(WEEKNUM([Date],1))/100))
+    ,"FILTRO_MES"
+    ,IF(MONTH(MAXMOV-2)=MONTH([Date])
+        ,1
+        ,0
+    )
+)
+```
+### Ano Safra.Ano Safra
+```dax
+GENERATESERIES(2019, 2026, 1)
+```
+### d_disponibilidade_eqp_data.d_disponibilidade_eqp_data
+```dax
+ADDCOLUMNS(
+    FILTER(
+        CROSSJOIN(
+            ALL(d_equipamentos[CD_EQUIPTO]),
+            CALCULATETABLE(
+                ALL(d_calendar[DATA]),
+                d_calendar[DATA] > DATE(2025,1,1),
+                d_calendar[DATA] <= TODAY() + 1
+            )
+        ),
+        COUNTROWS(
+            FILTER(
+                d_datas_ignorar,
+                d_datas_ignorar[CD_EQUIPTO] = d_equipamentos[CD_EQUIPTO]
+                && d_calendar[DATA] >= d_datas_ignorar[DATA.1]
+                && d_calendar[DATA] <= d_datas_ignorar[DATA.2]
+            )
+        ) = 0
+    ),
+    "DISP",
+    MAX([Aproveitamento Mecânico Dia (%)], 0)
 )
 ```

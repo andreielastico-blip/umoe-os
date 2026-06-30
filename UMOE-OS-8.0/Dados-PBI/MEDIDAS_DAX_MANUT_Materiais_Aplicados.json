@@ -1,0 +1,527 @@
+[
+ {
+  "Kind": "Coluna calculada",
+  "Table": "DateTableTemplate_8bc41d09-24b0-4598-ba88-f12900eeef69",
+  "Name": "Ano",
+  "Auto": true,
+  "Expression": "YEAR([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "DateTableTemplate_8bc41d09-24b0-4598-ba88-f12900eeef69",
+  "Name": "MonthNo",
+  "Auto": true,
+  "Expression": "MONTH([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "DateTableTemplate_8bc41d09-24b0-4598-ba88-f12900eeef69",
+  "Name": "Mês",
+  "Auto": true,
+  "Expression": "FORMAT([Date], \"MMMM\")"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "DateTableTemplate_8bc41d09-24b0-4598-ba88-f12900eeef69",
+  "Name": "QuarterNo",
+  "Auto": true,
+  "Expression": "INT(([MonthNo] + 2) / 3)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "DateTableTemplate_8bc41d09-24b0-4598-ba88-f12900eeef69",
+  "Name": "Trimestre",
+  "Auto": true,
+  "Expression": "\"Trim \" & [QuarterNo]"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "DateTableTemplate_8bc41d09-24b0-4598-ba88-f12900eeef69",
+  "Name": "Dia",
+  "Auto": true,
+  "Expression": "DAY([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_c6775f97-2e1b-456f-96c5-6e04cea7eb37",
+  "Name": "Ano",
+  "Auto": true,
+  "Expression": "YEAR([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_c6775f97-2e1b-456f-96c5-6e04cea7eb37",
+  "Name": "MonthNo",
+  "Auto": true,
+  "Expression": "MONTH([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_c6775f97-2e1b-456f-96c5-6e04cea7eb37",
+  "Name": "Mês",
+  "Auto": true,
+  "Expression": "FORMAT([Date], \"MMMM\")"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_c6775f97-2e1b-456f-96c5-6e04cea7eb37",
+  "Name": "QuarterNo",
+  "Auto": true,
+  "Expression": "INT(([MonthNo] + 2) / 3)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_c6775f97-2e1b-456f-96c5-6e04cea7eb37",
+  "Name": "Trimestre",
+  "Auto": true,
+  "Expression": "\"Trim \" & [QuarterNo]"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_c6775f97-2e1b-456f-96c5-6e04cea7eb37",
+  "Name": "Dia",
+  "Auto": true,
+  "Expression": "DAY([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_735e94fa-fe19-4632-bf7b-a5a66f301716",
+  "Name": "Ano",
+  "Auto": true,
+  "Expression": "YEAR([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_735e94fa-fe19-4632-bf7b-a5a66f301716",
+  "Name": "MonthNo",
+  "Auto": true,
+  "Expression": "MONTH([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_735e94fa-fe19-4632-bf7b-a5a66f301716",
+  "Name": "Mês",
+  "Auto": true,
+  "Expression": "FORMAT([Date], \"MMMM\")"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_735e94fa-fe19-4632-bf7b-a5a66f301716",
+  "Name": "QuarterNo",
+  "Auto": true,
+  "Expression": "INT(([MonthNo] + 2) / 3)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_735e94fa-fe19-4632-bf7b-a5a66f301716",
+  "Name": "Trimestre",
+  "Auto": true,
+  "Expression": "\"Trim \" & [QuarterNo]"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_735e94fa-fe19-4632-bf7b-a5a66f301716",
+  "Name": "Dia",
+  "Auto": true,
+  "Expression": "DAY([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_31f182bb-0888-479c-8f08-395dccbcc0ee",
+  "Name": "Ano",
+  "Auto": true,
+  "Expression": "YEAR([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_31f182bb-0888-479c-8f08-395dccbcc0ee",
+  "Name": "MonthNo",
+  "Auto": true,
+  "Expression": "MONTH([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_31f182bb-0888-479c-8f08-395dccbcc0ee",
+  "Name": "Mês",
+  "Auto": true,
+  "Expression": "FORMAT([Date], \"MMMM\")"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_31f182bb-0888-479c-8f08-395dccbcc0ee",
+  "Name": "QuarterNo",
+  "Auto": true,
+  "Expression": "INT(([MonthNo] + 2) / 3)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_31f182bb-0888-479c-8f08-395dccbcc0ee",
+  "Name": "Trimestre",
+  "Auto": true,
+  "Expression": "\"Trim \" & [QuarterNo]"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_31f182bb-0888-479c-8f08-395dccbcc0ee",
+  "Name": "Dia",
+  "Auto": true,
+  "Expression": "DAY([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_3e7128fc-a401-4192-a365-80e6b2dfad97",
+  "Name": "Ano",
+  "Auto": true,
+  "Expression": "YEAR([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_3e7128fc-a401-4192-a365-80e6b2dfad97",
+  "Name": "MonthNo",
+  "Auto": true,
+  "Expression": "MONTH([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_3e7128fc-a401-4192-a365-80e6b2dfad97",
+  "Name": "Mês",
+  "Auto": true,
+  "Expression": "FORMAT([Date], \"MMMM\")"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_3e7128fc-a401-4192-a365-80e6b2dfad97",
+  "Name": "QuarterNo",
+  "Auto": true,
+  "Expression": "INT(([MonthNo] + 2) / 3)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_3e7128fc-a401-4192-a365-80e6b2dfad97",
+  "Name": "Trimestre",
+  "Auto": true,
+  "Expression": "\"Trim \" & [QuarterNo]"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_3e7128fc-a401-4192-a365-80e6b2dfad97",
+  "Name": "Dia",
+  "Auto": true,
+  "Expression": "DAY([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_58d09b32-d9b0-475a-b06f-5e1962f0153f",
+  "Name": "Ano",
+  "Auto": true,
+  "Expression": "YEAR([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_58d09b32-d9b0-475a-b06f-5e1962f0153f",
+  "Name": "MonthNo",
+  "Auto": true,
+  "Expression": "MONTH([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_58d09b32-d9b0-475a-b06f-5e1962f0153f",
+  "Name": "Mês",
+  "Auto": true,
+  "Expression": "FORMAT([Date], \"MMMM\")"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_58d09b32-d9b0-475a-b06f-5e1962f0153f",
+  "Name": "QuarterNo",
+  "Auto": true,
+  "Expression": "INT(([MonthNo] + 2) / 3)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_58d09b32-d9b0-475a-b06f-5e1962f0153f",
+  "Name": "Trimestre",
+  "Auto": true,
+  "Expression": "\"Trim \" & [QuarterNo]"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_58d09b32-d9b0-475a-b06f-5e1962f0153f",
+  "Name": "Dia",
+  "Auto": true,
+  "Expression": "DAY([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "Materiais Aplicados",
+  "Name": "Data Aplicação",
+  "Auto": false,
+  "Expression": "'Materiais Aplicados'[DT_APLICACAO]"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_4b82151a-6163-4ac3-9dbc-0d85fcf0d1a4",
+  "Name": "Ano",
+  "Auto": true,
+  "Expression": "YEAR([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_4b82151a-6163-4ac3-9dbc-0d85fcf0d1a4",
+  "Name": "MonthNo",
+  "Auto": true,
+  "Expression": "MONTH([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_4b82151a-6163-4ac3-9dbc-0d85fcf0d1a4",
+  "Name": "Mês",
+  "Auto": true,
+  "Expression": "FORMAT([Date], \"MMMM\")"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_4b82151a-6163-4ac3-9dbc-0d85fcf0d1a4",
+  "Name": "QuarterNo",
+  "Auto": true,
+  "Expression": "INT(([MonthNo] + 2) / 3)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_4b82151a-6163-4ac3-9dbc-0d85fcf0d1a4",
+  "Name": "Trimestre",
+  "Auto": true,
+  "Expression": "\"Trim \" & [QuarterNo]"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_4b82151a-6163-4ac3-9dbc-0d85fcf0d1a4",
+  "Name": "Dia",
+  "Auto": true,
+  "Expression": "DAY([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "Materiais Aplicados",
+  "Name": "META DIA",
+  "Auto": false,
+  "Expression": "80854"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_7c7a50de-3152-497d-9b8b-f43a360f53d6",
+  "Name": "Ano",
+  "Auto": true,
+  "Expression": "YEAR([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_7c7a50de-3152-497d-9b8b-f43a360f53d6",
+  "Name": "MonthNo",
+  "Auto": true,
+  "Expression": "MONTH([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_7c7a50de-3152-497d-9b8b-f43a360f53d6",
+  "Name": "Mês",
+  "Auto": true,
+  "Expression": "FORMAT([Date], \"MMMM\")"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_7c7a50de-3152-497d-9b8b-f43a360f53d6",
+  "Name": "QuarterNo",
+  "Auto": true,
+  "Expression": "INT(([MonthNo] + 2) / 3)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_7c7a50de-3152-497d-9b8b-f43a360f53d6",
+  "Name": "Trimestre",
+  "Auto": true,
+  "Expression": "\"Trim \" & [QuarterNo]"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_7c7a50de-3152-497d-9b8b-f43a360f53d6",
+  "Name": "Dia",
+  "Auto": true,
+  "Expression": "DAY([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_atualizado",
+  "Name": "AGORA 2",
+  "Auto": false,
+  "Expression": "\nFORMAT(DATE(YEAR([AGORA5]),MONTH([AGORA5]),DAY([AGORA5]))+TIME(HOUR([AGORA5]),0,0),\"dd/mm/yy hh:mm\")"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_atualizado",
+  "Name": "AGORA5",
+  "Auto": false,
+  "Expression": "\n[AGORA]+0.0034722222"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_6556ec5b-3dbe-48f9-acfb-9d85b7082058",
+  "Name": "Ano",
+  "Auto": true,
+  "Expression": "YEAR([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_6556ec5b-3dbe-48f9-acfb-9d85b7082058",
+  "Name": "MonthNo",
+  "Auto": true,
+  "Expression": "MONTH([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_6556ec5b-3dbe-48f9-acfb-9d85b7082058",
+  "Name": "Mês",
+  "Auto": true,
+  "Expression": "FORMAT([Date], \"MMMM\")"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_6556ec5b-3dbe-48f9-acfb-9d85b7082058",
+  "Name": "QuarterNo",
+  "Auto": true,
+  "Expression": "INT(([MonthNo] + 2) / 3)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_6556ec5b-3dbe-48f9-acfb-9d85b7082058",
+  "Name": "Trimestre",
+  "Auto": true,
+  "Expression": "\"Trim \" & [QuarterNo]"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_6556ec5b-3dbe-48f9-acfb-9d85b7082058",
+  "Name": "Dia",
+  "Auto": true,
+  "Expression": "DAY([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_atualizado",
+  "Name": "agora0",
+  "Auto": false,
+  "Expression": "DATE(YEAR([AGORA5]),MONTH([AGORA5]),DAY([AGORA5]))+TIME(HOUR([AGORA5]),0,0)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_c15861c0-70ba-45e8-a203-770923c64c85",
+  "Name": "Ano",
+  "Auto": true,
+  "Expression": "YEAR([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_c15861c0-70ba-45e8-a203-770923c64c85",
+  "Name": "MonthNo",
+  "Auto": true,
+  "Expression": "MONTH([Date])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_c15861c0-70ba-45e8-a203-770923c64c85",
+  "Name": "Mês",
+  "Auto": true,
+  "Expression": "FORMAT([Date], \"MMMM\")"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_c15861c0-70ba-45e8-a203-770923c64c85",
+  "Name": "QuarterNo",
+  "Auto": true,
+  "Expression": "INT(([MonthNo] + 2) / 3)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_c15861c0-70ba-45e8-a203-770923c64c85",
+  "Name": "Trimestre",
+  "Auto": true,
+  "Expression": "\"Trim \" & [QuarterNo]"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "LocalDateTable_c15861c0-70ba-45e8-a203-770923c64c85",
+  "Name": "Dia",
+  "Auto": true,
+  "Expression": "DAY([Date])"
+ },
+ {
+  "Kind": "Tabela calculada",
+  "Table": "DateTableTemplate_8bc41d09-24b0-4598-ba88-f12900eeef69",
+  "Name": "DateTableTemplate_8bc41d09-24b0-4598-ba88-f12900eeef69",
+  "Auto": true,
+  "Expression": "Calendar(Date(2015,1,1), Date(2015,1,1))"
+ },
+ {
+  "Kind": "Tabela calculada",
+  "Table": "LocalDateTable_c6775f97-2e1b-456f-96c5-6e04cea7eb37",
+  "Name": "LocalDateTable_c6775f97-2e1b-456f-96c5-6e04cea7eb37",
+  "Auto": true,
+  "Expression": "Calendar(Date(Year(MIN('Materiais Aplicados'[HR_ENTRADA])), 1, 1), Date(Year(MAX('Materiais Aplicados'[HR_ENTRADA])), 12, 31))"
+ },
+ {
+  "Kind": "Tabela calculada",
+  "Table": "LocalDateTable_735e94fa-fe19-4632-bf7b-a5a66f301716",
+  "Name": "LocalDateTable_735e94fa-fe19-4632-bf7b-a5a66f301716",
+  "Auto": true,
+  "Expression": "Calendar(Date(Year(MIN('Materiais Aplicados'[HR_SAIDA])), 1, 1), Date(Year(MAX('Materiais Aplicados'[HR_SAIDA])), 12, 31))"
+ },
+ {
+  "Kind": "Tabela calculada",
+  "Table": "LocalDateTable_31f182bb-0888-479c-8f08-395dccbcc0ee",
+  "Name": "LocalDateTable_31f182bb-0888-479c-8f08-395dccbcc0ee",
+  "Auto": true,
+  "Expression": "Calendar(Date(Year(MIN('Materiais Aplicados'[DT_ENVIO])), 1, 1), Date(Year(MAX('Materiais Aplicados'[DT_ENVIO])), 12, 31))"
+ },
+ {
+  "Kind": "Tabela calculada",
+  "Table": "LocalDateTable_3e7128fc-a401-4192-a365-80e6b2dfad97",
+  "Name": "LocalDateTable_3e7128fc-a401-4192-a365-80e6b2dfad97",
+  "Auto": true,
+  "Expression": "Calendar(Date(Year(MIN('Materiais Aplicados'[DT_NECES])), 1, 1), Date(Year(MAX('Materiais Aplicados'[DT_NECES])), 12, 31))"
+ },
+ {
+  "Kind": "Tabela calculada",
+  "Table": "LocalDateTable_58d09b32-d9b0-475a-b06f-5e1962f0153f",
+  "Name": "LocalDateTable_58d09b32-d9b0-475a-b06f-5e1962f0153f",
+  "Auto": true,
+  "Expression": "Calendar(Date(Year(MIN('Materiais Aplicados'[DT_APLICACAO])), 1, 1), Date(Year(MAX('Materiais Aplicados'[DT_APLICACAO])), 12, 31))"
+ },
+ {
+  "Kind": "Tabela calculada",
+  "Table": "LocalDateTable_4b82151a-6163-4ac3-9dbc-0d85fcf0d1a4",
+  "Name": "LocalDateTable_4b82151a-6163-4ac3-9dbc-0d85fcf0d1a4",
+  "Auto": true,
+  "Expression": "Calendar(Date(Year(MIN('Materiais Aplicados'[Data Aplicação])), 1, 1), Date(Year(MAX('Materiais Aplicados'[Data Aplicação])), 12, 31))"
+ },
+ {
+  "Kind": "Tabela calculada",
+  "Table": "LocalDateTable_7c7a50de-3152-497d-9b8b-f43a360f53d6",
+  "Name": "LocalDateTable_7c7a50de-3152-497d-9b8b-f43a360f53d6",
+  "Auto": true,
+  "Expression": "Calendar(Date(Year(MIN('f_atualizado'[AGORA])), 1, 1), Date(Year(MAX('f_atualizado'[AGORA])), 12, 31))"
+ },
+ {
+  "Kind": "Tabela calculada",
+  "Table": "LocalDateTable_6556ec5b-3dbe-48f9-acfb-9d85b7082058",
+  "Name": "LocalDateTable_6556ec5b-3dbe-48f9-acfb-9d85b7082058",
+  "Auto": true,
+  "Expression": "Calendar(Date(Year(MIN('f_atualizado'[AGORA5])), 1, 1), Date(Year(MAX('f_atualizado'[AGORA5])), 12, 31))"
+ },
+ {
+  "Kind": "Tabela calculada",
+  "Table": "LocalDateTable_c15861c0-70ba-45e8-a203-770923c64c85",
+  "Name": "LocalDateTable_c15861c0-70ba-45e8-a203-770923c64c85",
+  "Auto": true,
+  "Expression": "Calendar(Date(Year(MIN('f_atualizado'[agora0])), 1, 1), Date(Year(MAX('f_atualizado'[agora0])), 12, 31))"
+ }
+]

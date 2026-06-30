@@ -26,11 +26,23 @@ AZURE_CLI = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
 SCOPE = ["https://analysis.windows.net/powerbi/api/.default"]
 
 # Relatorios-modelo a baixar: nome -> (workspace_id, report_id)
+# Um por DATASET distinto (datasetId). Reports que compartilham o mesmo dataset
+# nao se repetem (todo o DAX do umoe_dataset ja vem de MANUT_umoe_dataset).
+WS_AGR = "662a06b5-5579-4af6-b66a-7ac191a96674"
+WS_MAN = "954ecb3e-1daf-4a98-8801-39f2026da2d8"
 RELATORIOS = {
-    "BI_AGR_01_BASE": ("662a06b5-5579-4af6-b66a-7ac191a96674", "3be2f3d8-557a-4375-8f70-1e2694fbf95e"),
-    "BI_AGR_01_CST":  ("662a06b5-5579-4af6-b66a-7ac191a96674", "0881949a-a6b2-4b11-a030-b183f2e67651"),
-    "BI_AGR_01_CTRL": ("662a06b5-5579-4af6-b66a-7ac191a96674", "721b4394-4455-4bb6-971d-ef5244e66e07"),
-    "MANUT_umoe_dataset": ("954ecb3e-1daf-4a98-8801-39f2026da2d8", "23193f71-f14b-4e67-886a-17791a5af32b"),
+    # Agricola
+    "BI_AGR_01_BASE": (WS_AGR, "3be2f3d8-557a-4375-8f70-1e2694fbf95e"),
+    "BI_AGR_01_CST":  (WS_AGR, "0881949a-a6b2-4b11-a030-b183f2e67651"),
+    "BI_AGR_01_CTRL": (WS_AGR, "721b4394-4455-4bb6-971d-ef5244e66e07"),
+    # Manutencao - dataset principal
+    "MANUT_umoe_dataset": (WS_MAN, "23193f71-f14b-4e67-886a-17791a5af32b"),
+    # Manutencao - datasets proprios (DAX que faltava)
+    "MANUT_Materiais_Aplicados":  (WS_MAN, "b9b86992-61d8-4e07-8e92-f88e9616a357"),
+    "MANUT_Capa":                 (WS_MAN, "631a95ed-619d-4ec2-a0e9-6982bd3f1121"),
+    "MANUT_OS_Interna_Campo":     (WS_MAN, "e1002429-11f1-45a4-ab29-e54e9b609cf6"),
+    "MANUT_OS_Transporte":        (WS_MAN, "9024f76f-cf91-4d0d-a77c-1f632d07ff70"),
+    "MANUT_PARETOS_PROCESSOS":    (WS_MAN, "c8f63278-b526-4368-9a43-f1cef48f8693"),
 }
 
 def get_token():
@@ -68,33 +80,93 @@ def baixar(tok, nome, ws, rid):
     print(f"  [{nome}] PBIX {fp.stat().st_size//1024} KB")
     return fp
 
+import re as _re
+_AUTO = _re.compile(r"DateTableTemplate|LocalDateTable")  # tabelas de data auto-geradas
+
+def _col(r, *nomes):
+    for n in nomes:
+        if n in r and str(r.get(n, "")).strip() not in ("", "nan", "None"):
+            return r.get(n)
+    return ""
+
+def _linhas(df, kind):
+    """Normaliza um DataFrame do pbixray (measures/columns/tables) em registros DAX."""
+    out = []
+    if df is None or len(df) == 0:
+        return out
+    for _, r in df.iterrows():
+        expr = str(_col(r, "Expression"))
+        if not expr.strip():
+            continue  # so DAX (ignora colunas/tabelas sem formula = vindas da fonte)
+        tbl = str(_col(r, "TableName", "Table"))
+        nm  = str(_col(r, "Name", "ColumnName", "MeasureName")) or tbl
+        out.append({"Kind": kind, "Table": tbl, "Name": nm,
+                    "Auto": bool(_AUTO.search(tbl)), "Expression": expr})
+    return out
+
 def extrair(nome, fp):
     try:
         m = PBIXRay(str(fp))
-        med = m.dax_measures
-        regs = [{"Table": r.get("TableName", r.get("Table","")), "Name": r.get("Name"),
-                 "Expression": str(r.get("Expression",""))} for _, r in med.iterrows()]
-        (PBIX_DIR.parent / f"MEDIDAS_DAX_{nome}.json").write_text(json.dumps(regs, ensure_ascii=False, indent=1), encoding="utf-8")
-        # markdown legivel
-        md = [f"# Medidas DAX — {nome} ({len(regs)})", ""]
-        for r in regs:
-            md.append(f"### {r['Table']}.{r['Name']}\n```dax\n{r['Expression']}\n```")
+        med  = _linhas(getattr(m, "dax_measures", None), "Medida")
+        cols = _linhas(getattr(m, "dax_columns",  None), "Coluna calculada")
+        tabs = _linhas(getattr(m, "dax_tables",   None), "Tabela calculada")
+        regs = med + cols + tabs
+        # JSON: 100% (inclui auto date tables, marcadas com Auto=true)
+        (PBIX_DIR.parent / f"MEDIDAS_DAX_{nome}.json").write_text(
+            json.dumps(regs, ensure_ascii=False, indent=1), encoding="utf-8")
+        # contagens de negocio (sem auto date tables)
+        bmed  = [r for r in med  if not r["Auto"]]
+        bcols = [r for r in cols if not r["Auto"]]
+        btabs = [r for r in tabs if not r["Auto"]]
+        nbiz = len(bmed) + len(bcols) + len(btabs); nauto = len(regs) - nbiz
+        # markdown legivel = SO negocio
+        md = [f"# DAX (negocio) — {nome}",
+              f"Medidas: {len(bmed)} | Colunas calculadas: {len(bcols)} | Tabelas calculadas: {len(btabs)} "
+              f"| Negocio: {nbiz} | Auto date tables omitidas: {nauto}", ""]
+        for titulo, grupo in [("MEDIDAS", bmed), ("COLUNAS CALCULADAS", bcols), ("TABELAS CALCULADAS", btabs)]:
+            if not grupo:
+                continue
+            md.append(f"\n## {titulo} ({len(grupo)})\n")
+            for r in grupo:
+                md.append(f"### {r['Table']}.{r['Name']}\n```dax\n{r['Expression']}\n```")
         (PBIX_DIR.parent / f"MEDIDAS_DAX_{nome}.md").write_text("\n".join(md), encoding="utf-8")
-        print(f"  [{nome}] {len(regs)} medidas DAX extraidas")
-        return len(regs)
+        print(f"  [{nome}] negocio={nbiz} (med={len(bmed)} col={len(bcols)} tab={len(btabs)}) | +{nauto} auto | total={len(regs)}")
+        return nbiz
     except Exception as e:
         print(f"  [{nome}] erro pbixray: {e}"); return 0
 
 def main():
-    alvo = sys.argv[1] if len(sys.argv) > 1 else None
-    tok = get_token()
-    if not tok: print("ERRO: sem token"); sys.exit(1)
-    tot = 0
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    flags = [a for a in sys.argv[1:] if a.startswith("--")]
+    alvo = args[0] if args else None
+    force = "--force" in flags        # rebaixa mesmo se o PBIX ja existir
+    tok = None
+    tot = 0; catalogo = []
     for nome, (ws, rid) in RELATORIOS.items():
         if alvo and alvo.upper() not in nome.upper(): continue
-        fp = baixar(tok, nome, ws, rid)
-        if fp: tot += extrair(nome, fp)
-    print(f"CONCLUIDO: {tot} medidas DAX (em Dados-PBI/MEDIDAS_DAX_*.md)")
+        fp = PBIX_DIR / f"{nome}.pbix"
+        if force or not fp.exists() or fp.stat().st_size < 1024:
+            if tok is None:
+                tok = get_token()
+                if not tok: print("ERRO: sem token"); sys.exit(1)
+            fp = baixar(tok, nome, ws, rid)
+        else:
+            print(f"  [{nome}] PBIX em cache ({fp.stat().st_size//1024} KB)")
+        if fp and fp.exists():
+            n = extrair(nome, fp)
+            tot += n; catalogo.append((nome, n))
+    # catalogo geral
+    cat_md = ["# Catalogo DAX UMOE — todas as formulas de calculo do BI",
+              "",
+              "Fonte: PBIX dos datasets dos workspaces Agricola e Manutencao PREMIUM, extraido com pbixray.",
+              "Contagem = formulas de NEGOCIO (medidas + colunas/tabelas calculadas), sem as tabelas de data auto-geradas.",
+              "Os arquivos .json guardam 100% (auto date tables marcadas com Auto=true).",
+              ""]
+    for nome, n in catalogo:
+        cat_md.append(f"- **{nome}**: {n} formulas DAX -> [MEDIDAS_DAX_{nome}.md](MEDIDAS_DAX_{nome}.md)")
+    cat_md.append(f"\n**TOTAL: {tot} formulas DAX de negocio** em {len(catalogo)} datasets.")
+    (PBIX_DIR.parent / "DAX_CATALOGO.md").write_text("\n".join(cat_md), encoding="utf-8")
+    print(f"CONCLUIDO: {tot} formulas DAX de negocio em {len(catalogo)} datasets (Dados-PBI/DAX_CATALOGO.md)")
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,1696 @@
+[
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Disponibilidade (%)",
+  "Auto": false,
+  "Expression": "VAR HORAS_DISPONIVEIS =\n    SUMX(\n        ADDCOLUMNS(\n            d_data_hora,\n            \"HORAS_DISP\",\n            CALCULATE(DISTINCTCOUNT(d_equipamentos[CD_EQUIPTO]))\n        ),\n        [HORAS_DISP]\n    )\nVAR HORAS =\n    SUMX(\n        ADDCOLUMNS(\n            d_data_hora,\n            \"HORASP\",\n            CALCULATE(\n                DISTINCTCOUNT(f_manfro[CD_EQUIPTO]),\n                FILTER(f_manfro,\n                    [HORA_INICIAL]<[DATA_HORA] && [HORA_INICIAL]>0 && [HORA_FINAL]>[DATA_HORA] && NOT [ORIGEM_OS] IN {\"E\"} && [STATUS] IN {\"Andamento\",\"Encerrada\"}\n                ),\n                FILTER(d_criterio_disponibilidade, [Considerar]=\"S\")\n            )\n        ),\n        [HORASP]\n    )\nVAR HORAS_INICIAL =\n    SUMX(\n        ADDCOLUMNS(\n            d_data_hora,\n            \"HORASP\",\n            CALCULATE(\n                DISTINCTCOUNT(f_manfro[CD_EQUIPTO]) - SUM(f_manfro[DESCONTO_INICIAL]),\n                FILTER(f_manfro,\n                    [HORA_INICIAL]=[DATA_HORA] && [HORA_INICIAL]>0 && [HORA_FINAL]>[DATA_HORA] && NOT [ORIGEM_OS] IN {\"E\"} && [STATUS] IN {\"Andamento\",\"Encerrada\"}\n                ),\n                FILTER(d_criterio_disponibilidade, [Considerar]=\"S\")\n            )\n        ),\n        [HORASP]\n    )\nVAR HORAS_FINAL =\n    SUMX(\n        ADDCOLUMNS(\n            d_data_hora,\n            \"HORASP\",\n            CALCULATE(\n                SUM(f_manfro[ACRESCIMO_FINAL]),\n                FILTER(f_manfro,\n                    [HORA_INICIAL]<[DATA_HORA] && [HORA_INICIAL]>0 && [HORA_FINAL]=[DATA_HORA] && NOT [ORIGEM_OS] IN {\"E\"} && [STATUS] IN {\"Andamento\",\"Encerrada\"}\n                ),\n                FILTER(d_criterio_disponibilidade, [Considerar]=\"S\")\n            )\n        ),\n        [HORASP]\n    )\nVAR HORAS_ENTRE =\n    SUMX(\n        ADDCOLUMNS(\n            d_data_hora,\n            \"HORASP\",\n            CALCULATE(\n                SUMX(f_manfro, [ACRESCIMO_FINAL]-[DESCONTO_INICIAL]),\n                FILTER(f_manfro,\n                    [HORA_INICIAL]=[DATA_HORA] && [HORA_FINAL]=[DATA_HORA] && NOT [ORIGEM_OS] IN {\"E\"} && [STATUS] IN {\"Andamento\",\"Encerrada\"}\n                ),\n                FILTER(d_criterio_disponibilidade, [Considerar]=\"S\")\n            )\n        ),\n        [HORASP]\n    )\nRETURN\nAVERAGEX(\n    d_data_hora,\n    1-\n    DIVIDE(\n        HORAS+HORAS_INICIAL+HORAS_FINAL+HORAS_ENTRE,\n        HORAS_DISPONIVEIS\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Disponibilidade Média (%)",
+  "Auto": false,
+  "Expression": "\n// VAR vMedia =\n// CALCULATE(\n//     AVERAGEX(\n//         ADDCOLUMNS(d_data_hora\n//             ,\"DISPONIBILIDADE\"\n//             ,[Disponibilidade (%)]\n//         )\n//         ,[DISPONIBILIDADE]\n//     )\n//     ,USERELATIONSHIP(d_data_hora[FECHAMENTO],d_calendar[DATA])\n//     ,FILTER(d_data_hora\n//         ,[FILTRO_ANTES_AGORA]=1\n//     )\n// )\n// RETURN\n// COALESCE(\n//     [Disponibilidade Semana Ajuste]\n//     ,IF(vMedia>=0,vMedia)\n// )\nCALCULATE(\n    IF(\n        --HASONEFILTER(d_data_hora[HORA]) || HASONEFILTER(d_data_hora[HORA_FECHA]) || HASONEFILTER(d_calendar[FILTRO_TEXTO]) || \n        SELECTEDVALUE(d_calendar[DATA]) < CALCULATE(MAX(d_calendar[DATA]),ALLSELECTED(d_calendar))-1 && (HASONEFILTER(d_data_hora[HORA]) || HASONEFILTER(d_data_hora[HORA_FECHA])) = FALSE()\n        ,CALCULATE(\n            AVERAGEX(d_disponibilidade_eqp_data, MAX([DISP],0))\n            ,FILTER(d_calendar\n                ,[DATA]<=TODAY()\n            )\n        )\n        ,[Disponibilidade Hora (%)]\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Disponibilidade Média Conjunto (%)",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    MINX(\n        ADDCOLUMNS(d_equipamentos\n            ,\"DISPONIBILIDADES\"\n            ,[Disponibilidade (%)]\n        )\n        ,[DISPONIBILIDADES]\n    )\n    ,USERELATIONSHIP(d_data_hora[FECHAMENTO],d_calendar[DATA])\n    ,FILTER(d_data_hora\n        ,[FILTRO_ANTES_AGORA]=1\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Disponibilidade Meta (%)",
+  "Auto": false,
+  "Expression": "\nCOALESCE(\n    AVERAGEX(\n        ADDCOLUMNS(d_equipamentos\n            ,\"META\"\n            ,AVERAGE(d_meta_equipamentos[META DISP])\n        )\n        ,IF([CATEGORIA_M]=\"VEÍCULOS LEVES\",.9,[META])\n    )\n    ,0.85\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Disponível Agora",
+  "Auto": false,
+  "Expression": "\nDISTINCTCOUNT(d_equipamentos[CD_EQUIPTO]) -\nCALCULATE(\n    DISTINCTCOUNT(f_manfro[CD_EQUIPTO])\n    ,FILTER(f_manfro\n        ,[STATUS]=\"Andamento\"\n    )\n    ,FILTER(d_criterio_disponibilidade\n        ,[Considerar]=\"S\"\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Parados",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    DISTINCTCOUNT(f_manfro[CD_EQUIPTO])\n    ,FILTER(f_manfro\n        ,[STATUS]=\"Andamento\"\n    )\n    ,FILTER(d_criterio_disponibilidade\n        ,[Considerar]=\"S\" || [COD_CLASS] in {3}\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Total Equipamentos",
+  "Auto": false,
+  "Expression": "DISTINCTCOUNT(d_equipamentos[CD_EQUIPTO])"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Delta Equipamentos",
+  "Auto": false,
+  "Expression": "\n[Total Equipamentos]-[Disponível Agora]"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Disponibilidade Média Att (%)",
+  "Auto": false,
+  "Expression": "\nDIVIDE(\n    [Disponibilidade Média (%)]\n    ,[Disponibilidade Meta (%)]\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Disponível Agora (%)",
+  "Auto": false,
+  "Expression": "\nDIVIDE(\n    [Disponível Agora]\n    ,[Total Equipamentos]\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Disponibilidade Gráfico",
+  "Auto": false,
+  "Expression": "\nVAR vDia = SELECTEDVALUE(d_data_hora[Date])\nRETURN\nAVERAGEX(\n    ADDCOLUMNS(\n        d_data_hora\n        ,\"DISP\"\n        ,IF([DATE]=vDia,[Disponibilidade Média (%)])\n    )\n    ,[DISP]\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Cor",
+  "Auto": false,
+  "Expression": "IF(medidas[Disponibilidade Média (%)] >= medidas[Disponibilidade Meta (%)], \"#187518\", \"#870000\")"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Requisições de Compra",
+  "Auto": false,
+  "Expression": "\nDISTINCTCOUNT(f_ordem_compra[NUM_DOCERP])"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Leadtime de Aprovação RC",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    AVERAGEX(f_pend_aprov,MAX(([DT_APROVA]+[HORA_APROVACAO])-([DT_GERACAO]+[HORA_GERACAO]),0))*1\n    ,FILTER(f_pend_aprov\n        ,[SEQ_APROV] = 1\n    )\n    ,USERELATIONSHIP(f_ordem_compra[CHAVE_DOC_APROV],f_pend_aprov[CHAVE_DOC])\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Leadtime de Criação do Pedido",
+  "Auto": false,
+  "Expression": "\nAVERAGEX(\n    f_ordem_compra\n    ,IF([PEDIDO] <> \"0\" && [PEDIDO] <> BLANK()\n        ,COALESCE([DT_GERACAO_PEDIDO_1],TODAY())\n        -COALESCE([DT_APROVA_REQUISIÇÃO],[DT_GERACAO_PEDIDO_1],TODAY())\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Leadtime 1ª Aprovação do Pedido",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    AVERAGEX(f_pend_aprov,MAX(([DT_APROVA]+[HORA_APROVACAO])-([DT_GERACAO]+[HORA_GERACAO]),0))*1\n    ,FILTER(f_pend_aprov\n        ,[SEQ_APROV] = 1\n    )\n    ,USERELATIONSHIP(f_ordem_compra[PEDIDO],f_pend_aprov[CHAVE_DOC])\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Leadtime 2ª Aprovação do Pedido",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    AVERAGEX(f_pend_aprov,MAX(([DT_APROVA]+[HORA_APROVACAO])-([DT_GERACAO]+[HORA_GERACAO]),0))*1\n    ,FILTER(f_pend_aprov\n        ,[SEQ_APROV] = 2\n    )\n    ,USERELATIONSHIP(f_ordem_compra[PEDIDO],f_pend_aprov[CHAVE_DOC])\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Leadtime de Atendimento Pedido",
+  "Auto": false,
+  "Expression": "AVERAGEX(f_ordem_compra, \n    IF(f_ordem_compra[DATA_RECEBIMENTO] <> BLANK() && f_ordem_compra[PEDIDO] <> \"0\", f_ordem_compra[DATA_RECEBIMENTO] - f_ordem_compra[DT_GERACAO_PEDIDO_1]))"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Leadtime Total",
+  "Auto": false,
+  "Expression": "\nAVERAGEX(f_ordem_compra, \n    IF(f_ordem_compra[DATA_RECEBIMENTO] <> BLANK() && f_ordem_compra[PEDIDO] <> \"0\"\n        , f_ordem_compra[DATA_RECEBIMENTO] - f_ordem_compra[HR_ENTRADA]\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Valor Total",
+  "Auto": false,
+  "Expression": "SUMX(f_ordem_compra, [QT_MATERIAL] * [PRECO_UN])"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "RC Valor Total",
+  "Auto": false,
+  "Expression": "SUMX(f_ordem_compra, f_ordem_compra[QT_MATERIAL] * f_ordem_compra[PRECO_UN])"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Pedidos Valor Total",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    SUMX(f_ordem_compra\n    ,f_ordem_compra[QT_MATERIAL] * f_ordem_compra[PRECO_UN])\n    ,filter(f_ordem_compra,[DT_GERACAO_PEDIDO_1]>0)\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Delta Valor RC",
+  "Auto": false,
+  "Expression": "[RC Valor Total] - [Pedidos Valor Total]"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Delta Prazo Faturamento",
+  "Auto": false,
+  "Expression": "\nAVERAGEX(f_ordem_compra, \n    COALESCE(f_ordem_compra[DATA_FATURAMENTO],TODAY()) - [DATA_FAT_PROMETIDA_AJUSTE]\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Quantidade Itens",
+  "Auto": false,
+  "Expression": "SUM(f_ordem_compra[QT_MATERIAL])"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Leadtime de Transporte",
+  "Auto": false,
+  "Expression": "AVERAGEX(f_ordem_compra, \n    IF(f_ordem_compra[DATA_RECEBIMENTO] <> BLANK() && f_ordem_compra[PEDIDO] <> \"0\", f_ordem_compra[DATA_RECEBIMENTO] - f_ordem_compra[DATA_FATURAMENTO]))"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Leadtime de Geração RC",
+  "Auto": false,
+  "Expression": "\nAVERAGEX(f_ordem_compra,IF([DT_ENVIO]>0,MAX([DT_ENVIO]-[HR_ENTRADA],0)))*1"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Lubrificante Volume (l)",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    SUM(f_lubrificante[QT_LUBRIF])\n    ,FILTER(\n        f_lubrificante\n        ,[CD_MATERIAL] = 14320\n        && [FG_REM_TROCA] = \"R\"\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Consumo Diesel Meta (l/h)",
+  "Auto": false,
+  "Expression": "\nVAR EQP =\nSELECTEDVALUE(d_equipamentos[CATEGORIA],\"Colhedora\")\nRETURN\nSWITCH(TRUE()\n    ,EQP=\"Colhedora\",35.95\n    ,9\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Consumo Diesel Meta (l/t)",
+  "Auto": false,
+  "Expression": "\nVAR COLHEDORAS =\nCOALESCE(\n    CALCULATE(\n        MAX(d_meta_unidade[DIESEL_COLHEDORA])\n        ,FILTER(d_meta_unidade\n            ,MONTH([MES])=MONTH(SELECTEDVALUE(d_calendar[DATA]))\n        )\n    )\n    ,DIVIDE(\n        SUMX(\n            d_meta_unidade\n            ,[DIESEL_COLHEDORA]*[TC]\n        )\n        ,SUM(d_meta_unidade[TC])\n    )\n)\nVAR TRATORES =\nCOALESCE(\n    CALCULATE(\n        MAX(d_meta_unidade[DIESEL_TRATOR])\n        ,FILTER(d_meta_unidade\n            ,MONTH([MES])=MONTH(SELECTEDVALUE(d_calendar[DATA]))\n        )\n    )\n    ,DIVIDE(\n        SUMX(\n            d_meta_unidade\n            ,[DIESEL_TRATOR]*[TC]\n        )\n        ,SUM(d_meta_unidade[TC])\n    )\n)\nVAR EQP =\nSELECTEDVALUE(d_equipamentos[CATEGORIA],\"Colhedora\")\nRETURN\nSWITCH(TRUE()\n    ,EQP=\"Colhedora\",COLHEDORAS\n    ,TRATORES\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Diesel Hora Eixo Y Mês",
+  "Auto": false,
+  "Expression": "\nVAR vTabela = ALLSELECTED(d_calendar[MES])\nVAR vMaiorValor = MAXX(vTabela,[Consumo Diesel (l/h)])\nVAR vTabela2 = ALLSELECTED(d_equipamentos[FRENTE])\nVAR vMaiorValor2 = MAXX(vTabela2,[Consumo Diesel (l/h)])\nRETURN\nIF(\n    SELECTEDVALUE(d_calendar[DATA],0)=0\n    ,MAX(vMaiorValor,vMaiorValor2)*1.2\n    ,50\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Diesel Hora Eixo Y Semana",
+  "Auto": false,
+  "Expression": "\nVAR vTabela = ALLSELECTED(d_calendar[SEMANA_ANO])\nVAR vMaiorValor = MAXX(vTabela,[Consumo Diesel (l/h)])\nRETURN\n// IF(\n//     SELECTEDVALUE(d_calendar[DATA],0)=0\n//     ,vMaiorValor*1.2\n//     ,50\n// )\n[Diesel Hora Eixo Y Mês]"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Diesel Tonelada Eixo Y Mês",
+  "Auto": false,
+  "Expression": "\nVAR vTabela = ALLSELECTED(d_calendar[MES])\nVAR vMaiorValor = MAXX(vTabela,[Consumo Diesel (l/t)])\nVAR vTabela2 = ALLSELECTED(d_equipamentos[FRENTE])\nVAR vMaiorValor2 = MAXX(vTabela2,[Consumo Diesel (l/t)])\nRETURN\nIF(\n    SELECTEDVALUE(d_calendar[DATA],0)=0\n    ,MAX(vMaiorValor,vMaiorValor2)*1.2\n    ,50\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Diesel Tonelada Eixo Y Semana",
+  "Auto": false,
+  "Expression": "\nVAR vTabela = ALLSELECTED(d_calendar[SEMANA_ANO])\nVAR vMaiorValor = MAXX(vTabela,[Consumo Diesel (l/t)])\nRETURN\n// IF(\n//     SELECTEDVALUE(d_calendar[DATA],0)=0\n//     ,vMaiorValor*1.2\n//     ,2\n// )\n[Diesel Tonelada Eixo Y Mês]"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Diesel Volume (l)",
+  "Auto": false,
+  "Expression": "\nVAR __dieselEQP =\nCALCULATE(\n    CALCULATE(\n        SUM(f_abastecimento[LITROS])\n        ,FILTER(f_abastecimento\n            ,[CD_MATERIAL] IN {89500,89838,104542}\n        )\n        ,USERELATIONSHIP(d_meta_frente[FRENTE],d_equipamentos[FRENTE])\n    )\n    ,FILTER(\n        ADDCOLUMNS(\n            ADDCOLUMNS(f_abastecimento\n                ,\"EQPS\"\n                ,VAR vEqp = f_abastecimento[CD_EQUIPTO]\n                RETURN\n                CALCULATE(\n                    COUNTROWS(d_equipamentos)\n                    ,FILTER(d_equipamentos\n                        ,[CD_EQUIPTO]=vEqp\n                        &&[DATA.1]>0\n                    )\n                )\n            )\n            ,\"IGNORAR\"\n            ,IF([DT_OPERACAO]>=MIN(d_equipamentos[DATA.1])&&[DT_OPERACAO]<=MAX(d_equipamentos[DATA.2])&&[EQPS]>0,1,0)\n        )\n        ,[IGNORAR]=0\n    )\n)\nVAR __dieselCC =\nCALCULATE(\n    __dieselEQP\n    ,CROSSFILTER(d_equipamentos[CD_CCUSTO],d_orcamento_diesel[C Custo],None)\n)\nRETURN\nIF(\n    SELECTEDVALUE(d_base_calc[Cod],1)=2\n    ,__dieselCC\n    ,__dieselEQP\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Perda Hidráulico (l/t)",
+  "Auto": false,
+  "Expression": "VAR VolumeLubrificanteValido =\n    CALCULATE(\n        SUM(f_lubrificante[QT_LUBRIF]),\n        FILTER(\n            f_lubrificante,\n            f_lubrificante[CD_MATERIAL] = 14320\n                && f_lubrificante[FG_REM_TROCA] = \"R\"\n                && CALCULATE(\n                    COUNTROWS(d_datas_ignorar),\n                    FILTER(\n                        ALL(d_datas_ignorar),\n                        d_datas_ignorar[CD_EQUIPTO] = f_lubrificante[CD_EQUIPTO]\n                            && f_lubrificante[DT_OPERACAO] >= d_datas_ignorar[DATA.1]\n                            && f_lubrificante[DT_OPERACAO] <= d_datas_ignorar[DATA.2]\n                    )\n                ) = 0\n        )\n    )\nVAR ProducaoValida =\n    CALCULATE(\n        SUM(f_produtividade[QT_CANA_ENT]),\n        USERELATIONSHIP(d_meta_frente[CD_FREN_TRAN], d_equipamentos[CD_FREN_TRAN]),\n        FILTER(\n            f_produtividade,\n            CALCULATE(\n                COUNTROWS(d_datas_ignorar),\n                FILTER(\n                    ALL(d_datas_ignorar),\n                    d_datas_ignorar[CD_EQUIPTO] = f_produtividade[CD_EQUIPTO]\n                        && f_produtividade[DT_HISTORICO] >= d_datas_ignorar[DATA.1]\n                        && f_produtividade[DT_HISTORICO] <= d_datas_ignorar[DATA.2]\n                )\n            ) = 0\n        )\n    )\nRETURN\n    ROUND(\n        DIVIDE(VolumeLubrificanteValido, ProducaoValida),\n        3\n    )"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Perda Hidráulico Att (%)",
+  "Auto": false,
+  "Expression": "\nDIVIDE(\n    [Perda Hidráulico Meta (l/t)]\n    ,[Perda Hidráulico (l/t)]\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Perda Hidráulico Meta (l/t)",
+  "Auto": false,
+  "Expression": "\nVAR COLHEDORAS =\nCOALESCE(\n    CALCULATE(\n        MAX(d_meta_unidade[HIDRAULICO_COLHEDORA])\n        ,FILTER(d_meta_unidade\n            ,MONTH([MES])=MONTH(SELECTEDVALUE(d_calendar[DATA]))\n        )\n    )\n    ,DIVIDE(\n        SUMX(\n            d_meta_unidade\n            ,[HIDRAULICO_COLHEDORA]*[TC]\n        )\n        ,SUM(d_meta_unidade[TC])\n    )\n)\nVAR TRATORES =\nCOALESCE(\n    CALCULATE(\n        MAX(d_meta_unidade[HIDRAULICO_TRATOR])\n        ,FILTER(d_meta_unidade\n            ,MONTH([MES])=MONTH(SELECTEDVALUE(d_calendar[DATA]))\n        )\n    )\n    ,DIVIDE(\n        SUMX(\n            d_meta_unidade\n            ,[HIDRAULICO_TRATOR]*[TC]\n        )\n        ,SUM(d_meta_unidade[TC])\n    )\n)\nVAR EQP =\nSELECTEDVALUE(d_equipamentos[CATEGORIA],\"Colhedora\")\nRETURN\nSWITCH(TRUE()\n    ,EQP=\"Colhedora\",COLHEDORAS\n    ,TRATORES\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Tempo Distancia (h/km)",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    CALCULATE(\n        SUM(f_abastecimento[HORA_KM])\n        ,FILTER(\n            ADDCOLUMNS(\n                f_abastecimento\n                ,\"maxAbastecimento\"\n                ,CALCULATE(\n                    MAX(f_abastecimento[DT_OPERACAO])\n                    ,FILTER(\n                        f_abastecimento\n                        ,f_abastecimento[LITROS]>0\n                    )\n                )\n            )\n            ,[CD_MATERIAL] IN {89500,89838,104542} && [DT_OPERACAO]<=[maxAbastecimento]\n        )\n        ,USERELATIONSHIP(d_meta_frente[CD_FREN_TRAN],d_equipamentos[CD_FREN_TRAN])\n    )\n    ,FILTER(\n        ADDCOLUMNS(\n            ADDCOLUMNS(f_abastecimento\n                ,\"EQPS\"\n                ,VAR vEqp = f_abastecimento[CD_EQUIPTO]\n                RETURN\n                CALCULATE(\n                    COUNTROWS(d_equipamentos)\n                    ,FILTER(d_equipamentos\n                        ,[CD_EQUIPTO]=vEqp\n                        &&[DATA.1]>0\n                    )\n                )\n            )\n            ,\"IGNORAR\"\n            ,IF([DT_OPERACAO]>=MIN(d_equipamentos[DATA.1])&&[DT_OPERACAO]<=MAX(d_equipamentos[DATA.2])&&[EQPS]>0,1,0)\n        )\n        ,[IGNORAR]=0\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Texto Meta Diesel",
+  "Auto": false,
+  "Expression": "\n\"Meta Consumo: ≤\"&FORMAT([Consumo Diesel Meta (l/t)],\"0.00\")&\" (l/t)\""
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Texto Meta Diesel Hora",
+  "Auto": false,
+  "Expression": "\n\"Meta Consumo: ≤\"&FORMAT([Consumo Diesel Meta (l/h)],\"0.00\")&\" (l/h)\""
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Texto Meta Hidráulico",
+  "Auto": false,
+  "Expression": "\n\"Meta Consumo: ≤\"&FORMAT([Perda Hidráulico Meta (l/t)],\"0.000\")&\" (l/t)\""
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Consumo Diesel Att Hora (%)",
+  "Auto": false,
+  "Expression": "\nMIN(\n    DIVIDE(\n        [Consumo Diesel Meta (l/h)]\n        ,[Consumo Diesel (l/h)]\n    )\n    ,1\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Consumo Diesel Att (%)",
+  "Auto": false,
+  "Expression": "\nMIN(\n    DIVIDE(\n        [Consumo Diesel Meta (l/t)]\n        ,[Consumo Diesel (l/t)]\n    )\n    ,1\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Consumo Diesel (l/t)",
+  "Auto": false,
+  "Expression": "\nVAR vFrente = SELECTEDVALUE(d_equipamentos[FRENTE],BLANK())\nVAR vMedida =\nCALCULATE(\n    ROUND(\n        DIVIDE(\n            [Diesel Volume (l)]\n            ,[Produção Equipamentos Volume (t)]\n        )\n        ,3\n    )\n    ,FILTER(d_calendar\n        ,[DATA]<=MAX(d_calendar[DATA])\n    )\n)\nRETURN\nCOALESCE(\n    [Diesel Tonelada Semana Ajuste]\n    ,IF(vFrente <> BLANK()\n        ,\n        COALESCE(\n            vMedida\n            ,0\n        )\n        ,vMedida\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Consumo Diesel (l/h)",
+  "Auto": false,
+  "Expression": "\nVAR vFrente = SELECTEDVALUE(d_equipamentos[FRENTE],BLANK())\nVAR vLitrosHora =\nCALCULATE(\n    ROUND(\n        DIVIDE(\n            [Diesel Volume (l)]\n            ,[Tempo Distancia (h/km)]\n        )\n        ,3\n    )\n    ,FILTER(d_calendar\n        ,d_calendar[DATA] <= MAX(d_calendar[DATA])\n    )\n)\nVAR vKMLitros =\nCALCULATE(\n    ROUND(\n        DIVIDE(\n            [Tempo Distancia (h/km)]\n            ,[Diesel Volume (l)]\n        )\n        ,3\n    )\n    ,FILTER(d_calendar\n        ,d_calendar[DATA] <= MAX(d_calendar[DATA])\n    )\n)\nVAR vMedida =\nIF(\n    [Unidade Medida]=\"(l/h)\"\n    ,vLitrosHora\n    ,vKMLitros\n)\nRETURN\nCOALESCE(\n    [Diesel Hora Semana Ajuste]\n    ,IF(vFrente <> BLANK()\n        ,\n        COALESCE(\n            vMedida\n            ,0\n        )\n        ,vMedida\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Produção Equipamentos Volume (t)",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    SUM(f_produtividade[QT_CANA_ENT])\n    ,USERELATIONSHIP(d_meta_frente[CD_FREN_TRAN],d_equipamentos[CD_FREN_TRAN])\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Quantidade Cana (t)",
+  "Auto": false,
+  "Expression": "SUM(f_produtividade[QT_CANA_ENT])"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Valor (R$/h)",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    DIVIDE([Valor Total Aplicado],[Tempo Distancia (h/km)])\n    ,FILTER(d_criterio_disponibilidade,[COD_CLASS] <> 7) --removendo a entressafra\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Valor (R$/t)",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    DIVIDE([Valor Total Aplicado],[Quantidade Cana (t)])\n    ,FILTER(d_criterio_disponibilidade,[COD_CLASS] <> 7) --removendo a entressafra\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "TON/FACA",
+  "Auto": false,
+  "Expression": "\nDIVIDE(\n    [Produção Equipamentos Volume (t)]\n    ,CALCULATE(\n        [Quantidade Itens Aplicados]\n        ,FILTER(d_item\n            ,[IT_CODIGO] = \"11269\"\n        )\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "TON/FACAO",
+  "Auto": false,
+  "Expression": "\nDIVIDE(\n    [Produção Equipamentos Volume (t)]\n    ,CALCULATE(\n        [Quantidade Itens Aplicados]\n        ,FILTER(d_item\n            ,[IT_CODIGO] IN {\"12858\",\"71049\",\"20183\"}\n        )\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "TON/H",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    DIVIDE([Quantidade Cana (t)],[Tempo Distancia (h/km)])\n    ,FILTER(\n        ADDCOLUMNS(\n            ADDCOLUMNS(f_abastecimento\n                ,\"EQPS\"\n                ,VAR vEqp = f_abastecimento[CD_EQUIPTO]\n                RETURN\n                CALCULATE(\n                    COUNTROWS(d_equipamentos)\n                    ,FILTER(d_equipamentos\n                        ,[CD_EQUIPTO]=vEqp\n                        &&[DATA.1]>0\n                    )\n                )\n            )\n            ,\"IGNORAR\"\n            ,IF([DT_OPERACAO]>=MIN(d_equipamentos[DATA.1])&&[DT_OPERACAO]<=MAX(d_equipamentos[DATA.2])&&[EQPS]>0,1,0)\n        )\n        ,[IGNORAR]=0\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "TCH",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    DIVIDE(\n        SUM(f_tch[TON_ENTREGUE])\n        ,SUM(f_tch[AREA_COLHIDA])\n    )\n    ,USERELATIONSHIP(d_calendar[DATA],f_tch[DT_FECHEMENTO])\n    ,USERELATIONSHIP(d_equipamentos[FRENTE],d_meta_frente[FRENTE])\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Leadtime de Emissão da Nota",
+  "Auto": false,
+  "Expression": "\nAVERAGEX(f_ordem_compra, \n    IF(f_ordem_compra[DATA_FATURAMENTO] <> BLANK() && f_ordem_compra[PEDIDO] <> \"0\" && [DATA_FATURAMENTO] > COALESCE([DT_APROVA_PEDIDO_2],[DT_APROVA_PEDIDO_1],[DT_GERACAO_PEDIDO_1])\n        , f_ordem_compra[DATA_FATURAMENTO] - COALESCE(f_ordem_compra[DT_APROVA_PEDIDO_2],[DT_APROVA_PEDIDO_1],[DT_GERACAO_PEDIDO_1])\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Leadtime Total 2",
+  "Auto": false,
+  "Expression": "\n[Leadtime de Geração RC]+[Leadtime de Aprovação RC]+[Leadtime de Criação do Pedido]+[Leadtime 1ª Aprovação do Pedido]+[Leadtime 2ª Aprovação do Pedido]+[Leadtime de Emissão da Nota]+[Leadtime de Transporte]"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Hidraulico Tonelada Eixo Y Mês",
+  "Auto": false,
+  "Expression": "\nVAR vTabela = ALLSELECTED(d_calendar[DATA])\nVAR vMaiorValor = MAXX(vTabela,[Perda Hidráulico (l/t)])\nVAR vTabela2 = ALLSELECTED(d_equipamentos[FRENTE])\nVAR vMaiorValor2 = MAXX(vTabela2,[Perda Hidráulico (l/t)])\nRETURN\nIF(\n    SELECTEDVALUE(d_calendar[DATA],0)=0\n    ,MAX(vMaiorValor,vMaiorValor2)*1.2\n    ,50\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Hidraulico Tonelada Eixo Y Semana",
+  "Auto": false,
+  "Expression": "\nVAR vTabela = ALLSELECTED(d_calendar[SEMANA_ANO])\nVAR vMaiorValor = MAXX(vTabela,[Perda Hidráulico (l/t)])\nRETURN\n// IF(\n//     SELECTEDVALUE(d_calendar[DATA],0)=0\n//     ,vMaiorValor*1.2\n//     ,2\n// )\n[Hidraulico Tonelada Eixo Y Mês]"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Valor Total Aplicado",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    SUMX(f_ordem_compra,IF([VALOR_APLICADO]=0,[VALOR_APLICADO_AJUSTADO],[VALOR_APLICADO]))\n    ,CROSSFILTER(d_calendar[DATA],f_ordem_compra[DATA_ENVIO_AJUSTE],None)\n    ,USERELATIONSHIP(d_calendar[DATA],f_ordem_compra[DT_ATEND])\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Quantidade Itens Aplicados",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    SUM(f_ordem_compra[QTD_MAT_APLICADO])\n    ,CROSSFILTER(d_calendar[DATA],f_ordem_compra[DATA_ENVIO_AJUSTE],None)\n    ,USERELATIONSHIP(d_calendar[DATA],f_ordem_compra[DT_ATEND])\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Consumo Diesel Meta (l/h) MAX",
+  "Auto": false,
+  "Expression": "MAX([Consumo Diesel Meta (l/h)],[Consumo Diesel (l/h)])*1.1"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Consumo Diesel Meta (l/t) MAX",
+  "Auto": false,
+  "Expression": "MAX([Consumo Diesel Meta (l/T)],[Consumo Diesel (l/t)])*1.1"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Perda Hidráulico (l/t) MAX",
+  "Auto": false,
+  "Expression": "\nMAX([Perda Hidráulico (l/t)],[Perda Hidráulico Meta (l/t)])*1.20"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Disponibilidade Semana Ajuste",
+  "Auto": false,
+  "Expression": "\nIF(SELECTEDVALUE(d_calendar[SEMANA_PIMS],\"\") IN {\"S-01\",\"S-02\"}\n    ,CALCULATE(\n        MAX(ajustes_consumos[Valor])\n        ,FILTER(ajustes_consumos\n            ,[Indicador]=\"disp\"\n        )\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Diesel Hora Semana Ajuste",
+  "Auto": false,
+  "Expression": "\nIF(SELECTEDVALUE(d_calendar[SEMANA_PIMS],\"\") IN {\"S-01\",\"S-02\"}\n    ,CALCULATE(\n        MAX(ajustes_consumos[Valor])\n        ,FILTER(ajustes_consumos\n            ,[Indicador]=\"dh\"\n        )\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Diesel Tonelada Semana Ajuste",
+  "Auto": false,
+  "Expression": "\nIF(SELECTEDVALUE(d_calendar[SEMANA_PIMS],\"\") IN {\"S-01\",\"S-02\"}\n    ,CALCULATE(\n        MAX(ajustes_consumos[Valor])\n        ,FILTER(ajustes_consumos\n            ,[Indicador]=\"dt\"\n        )\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Hidráulico Semana Ajuste",
+  "Auto": false,
+  "Expression": "\nIF(SELECTEDVALUE(d_calendar[SEMANA_PIMS],\"\") IN {\"S-01\",\"S-02\"}\n    ,CALCULATE(\n        MAX(ajustes_consumos[Valor])\n        ,FILTER(ajustes_consumos\n            ,[Indicador]=\"h\"\n        )\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Disponibilidade Gráfico Mês",
+  "Auto": false,
+  "Expression": "\nVAR vMes = SELECTEDVALUE(d_meses[FIM_MES_ANO],0)\nRETURN\nCALCULATE(\n    SUMX(\n        ADDCOLUMNS(d_meses,\"DISP\",[Disponibilidade Média (%)])\n        ,IF([DISP]>0,[DISP])\n    )\n    ,FILTER(\n        d_calendar\n        ,[FIM_MES_ANO]=vMes\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Lubrificante Volume Semana (l)",
+  "Auto": false,
+  "Expression": "\nVAR vPeriodo = MAX(d_calendar[ANO_SEMANA])\nVAR vMaxData = MAX(d_calendar[DATA])\nRETURN\nCALCULATE(\n    [Lubrificante Volume (l)]\n    ,FILTER(\n        d_calendar\n        ,[ANO_SEMANA] = vPeriodo\n        &&[DATA] <= vMaxData\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Lubrificante Volume Mês (l)",
+  "Auto": false,
+  "Expression": "\nVAR vPeriodo = MAX(d_calendar[FIM_MES_ANO])\nVAR vMaxData = MAX(d_calendar[DATA])\nRETURN\nCALCULATE(\n    [Lubrificante Volume (l)]\n    ,FILTER(\n        d_calendar\n        ,[FIM_MES_ANO] = vPeriodo\n        &&[DATA] <= vMaxData\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Lubrificante Volume (tambor)",
+  "Auto": false,
+  "Expression": "DIVIDE([Lubrificante Volume (l)], 200)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Consumo Diesel (l/h) Gráfico Mês",
+  "Auto": false,
+  "Expression": "\nVAR vMes = SELECTEDVALUE(d_meses[FIM_MES_ANO],0)\nRETURN\nCALCULATE(\n    SUMX(\n        ADDCOLUMNS(d_meses,\"MEDIDA\",[Consumo Diesel (l/h)])\n        ,IF([MEDIDA]>0,[MEDIDA])\n    )\n    ,FILTER(\n        d_calendar\n        ,[FIM_MES_ANO]=vMes\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Consumo Diesel (l/t) Gráfico Mês",
+  "Auto": false,
+  "Expression": "\nVAR vMes = SELECTEDVALUE(d_meses[FIM_MES_ANO],0)\nRETURN\nCALCULATE(\n    SUMX(\n        ADDCOLUMNS(d_meses,\"MEDIDA\",[Consumo Diesel (l/t)])\n        ,IF([MEDIDA]>0,[MEDIDA])\n    )\n    ,FILTER(\n        d_calendar\n        ,[FIM_MES_ANO]=vMes\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Perda Hidráulico (l/t) Gráfico Mês",
+  "Auto": false,
+  "Expression": "\nVAR vMes = SELECTEDVALUE(d_meses[FIM_MES_ANO],0)\nRETURN\nCALCULATE(\n    SUMX(\n        ADDCOLUMNS(d_meses,\"MEDIDA\",[Perda Hidráulico (l/t)])\n        ,IF([MEDIDA]>0,[MEDIDA])\n    )\n    ,FILTER(\n        d_calendar\n        ,[FIM_MES_ANO]=vMes\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Orçamento KM Veículos",
+  "Auto": false,
+  "Expression": "\nSUM(d_orcamento_equipamentos[Valor])"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Realizado KM Veículos",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    SUMX(\n        ADDCOLUMNS(\n            f_abastecimento\n            ,\"EQP\"\n            ,CALCULATE(\n                COUNT(d_orcamento_equipamentos[FROTA])\n                ,USERELATIONSHIP(d_orcamento_equipamentos[FROTA],f_abastecimento[CD_EQUIPTO])\n            )\n        )\n        ,IF([EQP]>0,[HORA_KM])\n    )\n)\n// CALCULATE(\n//     SUM(f_abastecimento[HORA_KM])\n//     ,FILTER(ADDCOLUMNS(f_abastecimento,\"maxAbastecimento\",CALCULATE(MAX(f_abastecimento[DT_OPERACAO]),FILTER(f_abastecimento,f_abastecimento[LITROS]>0)))\n//         ,[DT_OPERACAO]<=[maxAbastecimento]\n//     )\n//     ,USERELATIONSHIP(d_orcamento_equipamentos[FROTA],f_abastecimento[CD_EQUIPTO])\n// )"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Orçamento KM Veículos Att",
+  "Auto": false,
+  "Expression": "\nDIVIDE([Realizado KM Veículos],[Orçamento KM Veículos])"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Orcamento KM Veículos Max",
+  "Auto": false,
+  "Expression": "[Orçamento KM Veículos]*1.2"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Destaque Frota Cor",
+  "Auto": false,
+  "Expression": "IF (\n    CONTAINS(\n        d_datas_ignorar,\n        d_datas_ignorar[CD_EQUIPTO],\n        SELECTEDVALUE('d_equipamentos'[CD_EQUIPTO])\n    ),\n    \"#808080\",\n    IF (\n        SELECTEDVALUE('d_equipamentos'[FRENTE]) = \"Frente 4\" || SELECTEDVALUE('d_equipamentos'[FRENTE]) = \"Frente 2\",\n        \"#e6e6e6\",\n        \"\"\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Quantidade Realizado Veículos",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    SUMX(\n        ADDCOLUMNS(\n            f_ordem_compra\n            ,\"EQP\"\n            ,CALCULATE(\n                COUNT(d_orcamento_equipamentos[FROTA])\n                ,USERELATIONSHIP(d_equipamentos[CD_EQUIPTO],d_orcamento_equipamentos[FROTA])\n            )\n        )\n        ,IF([EQP]>0,[QTD_MAT_APLICADO])\n    )\n    ,CROSSFILTER(d_calendar[DATA],f_ordem_compra[DATA_ENVIO_AJUSTE],None)\n    ,USERELATIONSHIP(d_calendar[DATA],f_ordem_compra[DT_ATEND])\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Cor Orçamento KM",
+  "Auto": false,
+  "Expression": "\nIF(\n    [Orçamento KM Veículos Att] < 1,\n    \"#187518\", --verde\n    \"#870000\"  --vermelho\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Orçado KM Veículos Delta",
+  "Auto": false,
+  "Expression": "MAX([Orçamento KM Veículos]-[Realizado KM Veículos],0)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Orçamento KM Veículos Label",
+  "Auto": false,
+  "Expression": "\n[Orçamento KM Veículos]"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Valor Realizado Veículos",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    SUMX(\n        ADDCOLUMNS(\n            f_ordem_compra\n            ,\"EQP\"\n            ,CALCULATE(\n                COUNT(d_orcamento_equipamentos[FROTA])\n                ,USERELATIONSHIP(d_equipamentos[CD_EQUIPTO],d_orcamento_equipamentos[FROTA])\n            )\n        )\n        ,IF([EQP]>0,[VALOR_APLICADO])\n    )\n    ,CROSSFILTER(d_calendar[DATA],f_ordem_compra[DATA_ENVIO_AJUSTE],None)\n    ,USERELATIONSHIP(d_calendar[DATA],f_ordem_compra[DT_ATEND])\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Realizado KM Veículos Acum em DATA",
+  "Auto": false,
+  "Expression": "\nIF(\n    MAX(d_calendar[DATA])<=CALCULATE(MAX(f_abastecimento[DT_OPERACAO]),ALL(d_calendar))\n    ,CALCULATE(\n        [Realizado KM Veículos],\n        FILTER(\n            ALLSELECTED('d_calendar'[DATA]),\n            ISONORAFTER('d_calendar'[DATA], MAX('d_calendar'[DATA]), DESC)\n        )\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Orçamento KM Dia",
+  "Auto": false,
+  "Expression": "\nSUMX(\n    ADDCOLUMNS(d_calendar\n        ,\"BGT\"\n        ,[Orçamento KM Veículos]\n    )\n    ,DIVIDE([BGT],DAY([FIM_MES_ANO]))\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Orçamento KM Dia Acum em DATA",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n\t[Orçamento KM Dia],\n\tFILTER(\n\t\tALLSELECTED('d_calendar'[DATA]),\n\t\tISONORAFTER('d_calendar'[DATA], MAX('d_calendar'[DATA]), DESC)\n\t)\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Realizado KM Veículos Hoje Verde",
+  "Auto": false,
+  "Expression": "\nIF(MAX(d_calendar[DATA])=CALCULATE(MAX(f_abastecimento[DT_OPERACAO]),ALL(d_calendar))\n    ,[Realizado KM Veículos Acum em DATA]\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Orçamento KM Acum Veículos Att",
+  "Auto": false,
+  "Expression": "\nDIVIDE([Realizado KM Veículos Acum em DATA],[Orçamento KM Dia Acum em DATA])"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Cor Orçamento Acum KM",
+  "Auto": false,
+  "Expression": "\nIF(\n    [Orçamento KM Acum Veículos Att] < 1,\n    \"#187518\", --verde\n    \"#870000\"  --vermelho\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Disponibilidade Gráfico Mês Att",
+  "Auto": false,
+  "Expression": "DIVIDE([Disponibilidade Gráfico Mês],[Disponibilidade Meta (%)])"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Consumo Diesel (l/h) Gráfico Mês Att",
+  "Auto": false,
+  "Expression": "DIVIDE([Consumo Diesel Meta (l/h)],[Consumo Diesel (l/h) Gráfico Mês])"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Consumo Diesel (l/t) Gráfico Mês Att",
+  "Auto": false,
+  "Expression": "DIVIDE([Consumo Diesel Meta (l/t)],[Consumo Diesel (l/t) Gráfico Mês])"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Perda Hidráulico (l/t) Gráfico Mês Att",
+  "Auto": false,
+  "Expression": "DIVIDE([Perda Hidráulico Meta (l/t)],[Perda Hidráulico (l/t) Gráfico Mês])"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Óleo Motor Volume (l)",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    SUM(f_lubrificante[QT_LUBRIF])\n    ,FILTER(\n        f_lubrificante\n        ,[CD_MATERIAL] = 81025\n        && [FG_REM_TROCA] = \"R\"\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Óleo Motor / Diesel",
+  "Auto": false,
+  "Expression": "\nVAR vFrente = SELECTEDVALUE(d_equipamentos[FRENTE],BLANK())\nVAR vMedida =\nROUND(\n    DIVIDE(\n        [Óleo Motor Volume (l)]\n        ,[Diesel Volume (l)]/100\n    )\n    ,4\n)\nRETURN\nIF(vFrente <> BLANK()\n    ,COALESCE(\n        vMedida\n        ,0\n    )\n    ,vMedida\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Óleo Motor / Diesel Meta",
+  "Auto": false,
+  "Expression": "0.04"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Óleo Motor / Diesel Cor",
+  "Auto": false,
+  "Expression": "\nIF([Óleo Motor / Diesel]>[Óleo Motor / Diesel Meta],\"#870000\",\"#187518\")"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Óleo Motor / Diesel Eixo Y Mês",
+  "Auto": false,
+  "Expression": "\nVAR vTabela = ALLSELECTED(d_calendar[DATA])\nVAR vMaiorValor = MAXX(vTabela,[Óleo Motor / Diesel])\nVAR vTabela2 = ALLSELECTED(d_equipamentos[FRENTE])\nVAR vMaiorValor2 = MAXX(vTabela2,[Óleo Motor / Diesel])\nRETURN\nIF(\n    SELECTEDVALUE(d_calendar[DATA],0)=0\n    ,MAX(vMaiorValor,vMaiorValor2)*1.2\n    ,50\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "TON/FACA Meta",
+  "Auto": false,
+  "Expression": "155"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "R$/H Meta",
+  "Auto": false,
+  "Expression": "134.84"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "R$/TON Meta",
+  "Auto": false,
+  "Expression": "3.31"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "TON/H Meta",
+  "Auto": false,
+  "Expression": "41"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "TON/FACAO Meta",
+  "Auto": false,
+  "Expression": "550"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Óleo Motor / Diesel Gráfico Mês",
+  "Auto": false,
+  "Expression": "\nVAR vMes = SELECTEDVALUE(d_meses[FIM_MES_ANO],0)\nRETURN\nCALCULATE(\n    SUMX(\n        ADDCOLUMNS(d_meses,\"MEDIDA\",[Óleo Motor / Diesel])\n        ,IF([MEDIDA]>0,[MEDIDA])\n    )\n    ,FILTER(\n        d_calendar\n        ,[FIM_MES_ANO]=vMes\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Óleo Motor / Diesel Gráfico Mês Cor",
+  "Auto": false,
+  "Expression": "\nIF([Óleo Motor / Diesel Gráfico Mês]>[Óleo Motor / Diesel Meta],\"#870000\",\"#187518\")"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "TON/FACA Cor",
+  "Auto": false,
+  "Expression": "\nIF([TON/FACA]>[TON/FACA Meta],\"#870000\",\"#187518\")"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "TON/FACAO Cor",
+  "Auto": false,
+  "Expression": "\nIF([TON/FACAO]>[TON/FACAO Meta],\"#870000\",\"#187518\")"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Texto Meta Óleo Mineral",
+  "Auto": false,
+  "Expression": "\n\"Meta Consumo: ≤\"&FORMAT([Óleo Motor / Diesel Meta],\"0.0000\")&\" (l/l. diesel)\""
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Texto Meta t/faca",
+  "Auto": false,
+  "Expression": "\n\"Meta Consumo: ≤\"&FORMAT([TON/FACA Meta],\"0.0000\")&\" (t/un.)\""
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Texto Meta t/facao",
+  "Auto": false,
+  "Expression": "\n\"Meta Consumo: ≤\"&FORMAT([TON/FACAO Meta],\"0.0000\")&\" (t/un.)\""
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Horas",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    [Tempo Distancia (h/km)]\n    ,FILTER(f_abastecimento\n        ,[LITROS]>0\n        --&&[CD_UNIMED]=\"H\"\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Diesel Volume Semana (l)",
+  "Auto": false,
+  "Expression": "// VAR vPeriodo = MAX(d_calendar[ANO_SEMANA])\n// VAR vMaxData = MAX(d_calendar[DATA])\n// RETURN\n// CALCULATE(\n//     [Diesel Volume (l)]\n//     ,FILTER(\n//         d_calendar\n//         ,[ANO_SEMANA] = vPeriodo\n//         &&[DATA] <= vMaxData\n//     )\n// )\nVAR vMaxAbast = CALCULATE(MAX(f_abastecimento[DT_OPERACAO]))\nVAR vMaxFiltro = CALCULATE(MAX(d_calendar[DATA]), ALLSELECTED(d_calendar))\nVAR vMaxData = MIN(vMaxAbast, vMaxFiltro)\nVAR vPeriodo = CALCULATE(SELECTEDVALUE(d_calendar[ANO_SEMANA]), FILTER(ALL(d_calendar), d_calendar[DATA] = vMaxData))\nRETURN\nCALCULATE(\n    [Diesel Volume (l)],\n    FILTER(ALLSELECTED(d_calendar), d_calendar[ANO_SEMANA] = vPeriodo && d_calendar[DATA] <= vMaxData)\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Diesel Volume Mês (l)",
+  "Auto": false,
+  "Expression": "// VAR vPeriodo = MAX(d_calendar[FIM_MES_ANO])\n// VAR vMaxData = MAX(d_calendar[DATA])\n// RETURN\n// CALCULATE(\n//     [Diesel Volume (l)]\n//     ,FILTER(\n//         d_calendar\n//         ,[FIM_MES_ANO] = vPeriodo\n//         &&[DATA] <= vMaxData\n//     )\n// )\nVAR vMaxAbast = CALCULATE(MAX(f_abastecimento[DT_OPERACAO]))\nVAR vMaxFiltro = CALCULATE(MAX(d_calendar[DATA]), ALLSELECTED(d_calendar))\nVAR vMaxData = MIN(vMaxAbast, vMaxFiltro)\nVAR vPeriodo = CALCULATE(SELECTEDVALUE(d_calendar[FIM_MES_ANO]), FILTER(ALL(d_calendar), d_calendar[DATA] = vMaxData))\nRETURN\nCALCULATE(\n    [Diesel Volume (l)],\n    FILTER(ALLSELECTED(d_calendar), d_calendar[FIM_MES_ANO] = vPeriodo && d_calendar[DATA] <= vMaxData)\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Horas Mês",
+  "Auto": false,
+  "Expression": "// VAR vPeriodo = MAX(d_calendar[FIM_MES_ANO])\n// VAR vMaxData = MAX(d_calendar[DATA])\n// RETURN\n// CALCULATE(\n//     [Horas]\n//     ,FILTER(\n//         d_calendar\n//         ,[FIM_MES_ANO] = vPeriodo\n//         &&[DATA] <= vMaxData\n//     )\n// )\nVAR vMaxAbast = CALCULATE(MAX(f_abastecimento[DT_OPERACAO]))\nVAR vMaxFiltro = CALCULATE(MAX(d_calendar[DATA]), ALLSELECTED(d_calendar))\nVAR vMaxData = MIN(vMaxAbast, vMaxFiltro)\nVAR vPeriodo = CALCULATE(SELECTEDVALUE(d_calendar[FIM_MES_ANO]), FILTER(ALL(d_calendar), d_calendar[DATA] = vMaxData))\nRETURN\nCALCULATE(\n    [Horas],\n    FILTER(ALLSELECTED(d_calendar), d_calendar[FIM_MES_ANO] = vPeriodo && d_calendar[DATA] <= vMaxData)\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Horas Semana",
+  "Auto": false,
+  "Expression": "// VAR vPeriodo = MAX(d_calendar[ANO_SEMANA])\n// VAR vMaxData = MAX(d_calendar[DATA])\n// RETURN\n// CALCULATE(\n//     [Horas]\n//     ,FILTER(\n//         d_calendar\n//         ,[ANO_SEMANA] = vPeriodo\n//         &&[DATA] <= vMaxData\n//     )\n// )\nVAR vMaxAbast = CALCULATE(MAX(f_abastecimento[DT_OPERACAO]))\nVAR vMaxFiltro = CALCULATE(MAX(d_calendar[DATA]), ALLSELECTED(d_calendar))\nVAR vMaxData = MIN(vMaxAbast, vMaxFiltro)\nVAR vPeriodo = CALCULATE(SELECTEDVALUE(d_calendar[ANO_SEMANA]), FILTER(ALL(d_calendar), d_calendar[DATA] = vMaxData))\nRETURN\nCALCULATE(\n    [Horas],\n    FILTER(ALLSELECTED(d_calendar), d_calendar[ANO_SEMANA] = vPeriodo && d_calendar[DATA] <= vMaxData)\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Consumo Diesel Semana (l/h)",
+  "Auto": false,
+  "Expression": "// DIVIDE(\n//     [Diesel Volume Semana (l)]\n//     ,[Horas Semana]\n// )\n// CALCULATE([Consumo Diesel (l/h)], ALLEXCEPT(d_calendar, d_calendar[ANO_SEMANA]))\n// VAR vMaxData = CALCULATE(MAX(f_abastecimento[DT_OPERACAO]))\n// VAR vSemana = CALCULATE(SELECTEDVALUE(d_calendar[ANO_SEMANA]), FILTER(d_calendar, d_calendar[DATA] = vMaxData))\n// RETURN CALCULATE([Consumo Diesel (l/h)], FILTER(ALL(d_calendar), d_calendar[ANO_SEMANA] = vSemana))\n// VAR vMaxData = MAX(d_calendar[DATA])\n// VAR vSemana = CALCULATE(SELECTEDVALUE(d_calendar[ANO_SEMANA]), FILTER(ALL(d_calendar), d_calendar[DATA] = vMaxData))\n// RETURN CALCULATE([Consumo Diesel (l/h)], FILTER(ALLSELECTED(d_calendar), d_calendar[ANO_SEMANA] = vSemana))\nVAR vMaxAbast = CALCULATE(MAX(f_abastecimento[DT_OPERACAO]))\nVAR vMaxFiltro = CALCULATE(MAX(d_calendar[DATA]), ALLSELECTED(d_calendar))\nVAR vMaxData = MIN(vMaxAbast, vMaxFiltro)\nVAR vSemana = CALCULATE(SELECTEDVALUE(d_calendar[ANO_SEMANA]), FILTER(ALL(d_calendar), d_calendar[DATA] = vMaxData))\nRETURN\nCALCULATE(\n    [Consumo Diesel (l/h)],\n    FILTER(ALLSELECTED(d_calendar), d_calendar[ANO_SEMANA] = vSemana)\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Consumo Diesel Mês (l/h)",
+  "Auto": false,
+  "Expression": "\nVAR vMaxAbast = CALCULATE(MAX(f_abastecimento[DT_OPERACAO]))\nVAR vMaxFiltro = CALCULATE(MAX(d_calendar[DATA]), ALLSELECTED(d_calendar))\nVAR vMaxData = MIN(vMaxAbast, vMaxFiltro)\nVAR vMes = CALCULATE(SELECTEDVALUE(d_calendar[FIM_MES_ANO]), FILTER(ALL(d_calendar), d_calendar[DATA] = vMaxData))\nRETURN\nCALCULATE(\n    [Consumo Diesel (l/h)],\n    FILTER(ALLSELECTED(d_calendar), d_calendar[FIM_MES_ANO] = vMes)\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Padrão Orçado (l/h_km/l)",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    AVERAGE(d_equipamentos[MD_CONSUMO])\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Consumo Diesel Att. (L/H)",
+  "Auto": false,
+  "Expression": "\nVAR vPeriodo = SELECTEDVALUE(d_periodo[Período],\"SAFRA\")\nRETURN\nDIVIDE(\n    SWITCH(TRUE()\n        ,vPeriodo = \"SEMANA\", [Consumo Diesel Semana (l/h)]\n        ,vPeriodo = \"MÊS\", [Consumo Diesel Mês (l/h)]\n        ,vPeriodo = \"SAFRA\", [Consumo Diesel (l/h)]\n    )\n    ,[Padrão Orçado (l/h_km/l)]\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Consumo MAX Gráfico (l/h)",
+  "Auto": false,
+  "Expression": "MAX([Consumo Diesel (l/h)],[Padrão Orçado (l/h_km/l)])*1.2"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Consumos Diesel Cor",
+  "Auto": false,
+  "Expression": "\nIF([Unidade Medida Upper]=\"(km/l)\"\n    ,IF([Consumo Diesel Att. (L/H)]>1,\"#187518\",\"#870000\")\n    ,IF([Consumo Diesel Att. (L/H)]>1,\"#870000\",\"#187518\")\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Unidade Medida",
+  "Auto": false,
+  "Expression": "\nVAR vUnidade =\nFIRSTNONBLANK(f_abastecimento[CD_UNIMED],\"h\")\nRETURN\nLOWER(\n    IF(\n        vUnidade=\"h\"\n        ,\"(l/\"&vUnidade&\")\"\n        ,\"(\"&vUnidade&\"/l)\"\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Unidade Medida Upper",
+  "Auto": false,
+  "Expression": "\nUPPER([Unidade Medida])"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Diesel Volume Meta (l)",
+  "Auto": false,
+  "Expression": "\nVAR __baseeqp =\nSUMX(\n    ADDCOLUMNS(\n        ADDCOLUMNS(\n            d_calendar_metas\n            ,\"META_MES\"\n            ,CALCULATE(\n                SUM(d_orcamento_diesel[Valor])\n                ,USERELATIONSHIP(d_equipamentos[CD_CCUSTO],d_orcamento_diesel[C Custo])\n            )\n        )\n        ,\"META_DIA\"\n        ,DIVIDE(\n            [META_MES]\n            ,DAY([FIM_MES_ANO])\n        )\n    )\n    ,[META_DIA]\n)\nVAR __basecc =\nSUMX(\n    ADDCOLUMNS(\n        ADDCOLUMNS(\n            d_calendar_metas\n            ,\"META_MES\"\n            ,CALCULATE(\n                SUM(d_orcamento_diesel[Valor])\n            )\n        )\n        ,\"META_DIA\"\n        ,DIVIDE(\n            [META_MES]\n            ,DAY([FIM_MES_ANO])\n        )\n    )\n    ,[META_DIA]\n)\nRETURN\nIF(\n    SELECTEDVALUE(d_base_calc[Cod],1)=2\n    ,__basecc\n    ,__baseeqp\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Diesel MAX Gráfico (l)",
+  "Auto": false,
+  "Expression": "MAX([Diesel Volume (l)],[Diesel Volume Meta (l)])*1.2"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Diesel Volume Cor",
+  "Auto": false,
+  "Expression": "\nIF([Diesel Volume (l)]>[Diesel Volume Meta (l)],\"#870000\",\"#187518\")"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Diesel Volume ST",
+  "Auto": false,
+  "Expression": "\nVAR vReal = COALESCE([Diesel Volume (l)],0)\nVAR vMeta = COALESCE([Diesel Volume Meta (l)],0)\nVAR vPerc =\nDIVIDE(\n    vReal\n    ,vMeta\n    ,1\n)\nVAR vVariacao = vReal-vMeta\nVAR vIcon = IF(vVariacao<=0,\"✅\",\"⛔\")\nRETURN\n\"PERÍODO: \"&FORMAT(vReal,\"#,##0\")&\" de \"&FORMAT(vMeta,\"#,##0\")&\" | \"&FORMAT(vPerc,\"0.0%\")&\" | Var. \"&FORMAT(vVariacao,\"#,##0\")&\" \"&vIcon"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Tempo Distancia Meta (h/km)",
+  "Auto": false,
+  "Expression": "\nVAR __basecc = \nSUMX(\n    ADDCOLUMNS(\n        ADDCOLUMNS(\n            d_calendar_metas\n            ,\"META_MES\"\n            ,CALCULATE(\n                SUM(d_orcamento_km_h[Valor])\n            )\n        )\n        ,\"META_DIA\"\n        ,DIVIDE(\n            [META_MES]\n            ,DAY([FIM_MES_ANO])\n        )\n    )\n    ,[META_DIA]\n)\nVAR __baseeqp = \nSUMX(\n    ADDCOLUMNS(\n        ADDCOLUMNS(\n            d_calendar_metas\n            ,\"META_MES\"\n            ,CALCULATE(\n                SUM(d_orcamento_km_h[Valor])\n                ,USERELATIONSHIP(d_equipamentos_sistema[CD_CCUSTO],d_orcamento_km_h[C Custo])\n            )\n        )\n        ,\"META_DIA\"\n        ,DIVIDE(\n            [META_MES]\n            ,DAY([FIM_MES_ANO])\n        )\n    )\n    ,[META_DIA]\n)\nRETURN\nIF(\n    SELECTEDVALUE(d_base_calc[Cod],1)=2\n    ,__basecc\n    ,__baseeqp\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Tempo Distancia ST",
+  "Auto": false,
+  "Expression": "\nVAR vReal = COALESCE([Tempo Distancia 2 (h/km)],0)\nVAR vMeta = COALESCE([Tempo Distancia Meta (h/km)],0)\nVAR vPerc =\nDIVIDE(\n    vReal\n    ,vMeta\n    ,1\n)\nVAR vVariacao = vReal-vMeta\nVAR vIcon = IF(vVariacao<=0,\"✅\",\"⛔\")\nRETURN\n\"PERÍODO: \"&FORMAT(vReal,\"#,##0\")&\" de \"&FORMAT(vMeta,\"#,##0\")&\" | \"&FORMAT(vPerc,\"0.0%\")&\" | Var. \"&FORMAT(vVariacao,\"#,##0\")&\" \"&vIcon"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Tempo Distancia Cor",
+  "Auto": false,
+  "Expression": "\nIF([Tempo Distancia 2 (h/km)]>[Tempo Distancia Meta (h/km)],\"#870000\",\"#187518\")"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Tempo Distancia MAX",
+  "Auto": false,
+  "Expression": "\nMAX([Tempo Distancia 2 (h/km)],[Tempo Distancia Meta (h/km)])*1.2"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Tempo Distancia 2 (h/km)",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    CALCULATE(\n        SUM(f_abastecimento[HORA_KM])\n        ,FILTER(ADDCOLUMNS(f_abastecimento,\"maxAbastecimento\",CALCULATE(MAX(f_abastecimento[DT_OPERACAO]),FILTER(f_abastecimento,f_abastecimento[LITROS]>0)))\n            ,[DT_OPERACAO]<=[maxAbastecimento]\n        )\n        ,USERELATIONSHIP(d_meta_frente[CD_FREN_TRAN],d_equipamentos[CD_FREN_TRAN])\n    )\n    ,FILTER(\n        ADDCOLUMNS(\n            ADDCOLUMNS(f_abastecimento\n                ,\"EQPS\"\n                ,VAR vEqp = f_abastecimento[CD_EQUIPTO]\n                RETURN\n                CALCULATE(\n                    COUNTROWS(d_equipamentos)\n                    ,FILTER(d_equipamentos\n                        ,[CD_EQUIPTO]=vEqp\n                        &&[DATA.1]>0\n                    )\n                )\n            )\n            ,\"IGNORAR\"\n            ,IF([DT_OPERACAO]>=MIN(d_equipamentos[DATA.1])&&[DT_OPERACAO]<=MAX(d_equipamentos[DATA.2])&&[EQPS]>0,1,0)\n        )\n        ,[IGNORAR]=0\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Disponibilidade Média (%) Dia",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    [Disponibilidade Média (%)]\n    ,CROSSFILTER(d_data_hora[FECHAMENTO],d_calendar[DATA],None)\n    ,USERELATIONSHIP(d_data_hora[Date],d_calendar[DATA]))"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Equipamentos Falharam",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    DISTINCTCOUNT(f_manfro[CD_EQUIPTO]),\n    FILTER(\n        f_manfro,\n        f_manfro[HORA_INICIAL] > 0\n    ),\n    FILTER(\n        d_criterio_disponibilidade,\n        d_criterio_disponibilidade[COD_CLASS]=1\n    )\n    ,USERELATIONSHIP(f_manfro[HORA_INICIAL],d_data_hora[DATA_HORA])\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Reparos Emergenciais",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    COUNT(f_manfro[CD_EQUIPTO]),\n    FILTER(\n        f_manfro,\n        f_manfro[HORA_INICIAL] > 0\n    ),\n    FILTER(\n        d_criterio_disponibilidade,\n        d_criterio_disponibilidade[COD_CLASS] in {1,5,6}\n    )\n    ,USERELATIONSHIP(f_manfro[DATA_OS],d_calendar[DATA])\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Downtime (%)",
+  "Auto": false,
+  "Expression": "1-[Disponibilidade Média (%)]"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Ocorrências",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    COUNT(f_manfro[CD_EQUIPTO]),\n    FILTER(\n        f_manfro,\n        f_manfro[HORA_INICIAL] > 0\n    )\n    ,USERELATIONSHIP(f_manfro[HORA_INICIAL],d_data_hora[DATA_HORA])\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Tempo Calendário (h)",
+  "Auto": false,
+  "Expression": "\nDISTINCTCOUNT(d_calendar[DATA]) * 24\n*DISTINCTCOUNT(d_equipamentos[CD_EQUIPTO])"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Tempo Manutenção (h)",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    SUMX(\n        ADDCOLUMNS(\n            f_manfro\n            ,\"TEMPO\"\n            ,DATEDIFF(f_manfro[INICIAL],f_manfro[FINAL],SECOND)\n        )\n        ,[TEMPO]/(60*60)\n    )\n    ,USERELATIONSHIP(d_calendar[DATA],f_manfro[DATA_OS])\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Tempo Manutenção Não Planejado (h)",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    SUMX(\n        ADDCOLUMNS(\n            f_manfro\n            ,\"TEMPO\"\n            ,DATEDIFF(f_manfro[INICIAL],f_manfro[FINAL],HOUR)\n        )\n        ,[TEMPO]\n    )\n    ,FILTER(\n        d_criterio_disponibilidade\n        ,[COD_CLASS]=1\n    )\n    ,USERELATIONSHIP(d_calendar[DATA],f_manfro[DATA_OS])\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Tempo Manutenção Planejado (h)",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    SUMX(\n        ADDCOLUMNS(\n            f_manfro\n            ,\"TEMPO\"\n            ,DATEDIFF(f_manfro[INICIAL],f_manfro[FINAL],HOUR)\n        )\n        ,[TEMPO]\n    )\n    ,FILTER(\n        d_criterio_disponibilidade\n        ,[COD_CLASS]<>1\n    )\n    ,USERELATIONSHIP(d_calendar[DATA],f_manfro[DATA_OS])\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "MTBF",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    DIVIDE(\n        [Tempo Calendário (h)]-[Tempo Manutenção (h)]\n        ,[Reparos Emergenciais]\n    )\n    ,FILTER(\n        d_criterio_disponibilidade\n        ,[COD_CLASS] in {1,5,6}\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "MTTR",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    AVERAGEX(\n        ADDCOLUMNS(\n            f_manfro\n            ,\"TEMPO\"\n            ,DATEDIFF(f_manfro[INICIAL],f_manfro[FINAL],SECOND)\n        )\n        ,[TEMPO]/(60*60)\n    )\n    ,FILTER(\n        d_criterio_disponibilidade\n        ,[COD_CLASS] in {1,5,6}\n    )\n    ,USERELATIONSHIP(d_calendar[DATA],f_manfro[DATA_OS])\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Ordens Em Aberto",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    COUNT(f_manfro[CD_EQUIPTO]),\n    FILTER(\n        f_manfro,\n        f_manfro[HORA_INICIAL] > 0\n        &&[STATUS]=\"Andamento\"\n        &&[COD_CLASS] in {1,5,6}\n    )\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Aproveitamento Mecânico Dia (%)",
+  "Auto": false,
+  "Expression": "\nVAR DIAS_DISPONIVEIS = \n    CALCULATE(\n        DISTINCTCOUNT(d_equipamentos[CD_EQUIPTO]),\n        ALLSELECTED(d_calendar)\n    )\n\nVAR DIAS = \n    CALCULATE(\n        DISTINCTCOUNT(f_manfro[CD_EQUIPTO]),\n        FILTER(\n            f_manfro,\n            f_manfro[DATA_INICIAL] < MAX(d_calendar[DATA]) &&\n            f_manfro[DATA_INICIAL] > 0 &&\n            f_manfro[DATA_FINAL] > MAX(d_calendar[DATA])\n        ),\n        FILTER(\n            d_criterio_disponibilidade,\n            d_criterio_disponibilidade[Considerar] = \"S\"\n        )\n    )\n\nVAR DIAS_INICIAL = \n    CALCULATE(\n        DISTINCTCOUNT(f_manfro[CD_EQUIPTO]) - SUM(f_manfro[DESCONTO_DIA]),\n        FILTER(\n            f_manfro,\n            f_manfro[DATA_INICIAL] = MAX(d_calendar[DATA]) &&\n            f_manfro[DATA_INICIAL] > 0 &&\n            f_manfro[DATA_FINAL] > MAX(d_calendar[DATA])\n        ),\n        FILTER(\n            d_criterio_disponibilidade,\n            d_criterio_disponibilidade[Considerar] = \"S\"\n        )\n    )\n\nVAR DIAS_FINAL = \n    CALCULATE(\n        SUM(f_manfro[ACRESCIMO_DIA]),\n        FILTER(\n            f_manfro,\n            f_manfro[DATA_INICIAL] < MAX(d_calendar[DATA]) &&\n            f_manfro[DATA_INICIAL] > 0 &&\n            f_manfro[DATA_FINAL] = MAX(d_calendar[DATA])\n        ),\n        FILTER(\n            d_criterio_disponibilidade,\n            d_criterio_disponibilidade[Considerar] = \"S\"\n        )\n    )\n\nVAR DIAS_ENTRE = \n    CALCULATE(\n        SUMX(f_manfro, f_manfro[ACRESCIMO_DIA] - f_manfro[DESCONTO_DIA]),\n        FILTER(\n            f_manfro,\n            f_manfro[DATA_INICIAL] = MAX(d_calendar[DATA]) &&\n            f_manfro[DATA_FINAL] = MAX(d_calendar[DATA])\n        ),\n        FILTER(\n            d_criterio_disponibilidade,\n            d_criterio_disponibilidade[Considerar] = \"S\"\n        )\n    )\n\nVAR TOTAL_DIAS = DIAS + DIAS_INICIAL + DIAS_FINAL + DIAS_ENTRE\n\nRETURN\n    AVERAGEX(\n        d_calendar,\n        1 - DIVIDE(TOTAL_DIAS, DIAS_DISPONIVEIS)\n    )\n"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Disponibilidade Hora (%)",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n        AVERAGEX(\n            ADDCOLUMNS(d_data_hora\n                ,\"DISPONIBILIDADE\"\n                ,[Disponibilidade (%)]\n            )\n            ,MAX([DISPONIBILIDADE],0)\n        )\n        ,USERELATIONSHIP(d_data_hora[FECHAMENTO],d_calendar[DATA])\n        ,FILTER(d_data_hora\n            ,[FILTRO_ANTES_AGORA]=1\n        )\n    )"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Orçamento R$",
+  "Auto": false,
+  "Expression": "\nSUM(d_orcamento_reais[Valor])"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Saldo R$",
+  "Auto": false,
+  "Expression": "\n[Orçamento R$ EQP]-[Valor Total Aplicado]"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "MaxOrçado",
+  "Auto": false,
+  "Expression": "MAX([Orçamento R$],[Valor Total Aplicado])*1.1"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "CRM",
+  "Auto": false,
+  "Expression": "\nDIVIDE(\n    [Valor Total Aplicado]\n    ,[Tempo Distancia (h/km)]\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "CRM Orçado",
+  "Auto": false,
+  "Expression": "\nDIVIDE(\n    [Orçamento R$ EQP]\n    ,[Orçamento KM EQP]\n    ,0\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "CRM Delta",
+  "Auto": false,
+  "Expression": "\n[CRM Orçado]-[CRM]"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Orçamento R$ EQP",
+  "Auto": false,
+  "Expression": "\nSUMX(\n    ADDCOLUMNS(\n        d_equipamentos_sistema\n        ,\"VALOR\"\n        ,VAR __ccusto = TRIM([CD_CCUSTO])\n        RETURN\n        CALCULATE(\n            SUM(d_orcamento_reais[Valor])\n            ,FILTER(\n                d_orcamento_reais\n                ,TRIM([Cód.])=__ccusto\n            )\n        )\n    )\n    ,DIVIDE([VALOR],[QTD_EQP])\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Orçamento KM EQP",
+  "Auto": false,
+  "Expression": "\nSUMX(\n    ADDCOLUMNS(\n        d_equipamentos\n        ,\"VALOR\"\n        ,VAR __ccusto = TRIM([CCUSTO_SIS])\n        RETURN\n        CALCULATE(\n            SUM(d_orcamento_km_h[Valor])\n            ,FILTER(\n                d_orcamento_km_h\n                ,TRIM(d_orcamento_km_h[C Custo])=__ccusto\n            )\n        )\n    )\n    ,DIVIDE([VALOR],[QTD_EQP])\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "d_equipamentos",
+  "Name": "Equipamentos Ativos",
+  "Auto": false,
+  "Expression": "VAR Equip = SELECTEDVALUE(d_equipamentos[CD_EQUIPTO])\nVAR DiasSelecionados = VALUES(d_calendar[DATA])\nVAR DiasAtivos =\n    SUMX(\n        DiasSelecionados,\n        VAR Dia = d_calendar[DATA]\n        VAR DiaIgnorado =\n            CALCULATE(\n                COUNTROWS(d_datas_ignorar),\n                FILTER(\n                    ALL(d_datas_ignorar),\n                    d_datas_ignorar[CD_EQUIPTO] = Equip\n                        && Dia >= d_datas_ignorar[DATA.1]\n                        && Dia <= d_datas_ignorar[DATA.2]\n                )\n            )\n        RETURN IF(DiaIgnorado > 0, 0, 1)\n    )\nRETURN\nIF(\n    ISBLANK(Equip),\n    1,\n    IF(DiasAtivos > 0, 1, 0)\n)"
+ },
+ {
+  "Kind": "Medida",
+  "Table": "medidas",
+  "Name": "Destaque Letra Frota Cor",
+  "Auto": false,
+  "Expression": "IF (\n    CONTAINS(\n        d_datas_ignorar,\n        d_datas_ignorar[CD_EQUIPTO],\n        SELECTEDVALUE('d_equipamentos'[CD_EQUIPTO])\n    ),\n    \"#FFFFFF\",\n    \"#252423\"\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_atualizado",
+  "Name": "AGORA 2",
+  "Auto": false,
+  "Expression": "\nFORMAT(DATE(YEAR([AGORA5]),MONTH([AGORA5]),DAY([AGORA5]))+TIME(HOUR([AGORA5]),0,0),\"dd/mm/yy hh:mm\")"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_atualizado",
+  "Name": "AGORA5",
+  "Auto": false,
+  "Expression": "\n[AGORA]+0.0034722222"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_atualizado",
+  "Name": "agora0",
+  "Auto": false,
+  "Expression": "DATE(YEAR([AGORA5]),MONTH([AGORA5]),DAY([AGORA5]))+TIME(HOUR([AGORA5]),0,0)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_criterio_disponibilidade",
+  "Name": "Gera Indisponibilidade",
+  "Auto": false,
+  "Expression": "\nIF([Considerar]=\"N\",\"Não Gera Indisponibilidade\",\"Gera Indisponibilidade\")"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_manfro",
+  "Name": "TEMPO_TOTAL_PARADO",
+  "Auto": false,
+  "Expression": "\nVAR AGORA =\nMAX(f_atualizado[AGORA5])\nRETURN\nCOALESCE([SAIDA],AGORA)-COALESCE([INICIO_ANDAMENTO],[ENTRADA])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_manfro",
+  "Name": "TEXTO",
+  "Auto": false,
+  "Expression": "\nVAR FRT = \nRELATED(d_equipamentos[FRENTE])\nVAR DIAS =\nROUNDDOWN([TEMPO_TOTAL_PARADO],0)\nVAR HORAS =\nROUNDDOWN(([TEMPO_TOTAL_PARADO]-DIAS)*24,0)\nVAR MINUTOS =\nROUNDDOWN((([TEMPO_TOTAL_PARADO]-DIAS)*24-HORAS)*60,0)\nVAR TEMPO =\nIF(DIAS>0,DIAS&\"d \")\n&HORAS&\"h\"&MINUTOS&\"m\"\nVAR TEXTO_QRM =\nTRIM(LEFT([SERVICO],23))\nVAR QRM_MOTIVO =\nUPPER(IF(TEXTO_QRM=\"\",[DE_MOTENTR],TEXTO_QRM))\nRETURN\nIF([STATUS]=\"Andamento\",\n    FRT&\" | \"&[CD_EQUIPTO]&\" | \"&QRM_MOTIVO&\" | \"&TEMPO\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_manfro",
+  "Name": "INICIAL",
+  "Auto": false,
+  "Expression": "\nVAR CALCULO =\nRELATED(d_criterio_disponibilidade[Cálculo])\nRETURN\nIF(CALCULO=1,[ENTRADA],[INICIO_ANDAMENTO])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_manfro",
+  "Name": "FINAL",
+  "Auto": false,
+  "Expression": "\nVAR AGORA = \nMAX(f_atualizado[AGORA5])\nRETURN\nCOALESCE(\n    [SAIDA]\n    ,AGORA\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_manfro",
+  "Name": "DESCONTO_INICIAL",
+  "Auto": false,
+  "Expression": "\nDIVIDE(\n    MINUTE([INICIAL])\n    ,60\n)\n+DIVIDE(\n    SECOND([INICIAL])\n    ,60*60\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_manfro",
+  "Name": "ACRESCIMO_FINAL",
+  "Auto": false,
+  "Expression": "\nDIVIDE(\n    MINUTE([FINAL])\n    ,60\n)\n+\nDIVIDE(\n    SECOND([FINAL])\n    ,60*60\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_manfro",
+  "Name": "HORA_INICIAL",
+  "Auto": false,
+  "Expression": "[INICIAL]-[DESCONTO_INICIAL]/24"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_manfro",
+  "Name": "HORA_FINAL",
+  "Auto": false,
+  "Expression": "[FINAL]-[ACRESCIMO_FINAL]/24"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_manfro",
+  "Name": "TEXTO_2",
+  "Auto": false,
+  "Expression": "\nVAR FRT = \nRELATED(d_equipamentos[FRENTE])\nVAR DIAS =\nROUNDDOWN([TEMPO_TOTAL_PARADO],0)\nVAR HORAS =\nROUNDDOWN(([TEMPO_TOTAL_PARADO]-DIAS)*24,0)\nVAR MINUTOS =\nROUNDDOWN((([TEMPO_TOTAL_PARADO]-DIAS)*24-HORAS)*60,0)\nVAR TEMPO =\nIF(DIAS>0,DIAS&\"d \")\n&HORAS&\"h\"&MINUTOS&\"m\"\nVAR TEXTO_QRM =\nTRIM(LEFT([SERVICO],70))\nVAR QRM_MOTIVO =\nUPPER(IF(TEXTO_QRM=\"\",[DE_MOTENTR],TEXTO_QRM))\nRETURN\nSUBSTITUTE(\n    IF([STATUS]=\"Andamento\",\n        [BOLETIM]&\" | \"&FRT&\" | \"&[CD_EQUIPTO]&\" | \"&QRM_MOTIVO&\" | \"&TEMPO\n    )\n    ,\"\n\"\n    ,\"\"\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_manfro",
+  "Name": "CATEGORIA_2",
+  "Auto": false,
+  "Expression": "COALESCE(\n    RELATED(d_equipamentos[CATEGORIA])\n    ,\"Outros\"\n    )"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_equipamentos",
+  "Name": "CATEGORIA_2",
+  "Auto": false,
+  "Expression": "COALESCE(\n    [CATEGORIA]\n    ,\"Outros\"\n    )"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_equipamentos",
+  "Name": "GRUPO_2",
+  "Auto": false,
+  "Expression": "COALESCE(\n    [GRUPO]\n    ,\"Outros\"\n    )"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_equipamentos",
+  "Name": "FRENTE_UP",
+  "Auto": false,
+  "Expression": "\nIF(\n    UPPER([FRENTE]) = \"\"\n    ,\"SEM FRENTE\"\n    ,UPPER([FRENTE])\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_equipamentos",
+  "Name": "PROCESSO_2",
+  "Auto": false,
+  "Expression": "COALESCE(\n    UPPER([PROCESSO])\n    ,\"OUTRO\"\n    )"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_ordem_compra",
+  "Name": "CHAVE_DOC_APROV",
+  "Auto": false,
+  "Expression": "FORMAT([NUM_DOCERP],\"00000000\")&[SEQUENCIA]&IF(LEN([SEQUENCIA])>2,\"\",\" \")&[CD_MATERIAL]"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_ordem_compra",
+  "Name": "BOLETIM_MANFRO_TEXTO",
+  "Auto": false,
+  "Expression": "UPPER([NO_BOLETIM])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_ordem_compra",
+  "Name": "DT_APROVA_PEDIDO_1",
+  "Auto": false,
+  "Expression": "\nVAR vChave = [CHAVE_DOC_APROV]\nVAR vSC = [NUM_DOCERP]\nVAR vPC = [PEDIDO]\nRETURN\nCALCULATE(\n    MAXX(f_pend_aprov,[DT_APROVA]+[HORA_APROVACAO])\n    ,FILTER(f_pend_aprov\n        ,f_pend_aprov[CHAVE_DOC]=vPC\n        &&[SEQ_APROV] = 1\n    )\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_ordem_compra",
+  "Name": "DT_APROVA_PEDIDO_2",
+  "Auto": false,
+  "Expression": "\nVAR vChave = [CHAVE_DOC_APROV]\nVAR vSC = [NUM_DOCERP]\nVAR vPC = [PEDIDO]\nRETURN\nCALCULATE(\n    MAXX(f_pend_aprov,[DT_APROVA]+[HORA_APROVACAO])\n    ,FILTER(f_pend_aprov\n        ,f_pend_aprov[CHAVE_DOC]=vPC\n        &&[SEQ_APROV] = 2\n    )\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_ordem_compra",
+  "Name": "DT_APROVA_REQUISIÇÃO",
+  "Auto": false,
+  "Expression": "\nVAR vChave = [CHAVE_DOC_APROV]\nVAR vSC = [NUM_DOCERP]\nVAR vPC = [PEDIDO]\nRETURN\nCALCULATE(\n    MAXX(f_pend_aprov,[DT_APROVA]+[HORA_APROVACAO])\n    ,FILTER(f_pend_aprov\n        ,([CHAVE_DOC]=vChave || [CHAVE_DOC]=vSC)\n        &&[SEQ_APROV] = 1\n    )\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_ordem_compra",
+  "Name": "DT_GERACAO_PEDIDO_1",
+  "Auto": false,
+  "Expression": "\nVAR vChave = [CHAVE_DOC_APROV]\nVAR vSC = [NUM_DOCERP]\nVAR vPC = [PEDIDO]\nRETURN\nCALCULATE(\n    MAXX(f_pend_aprov,[DT_GERACAO]+[HORA_GERACAO])\n    ,FILTER(f_pend_aprov\n        ,f_pend_aprov[CHAVE_DOC]=vPC\n        &&[SEQ_APROV] = 1\n    )\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_ordem_compra",
+  "Name": "DT_GERACAO_PEDIDO_2",
+  "Auto": false,
+  "Expression": "\nVAR vChave = [CHAVE_DOC_APROV]\nVAR vSC = [NUM_DOCERP]\nVAR vPC = [PEDIDO]\nRETURN\nCALCULATE(\n    MAXX(f_pend_aprov,[DT_GERACAO]+[HORA_GERACAO])\n    ,FILTER(f_pend_aprov\n        ,f_pend_aprov[CHAVE_DOC]=vPC\n        &&[SEQ_APROV] = 2\n    )\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_ordem_compra",
+  "Name": "DT_GERACAO_REQUISIÇÃO",
+  "Auto": false,
+  "Expression": "\nVAR vChave = [CHAVE_DOC_APROV]\nVAR vSC = [NUM_DOCERP]\nVAR vPC = [PEDIDO]\nRETURN\n    CALCULATE(\n        MAXX(f_pend_aprov,[DT_GERACAO]+[HORA_GERACAO])\n        ,FILTER(f_pend_aprov\n            ,([CHAVE_DOC]=vChave || [CHAVE_DOC]=vSC)\n        )\n    )"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_equipamentos",
+  "Name": "EQUIPAMENTO_TEXTO",
+  "Auto": false,
+  "Expression": "UPPER([CD_EQUIPTO])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_manfro",
+  "Name": "BOLETIM_TEXTO",
+  "Auto": false,
+  "Expression": "UPPER([BOLETIM])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_ordem_compra",
+  "Name": "DATA_ENVIO_AJUSTE",
+  "Auto": false,
+  "Expression": "\nDATE(YEAR([DT_ENVIO]),MONTH([DT_ENVIO]),DAY([DT_ENVIO]))"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_ordem_compra",
+  "Name": "STATUS_REQ_AJUSTE",
+  "Auto": false,
+  "Expression": "\nSWITCH(TRUE()\n    ,[FG_STATUS_ERP]<>BLANK() && [FG_STATUS_ERP]<>\"\",[FG_STATUS_ERP]\n    ,[PEDIDO]<>\"\",\"PE\"\n    ,\"SO\"\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_ordem_compra",
+  "Name": "DATA_RECEBIMENTO",
+  "Auto": false,
+  "Expression": "\nVAR vOrdem = [NUMERO_ORDEM]\nVAR vItem = [CD_MATERIAL]\nRETURN\nCALCULATE(\n    MAX(f_recebimento[DATA_MOVTO])\n    ,FILTER(f_recebimento\n        ,[NUMERO_ORDEM]=vOrdem\n        &&[IT_CODIGO]=vItem\n    )\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_ordem_compra",
+  "Name": "DATA_FATURAMENTO",
+  "Auto": false,
+  "Expression": "\nVAR vOrdem = [NUMERO_ORDEM]\nVAR vItem = [CD_MATERIAL]\nRETURN\nCALCULATE(\n    MAX(f_recebimento[DATA_NOTA])\n    ,FILTER(f_recebimento\n        ,[NUMERO_ORDEM]=vOrdem\n        &&[IT_CODIGO]=vItem\n    )\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_ordem_compra",
+  "Name": "STATUS REQUISICAO",
+  "Auto": false,
+  "Expression": "\nSWITCH(TRUE()\n    ,[DATA_RECEBIMENTO]<>BLANK(),\"RECEBIDO\"\n    ,[DT_APROVA_PEDIDO_2]<>BLANK(),\"PEDIDO APROVADO\"\n    ,[DATA_PEDIDO]<>BLANK(),\"PEDIDO GERADO\"\n    ,[EMISSAO_OC]<>BLANK(),\"AGUARDANDO PEDIDO\"\n    ,\"AGUARDANDO ORDEM\"\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_ordem_compra",
+  "Name": "APROVADOR_RC",
+  "Auto": false,
+  "Expression": "\nVAR vChave = [CHAVE_DOC_APROV]\nVAR vSC = [NUM_DOCERP]\nVAR vPC = [PEDIDO]\nVAR vAprovador =\nCOALESCE(\n    CALCULATE(\n        FIRSTNONBLANK(f_pend_aprov[COD_USUAR],0)\n        ,FILTER(f_pend_aprov\n            ,([CHAVE_DOC]=vChave || [CHAVE_DOC]=vSC)\n            &&[SEQ_APROV] = 1\n        )\n    )\n    ,CALCULATE(\n        FIRSTNONBLANK(f_pend_aprov[COD_USUAR_ALTERN],0)\n        ,FILTER(f_pend_aprov\n            ,([CHAVE_DOC]=vChave || [CHAVE_DOC]=vSC)\n            &&[SEQ_APROV] = 1\n        )\n    )\n)\nRETURN\nCOALESCE(\n    CALCULATE(\n        FIRSTNONBLANK(d_aprovadores[NOME_USUAR],0)\n        ,FILTER(d_aprovadores\n            ,[COD_USUAR]=vAprovador\n        )\n    )\n    ,\"SEM APROVADOR\"\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_ordem_compra",
+  "Name": "APROVADOR_PEDIDO_1",
+  "Auto": false,
+  "Expression": "\nVAR vChave = [CHAVE_DOC_APROV]\nVAR vSC = [NUM_DOCERP]\nVAR vPC = [PEDIDO]\nVAR vAprovador =\nCOALESCE(\n    CALCULATE(\n        FIRSTNONBLANK(f_pend_aprov[COD_USUAR],0)\n        ,FILTER(f_pend_aprov\n            ,f_pend_aprov[CHAVE_DOC]=vPC\n            &&[SEQ_APROV] = 1\n        )\n    )\n    ,CALCULATE(\n        FIRSTNONBLANK(f_pend_aprov[COD_USUAR_ALTERN],0)\n        ,FILTER(f_pend_aprov\n            ,f_pend_aprov[CHAVE_DOC]=vPC\n            &&[SEQ_APROV] = 1\n        )\n    )\n)\nRETURN\nCOALESCE(\n    CALCULATE(\n        FIRSTNONBLANK(d_aprovadores[NOME_USUAR],0)\n        ,FILTER(d_aprovadores\n            ,[COD_USUAR]=vAprovador\n        )\n    )\n    ,\"SEM APROVADOR\"\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_ordem_compra",
+  "Name": "APROVADOR_PEDIDO_2",
+  "Auto": false,
+  "Expression": "\nVAR vChave = [CHAVE_DOC_APROV]\nVAR vSC = [NUM_DOCERP]\nVAR vPC = [PEDIDO]\nVAR vAprovador =\nCOALESCE(\n    CALCULATE(\n        FIRSTNONBLANK(f_pend_aprov[COD_USUAR],0)\n        ,FILTER(f_pend_aprov\n            ,f_pend_aprov[CHAVE_DOC]=vPC\n            &&[SEQ_APROV] = 2\n        )\n    )\n    ,CALCULATE(\n        FIRSTNONBLANK(f_pend_aprov[COD_USUAR_ALTERN],0)\n        ,FILTER(f_pend_aprov\n            ,f_pend_aprov[CHAVE_DOC]=vPC\n            &&[SEQ_APROV] = 2\n        )\n    )\n)\nRETURN\nCOALESCE(\n    CALCULATE(\n        FIRSTNONBLANK(d_aprovadores[NOME_USUAR],0)\n        ,FILTER(d_aprovadores\n            ,[COD_USUAR]=vAprovador\n        )\n    )\n    ,\"SEM APROVADOR\"\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_ordem_compra",
+  "Name": "COMPRADOR",
+  "Auto": false,
+  "Expression": "\nVAR vCod = RIGHT([COD_COMPRADO],4)\nRETURN\nCALCULATE(\n    FIRSTNONBLANK(d_compradores[NOME],0)\n    ,FILTER(d_compradores\n        ,RIGHT([COD_COMPRADO],4)=vCod\n    )\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_ordem_compra",
+  "Name": "STATUS DE ENTREGA",
+  "Auto": false,
+  "Expression": "\nSWITCH(TRUE()\n    ,[DATA_RECEBIMENTO]<>BLANK() && [DATA_FATURAMENTO]<=[DATA_FAT_PROMETIDA_AJUSTE],\"RECEBIDO NO PRAZO\"\n    ,[DATA_RECEBIMENTO]<>BLANK() && [DATA_FATURAMENTO]>[DATA_FAT_PROMETIDA_AJUSTE],\"RECEBIDO FORA DO PRAZO\"\n    ,[DATA_FAT_PROMETIDA_AJUSTE]=BLANK(),\"SEM PRAZO\"\n    ,[DATA_RECEBIMENTO]=BLANK() && TODAY()<=[DATA_FAT_PROMETIDA_AJUSTE],\"AGUARD. NO PRAZO\"\n    ,[DATA_RECEBIMENTO]=BLANK() && TODAY()>[DATA_FAT_PROMETIDA_AJUSTE],\"AGUARD. FORA DO PRAZO\"\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_ordem_compra",
+  "Name": "DATA_FAT_PROMETIDA_AJUSTE",
+  "Auto": false,
+  "Expression": "\nCOALESCE([DATA_FATURAMENTO_PROMETIDA],[DATA_PREVISAO_ENTREGA])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_lubrificante",
+  "Name": "FIM_MES_ANO",
+  "Auto": false,
+  "Expression": "\nEOMONTH([DT_OPERACAO],0)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_ordem_compra",
+  "Name": "EQUIPAMENTO_TEXTO",
+  "Auto": false,
+  "Expression": "UPPER([CD_EQUIPTO])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_produtividade",
+  "Name": "FIM_MES_ANO",
+  "Auto": false,
+  "Expression": "\nEOMONTH([DT_HISTORICO],0)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_abastecimento",
+  "Name": "FIM_MES_ANO",
+  "Auto": false,
+  "Expression": "\nEOMONTH([DT_OPERACAO],0)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_equipamentos",
+  "Name": "CD_FREN_TRAN",
+  "Auto": false,
+  "Expression": "\n    SWITCH(\n        TRUE(),\n        d_equipamentos[FRENTE_UP] = \"FRENTE 1\", \"1\",\n        d_equipamentos[FRENTE_UP] = \"FRENTE 2\", \"2\",\n        d_equipamentos[FRENTE_UP] = \"FRENTE 3\", \"3\",\n        d_equipamentos[FRENTE_UP] = \"FRENTE 4\", \"4\",\n        d_equipamentos[FRENTE_UP] = \"FRENTE 5\", \"5\",\n        BLANK()\n    )\n"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_abastecimento",
+  "Name": "CATEGORIA",
+  "Auto": false,
+  "Expression": "RELATED(d_equipamentos[CATEGORIA])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_equipamentos",
+  "Name": "CATEGORIA_M",
+  "Auto": false,
+  "Expression": "UPPER(d_equipamentos[CATEGORIA_2])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_ordem_compra",
+  "Name": "DATA_CHEGADA_ESPERADA",
+  "Auto": false,
+  "Expression": "RELATED(d_transportadoras[DIAS])+[DATA_FATURAMENTO_PROMETIDA]"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_emitente",
+  "Name": "LEADTIME_TRANSP_EMITENTE",
+  "Auto": false,
+  "Expression": "\nROUNDUP(\n    CALCULATE(\n        AVERAGEX(\n            f_recebimento\n            ,MAX([DATA_MOVTO]-[DATA_NOTA],0)\n        )\n    )\n    ,0\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_emitente",
+  "Name": "LEADTIME_CIDADE",
+  "Auto": false,
+  "Expression": "\nVAR vCidade = [CIDADE]\nVAR vQ2 =\nCALCULATE(\n    PERCENTILE.INC(d_emitente[LEADTIME_TRANSP_EMITENTE],0.1)\n    ,FILTER(\n        d_emitente\n        ,[CIDADE]=vCidade\n        &&[LEADTIME_TRANSP_EMITENTE] >0\n    )\n)\nVAR vQ3 =\nCALCULATE(\n    PERCENTILE.INC(d_emitente[LEADTIME_TRANSP_EMITENTE],0.9)\n    ,FILTER(\n        d_emitente\n        ,[CIDADE]=vCidade\n        &&[LEADTIME_TRANSP_EMITENTE] >0\n    )\n)\nRETURN\nCALCULATE(\n    AVERAGE(d_emitente[LEADTIME_TRANSP_EMITENTE])\n    ,FILTER(\n        d_emitente\n        ,[CIDADE]=vCidade\n        &&[LEADTIME_TRANSP_EMITENTE] >= vQ2\n        &&[LEADTIME_TRANSP_EMITENTE] <= vQ3\n    )\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_tch",
+  "Name": "FIM_MES",
+  "Auto": false,
+  "Expression": "EOMONTH([DT_FECHEMENTO],0)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_calendar",
+  "Name": "SEMANA_PIMS",
+  "Auto": false,
+  "Expression": "\nVAR vData = [DATA]\nRETURN\nSWITCH(TRUE()\n    ,[DATA]>=DATE(2024,12,29),\"S-\"&FORMAT(WEEKNUM(vData,1),\"00\")\n    ,\"S-\"&FORMAT(WEEKNUM(vData,1),\"00\")\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_equipamentos",
+  "Name": "DATA.1",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    MIN(d_datas_ignorar[DATA.1])\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_equipamentos",
+  "Name": "DATA.2",
+  "Auto": false,
+  "Expression": "\nCALCULATE(\n    MIN(d_datas_ignorar[DATA.2])\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_equipamentos",
+  "Name": "FRT",
+  "Auto": false,
+  "Expression": "SUBSTITUTE([FRENTE_UP],\"FRENTE \",\"F-\")"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_equipamentos",
+  "Name": "CONSUMO DIESEL",
+  "Auto": false,
+  "Expression": "\nVAR vEquipto = [CD_EQUIPTO]\nRETURN\nIF(\n    CALCULATE(\n        SUM(f_abastecimento[LITROS])\n        ,FILTER(f_abastecimento\n            ,[CD_MATERIAL] IN {89500,89838,104542}\n            &&[CD_EQUIPTO] = vEquipto\n        )\n    )>0\n    ,\"SIM\"\n    ,\"NÃO\"\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_abastecimento",
+  "Name": "META_CONSUMO",
+  "Auto": false,
+  "Expression": "\"META: \"&FORMAT([MD_CONSUMO],\"0\")"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_equipamentos",
+  "Name": "META_CONSUMO",
+  "Auto": false,
+  "Expression": "\"META: \"&FORMAT(CALCULATE(MAX(f_abastecimento[MD_CONSUMO])),\"0.00\")"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_equipamentos",
+  "Name": "MD_CONSUMO",
+  "Auto": false,
+  "Expression": "CALCULATE(MAX(f_abastecimento[MD_CONSUMO]))"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_equipamentos",
+  "Name": "GRUPO EQP",
+  "Auto": false,
+  "Expression": "\nSWITCH(TRUE()\n    ,FIND(\"CM\",[CATEGORIA_M],1,0)>0,\"CAMINHÕES\"\n    ,FIND(\"PRANCHA\",[CATEGORIA_M],1,0)>0,\"CAMINHÕES\"\n    ,FIND(\"TRATOR\",[CATEGORIA_M],1,0)>0,\"TRATORES\"\n    ,FIND(\"UNIPORT\",[CATEGORIA_M],1,0)>0,\"UNIPORT HERBIC\"\n    ,FIND(\"MOTOBOMBA\",[CATEGORIA_M],1,0)>0,\"MOTOBOMBA\"\n    ,FIND(\"LEVES\",[CATEGORIA_M],1,0)>0,\"VEICULOS LEVES\"\n    ,FIND(\"PÁ CARREGADEIRA\",[CATEGORIA_M],1,0)>0,\"PÁ CARREGADEIRA\"\n    ,[CATEGORIA_M]\n)   "
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_manfro",
+  "Name": "ORIGEM",
+  "Auto": false,
+  "Expression": "\nSWITCH(\n    TRUE()\n    ,[ORIGEM_OS]=\"C\",\"Campo\"\n    ,[ORIGEM_OS]=\"I\",\"Interna\"\n    ,[ORIGEM_OS]=\"T\",\"Terceiro\"\n    ,\"Outro\")"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_manfro",
+  "Name": "DATA_OS",
+  "Auto": false,
+  "Expression": "DATE(YEAR([ENTRADA]),MONTH([ENTRADA]),DAY([ENTRADA]))"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_criterio_disponibilidade",
+  "Name": "CLASSE",
+  "Auto": false,
+  "Expression": "\nSUBSTITUTE([Descrição],\"Manutenção \",\"\")"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_manfro",
+  "Name": "DATA_INICIAL",
+  "Auto": false,
+  "Expression": "ROUNDDOWN([INICIAL]-MAX(d_inicio_turno[HORA_INICIAL])/24,0)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_manfro",
+  "Name": "DATA_FINAL",
+  "Auto": false,
+  "Expression": "ROUNDDOWN([FINAL]-MAX(d_inicio_turno[HORA_INICIAL])/24,0)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_manfro",
+  "Name": "DESCONTO_DIA",
+  "Auto": false,
+  "Expression": "\nROUND(\n    DIVIDE(\n        HOUR([INICIAL]-MAX(d_inicio_turno[HORA_INICIAL])/24)\n        ,24\n    )\n    +DIVIDE(\n        MINUTE([INICIAL])\n        ,24*60\n    )\n    +DIVIDE(\n        SECOND([INICIAL])\n        ,24*60*60\n    )\n    ,4\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_manfro",
+  "Name": "ACRESCIMO_DIA",
+  "Auto": false,
+  "Expression": "\nROUND(\n    DIVIDE(\n        HOUR([FINAL]-MAX(d_inicio_turno[HORA_INICIAL])/24)\n        ,24\n    )\n    +\n    DIVIDE(\n        MINUTE([FINAL])\n        ,24*60\n    )\n    +\n    DIVIDE(\n        SECOND([FINAL])\n        ,24*60*60\n    )\n    ,4\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_funcionario",
+  "Name": "FUNC",
+  "Auto": false,
+  "Expression": "UPPER([CD_FUNC])&\" - \"&[NOME_.1]"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_orcamento_reais",
+  "Name": "INICIO_MES",
+  "Auto": false,
+  "Expression": "\nVAR __ano = 2025\nRETURN\nVALUE(1&\"/\"&[Atributo]&\"/\"&IF([Atributo] IN {\"JAN\",\"FEV\",\"MAR\"}, __ano+1,__ano))"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_equipamentos_sistema",
+  "Name": "CENTRO DE CUSTO",
+  "Auto": false,
+  "Expression": "UPPER([CD_CCUSTO])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_equipamentos_sistema",
+  "Name": "QTD_EQP",
+  "Auto": false,
+  "Expression": "\nVAR __ccusto = [CENTRO DE CUSTO]\nRETURN\nCOUNTROWS(\n    FILTER(d_equipamentos_sistema\n        ,[CENTRO DE CUSTO]=__ccusto\n    )\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_equipamentos",
+  "Name": "CCUSTO_SIS",
+  "Auto": false,
+  "Expression": "RELATED(d_equipamentos_sistema[CENTRO DE CUSTO])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_equipamentos",
+  "Name": "QTD_EQP",
+  "Auto": false,
+  "Expression": "\nVAR __ccusto = [CCUSTO_SIS]\nRETURN\nCOUNTROWS(\n    FILTER(d_equipamentos\n        ,[CCUSTO_SIS]=__ccusto\n    )\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_equipamentos",
+  "Name": "DE_CCUSTO",
+  "Auto": false,
+  "Expression": "RELATED(d_equipamentos_sistema[DE_CCUSTO])"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_ordem_compra",
+  "Name": "VALOR_APLICADO_AJUSTADO",
+  "Auto": false,
+  "Expression": "\n[PRECO_UNIT2]*[QTD_MAT_APLICADO]"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "f_ordem_compra",
+  "Name": "PRECO_UNIT2",
+  "Auto": false,
+  "Expression": "\nVAR __ITEM = [CD_MATERIAL]\nRETURN\nCALCULATE(\n    AVERAGE(d_preco_unit[Preço])\n    ,FILTER(\n        d_preco_unit\n        ,[Item]=__ITEM\n    )\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_equipamentos",
+  "Name": "Grupo Equip.",
+  "Auto": false,
+  "Expression": "\nVAR __ccusto = [CD_CCUSTO]\nRETURN\nCALCULATE(\n    FIRSTNONBLANK(d_orcamento_reais[Grupo Equip.],1)\n    ,FILTER(d_orcamento_reais\n        ,[Cód.]=__ccusto\n    )\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_equipamentos_sistema",
+  "Name": "Grupo Equip.",
+  "Auto": false,
+  "Expression": "\nVAR __ccusto = [CD_CCUSTO]\nRETURN\nCALCULATE(\n    FIRSTNONBLANK(d_orcamento_reais[Grupo Equip.],1)\n    ,FILTER(d_orcamento_reais\n        ,[Cód.]=__ccusto\n    )\n)"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_orcamento_reais",
+  "Name": "Coluna",
+  "Auto": false,
+  "Expression": "[Orçamento R$ EQP]"
+ },
+ {
+  "Kind": "Coluna calculada",
+  "Table": "d_equipamentos_sistema",
+  "Name": "EQUIPAMENTO",
+  "Auto": false,
+  "Expression": "UPPER(d_equipamentos_sistema[CD_EQUIPTO])"
+ },
+ {
+  "Kind": "Tabela calculada",
+  "Table": "d_calendar",
+  "Name": "d_calendar",
+  "Auto": false,
+  "Expression": "\nVAR VIRA_DIA =\nIF(HOUR(MAX(f_atualizado[AGORA5]))-1<MAX(d_inicio_turno[HORA_INICIAL]),-1,0)\nVAR MAXMOV = \nDATE(YEAR(MAX(f_atualizado[AGORA5]))+1,3,31)+VIRA_DIA\nVAR MAXMOV2 =\nDATE(YEAR(MAX(f_atualizado[AGORA5])),MONTH(MAX(f_atualizado[AGORA5])),DAY(MAX(f_atualizado[AGORA5])))+1+VIRA_DIA\nRETURN\nVAR DATAMIN = \nCALCULATE(\n    MIN(f_manfro[ENTRADA])\n    ,FILTER(f_manfro\n        ,[ENTRADA]>0\n    )\n)\nRETURN\nADDCOLUMNS (\n    CALENDAR(EOMONTH(DATAMIN,-1)-1,EOMONTH(MAXMOV-1,0))\n    ,\"FILTRO\"\n    ,SWITCH(\n        TRUE()\n        ,[DATE]=MAXMOV2-1,1\n        ,[DATE]=MAXMOV2-2,2\n        ,[DATE]=MAXMOV2-3,3\n        ,[DATE]=MAXMOV2-4,4\n        ,[DATE]=MAXMOV2-5,5\n        ,[DATE]=MAXMOV2-6,6\n        ,[DATE]=MAXMOV2-7,7\n        ,0\n    )\n    ,\"FILTRO_TEXTO\"\n    ,SWITCH(\n        TRUE()\n        ,[DATE]=MAXMOV2-1,\"Hoje\"\n        ,[DATE]=MAXMOV2-2,\"D-1\"\n        ,[DATE]=MAXMOV2-3,FORMAT([DATE],\"DD/MM/YYYY\")\n        ,[DATE]=MAXMOV2-4,FORMAT([DATE],\"DD/MM/YYYY\")\n        ,[DATE]=MAXMOV2-5,FORMAT([DATE],\"DD/MM/YYYY\")\n        ,[DATE]=MAXMOV2-6,FORMAT([DATE],\"DD/MM/YYYY\")\n        ,[DATE]=MAXMOV2-7,FORMAT([DATE],\"DD/MM/YYYY\")\n        ,FORMAT([DATE],\"DD/MM/YYYY\")\n    )\n    ,\"EVENTOS\"\n    ,SWITCH(\n        TRUE()\n        ,[DATE]=DATAMIN,\"Início Safra\"\n        ,\"\"\n    )\n    ,\"TEXTO_DATA\"\n    ,UPPER(FORMAT([Date],\"DDD, DD/MMM\"))\n    ,\"DATA_BRASIL\"\n    ,UPPER(FORMAT([Date],\"DD/MM/YYYY\"))\n    ,\"DATA_BRASIL_RESUMIDA\"\n    ,UPPER(FORMAT([Date],\"DD/MM\"))\n    ,\"ORDENA_DATA_BRASIL_RESUMIDA\"\n    ,VALUE(FORMAT([Date],\"MM\")&\",\"&FORMAT([Date],\"MM\"))\n    ,\"ANO\"\n    ,UPPER(FORMAT([Date],\"YYYY\"))\n    ,\"MES\"\n    ,UPPER(FORMAT([Date],\"MMM\"))\n    ,\"MES_ANO\"\n    ,UPPER(FORMAT([Date],\"MMM, YYYY\"))\n    ,\"INICIO_MES_ANO\"\n    ,DATE(YEAR([Date]),MONTH([Date]),DAY(EOMONTH([Date],-1)+1))\n    ,\"FIM_MES_ANO\"\n    ,DATE(YEAR([Date]),MONTH([Date]),DAY(EOMONTH([Date],0)))\n    ,\"MES_NUM\"\n    ,MONTH([Date])\n    ,\"DIA_SEMANA\"\n    ,UPPER(FORMAT([Date],\"DDD\"))\n    ,\"DIA_SEMANA_COMPLETO\"\n    ,UPPER(FORMAT([Date],\"DDDD\"))\n    ,\"DIA_SEMANA_NUM\"\n    ,WEEKDAY([Date],1)\n    ,\"DIA_SEMANA_NUM_CORINGA\"\n    ,SWITCH(TRUE()\n        ,WEEKDAY([Date],1)=1,\"D\"\n        ,WEEKDAY([Date],1)=2,\"S\"\n        ,WEEKDAY([Date],1)=3,\"T\"\n        ,WEEKDAY([Date],1)=4,\"Q\"\n        ,WEEKDAY([Date],1)=5,\"Q \"\n        ,WEEKDAY([Date],1)=6,\"S \"\n        ,WEEKDAY([Date],1)=7,\" S \"\n    )\n    ,\"DIA_MES\"\n    ,DAY([Date])\n    ,\"SEMANA_ANO\"\n    ,WEEKNUM([Date],1)\n    ,\"ANO_SEMANA\"\n    ,VALUE(FORMAT([Date],\"YYYY\")+(VALUE(WEEKNUM([Date],1))/100))\n    ,\"FILTRO_MES\"\n    ,IF(MONTH(MAXMOV-2)=MONTH([Date])\n        ,1\n        ,0\n    )\n)"
+ },
+ {
+  "Kind": "Tabela calculada",
+  "Table": "d_data_hora",
+  "Name": "d_data_hora",
+  "Auto": false,
+  "Expression": "\nVAR vInicioTurno = MAX(d_inicio_turno[HORA_INICIAL])\nVAR MAXMOV = DATE(YEAR(MAX(f_atualizado[AGORA5])),MONTH(MAX(f_atualizado[AGORA5])),DAY(MAX(f_atualizado[AGORA5])))+1\nVAR DATAMIN = \nCALCULATE(\n    MIN(f_manfro[ENTRADA])\n    ,FILTER(f_manfro\n        ,[ENTRADA]>0\n    )\n)\nVAR AGORA =\nMAX(f_atualizado[AGORA5])\nRETURN\nADDCOLUMNS(\n    CROSSJOIN(\n        CALENDAR(DATAMIN,EOMONTH(MAXMOV,0))\n        ,CALCULATETABLE(VALUES(d_hora[HORA]),FILTER(d_hora,[HORA]>=0))\n    )\n    ,\"FECHAMENTO\"\n    ,IF(\n        [HORA]<vInicioTurno\n        ,[DATE]-1\n        ,[DATE]\n    )\n    ,\"FECHAMENTO_HORA\"\n    ,IF(\n        [HORA]<vInicioTurno\n        ,[DATE]-1\n        ,[DATE]\n    )+TIME([HORA],0,0)\n    ,\"DATA_HORA\"\n    ,[DATE]+TIME([HORA],0,0)\n    ,\"HORA_HORA\"\n    ,FORMAT(TIME([HORA],0,0),\"HH:MM\")&\"-\"&FORMAT(TIME([HORA],59,59),\"HH:MM\")\n    ,\"HORA_FECHA\"\n    ,IF([HORA]+1=24,0,[HORA]+1)\n    ,\"HR_ORDENADOR\"\n    ,IF([HORA]<vInicioTurno\n        ,[HORA]+(24-vInicioTurno)\n        ,[HORA]-vInicioTurno\n    )\n    ,\"DATA_BRASIL\"\n    ,UPPER(FORMAT([Date],\"DD/MM/YYYY\"))\n    ,\"FECHAMENTO_BRASIL\"\n    ,UPPER(FORMAT(\n        IF(\n            [HORA]<vInicioTurno\n            ,[DATE]-1\n            ,[DATE]\n        )\n        ,\"DD/MM/YYYY\")\n    )\n    ,\"FILTRO_10HS\"\n    ,IF(AND([DATE]+TIME([HORA],0,0)<=AGORA,[DATE]+TIME([HORA],0,0)>=AGORA-0.42),1,0)\n    ,\"FILTRO_ANTES_AGORA\"\n    ,IF([DATE]+TIME([HORA],0,0)+DIVIDE(1,24)<AGORA,1,0)\n    ,\"TURNO\"\n    ,SWITCH(\n        TRUE()\n        ,[HORA]>=7 && [HORA]<15, \"A\"\n        ,[HORA]>=15 && [HORA]<23, \"B\"\n        ,\"C\"\n    )\n)"
+ },
+ {
+  "Kind": "Tabela calculada",
+  "Table": "d_meses",
+  "Name": "d_meses",
+  "Auto": false,
+  "Expression": "SUMMARIZECOLUMNS(d_calendar[ANO],d_calendar[MES],d_calendar[FIM_MES_ANO])"
+ },
+ {
+  "Kind": "Tabela calculada",
+  "Table": "d_calendar_metas",
+  "Name": "d_calendar_metas",
+  "Auto": false,
+  "Expression": "\nVAR ANO_ATUAL = 2026\nVAR MAXMOV = \nDATE(ANO_ATUAL+1,3,31)\nVAR MAXMOV2 = \nDATE(ANO_ATUAL+1,3,31)\nVAR DATAMIN = \nDATE(2024,4,1)\nRETURN\nADDCOLUMNS (\n    CALENDAR(DATAMIN,MAXMOV)\n    ,\"FILTRO\"\n    ,SWITCH(\n        TRUE()\n        ,[DATE]=MAXMOV-1,1\n        ,[DATE]=MAXMOV-2,2\n        ,[DATE]=MAXMOV-3,3\n        ,[DATE]=MAXMOV-4,4\n        ,[DATE]=MAXMOV-5,5\n        ,[DATE]=MAXMOV-6,6\n        ,[DATE]=MAXMOV-7,7\n        ,0\n    )\n    ,\"FILTRO_TEXTO\"\n    ,SWITCH(\n        TRUE()\n        ,[DATE]=MAXMOV2-1,\"Hoje\"\n        ,[DATE]=MAXMOV2-2,\"D-1\"\n        ,[DATE]=MAXMOV2-3,FORMAT([DATE],\"DD/MM/YYYY\")\n        ,[DATE]=MAXMOV2-4,FORMAT([DATE],\"DD/MM/YYYY\")\n        ,[DATE]=MAXMOV2-5,FORMAT([DATE],\"DD/MM/YYYY\")\n        ,[DATE]=MAXMOV2-6,FORMAT([DATE],\"DD/MM/YYYY\")\n        ,[DATE]=MAXMOV2-7,FORMAT([DATE],\"DD/MM/YYYY\")\n        ,FORMAT([DATE],\"DD/MM/YYYY\")\n    )\n    ,\"EVENTOS\"\n    ,SWITCH(\n        TRUE()\n        ,[DATE]=DATAMIN,\"Início Safra\"\n        ,\"\"\n    )\n    ,\"TEXTO_DATA\"\n    ,UPPER(FORMAT([Date],\"DDD, DD/MMM\"))\n    ,\"DATA_BRASIL\"\n    ,UPPER(FORMAT([Date],\"DD/MM/YYYY\"))\n    ,\"DATA_BRASIL_RESUMIDA\"\n    ,UPPER(FORMAT([Date],\"DD/MM\"))\n    ,\"ORDENA_DATA_BRASIL_RESUMIDA\"\n    ,VALUE(FORMAT([Date],\"MM\")&\",\"&FORMAT([Date],\"MM\"))\n    ,\"ANO\"\n    ,UPPER(FORMAT([Date],\"YYYY\"))\n    ,\"MES\"\n    ,UPPER(FORMAT([Date],\"MMM\"))\n    ,\"MES_ANO\"\n    ,UPPER(FORMAT([Date],\"MMM, YYYY\"))\n    ,\"INICIO_MES_ANO\"\n    ,DATE(YEAR([Date]),MONTH([Date]),DAY(EOMONTH([Date],-1)+1))\n    ,\"FIM_MES_ANO\"\n    ,DATE(YEAR([Date]),MONTH([Date]),DAY(EOMONTH([Date],0)))\n    ,\"MES_NUM\"\n    ,MONTH([Date])\n    ,\"DIA_SEMANA\"\n    ,UPPER(FORMAT([Date],\"DDD\"))\n    ,\"DIA_SEMANA_COMPLETO\"\n    ,UPPER(FORMAT([Date],\"DDDD\"))\n    ,\"DIA_SEMANA_NUM\"\n    ,WEEKDAY([Date],1)\n    ,\"DIA_SEMANA_NUM_CORINGA\"\n    ,SWITCH(TRUE()\n        ,WEEKDAY([Date],1)=1,\"D\"\n        ,WEEKDAY([Date],1)=2,\"S\"\n        ,WEEKDAY([Date],1)=3,\"T\"\n        ,WEEKDAY([Date],1)=4,\"Q\"\n        ,WEEKDAY([Date],1)=5,\"Q \"\n        ,WEEKDAY([Date],1)=6,\"S \"\n        ,WEEKDAY([Date],1)=7,\" S \"\n    )\n    ,\"DIA_MES\"\n    ,DAY([Date])\n    ,\"SEMANA_ANO\"\n    ,WEEKNUM([Date],1)\n    ,\"ANO_SEMANA\"\n    ,VALUE(FORMAT([Date],\"YYYY\")+(VALUE(WEEKNUM([Date],1))/100))\n    ,\"FILTRO_MES\"\n    ,IF(MONTH(MAXMOV-2)=MONTH([Date])\n        ,1\n        ,0\n    )\n)"
+ },
+ {
+  "Kind": "Tabela calculada",
+  "Table": "Ano Safra",
+  "Name": "Ano Safra",
+  "Auto": false,
+  "Expression": "GENERATESERIES(2019, 2026, 1)"
+ },
+ {
+  "Kind": "Tabela calculada",
+  "Table": "d_disponibilidade_eqp_data",
+  "Name": "d_disponibilidade_eqp_data",
+  "Auto": false,
+  "Expression": "ADDCOLUMNS(\n    FILTER(\n        CROSSJOIN(\n            ALL(d_equipamentos[CD_EQUIPTO]),\n            CALCULATETABLE(\n                ALL(d_calendar[DATA]),\n                d_calendar[DATA] > DATE(2025,1,1),\n                d_calendar[DATA] <= TODAY() + 1\n            )\n        ),\n        COUNTROWS(\n            FILTER(\n                d_datas_ignorar,\n                d_datas_ignorar[CD_EQUIPTO] = d_equipamentos[CD_EQUIPTO]\n                && d_calendar[DATA] >= d_datas_ignorar[DATA.1]\n                && d_calendar[DATA] <= d_datas_ignorar[DATA.2]\n            )\n        ) = 0\n    ),\n    \"DISP\",\n    MAX([Aproveitamento Mecânico Dia (%)], 0)\n)"
+ }
+]
