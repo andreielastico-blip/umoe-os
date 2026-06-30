@@ -1132,6 +1132,78 @@ Detalhe unitário R$/t (acumulado):
 
 ---
 
+## TOPO — PLANO PAV SAFRA 2026/27
+### Fonte: TOPO_PAV_Fazendas_SF2026_v1.xlsx | Atualizado: 2026-06-30 | Integrado ao BASE DE DADOS UMOE_2026.xlsx
+
+### Visao Geral
+
+| Indicador | Valor |
+|-----------|-------|
+| Fazendas com PAV | 49 (de 217 mapeadas) |
+| Talhoes no plano | 702 |
+| Talhoes com dose > 0 | 661 (94,2%) |
+| Talhoes sem PAV (dose 0) | 37 |
+| Area total no plano | 15.153,1 ha |
+| Area com aplicacao PAV | 14.479,6 ha |
+| **Volume total PAV** | **2.849.684 m3** |
+| Dose minima | 0 m3/ha |
+| Dose maxima | 300 m3/ha |
+
+### Faixas de Dose PAV
+
+| Dose (m3/ha) | Perfil de Solo / Necessidade |
+|--------------|------------------------------|
+| 0 | Sem aplicacao (talhoes excluidos do ciclo) |
+| 37 – 75 | Baixa necessidade |
+| 110 – 130 | Dose padrao (maioria dos talhoes) |
+| 150 – 225 | Necessidade media-alta |
+| 250 – 300 | Necessidade maxima (solos com maior deficit organico) |
+
+### Top 10 Fazendas por Volume PAV (m3)
+
+| CodFaz | Fazenda | Talhoes | Area (ha) | Volume PAV (m3) |
+|--------|---------|---------|-----------|----------------|
+| 20314 | Fazenda Agua Mansa | - | - | 564.825 |
+| 20305 | Fazenda Vista Bonita | - | - | 347.662 |
+| 20432 | Fazenda Vista Bonita | - | - | 335.576 |
+| 20550 | Fazenda Sao Domingos | 16 | 665,3 | 199.590 |
+| 20631 | Fazenda Renascer | 22 | 557,0 | 162.383 |
+| 20569 | Fazenda Boa Esperanca-Taquarucu | - | - | 128.989 |
+| 20462 | Fazenda Santa Irene III | - | - | 88.485 |
+| 20323 | Fazenda Sao Manoel | 14 | 318,6 | 86.494 |
+| 20579 | Fazenda Vista Bonita | - | - | 79.331 |
+| 20315 | Fazenda Taquarussu | - | - | 64.223 |
+
+> Vista Bonita (3 CodFaz: 20305 + 20432 + 20579) = 762.569 m3 combinados — maior proprietario por volume PAV.
+
+### Top Fazendas por Dose Media (m3/ha)
+
+| CodFaz | Fazenda | Dose Media | Dose Max |
+|--------|---------|-----------|---------|
+| 20345 | Sitio Rancho Alegre | 300 | 300 |
+| 20340 | Estancia Izaura | 300 | 300 |
+| 20319 | Fazenda Cambraia | 300 | 300 |
+| 20346 | Estancia Sao Francisco | 300 | 300 |
+| 20420 | Fazenda Astorga | 300 | 300 |
+| 20550 | Fazenda Sao Domingos | 300 | 300 |
+| 20631 | Fazenda Renascer | 285,5 | 300 |
+| 20323 | Fazenda Sao Manoel | 283,9 | 300 |
+| 20439 | Fazenda Ipezal | 275,0 | 300 |
+
+### Integracao BASE DE DADOS
+
+- Colunas SAFRA, Modulo_PAV e Dose_m3ha_PAV adicionadas ao BASE DE DADOS UMOE_2026.xlsx
+- Join por CodFaz + Talhao: 701/702 talhoes PAV com correspondencia na BASE (1 excluido = 20097 area industrial)
+- 1.628 talhoes da BASE sem PAV = fazendas nao incluidas no plano de aplicacao desta safra
+
+### Proximas Acoes
+
+1. Confirmar logistica de aplicacao para os 661 talhoes com dose definida (Volume total: 2,85M m3)
+2. Vista Bonita (3 fazendas / 762.569 m3) e Agua Mansa (564.825 m3) sao prioridade de agendamento
+3. Cruzar Modulo_PAV com disponibilidade de equipamentos e distancia CTT para sequenciamento operacional
+
+---
+
 ## RH — ABSENTEISMO HISTORICO POR SAFRA
 ### Fonte: Absenteismo Safras Umoe.xlsx | Atualizado: 2026-06-30 | Base: 4.982 registros (2.518 agricola ativos + 380 automotiva ativos)
 
