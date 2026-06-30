@@ -106,3 +106,9 @@
 2026-06-30 09:55:13 [INFO] JSON salvo: C:\01 - UMOE\09 - IA\umoe-os-8\UMOE-OS-8.0\99-SSoT\umoe-chi-snapshot.json
 2026-06-30 09:55:13 [WARNING] reportlab não instalado — PDF não gerado
 2026-06-30 09:55:13 [INFO] === CHI Engine encerrado ===
+2026-06-30 10:03:38 [INFO] === CHI Engine iniciado ===
+2026-06-30 10:03:38 [INFO] CSV: C:\01 - UMOE\09 - IA\umoe-os-8\UMOE-OS-8.0\Solinftec\SOLINFTEC_20260613.csv
+2026-06-30 10:03:38 [INFO] CHI total: R$ 18,129.58 | Causas: 8 | Eventos: 280
+2026-06-30 10:03:38 [INFO] JSON salvo: C:\01 - UMOE\09 - IA\umoe-os-8\UMOE-OS-8.0\99-SSoT\umoe-chi-snapshot.json
+2026-06-30 10:03:38 [WARNING] reportlab não instalado — PDF não gerado
+2026-06-30 10:03:38 [INFO] === CHI Engine encerrado ===
