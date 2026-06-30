@@ -35,6 +35,8 @@ UMOE-OS-8.0/Dados-PBI/_tmp/
 !UMOE-OS-8.0/Dados-PBI/_extract_status.json
 # Excecao: catalogo de formulas DAX (pequeno, fonte de verdade dos calculos)
 !UMOE-OS-8.0/Dados-PBI/MEDIDAS_DAX_*.json
+# Excecao: valores ao vivo das medidas (auditoria dos KPIs)
+!UMOE-OS-8.0/Dados-PBI/MEDIDAS_VALORES.json
 
 # -- Solinftec CSVs (dados brutos diarios, regeneraveis do sistema) -----------
 UMOE-OS-8.0/Solinftec/*.csv
@@ -55,6 +57,8 @@ docs/*.html
 !docs/UMOE_Catalogo_DAX.html
 # Excecao: dashboard espelho do BI (KPIs com regras DAX oficiais)
 !docs/UMOE_Dashboard_BI.html
+# Excecao: painel 100% dos KPIs do BI (valores ao vivo)
+!docs/UMOE_KPIs_BI.html
 
 # -- PDFs (originais grandes, ficam local) ------------------------------------
 *.pdf

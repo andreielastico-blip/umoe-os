@@ -74,6 +74,19 @@ ETAPAS = [
         "descricao": "KPIs calculados com as regras DAX oficiais do BI (100% fiel)"
     },
     {
+        "nome": "Avaliar Medidas BI",
+        "script": ROOT / "UMOE-OS-8.0/01-AGENTE-AUTONOMO/pbi-medidas-valores.py",
+        "timeout": 420,
+        "obrigatorio": False,
+        "descricao": "Avalia 100% das medidas do BI ao vivo (valor que a propria BI calcula)"
+    },
+    {
+        "nome": "Painel 100% KPIs",
+        "script": ROOT / "UMOE-OS-8.0/01-AGENTE-AUTONOMO/umoe-kpis-bi.py",
+        "obrigatorio": False,
+        "descricao": "Renderiza todas as 634 medidas com valor ao vivo + formula DAX"
+    },
+    {
         "nome": "Inteligencia Cruzada",
         "script": ROOT / "UMOE-OS-8.0/01-AGENTE-AUTONOMO/umoe-inteligencia.py",
         "obrigatorio": False,

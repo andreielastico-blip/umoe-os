@@ -1,0 +1,4440 @@
+[
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CHUVA",
+  "name": "QTDE_CHUVA_MÉD",
+  "value": 20.62976744186045,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_DATA",
+  "name": "SEMANA_ÚLTIMA",
+  "value": "28/06/2026",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_DATA",
+  "name": "SEMANA_ATUAL",
+  "value": "05/07/2026",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_DATA",
+  "name": "DT_ONTEM",
+  "value": "29/06/2026",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_DATA",
+  "name": "DT_HOJE",
+  "value": "30/06/2026",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CHUVA",
+  "name": "QTDE_SEMANA_ULT",
+  "value": 221.5,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CHUVA",
+  "name": "QTDE_SEMANA_ATUAL",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CHUVA",
+  "name": "QTDE_ONTEM",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CHUVA",
+  "name": "QTDE_ANO_ATUAL",
+  "value": 7566.7,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_TON_F01",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_TON_F02",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_TON_F03",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_TON_F04",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_TON_F05",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_TON_F10",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_KM_FTOTAL",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_ATR_FTOTAL",
+  "value": 126.7436705325563,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_ATRPRE_FTOTAL",
+  "value": 125.09433049549209,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_CARGAMEDIA",
+  "value": 34.55,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_MINE_FTOTAL",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_VEGE_FTOTAL",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TON_F01",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TON_FTOTAL",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TON_F02",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_HR",
+  "value": 11.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TON_F03",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TON_F04",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TON_F05",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TON_F10",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_MINE_TOTAL",
+  "value": 7.569008822478128,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_VEGE_TOTAL",
+  "value": 77.50490237065732,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TONHR",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_TON_FTOTAL",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_CARGMED_FTOTAL",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_CARGPATIO_FTOTAL",
+  "value": 26.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_ATR_TOTAL",
+  "value": 138.66289337700977,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_TONHR",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TONHR_FTOTAL",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TONHR_F01",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_TONHR_FTOTAL",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_TONHR_F01",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_TONHR_F02",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_TONHR_F03",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_TONHR_F04",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_TONHR_F05",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_TONHR_F10",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TONHR_F02",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TONHR_F03",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TONHR_F04",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TONHR_F05",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TONHR_F10",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_CARGAS",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_HR_DIA",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_HR",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_HR",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_TON_ID_FTOTAL",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_TON_ID_F01",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_TON_ID_F02",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_TON_ID_F03",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_TON_ID_F04",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_TON_ID_F05",
+  "value": 0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_TON_ID_F10",
+  "value": 0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_TONHR_ID",
+  "value": 0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_TONHR_ID_F01",
+  "value": 0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_TONHR_ID_F02",
+  "value": 0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_TONHR_ID_F03",
+  "value": 0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_TONHR_ID_F04",
+  "value": 0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_TONHR_ID_F05",
+  "value": 0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_TONHR_ID_F10",
+  "value": 0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_TONHR_ID_FTOTAL",
+  "value": 0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_ATRID_FTOTAL",
+  "value": 0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_CARGMEDID_FTOTAL",
+  "value": 0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_MINEID_FTOTAL",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_VEGEID_FTOTAL",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_OPERAC",
+  "name": "Z_QLDOPERC_ADER_SEMATUAL",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_OPERAC",
+  "name": "Z_QLDOPERC_ADER_SEMANTERIOR",
+  "value": 0.7335807571694285,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_OPERAC",
+  "name": "Z_QLDOPERC_ADER_MES",
+  "value": 0.7631302630066475,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_OPERAC",
+  "name": "Z_QLDOPERC_ADER_ANO",
+  "value": 0.777921104129989,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_OPERAC",
+  "name": "Z_QLDOPERC_QTDEPONTO_SEMANTERIOR",
+  "value": 350.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_OPERAC",
+  "name": "Z_QLDOPERC_QTDEPONTO_SEMATUAL",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_OPERAC",
+  "name": "Z_QLDOPERC_QTDEPONTO_MES",
+  "value": 7221.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_OPERAC",
+  "name": "Z_QLDOPERC_QTDEPONTO_ANO",
+  "value": 73616.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_OPERAC",
+  "name": "Z_QLDOPERAC_IDCOR_SEMANTERIOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_OPERAC",
+  "name": "Z_QLDOPERAC_IDCOR_SEMATUAL",
+  "value": 0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_OPERAC",
+  "name": "Z_QLDOPERAC_IDCOR_MES",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_OPERAC",
+  "name": "Z_QLDOPERAC_IDCOR_ANO",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_ATR_ANO",
+  "value": 127.40440267640369,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_HRINDISP",
+  "value": 3420.5480880000005,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_KGTERRA_SEMANA",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_KGTERRA_ANO_IDCOR",
+  "value": 2,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_KGVEGETAL",
+  "value": 90.36035139360632,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_KGVEGETAL_ANO_IDCOR",
+  "value": 2,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TON_EFET",
+  "value": 2768542.426200001,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_TONEFET_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_ATR_ANO_IDCOR",
+  "value": 2,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_MUDA",
+  "name": "Z_QLDMUDA_GEMASVIAVEIS",
+  "value": 0.9896254231735284,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_MUDA",
+  "name": "Z_QLDMUDA_PERFILHOSxMETRO",
+  "value": 10.123972602739727,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_MUDA",
+  "name": "Z_QLDMUDA_PERFILHOSxALTURA",
+  "value": 1.3787671232876715,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_MUDA",
+  "name": "Z_QLDMUDA_IIF",
+  "value": 0.015536723163841809,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_MUDA",
+  "name": "Z_QLDMUDA_TXMULTIPLIC",
+  "value": 9.305733721148435,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_MUDA",
+  "name": "Z_QLDMUDA_TXMULTIPLIC_80%",
+  "value": 7.444586976918749,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_MUDA",
+  "name": "Z_QLDMUDA_TXMULTIPLIC_80%_2",
+  "value": 5.583440232689061,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_PERDA",
+  "name": "Z_CTT_PERDA_TON_TCH",
+  "value": 73.20897785847515,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_PERDA",
+  "name": "Z_CTT_PERDA_TON_TOTAL",
+  "value": 4.496859805560364,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_PERDA",
+  "name": "Z_CTT_PERDA_TON_PALMITO",
+  "value": 0.0358943735577155,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_PERDA",
+  "name": "Z_CTT_PERDA_TON_TOLETE",
+  "value": 0.15527452871995562,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_PERDA",
+  "name": "Z_CTT_PERDA_TON_ESTILHACO",
+  "value": 0.7880130746686019,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_PERDA",
+  "name": "Z_CTT_PERDA_TON_CANAINTEIRA",
+  "value": 0.02795156255774918,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_PERDA",
+  "name": "Z_CTT_PERDA_TON_PEDACOSOLTO",
+  "value": 1.821352095672767,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_PERDA",
+  "name": "Z_CTT_PERDA_TON_PEDACOFIXO",
+  "value": 0.14282994210742536,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_PERDA",
+  "name": "Z_CTT_PERDA_TON_TOCO",
+  "value": 0.1565823104079752,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_PERDA",
+  "name": "Z_CTT_PERDA_PERC_TOTAL",
+  "value": 0.05787029572993895,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_PERDA",
+  "value": 0.035000000000000066,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_PERDA",
+  "name": "Z_CTT_PERDA_PERC_TOTAL_ANO_IDCOR",
+  "value": 2,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_BROCA",
+  "name": "Z_CTT_BROCA_META",
+  "value": 0.01,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_BROCA",
+  "name": "Z_CTT_BROCA_TOTAL",
+  "value": 0.009066908822298417,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_BROCA",
+  "name": "Z_CTT_BROCA_TOTAL_IDCOR",
+  "value": 2,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_PRD_SEMANA_IDCOR",
+  "value": 2,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_MUDA",
+  "name": "Z_PLANT_MUDA_IDADE",
+  "value": 8.434832751260585,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_MUDA",
+  "name": "Z_PLANT_MUDA_IDADE_IDCOR",
+  "value": 2,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_TXMULT_REAL",
+  "value": 5.476004741977352,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_TXMULT_META",
+  "value": 6,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_TXMULT_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_MATURADOR",
+  "name": "Z_CTT_MATURA_DIASMED",
+  "value": 35.34288443170965,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_MATURADOR",
+  "name": "Z_CTT_MATURA_DIAS_IDCOR",
+  "value": 0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "ENERGIA_SOLAR",
+  "name": "Z_ENERGIA_SOLAR_QTKWH_ESTEMES",
+  "value": 17026.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_MATURADOR",
+  "name": "Z_CTT_MATURA_PREATR",
+  "value": 123.14502319890728,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_MATURADOR",
+  "name": "Z_CTT_MATURA_PREATR_ULTAMOST",
+  "value": "06/04/2026",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_VELOC_REAL_FTOTAL",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_VELOC_ESTIM_FTOTAL",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_VELOC_ID_FTOTAL",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_CARGASPATIO",
+  "value": 26.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TONHRMXGRF_F01",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TONHRMXGRF_F02",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TONHRMXGRF_F03",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TONHRMXGRF_F04",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TONHRMXGRF_F05",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TONHRMXGRF_F10",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TONHRMXGRF_FTOTAL",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_FILTRO_FRENTE",
+  "value": 0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_SAIDA",
+  "name": "Z_CTT_SAIDA_CARGPATIO_FTOTAL2",
+  "value": 26.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "QDIAS_CALC",
+  "name": "Valor QDIAS_CALC",
+  "value": 0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_ENTRADA_SAIDA",
+  "name": "Z_ENTSAI_ENT_IDCOR",
+  "value": 3,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_ENTRADA_SAIDA",
+  "name": "Z_ENTSAI_SAI_IDCOR",
+  "value": 3,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_TAH",
+  "name": "Z_CTT_TAH_TAH",
+  "value": 8.920979848721293,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_TAH",
+  "name": "Z_CTT_TAH_IDADE",
+  "value": 74.35809540460849,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CARREADORES",
+  "name": "Z_CARREADOR_AREA_TOTAL",
+  "value": 2163.65,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CARREADORES",
+  "name": "Z_CARREADOR_DIAS",
+  "value": 2070.6215145702863,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_TAH",
+  "name": "Z_CTT_TAH_PRODUTIVIDADE",
+  "value": 70.2400943240159,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_TCH",
+  "name": "Z_CTT_TCH_ESTI_0",
+  "value": 78.27009291811898,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_TCH",
+  "name": "Z_CTT_TCH_REAL",
+  "value": 70.03987502674698,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_TCH",
+  "name": "Z_CTT_TCH_EST_0_ID",
+  "value": 2,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_TCH",
+  "name": "Z_CTT_TCH_VAR_0",
+  "value": -0.1051515027583001,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_INDISPONIB",
+  "name": "Z_CTT_INDISP_IDCOR",
+  "value": 2,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_INDISPONIB",
+  "name": "Z_CTT_INDISP_DIAS_EETIVOS",
+  "value": 0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PREPARO",
+  "name": "Z_PREPARO_SALDO_HA",
+  "value": -6296.222999999802,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_OPERAC",
+  "name": "Z_QLDOPERC_ADER",
+  "value": 0.777921104129989,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_OPERAC",
+  "name": "Z_QLDOPERAC_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_CIGARRINHA",
+  "name": "Z_AGRO_CIGARR_META",
+  "value": 0.5,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_CIGARRINHA",
+  "name": "Z_AGRO_CIGARR_REAL",
+  "value": 0.2632235263855415,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_CIGARRINHA",
+  "name": "Z_AGRO_CIGARR_REAL_TAMANHO",
+  "value": 0.2632235263855415,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_CIGARRINHA",
+  "name": "Z_AGRO_CIGARR_LEGENDA",
+  "value": "<= 0,5 Ninfas/metro",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_MIGDOLUS",
+  "name": "Z_AGRO_MIDGOLUS_META",
+  "value": 0.07,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_MIGDOLUS",
+  "name": "Z_AGRO_MIGDOLUS_REAL",
+  "value": 0.01861675400362009,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_MIGDOLUS",
+  "name": "Z_AGRO_MIGDOLUS_LEGENDA",
+  "value": "<= 0,07 Larvas/metro",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_SPHENOPHORUS",
+  "name": "Z_AGRO_SPHENOPHORUS_META",
+  "value": 0.007,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_SPHENOPHORUS",
+  "name": "Z_AGRO_SPHENOPHORUS_REAL",
+  "value": 0.0028770242569959867,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_SPHENOPHORUS",
+  "name": "Z_AGRO_SPHENOPHORUS_LEGENDA",
+  "value": "<= 0,70% Toco atacado",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_OUTR_PRAGAS",
+  "name": "Z_AGRO_OUTPRAG_REAL_TOTAL",
+  "value": 23473.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_SPHENOPHORUS",
+  "name": "Z_AGRO_SPHENOPHORUS_REAL_TAMANHO",
+  "value": 0.2877024256995987,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_OUTR_PRAGAS",
+  "name": "Z_AGRO_OUTPRAG_REAL_TAMANHO",
+  "value": 23473.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_MIGDOLUS",
+  "name": "Z_AGRO_MIGDOLUS_REAL_TAMANHO",
+  "value": 0.01861675400362009,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "ADEREN_ESTRVERM",
+  "name": "Z_ADEREN_ESTRVERM_IDADE_STATUS",
+  "value": 8.378100097671409,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_SEQ",
+  "name": "Z_PLANT_SEQ_KM_MUDA",
+  "value": 12.374321814684615,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_DATA",
+  "name": "Z_PLANT_DATA_TXT_META",
+  "value": "29/06/26  |  5.198,4 ha",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_DATA",
+  "name": "Z_PLANT_DATA_TXT_REAL",
+  "value": "29/06/26  |  4.829,0 ha",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_DATA",
+  "name": "Z_PLANT_DATA_TXT_PROJETADO",
+  "value": "30/09/26  |  5.209,9 ha",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_DATA",
+  "name": "Z_PLANT_DATA_TXT_META_ACM",
+  "value": "30/06/26  |  5.209,9 ha",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_OPERAC_GEMAS",
+  "name": "Z_AGRO_QLD_GEMA_PERC_FAZENDA_FRENTE",
+  "value": 1.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_OPERAC_GEMAS",
+  "name": "Z_AGRO_QLD_GEMAS_PERC",
+  "value": 1.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_HADIA_SEMANA",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_R_TON_EFET",
+  "value": 2768542.426200001,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_R_MINE_TOTAL",
+  "value": 7.536953480164125,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_R_VEGE_TOTAL",
+  "value": 77.50717809216555,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_R_PERDA",
+  "value": 0.03499999999999998,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_R_ATR_TOTAL",
+  "value": 138.66289337700977,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_INDISPONIB_CALC",
+  "name": "Z_INDISP_CALC_AGRP_PARADA",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_R_VARMOAGEM",
+  "value": -1962058.436200001,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_INDISPONIB_CALC",
+  "name": "Z_INDISP_CALC_DIAEFET",
+  "value": 313.9820833333333,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_INDISPONIB_CALC",
+  "name": "Z_INDISP_CALC_DIAEFET_IDCOR",
+  "value": 2,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_CARGMED_META_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TONHR_F27",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TONHRMXGRF_F27",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_TONHR_F27",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TON_F27",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_TONHR_ID_F27",
+  "value": 0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_HADIA_SEMANA",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_HADIA_SEMANA_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_DATA",
+  "name": "Z_CTT_DATA_META",
+  "value": "30/06/26  |  12.767,4 ha",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_DATA",
+  "name": "Z_CTT_DATA_META_ACM",
+  "value": "30/11/26  |  35.326,5 ha",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_DATA",
+  "name": "Z_CTT_DATA_PROJETADO",
+  "value": "15/12/26  |  35.326,5 ha",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_DATA",
+  "name": "Z_CTT_DATA_REAL",
+  "value": "30/06/26  |  10.824,4 ha",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "ADEREN_ATIVIDADES",
+  "name": "Z_ADEREN_ATIV_DIAS_REALIZADOS",
+  "value": 24.43857803712305,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "ADEREN_ATIVIDADES",
+  "name": "Z_ADEREN_ATIV_DIAS_SALDO",
+  "value": 36.66400438232129,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "ADEREN_ATIVIDADES",
+  "name": "Z_ADEREN_ATIV_TALHOES",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_MUDA",
+  "name": "Z_QLDMUDA_GEMASQTDE",
+  "value": 18.62054794520548,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_MOAGEM",
+  "name": "Z_CTT_META_TONHR_2",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_TONHR_ID_2",
+  "value": 0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_DATA",
+  "name": "Z_PLANT_DATA_PRD_META",
+  "value": 5209.850317933197,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "INSETIC_BROCA",
+  "name": "Z_INSETIC_BROCA_TALHOES",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_PERDA",
+  "name": "Z_CTT_PERDA_TON_TOLETE_ESTIL",
+  "value": 0.6405321416750159,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_PERDA",
+  "name": "Z_CTT_PERDA_TON_RPM_ESTIL",
+  "value": 0.7284297761931589,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PREPARO",
+  "name": "Z_PREPARO_AREALIZAR",
+  "value": 6296.222999999802,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PREPARO",
+  "name": "Z_PREPARO_OPER_SISTEMATIZA",
+  "value": 511.9300000000003,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PREPARO",
+  "name": "Z_PREPARO_OPER_AREATALHO",
+  "value": 5482.189999999997,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PREPARO",
+  "name": "Z_PREPARO_OPER_CORRETIVO",
+  "value": 1503.1300000000028,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PREPARO",
+  "name": "Z_PREPARO_OPER_ARADOSUBOLAG",
+  "value": 487.3700000000017,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PREPARO",
+  "name": "Z_PREPARO_OPER_DESSECA",
+  "value": 280.2700000000059,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PREPARO",
+  "name": "Z_PREPARO_OPER_GMEDIA",
+  "value": 809.8199999999997,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "COMPOSTO_ESTOQ_DT",
+  "name": "QT_TRANSPORTADO",
+  "value": 7037.240000000001,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "COMPOSTO_ESTOQ_DT",
+  "name": "QT_TRANSPORTE_META",
+  "value": 75444.5,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "COMPOSTO_ESTOQ_DT",
+  "name": "QT_TRANSPORTE_META_MAX",
+  "value": 105622.29999999999,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_PRD_SEMANA",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_PRD_SEMANA_ESPARRAMA",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_PRD_SEMANA_DESDOBRA",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_PRD_SEMANA_MEIOSI",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "Z_LEGENDAS",
+  "name": "Z_LEG_SEMANA",
+  "value": "Semana: 28/12/26 - 31/12/26",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "Z_LEGENDAS",
+  "name": "Z_LEG_MES",
+  "value": "Mês: 01/12/26 - 31/12/26",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "Z_LEGENDAS",
+  "name": "Z_LEG_ANO",
+  "value": "Ano: 01/01/26 - 31/12/26",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_PRD_ADICIONAL",
+  "value": 1.4,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_PRD_SEMANA_LIMITE",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_PRD_SEMANA",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_PRD_SEMANA_ESPARRAMA",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_PRD_SEMANA_DESDOBRA",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_PRD_SEMANA_MEIOSI",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_DIASEFET_SEMANA",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_DIASEFET_MES",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_DIASEFET_ANO",
+  "value": 156.81197799999924,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_PRD_MES",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_PRD_MES_LIMITE",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_PRD_MES_ESPARRAMA",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_PRD_MES_DESDOBRA",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_PRD_MES_MEIOSI",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_PRD_ANO",
+  "value": 5583.030317933222,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_PRD_ANO_LIMITE",
+  "value": 7816.242445106511,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_PRD_ANO_ESPARRAMA",
+  "value": 3022.117698457394,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_PRD_ANO_DESDOBRA",
+  "value": 1773.9851321582007,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_PRD_ANO_MEIOSI",
+  "value": 373.17999999999944,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_PRD_MES",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_PRD_ANO",
+  "value": 4828.960000000003,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_PRD_MES_ESPARRAMA",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_PRD_ANO_ESPARRAMA",
+  "value": 3059.4999999999995,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_PRD_MES_DESDOBRA",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_PRD_MES_MEIOSI",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_PRD_ANO_DESDOBRA",
+  "value": 1445.29,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_PRD_ANO_MEIOSI",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_HADIA_MES",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_HADIA_ANO",
+  "value": 35.60334095099068,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL_DIASEFET",
+  "name": "Z_PLANT_REAL_DIASEFET_SEMANA",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL_DIASEFET",
+  "name": "Z_PLANT_REAL_DIASEFET_MES",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL_DIASEFET",
+  "name": "Z_PLANT_REAL_DIASEFET_ANO",
+  "value": 99.53999999999999,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_HADIA_MES",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_HADIA_ANO",
+  "value": 48.512758689973914,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRD_SEMANA",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRD_ADICIONAL",
+  "value": 1.4,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRD_SEMANA_ADICIONAL",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRD_MES",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRD_MES_ADICIONAL",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRD_ANO",
+  "value": 2768542.4262000094,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRD_ANO_ADICIONAL",
+  "value": 3875959.396680013,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_ATR_ANO",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_ATR_ANO_ADICIONAL",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_ATR_MES_ADICIONAL",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_ATR_MES",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_ATR_SEMANA_ADICIONAL",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_ATR_SEMANA",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_DIASEFET_SEMANA",
+  "value": 2.9801739603360002,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_DIASEFET_MES",
+  "value": 23.096348192604,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_DIASEFET_ANO",
+  "value": 223.47760995432603,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "Z_LEGENDAS",
+  "name": "Z_LEG_ANO_SAFRA",
+  "value": "Ano: 06/03/26 - 31/12/26",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_DIASEFET_ANO_MAX",
+  "value": 671.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_DIASEFET_MES_MAX",
+  "value": 31.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_DIASEFET_SEMANA_MAX",
+  "value": 4.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRD_SEMANA_ADICIONAL_PROPRIO",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRD_SEMANA_ADICIONAL_FORNEC",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRD_SEMANA_PROPRIO",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRD_SEMANA_FORNEC",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRD_MES_ADICIONAL_PROPRIO",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRD_MES_ADICIONAL_FORNEC",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRD_MES_PROPRIO",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRD_MES_FORNEC",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRD_ANO_ADICIONAL_PROPRIO",
+  "value": 3154579.0683400184,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRD_ANO_ADICIONAL_FORNEC",
+  "value": 721380.3283400008,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRD_ANO_PROPRIO",
+  "value": 2253270.763100013,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRD_ANO_FORNEC",
+  "value": 515271.6631000006,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRDDIA_SEMANA",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRDDIA_SEMANA_FORNEC",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRDDIA_SEMANA_PROPRIO",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRDDIA_SEMANA_ADICIONAL",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRDDIA_SEMANA_ADICIONAL_FORNEC",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRDDIA_SEMANA_ADICIONAL_PROPRIO",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRDDIA_MES",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRDDIA_MES_FORNEC",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRDDIA_MES_PROPRIO",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRDDIA_MES_ADICIONAL",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRDDIA_MES_ADICIONAL_FORNEC",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRDDIA_MES_ADICIONAL_PROPRIO",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRDDIA_ANO",
+  "value": 12388.455500154309,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRDDIA_ANO_FORNEC",
+  "value": 2305.6970369663027,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRDDIA_ANO_PROPRIO",
+  "value": 10082.758463188025,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRDDIA_ANO_ADICIONAL",
+  "value": 17343.83770021603,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRDDIA_ANO_ADICIONAL_FORNEC",
+  "value": 3227.9758517528235,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_PRDDIA_ANO_ADICIONAL_PROPRIO",
+  "value": 14115.861848463235,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_INDISPONIB",
+  "name": "Z_CTT_INDISP_DIASPARADO_ANO_R",
+  "value": 52.01791666666666,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_INDISPONIB",
+  "name": "Z_CTT_INDISP_DIASPARADO_MES_R",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_INDISPONIB",
+  "name": "Z_CTT_INDISP_DIASPARADO_SEMANA_R",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_INDISPONIB",
+  "name": "Z_CTT_INDISP_DIASEFET_ANO",
+  "value": 248.98208333333335,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_INDISPONIB",
+  "name": "Z_CTT_INDISP_DIASEFET_MES",
+  "value": 31.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_INDISPONIB",
+  "name": "Z_CTT_INDISP_DIASEFET_SEMANA",
+  "value": 4.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_INDISPONIB",
+  "name": "Z_CTT_INDISP_DIASEFET_ANO_IDCOR",
+  "value": 2,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_INDISPONIB",
+  "name": "Z_CTT_INDISP_DIASEFET_MES_IDCOR",
+  "value": 2,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_INDISPONIB",
+  "name": "Z_CTT_INDISP_DIASEFET_SEMANA_IDCOR",
+  "value": 2,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_INDISPONIB_CALC",
+  "name": "Z_INDISP_CALC_VARMOAG_ANO",
+  "value": 3084503.459710719,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_INDISPONIB",
+  "name": "Z_CTT_INDISP_DIASPARADO_MES_M",
+  "value": 30.999999999999975,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_INDISPONIB",
+  "name": "Z_CTT_INDISP_DIASPARADO_ANO_M",
+  "value": 301.0000000000006,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_INDISPONIB",
+  "name": "Z_CTT_INDISP_DIASPARADO_SEMANA_M",
+  "value": 4.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_INDISPONIB_CALC",
+  "name": "Z_INDISP_CALC_VARMOAG_SEMANA",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_INDISPONIB_CALC",
+  "name": "Z_INDISP_CALC_VARMOAG_MES",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRD_ANO",
+  "value": 806483.99,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRD_MES",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRD_SEMANA",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRD_ANO_IDCOR",
+  "value": 2,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRD_MES_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRD_SEMANA_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRD_ANO_FORNEC",
+  "value": 114676.62,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRD_MES_FORNEC",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRD_SEMANA_FORNEC",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRD_ANO_PROPRIO",
+  "value": 691807.37,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRD_MES_PROPRIO",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRD_SEMANA_PROPRIO",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRD_ANO_FORNEC_IDCOR",
+  "value": 2,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRD_MES_FORNEC_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRD_SEMANA_FORNEC_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRD_ANO_PROPRIO_IDCOR",
+  "value": 2,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRD_MES_PROPRIO_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRD_SEMANA_PROPRIO_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRDDIA_ANO",
+  "value": 3239.1245956452685,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRDDIA_MES",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRDDIA_SEMANA",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRDDIA_ANO_FORNEC",
+  "value": 460.58181562595695,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRDDIA_MES_FORNEC",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRDDIA_SEMANA_FORNEC",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRDDIA_ANO_PROPRIO",
+  "value": 2778.542780019312,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRDDIA_MES_PROPRIO",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRDDIA_SEMANA_PROPRIO",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRDDIA_ANO_IDCOR",
+  "value": 2,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRDDIA_ANO_FORNEC_IDCOR",
+  "value": 2,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRDDIA_ANO_PROPRIO_IDCOR",
+  "value": 2,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRDDIA_MES_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRDDIA_MES_FORNEC_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRDDIA_MES_PROPRIO_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRDDIA_SEMANA_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRDDIA_SEMANA_FORNEC_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_PRDDIA_SEMANA_PROPRIO_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_PERDA",
+  "name": "Z_CTT_PERDA_PERC_TOTAL_SEMANA",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_PERDA",
+  "name": "Z_CTT_PERDA_PERC_TOTAL_MES",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_PERDA",
+  "name": "Z_CTT_PERDA_PERC_TOTAL_ANO",
+  "value": 0.05787029572993895,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_BROCA",
+  "name": "Z_CTT_BROCA_TOTAL_ANO",
+  "value": 0.009066908822298417,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_BROCA",
+  "name": "Z_CTT_BROCA_TOTAL_MES",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_BROCA",
+  "name": "Z_CTT_BROCA_TOTAL_SEMANA",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_PRD_MES_IDCOR",
+  "value": 2,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_PRD_ANO_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_CARGAS_ENTRADA",
+  "name": "Z_CTT_ENTRADA_TONHR_TPCALC",
+  "value": false,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PREPARO_S",
+  "name": "Z_PREPARO_S_PROJ",
+  "value": "09/03/2027  |  5.536,0 ha",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PREPARO_S",
+  "name": "Z_PREPARO_S_META",
+  "value": "08/02/2027  |  5.536,0 ha",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "ADEREN_ATIVIDADES_AGRONO",
+  "name": "Z_ADEREN_ATIV_AGRO_DIAS_REALIZADOS",
+  "value": 3877.5933166696013,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "ADEREN_ATIVIDADES_AGRONO",
+  "name": "Z_ADEREN_ATIV_AGRO_DIAS_SALDO",
+  "value": -94.56219048418569,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "ADEREN_ATIVIDADES_AGRONO",
+  "name": "Z_ADEREN_ATIV_AGRO_TALHOES",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "ADEREN_ATIVIDADES_MATURAC",
+  "name": "Z_ADEREN_ATIV_MATUR_DIAS_REALIZADOS",
+  "value": -29.138366846447195,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "ADEREN_ATIVIDADES_MATURAC",
+  "name": "Z_ADEREN_ATIV_MATUR_DIAS_SALDO",
+  "value": -77.11870641216174,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "ADEREN_ATIVIDADES_MATURAC",
+  "name": "Z_ADEREN_ATIV_MATUR_TALHOES",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_KGTERRA_MES",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_KGTERRA_ANO",
+  "value": 9.853431120901428,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_ZDT",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_KGVEGETAL_SEMANA",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_KGVEGETAL_MES",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_KGVEGETAL_ANO",
+  "value": 90.36035139360632,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_R_MINE_ANO",
+  "value": 7.536953480164125,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_R_MINE_MES",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_R_MINE_SEMANA",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_KGTERRA_MES_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_KGTERRA_SEMANA_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_R_VEGE_ANO",
+  "value": 77.50717809216555,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_R_VEGE_MES",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_R_VEGE_SEMANA",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_KGVEGETAL_MES_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_KGVEGETAL_SEMANA_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_R_PERDA_ANO",
+  "value": 0.035000000000000066,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_R_PERDA_MES",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_R_PERDA_SEMANA",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_PERDA",
+  "name": "Z_CTT_PERDA_PERC_TOTAL_MES_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_PERDA",
+  "name": "Z_CTT_PERDA_PERC_TOTAL_SEMANA_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_ATR_MES",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_ATR_SEMANA",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_R_ATR_ANO",
+  "value": 138.66289337700977,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_R_ATR_MES",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_META_REUNIAO",
+  "name": "Z_CTT_META_R_ATR_SEMANA",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_ATR_MES_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_HISTPRD",
+  "name": "Z_CTT_HISTPRD_ATR_SEMANA_IDCOR",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_OC_ABERTA",
+  "name": "PERC_REALIZADO",
+  "value": 0.5585197934595525,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CARREADORES",
+  "name": "Z_TALHOES",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PREPARO",
+  "name": "Z_PREPARO_OPER_PPI",
+  "value": 588.4499999999998,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_MATURADOR",
+  "name": "Z_CTT_MATURA_PERIODO_SEMANA_ABAIXO",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_MATURADOR",
+  "name": "Z_CTT_MATURA_PERIODO_SEMANA_ADERENTE",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_MATURADOR",
+  "name": "Z_CTT_MATURA_PERIODO_SEMANA_ACIMA",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_MATURADOR",
+  "name": "Z_CTT_MATURA_PERIODO_SEMANA_SEM_MATURADOR",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_MATURADOR",
+  "name": "Z_CTT_MATURA_PERIODO_SEMANA_FORNEC",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_MATURADOR",
+  "name": "Z_CTT_MATURA_PERIODO_MES_SEM_MATURADOR",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_MATURADOR",
+  "name": "Z_CTT_MATURA_PERIODO_MES_ABAIXO",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_MATURADOR",
+  "name": "Z_CTT_MATURA_PERIODO_MES_ADERENTE",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_MATURADOR",
+  "name": "Z_CTT_MATURA_PERIODO_MES_ACIMA",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_MATURADOR",
+  "name": "Z_CTT_MATURA_PERIODO_MES_FORNEC",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_MATURADOR",
+  "name": "Z_CTT_MATURA_PERIODO_ANO_SEM_MATURADOR",
+  "value": 64483.85,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_MATURADOR",
+  "name": "Z_CTT_MATURA_PERIODO_ANO_ABAIXO",
+  "value": 243497.39,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_MATURADOR",
+  "name": "Z_CTT_MATURA_PERIODO_ANO_ADERENTE",
+  "value": 280685.42,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_MATURADOR",
+  "name": "Z_CTT_MATURA_PERIODO_ANO_ACIMA",
+  "value": 171914.53,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_MATURADOR",
+  "name": "Z_CTT_MATURA_PERIODO_ANO_FORNEC",
+  "value": 116321.47,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_MIGDOLUS",
+  "name": "zdts",
+  "value": "2026-04-23T00:00:00",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "COMPOSTO_ESTOQ_DT",
+  "name": "QT_ESTOQUE_META",
+  "value": 16000,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_PRD_SEMANA_MECANIZADO",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_PRD_MES_MECANIZADO",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_PRD_ANO_MECANIZADO",
+  "value": 321.3,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_PRD_SEMANA_MECANIZADO",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_PRD_MES_MECANIZADO",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_PRD_ANO_MECANIZADO",
+  "value": 243.89000000000004,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_DATA",
+  "name": "Z_PLANT_DATA_PRD_REAL",
+  "value": 4828.960000000003,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_DATA",
+  "name": "Z_PLANT_DATA_PRD_PROJ",
+  "value": 6952.235260000001,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_DATA",
+  "name": "Z_PLANT_DATA_DTREF",
+  "value": 46202,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_PRD_ANO_REPLANTIO",
+  "value": 69.51,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_PRD_MES_REPLANTIO",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_REAL",
+  "name": "Z_PLANT_REAL_PRD_SEMANA_REPLANTIO",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_PRD_SEMANA_REPLANTIO",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_PRD_MES_REPLANTIO",
+  "value": 0.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "PLANT_META",
+  "name": "Z_PLANT_META_PRD_ANO_REPLANTIO",
+  "value": 92.4474873176,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "AGRO_QLD_OPERAC_GEMAS",
+  "name": "Z_AGRO_QLD_GEMAS_GEMA_METRO",
+  "value": 2.8708794187811755,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "Z_LEGENDAS",
+  "name": "Z_LEG_CONTAGEM_REGRESSIVA_MOAGEM",
+  "value": "Falta (m) -117 dia (s)!\n\nPrevisão Início de Safra\n05/03/2026",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CTT_DATA",
+  "name": "Z_CTT_DATA_ANOSAFRA",
+  "value": 2026,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "X_DATA",
+  "name": "DT_SAFRA_INI",
+  "value": "2026-03-06T00:00:00",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "X_DATA",
+  "name": "DT_ANO",
+  "value": "2026-01-01T00:00:00",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CARREADOR_TLH",
+  "name": "Z_CARREADOR_TLH_TALHOES",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CARREADOR_TLH",
+  "name": "Z_CARREADOR_DIAS_PENDENTES",
+  "value": 16.30537046601248,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CARREADOR_TLH",
+  "name": "Z_CARREADOR_DIAS_REALIZADO",
+  "value": 10.25899487505463,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CATAÇÃO_TLH",
+  "name": "Z_CATAÇÃO_DIAS_PENDENTE_CALC",
+  "value": 44.2770996312075,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CATAÇÃO_TLH",
+  "name": "Z_CATAÇÃO_DIAS_REALIZADO_CALC",
+  "value": 17.05703406412196,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_BASE",
+  "table": "CATAÇÃO_TLH",
+  "name": "Z_CATAÇÃO_TLH_TALHOES",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_CST",
+  "table": "FUNC_99_BI",
+  "name": "Z_FUNC_BI_SALDO",
+  "value": -8559.3,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_CST",
+  "table": "FUNC_99_BI",
+  "name": "Z_FUNC_BI_SALDO_ID",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_CST",
+  "table": "CST",
+  "name": "Z_CST_QTPRD_ORC",
+  "value": 2803000.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_CST",
+  "table": "CST",
+  "name": "Z_ZZ_ISINSCOPE",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "BI_AGR_01_CST",
+  "table": "CST",
+  "name": "Z_CST_QTPRD_REAL",
+  "value": 2686048.44,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_CST",
+  "table": "CST",
+  "name": "Z_CST_UNIT_ORC",
+  "value": 244.80450594006413,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_CST",
+  "table": "CST",
+  "name": "Z_CST_UNIT_REAL",
+  "value": 154.66079130374882,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_CST",
+  "table": "CST",
+  "name": "Z_CST_VARPRECO",
+  "value": 9.353068900064212,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_CST",
+  "table": "CST",
+  "name": "Z_CST_VARUNIT",
+  "value": -90.14371463631531,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_CST",
+  "table": "CST",
+  "name": "Z_CST_VARESTRUTURA",
+  "value": -33.61718646542194,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_CST",
+  "table": "CST",
+  "name": "Z_CST_VARTERCEIRO",
+  "value": -24.01071151910152,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_CST",
+  "table": "CST",
+  "name": "Z_CST_VARINSUMO",
+  "value": -40.082488209722726,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_CST",
+  "table": "CST",
+  "name": "Z_CST_UNITREC_ORC",
+  "value": 244.80450594006481,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_CST",
+  "table": "CST",
+  "name": "Z_CST_UNITREC_REAL",
+  "value": 154.66079130374882,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_CST",
+  "table": "CST",
+  "name": "Z_CST_QTRECURSO_ORC",
+  "value": 2803000.0,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_CST",
+  "table": "CST",
+  "name": "Z_TESTE",
+  "value": "2025-04-30T00:00:00",
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_CST",
+  "table": "CST",
+  "name": "Z_CST_QTRECURSO_REAL",
+  "value": 2686048.44,
+  "status": "ok"
+ },
+ {
+  "ds": "BI_AGR_01_CTRL",
+  "table": "CTRL_ESTOQ_SALDO",
+  "name": "Z_CTRL_ESTOQ_SALDO_QTSALDO",
+  "value": -13429.279999999999,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Disponível Agora",
+  "value": 866,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Parados",
+  "value": 75,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Total Equipamentos",
+  "value": 941,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Delta Equipamentos",
+  "value": 75,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Disponível Agora (%)",
+  "value": 0.9202975557917109,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Cor",
+  "value": "#187518",
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Requisições de Compra",
+  "value": 28279,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Leadtime de Aprovação RC",
+  "value": 0.15454184743685526,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Leadtime de Criação do Pedido",
+  "value": 5.11936919447012,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Leadtime 1ª Aprovação do Pedido",
+  "value": 0.15454184743685526,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Leadtime 2ª Aprovação do Pedido",
+  "value": 1.4819077268261425,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Leadtime de Atendimento Pedido",
+  "value": 30.724343044594725,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Leadtime Total",
+  "value": 33.906022062172795,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Valor Total",
+  "value": 9821155.958761016,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "RC Valor Total",
+  "value": 9821155.958761016,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Pedidos Valor Total",
+  "value": 9820492.458761016,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Delta Valor RC",
+  "value": 663.5,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Delta Prazo Faturamento",
+  "value": 40722.193514578306,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Quantidade Itens",
+  "value": 1098272.62,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Leadtime de Transporte",
+  "value": 9.763935179864383,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Leadtime de Geração RC",
+  "value": 10.807680199404606,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Lubrificante Volume (l)",
+  "value": 63485.1,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Consumo Diesel Meta (l/h)",
+  "value": 35.95,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Consumo Diesel Meta (l/t)",
+  "value": 0.8500000000000001,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Diesel Hora Eixo Y Mês",
+  "value": 22.355999999999998,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Diesel Hora Eixo Y Semana",
+  "value": 22.355999999999998,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Diesel Tonelada Eixo Y Mês",
+  "value": 3740.6387999999997,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Diesel Tonelada Eixo Y Semana",
+  "value": 3740.6387999999997,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Diesel Volume (l)",
+  "value": 17727811.434,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Perda Hidráulico (l/t)",
+  "value": 0.004,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Perda Hidráulico Att (%)",
+  "value": 3.1249999999999756,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Perda Hidráulico Meta (l/t)",
+  "value": 0.012499999999999902,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Tempo Distancia (h/km)",
+  "value": 244038680.00000006,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Texto Meta Diesel",
+  "value": "Meta Consumo: ≤0,85 (l/t)",
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Texto Meta Diesel Hora",
+  "value": "Meta Consumo: ≤35,95 (l/h)",
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Texto Meta Hidráulico",
+  "value": "Meta Consumo: ≤0,012 (l/t)",
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Consumo Diesel Att Hora (%)",
+  "value": 1.0,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Consumo Diesel Att (%)",
+  "value": 0.738488271068636,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Consumo Diesel (l/t)",
+  "value": 1.151,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Consumo Diesel (l/h)",
+  "value": 0.073,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Produção Equipamentos Volume (t)",
+  "value": 15403553.82,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Quantidade Cana (t)",
+  "value": 15403553.82,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Valor (R$/h)",
+  "value": 0.09139534793568062,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Valor (R$/t)",
+  "value": 1.4479775465454392,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "TON/FACA",
+  "value": 969.3256447045497,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "TON/FACAO",
+  "value": 2811.8937239868565,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "TON/H",
+  "value": 0.049008310362930976,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "TCH",
+  "value": 69.79113481639001,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Leadtime de Emissão da Nota",
+  "value": 26.350987059163778,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Leadtime Total 2",
+  "value": 53.832963054602736,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Hidraulico Tonelada Eixo Y Mês",
+  "value": 0.1296,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Hidraulico Tonelada Eixo Y Semana",
+  "value": 0.1296,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Valor Total Aplicado",
+  "value": 32429487.77552066,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Quantidade Itens Aplicados",
+  "value": 693467.2783999998,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Consumo Diesel Meta (l/h) MAX",
+  "value": 39.54500000000001,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Consumo Diesel Meta (l/t) MAX",
+  "value": 1.2661000000000002,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Perda Hidráulico (l/t) MAX",
+  "value": 0.014999999999999881,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Diesel Hora Semana Ajuste",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Diesel Tonelada Semana Ajuste",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Hidráulico Semana Ajuste",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Lubrificante Volume Semana (l)",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Lubrificante Volume Mês (l)",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Lubrificante Volume (tambor)",
+  "value": 317.4255,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Consumo Diesel (l/h) Gráfico Mês",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Consumo Diesel (l/t) Gráfico Mês",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Perda Hidráulico (l/t) Gráfico Mês",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Orçamento KM Veículos",
+  "value": 4096967.199999995,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Realizado KM Veículos",
+  "value": 920645.6000000003,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Orçamento KM Veículos Att",
+  "value": 0.2247139298552357,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Orcamento KM Veículos Max",
+  "value": 4916360.639999994,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Destaque Frota Cor",
+  "value": "",
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Quantidade Realizado Veículos",
+  "value": 2474.0,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Cor Orçamento KM",
+  "value": "#187518",
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Orçado KM Veículos Delta",
+  "value": 3176321.599999995,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Orçamento KM Veículos Label",
+  "value": 4096967.199999995,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Valor Realizado Veículos",
+  "value": 292755.6856000002,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Realizado KM Veículos Acum em DATA",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Orçamento KM Dia",
+  "value": 4096967.1999999858,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Orçamento KM Dia Acum em DATA",
+  "value": 4096967.1999999858,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Realizado KM Veículos Hoje Verde",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Orçamento KM Acum Veículos Att",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Cor Orçamento Acum KM",
+  "value": "#187518",
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Consumo Diesel (l/h) Gráfico Mês Att",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Consumo Diesel (l/t) Gráfico Mês Att",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Perda Hidráulico (l/t) Gráfico Mês Att",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Óleo Motor Volume (l)",
+  "value": 2337.7,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Óleo Motor / Diesel",
+  "value": 0.0132,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Óleo Motor / Diesel Meta",
+  "value": 0.04,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Óleo Motor / Diesel Cor",
+  "value": "#187518",
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Óleo Motor / Diesel Eixo Y Mês",
+  "value": 2.2196399999999996,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "TON/FACA Meta",
+  "value": 155,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "R$/H Meta",
+  "value": 134.84,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "R$/TON Meta",
+  "value": 3.31,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "TON/H Meta",
+  "value": 41,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "TON/FACAO Meta",
+  "value": 550,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Óleo Motor / Diesel Gráfico Mês",
+  "value": null,
+  "status": "contexto"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Óleo Motor / Diesel Gráfico Mês Cor",
+  "value": "#187518",
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "TON/FACA Cor",
+  "value": "#870000",
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "TON/FACAO Cor",
+  "value": "#870000",
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Texto Meta Óleo Mineral",
+  "value": "Meta Consumo: ≤0,0400 (l/l. diesel)",
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Texto Meta t/faca",
+  "value": "Meta Consumo: ≤155,0000 (t/un.)",
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Texto Meta t/facao",
+  "value": "Meta Consumo: ≤550,0000 (t/un.)",
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Horas",
+  "value": 244038680.00000006,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Diesel Volume Semana (l)",
+  "value": 83329.659,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Diesel Volume Mês (l)",
+  "value": 751169.477,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Horas Mês",
+  "value": 7314199.5,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Horas Semana",
+  "value": 816799.3,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Consumo Diesel Semana (l/h)",
+  "value": 0.102,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Consumo Diesel Mês (l/h)",
+  "value": 0.103,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Padrão Orçado (l/h_km/l)",
+  "value": 8.40347150539487,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Consumo Diesel Att. (L/H)",
+  "value": 0.008686886122376374,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Consumo MAX Gráfico (l/h)",
+  "value": 10.084165806473845,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Consumos Diesel Cor",
+  "value": "#187518",
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Unidade Medida",
+  "value": "(l/h)",
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Unidade Medida Upper",
+  "value": "(L/H)",
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Diesel Volume Meta (l)",
+  "value": 6584616.906591949,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Diesel MAX Gráfico (l)",
+  "value": 21273373.7208,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Diesel Volume Cor",
+  "value": "#870000",
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Diesel Volume ST",
+  "value": "PERÍODO: 17.727.811 de 6.584.617 | 269,2% | Var. 11.143.195 ⛔",
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Tempo Distancia Meta (h/km)",
+  "value": 6271138.322093758,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Tempo Distancia ST",
+  "value": "PERÍODO: 268.134.876 de 6.271.138 | 4275,7% | Var. 261.863.738 ⛔",
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Tempo Distancia Cor",
+  "value": "#870000",
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Tempo Distancia MAX",
+  "value": 321761851.67999995,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Tempo Distancia 2 (h/km)",
+  "value": 268134876.39999995,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Equipamentos Falharam",
+  "value": 932,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Reparos Emergenciais",
+  "value": 92396,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Downtime (%)",
+  "value": 0.05155781421085448,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Ocorrências",
+  "value": 101760,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Tempo Calendário (h)",
+  "value": 32362872,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Tempo Manutenção (h)",
+  "value": 3107512.128888549,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Tempo Manutenção Não Planejado (h)",
+  "value": 1447413,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Tempo Manutenção Planejado (h)",
+  "value": 1619485,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "MTBF",
+  "value": 333.5224719504473,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "MTTR",
+  "value": 16.719413709358584,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Ordens Em Aberto",
+  "value": 74,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Aproveitamento Mecânico Dia (%)",
+  "value": 1.0,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Orçamento R$",
+  "value": 27766012.714398146,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Saldo R$",
+  "value": -4780892.292506065,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "MaxOrçado",
+  "value": 35672436.553072795,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "CRM",
+  "value": 0.13288667097986562,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "CRM Orçado",
+  "value": 4.539224425869757,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "CRM Delta",
+  "value": 4.406337754889892,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Orçamento R$ EQP",
+  "value": 27648595.483014654,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Orçamento KM EQP",
+  "value": 6091039.545311076,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "d_equipamentos",
+  "name": "Equipamentos Ativos",
+  "value": 1,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Destaque Letra Frota Cor",
+  "value": "#252423",
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Disponibilidade (%)",
+  "value": null,
+  "status": "pesada"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Disponibilidade Média (%)",
+  "value": null,
+  "status": "pesada"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Disponibilidade Média Conjunto (%)",
+  "value": null,
+  "status": "pesada"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Disponibilidade Meta (%)",
+  "value": null,
+  "status": "pesada"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Disponibilidade Média Att (%)",
+  "value": null,
+  "status": "pesada"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Disponibilidade Gráfico",
+  "value": null,
+  "status": "pesada"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Disponibilidade Semana Ajuste",
+  "value": null,
+  "status": "pesada"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Disponibilidade Gráfico Mês",
+  "value": null,
+  "status": "pesada"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Disponibilidade Gráfico Mês Att",
+  "value": null,
+  "status": "pesada"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Disponibilidade Média (%) Dia",
+  "value": null,
+  "status": "pesada"
+ },
+ {
+  "ds": "MANUT_umoe_dataset",
+  "table": "medidas",
+  "name": "Disponibilidade Hora (%)",
+  "value": null,
+  "status": "pesada"
+ },
+ {
+  "ds": "MANUT_PARETOS_PROCESSOS",
+  "table": "Paretos",
+  "name": "Lista de SISTEMA valores",
+  "value": ", 5 RODA, ACENTO,  etc.",
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_PARETOS_PROCESSOS",
+  "table": "Paretos",
+  "name": "MTTR",
+  "value": 23.705018980158993,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_PARETOS_PROCESSOS",
+  "table": "Paretos",
+  "name": "limite mttr",
+  "value": 23.70316376442977,
+  "status": "ok"
+ },
+ {
+  "ds": "MANUT_PARETOS_PROCESSOS",
+  "table": "Paretos",
+  "name": "limite N",
+  "value": 154.87878787878788,
+  "status": "ok"
+ }
+]
