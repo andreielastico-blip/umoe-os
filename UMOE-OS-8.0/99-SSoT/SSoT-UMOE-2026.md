@@ -1165,3 +1165,106 @@ Detalhe unitário R$/t (acumulado):
 ### Historico Anual (mm)
 2011: 943mm | 2012: 1729mm | 2013: 1760mm | 2014: 1072mm | 2015: 1985mm | 2016: 1491mm | 2017: 1498mm | 2018: 1674mm | 2019: 1163mm | 2020: 1544mm | 2021: 1136mm | 2022: 1548mm | 2023: 1536mm | 2024: 1453mm | 2025: 1412mm | 2026: 930mm
 
+---
+
+## RH — ABSENTEISMO HISTORICO POR SAFRA
+### Fonte: Absenteismo Safras Umoe.xlsx | Atualizado: 2026-06-30 | Base: 4.982 registros (2.518 agricola ativos + 380 automotiva ativos)
+
+### Taxa Geral UMOE (todos setores)
+
+| Safra | % Absenteismo | Variacao |
+|-------|--------------|---------|
+| 22/23 | 1,54% | base |
+| 23/24 | 1,80% | +0,26 p.p. |
+| 24/25 | 2,24% | +0,44 p.p. |
+| 25/26 | 2,06% | -0,18 p.p. |
+| 26/27 | 3,15% | +1,09 p.p. [ATENCAO] |
+| **Media geral** | **2,22%** | benchmark setor: 2,0-3,5% |
+
+### Evolucao por Setor (funcionarios ativos)
+
+| Setor | 22/23 | 23/24 | 24/25 | 25/26 | 26/27 | Tendencia |
+|-------|-------|-------|-------|-------|-------|----------|
+| AGRICOLA | 1,81% | 2,21% | 2,36% | 2,54% | **4,75%** | CRESCIMENTO CRITICO — dobrou em 4 safras |
+| AUTOMOTIVA | 1,45% | 1,25% | 2,18% | 1,67% | **2,35%** | Controlado — recuperou de pico 24/25 |
+| INDUSTRIA | 1,51% | 1,34% | 2,05% | 1,50% | **1,65%** | Estavel — melhor desempenho da empresa |
+| ADM/OUTROS | 1,29% | 1,67% | 2,15% | 1,81% | **2,63%** | Elevado na safra atual |
+
+### AGRICOLA — Centros de Custo com Maior Absenteismo Safra 26/27
+
+| Centro de Custo | % Absenteismo 26/27 | Alerta |
+|----------------|---------------------|--------|
+| Mao de obra - CATMAN | 85,96% | CRITICO — verificar afastamentos/desligamentos |
+| Motoristas - DEPMAN | 55,98% | CRITICO |
+| Auxiliares - DEFERT | 37,98% | CRITICO |
+| Mao de obra - DEFERT | 13,99% | ALTO |
+| Operadores - TORTA | 10,85% | ALTO |
+| Mao de obra - CONTPRAG | 8,00% | ATENCAO |
+| Operadores - QLOMB | 8,00% | ATENCAO |
+| Motoristas - DECMEC | 8,00% | ATENCAO |
+| Operadores - DECMEC | 7,50% | ATENCAO |
+| Auxiliares - CATMAN | 7,28% | ATENCAO |
+
+> NOTA: CATMAN/DEPMAN com indices acima de 50% indicam possivelmente equipes com afastados/desligamentos contabilizados no periodo — validar com RH.
+
+### AUTOMOTIVA — Centros de Custo com Maior Absenteismo Safra 26/27
+
+| Centro de Custo | % Absenteismo 26/27 | Alerta |
+|----------------|---------------------|--------|
+| Mecanica de Implementos - DEMAUT | 8,28% | ALTO |
+| Administracao Industrial - SDV | 7,00% | ALTO |
+| Manutencao Civil | 6,14% | ATENCAO |
+| Mecanica de Tratores - DEMAUT | 6,00% | ATENCAO |
+| Adm, Servicos e Facilities | 6,00% | ATENCAO |
+| Eletrica (Interno) - DEMAUT | 5,20% | ATENCAO |
+| Mecanica Caminhoes e Veic. - DEMAUT | 2,46% | OK |
+| Instrumentacao/Automacao - SDV | 0,89% | OK |
+| Mecanica Preventiva - DEMAUT | 0,00% | IDEAL |
+
+### Top Turmas Agricolas — Maior Absenteismo 26/27
+
+| Turma / Local Pagamento | % 26/27 |
+|------------------------|---------|
+| COMPOSTAGEM | 18,99% |
+| TURMA 9970 - JOSE F. - CHINES | 13,33% |
+| TURMA 8870 - FLAVIO SILVA | 12,99% |
+| TURMA 8840 - CORRO | 12,79% |
+| TURMA 9845 - RICARDO SOUZA | 10,78% |
+| TURMA 9940 - DANIEL SANTOS | 10,00% |
+| TURMA 9910 - RENATO OLIVEIRA | 9,25% |
+| TURMA 8820 - JULIANO CARDOSO | 9,25% |
+| TURMA 9950 - CLAUDEMIR | 9,00% |
+| TURMA 8880 - DANIEL SANTOS | 8,66% |
+
+### Top Locais Automotiva — Maior Absenteismo 26/27
+
+| Local Pagamento | % 26/27 |
+|----------------|---------|
+| BRIGADA - TURNO B | 31,99% |
+| JEFFERSON ARAUJO | 11,99% |
+| BRIGADA - TURNO A | 8,00% |
+| PCM - INDUSTRIAL | 7,00% |
+| ADRIANO SILVA | 6,13% |
+| WESLEY BRUNO - LUBRIFICACAO | 6,00% |
+| FRENTE 01 - TURNO B | 6,00% |
+
+### Diagnostico e Plano de Acao
+
+**AGRICOLA — CRITICO (4,75% em 26/27, maior nivel em 5 safras):**
+- Crescimento continuo desde 22/23 (+2,94 p.p. em 4 safras)
+- Maior pressao: safra atual com pico de chuva (maio 365mm) impacta moral e condicoes de trabalho
+- Focos: CATMAN, DEPMAN, DEFERT — validar se sao afastamentos previdenciarios ou faltas nao justificadas
+- Acao 1: Reuniao por turma com maior indice — gestores Flavio Faveri e Ricardo Lerosa (Frentes 01-04 e 10)
+- Acao 2: Mapear correlacao chuva x absenteismo (impacto dias parados vs. desengajamento)
+- Acao 3: RH avaliar programa de saude/bem-estar para turmas com indice > 8%
+
+**AUTOMOTIVA — CONTROLADO (2,35% em 26/27):**
+- Recuperou do pico de 24/25 (2,18%) mantendo estabilidade
+- Brigada Turno B (31,99%) e Jefferson Araujo (11,99%) sao outliers — verificar causa especifica
+- Mecanica Preventiva e Mecanica Preventiva em 0% — referencia de gestao para replicar
+
+**IMPACTO FINANCEIRO ESTIMADO:**
+- Benchmark: cada 1% de absenteismo = ~0,6% de reducao de eficiencia operacional
+- AGRICOLA 26/27 em 4,75% vs. meta implicita de 2,0%: delta de 2,75 p.p.
+- Com 2.518 trabalhadores agricolas ativos, horas perdidas estimadas: significativas — calcular com RH pelo custo/hora medio por categoria
+
