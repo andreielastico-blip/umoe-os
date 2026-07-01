@@ -1409,7 +1409,7 @@ BASE DE DADOS UMOE_2026.xlsx agora com 30 colunas:
 ---
 
 ## CLIMA ENGINE — PRECIPITACAO REAL 2026
-### Fonte: 1 - Indice Pluviometrico UMOE.xlsx | Atualizado: 2026-06-24 09:44 | Engine: 2026-06-30 10:03
+### Fonte: 1 - Indice Pluviometrico UMOE.xlsx | Atualizado: 2026-06-24 09:44 | Engine: 2026-07-01 10:04
 ### (*) = mes de safra ativa | CRITICO > 200mm | ATENCAO > 100mm
 
 | Mes | 2026 (mm) | 2025 (mm) | 2024 (mm) | Media Hist. |
