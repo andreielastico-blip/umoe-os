@@ -1555,3 +1555,160 @@ BASE DE DADOS UMOE_2026.xlsx agora com 30 colunas:
 - 126 fazendas monitoradas — cobertura ampla do universo UMOE
 - Especies de atencao para SF2026/27: CASOB, PANMA, SIDSS (emergente), IPOSS
 - Especie controlada com sucesso: BRASS (queda de 47% -> 18% em 7 anos)
+
+
+---
+
+## FITOSSANIDADE — MATOLOGIA ANALYTICS (CRUZAMENTOS AVANCADOS)
+### Fonte: Matologia 2019-2026 x BASE DE DADOS SIG x TOPO
+### Atualizado: 2026-07-01 | Modelo: UMOE OS 8.0 Matologia Analytics Engine
+
+---
+
+### Cruzamento 1 — Infestacao por Ambiente de Producao (2026)
+
+Match levantamento x BASE SIG: 225 talhoes (15% da base — match por CodFaz+Talhao exato)
+
+| Ambiente | Registros | Indice Medio | Nota Critica (>=3) |
+|----------|-----------|-------------|-------------------|
+| D | 92 | 12,9 | 4,3% |
+| B | 15 | 9,8 | 0,0% |
+| A | 12 | 9,6 | 0,0% |
+| E | 9 | 7,9 | 0,0% |
+| C | 97 | 7,7 | 4,1% |
+
+**Insight**: Ambiente D tem o maior indice (12,9) e maior taxa critica. Ambiente E (pior solo) surpreende com menor pressao — possivelmente menor biomassa vegetal. PANMA (Coloniao) e a especie mais prevalente em todos os ambientes (22-50%).
+
+**PANMA por Ambiente**: A=50% | D=37% | B=33% | C=28% | E=22%
+**CASOB por Ambiente**: D=22,8% | E=22,2% | B=20% | C=11,3% | A=8,3%
+**IPOSS por Ambiente**: D=33,7% | A=25% | C=22,7% | B=13,3% | E=11,1%
+
+**Solo com maior infestacao**: PVe3.1 (20,3) > LVef1.1 (19,5) > LVAd3.15 (16,6)
+
+---
+
+### Cruzamento 2 — Infestacao por Declividade
+
+| Faixa | Registros | Indice Medio | Nota Critica |
+|-------|-----------|-------------|-------------|
+| 0-5% (Plano) | 117 | 11,0 | 5,1% |
+| 5-12% (Suave) | 105 | 9,1 | 1,9% |
+| Sem info | 1.252 | 10,0 | 3,7% |
+
+**Insight inesperado**: talhoes PLANOS (0-5%) tem MAIOR infestacao (11,0) que suaves (9,1).
+Hipotese: solos planos retencao de umidade favorece PANMA, CASOB e IPOSS. Confirmar com dados de solo.
+
+---
+
+### Cruzamento 3 — Evolucao por Fazenda 2023-2026 (Ranking)
+
+**55 fazendas melhoraram | 20 fazendas pioraram** (threshold +-2 pontos de indice)
+
+**TOP 5 MELHORAS (programa funcionou):**
+
+| CodFaz | Fazenda | Indice 2023 | Indice 2026 | Reducao |
+|--------|---------|------------|------------|---------|
+| 20568 | Fazenda Santa Helena | 26,6 | 1,5 | -94,4% |
+| 20409 | Sitio Santa Cruz | 30,7 | 8,0 | -73,9% |
+| 20576 | Sitio Tres Anforas | 24,8 | 3,8 | -84,9% |
+| 20595 | Estancia Santa Elisa | 15,0 | 0,0 | -100% |
+| 20594 | Estancia Tradicao | 21,8 | 3,3 | -84,7% |
+
+**TOP 5 PIORAS (requer intervencao imediata):**
+
+| CodFaz | Fazenda | Indice 2023 | Indice 2026 | Aumento |
+|--------|---------|------------|------------|---------|
+| 10311 | Fazenda Santo Antonio | 7,4 | 23,8 | +219,6% |
+| 20533 | Sitio Cosme | 26,0 | 41,7 | +60,3% |
+| 20532 | Fazenda Harmonia | 0,8 | 13,2 | +1.666% |
+| 20554 | Fazenda Santo Antonio | 15,7 | 22,3 | +42,1% |
+| 20555 | Fazenda Santa Alice | 9,2 | 20,2 | +120,1% |
+
+---
+
+### Cruzamento 4 — Early Warning de Resistencia Herbicida
+
+Analise de tendencia linear 2022-2026 por especie:
+
+| Especie | 2022 | 2023 | 2024 | 2025 | 2026 | Tendencia |
+|---------|------|------|------|------|------|-----------|
+| BRASS (Braquiaria) | 46,8% | 49,9% | 31,9% | 24,8% | 17,6% | REDUZINDO -8,4pp/ano |
+| PANMA (Coloniao) | 31,7% | 33,6% | 24,5% | 24,1% | 27,1% | ESTAVEL -1,9pp/ano |
+| DIGSS (Colchao) | 47,4% | 64,3% | 21,2% | 12,5% | 17,0% | REDUZINDO -11,3pp/ano |
+| IPOSS (Corda-de-viola) | 27,4% | 45,0% | 26,9% | 27,4% | 18,8% | REDUZINDO -3,5pp/ano |
+| CASOB (Fedegoso) | 28,6% | 43,1% | 26,1% | 24,5% | 25,2% | REDUZINDO -2,5pp/ano |
+| **SIDSS (Guanxuma)** | **9,8%** | **14,5%** | **18,6%** | **14,0%** | **18,7%** | **CRESCENDO +1,7pp/ano** |
+| CCHEC (Carrapicho) | 21,0% | 29,3% | 9,2% | 5,9% | 7,3% | REDUZINDO -5,1pp/ano |
+
+**ALERTA DE RESISTENCIA POTENCIAL: SIDSS (Guanxuma)**
+Unica especie com tendencia de crescimento linear positivo (+1,7pp/ano) de 2022 a 2026.
+Ausente antes de 2022. Recomendacao: enviar amostras para bioensaio de resistencia (glyphosate/2,4-D).
+
+---
+
+### Analise Avancada 1 — Weed Pressure Score (WPS) por Talhao
+
+**Modelo WPS (0-100)**: 5 componentes ponderados
+- 40% Indice infestacao 2026
+- 20% Tendencia 2024-2026 (piora = penalidade)
+- 20% Composicao: gramineas de dificil controle (SORHA/PANMA/BRASS/CYNDA)
+- 10% Fator Ambiente (A=baixo risco, E=alto risco)
+- 10% Declividade (>20% = risco estrutural)
+
+**Distribuicao WPS — SF2026/27:**
+
+| Classificacao | Talhoes | % | Acao |
+|---------------|---------|---|------|
+| 0-VERDE Controlado (WPS<10) | 511 | 34,7% | Monitoramento |
+| 1-AMARELO Monitorar (10-25) | 864 | 58,6% | Visita anual |
+| 2-LARANJA Atencao (25-45) | 93 | 6,3% | Intervencao na proxima janela |
+| 3-VERMELHO Critico (>45) | 6 | 0,4% | Intervencao IMEDIATA |
+
+**Talhoes CRITICOS (WPS>45):**
+- CodFaz 20554 Fazenda Santo Antonio Talh.15 — WPS 52,1 | Indice 63
+- CodFaz 20479 Fazenda Santa Maria Talh.2 — WPS 49,4 | Indice 44
+- CodFaz 10311 Fazenda Santo Antonio Talh.4 — WPS 46,7 | Indice 52
+- CodFaz 20533 Sitio Cosme Talh.1/2/3 — WPS 45-47 | Indice 41-43
+
+---
+
+### Analise Avancada 2 — Impacto Financeiro da Infestacao
+
+**Modelo** (base literatura CTC/ESALQ): cada 10 pontos de indice = -3% TCH
+- TCH referencia UMOE: 80 t/ha
+- Receita por tonelada: R$ 142,82/t (ATR 138,66 kg/t x R$ 1,03/kg)
+
+| Indicador | Valor |
+|-----------|-------|
+| Impacto medio por ha | R$ 342/ha |
+| Impacto total (area levantada 5.317 ha) | R$ 2,2 M |
+| **Extrapolacao universo UMOE (45.607 ha)** | **R$ 19,1 M/safra** |
+| Toneladas de cana perdidas (estimado) | 134 mil t |
+
+**Impacto por Ambiente**: Amb.D = R$ 443/ha | Amb.A = R$ 329/ha | Amb.C = R$ 265/ha
+
+**TOP 3 FAZENDAS POR IMPACTO FINANCEIRO:**
+- Fazenda Vista Bonita (20305): 1.811 ha | Impacto R$ 952 mil
+- Fazenda Agua Mansa (20314): 2.115 ha | Impacto R$ 558 mil
+- Fazenda Vista Bonita (20432): 672 ha | Impacto R$ 332 mil
+
+---
+
+### Analise Avancada 3 — Zonas de Manejo Fitossanitario (Prescricao Diferenciada)
+
+Classificacao de cada talhao pelo perfil dominante de especies:
+
+| Zona | Talhoes | % | Herbicida Indicado |
+|------|---------|---|-------------------|
+| Z1-GRAMINICIDA | 299 | 20,3% | Clethodim, fluazifop-P-butilico |
+| Z2-LATIFOLICIDA | 397 | 26,9% | 2,4-D, picloram, imazapic |
+| Z3-MISTO | 247 | 16,8% | Mistura em tanque — graminicida + latifolicida |
+| Z4-LIMPO | 531 | 36,0% | Monitoramento preventivo anual |
+
+**Insight operacional**: 36% dos talhoes ja sao limpos (Z4) — programa consolidado. A maior demanda (27%) e por latifolicidas, nao graminicidas — inversao relevante vs. 2019 quando gramineas dominavam.
+
+---
+
+### Arquivo de Referencia
+- Planilha exportada: outputs/Matologia_Analytics_UMOE_2026.xlsx
+- Abas: WPS_Talhoes (1.474 linhas com WPS, zona de manejo e impacto R$/ha) | Resumo_Executivo

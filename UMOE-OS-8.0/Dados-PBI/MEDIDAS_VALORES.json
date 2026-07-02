@@ -24,14 +24,14 @@
   "ds": "BI_AGR_01_BASE",
   "table": "AGRO_DATA",
   "name": "DT_ONTEM",
-  "value": "29/06/2026",
+  "value": "30/06/2026",
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "AGRO_DATA",
   "name": "DT_HOJE",
-  "value": "30/06/2026",
+  "value": "01/07/2026",
   "status": "ok"
  },
  {
@@ -115,14 +115,14 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_CARGAS_SAIDA",
   "name": "Z_CTT_SAIDA_ATR_FTOTAL",
-  "value": 126.7436705325563,
+  "value": 126.85274055451406,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_CARGAS_SAIDA",
   "name": "Z_CTT_SAIDA_ATRPRE_FTOTAL",
-  "value": 125.09433049549209,
+  "value": 125.1209681939822,
   "status": "ok"
  },
  {
@@ -171,7 +171,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_META_MOAGEM",
   "name": "Z_CTT_META_HR",
-  "value": 11.0,
+  "value": 6.0,
   "status": "ok"
  },
  {
@@ -206,14 +206,14 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_META_MOAGEM",
   "name": "Z_CTT_META_MINE_TOTAL",
-  "value": 7.569008822478128,
+  "value": 7.562913673345208,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_META_MOAGEM",
   "name": "Z_CTT_META_VEGE_TOTAL",
-  "value": 77.50490237065732,
+  "value": 77.44593456631785,
   "status": "ok"
  },
  {
@@ -241,7 +241,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_CARGAS_SAIDA",
   "name": "Z_CTT_SAIDA_CARGPATIO_FTOTAL",
-  "value": 26.0,
+  "value": 36.0,
   "status": "ok"
  },
  {
@@ -311,8 +311,8 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_CARGAS_ENTRADA",
   "name": "Z_CTT_ENTRADA_TONHR_F05",
-  "value": null,
-  "status": "contexto"
+  "value": 0.0,
+  "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
@@ -395,29 +395,29 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_CARGAS_SAIDA",
   "name": "Z_CTT_SAIDA_TON_ID_F01",
-  "value": null,
-  "status": "contexto"
+  "value": 0,
+  "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_CARGAS_SAIDA",
   "name": "Z_CTT_SAIDA_TON_ID_F02",
-  "value": null,
-  "status": "contexto"
+  "value": 0,
+  "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_CARGAS_SAIDA",
   "name": "Z_CTT_SAIDA_TON_ID_F03",
-  "value": null,
-  "status": "contexto"
+  "value": 0,
+  "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_CARGAS_SAIDA",
   "name": "Z_CTT_SAIDA_TON_ID_F04",
-  "value": null,
-  "status": "contexto"
+  "value": 0,
+  "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
@@ -521,8 +521,8 @@
   "ds": "BI_AGR_01_BASE",
   "table": "AGRO_QLD_OPERAC",
   "name": "Z_QLDOPERC_ADER_SEMATUAL",
-  "value": null,
-  "status": "contexto"
+  "value": 0.5950413223545454,
+  "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
@@ -535,14 +535,14 @@
   "ds": "BI_AGR_01_BASE",
   "table": "AGRO_QLD_OPERAC",
   "name": "Z_QLDOPERC_ADER_MES",
-  "value": 0.7631302630066475,
-  "status": "ok"
+  "value": null,
+  "status": "contexto"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "AGRO_QLD_OPERAC",
   "name": "Z_QLDOPERC_ADER_ANO",
-  "value": 0.777921104129989,
+  "value": 0.7776210044026496,
   "status": "ok"
  },
  {
@@ -556,21 +556,21 @@
   "ds": "BI_AGR_01_BASE",
   "table": "AGRO_QLD_OPERAC",
   "name": "Z_QLDOPERC_QTDEPONTO_SEMATUAL",
-  "value": 0.0,
+  "value": 121.0,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "AGRO_QLD_OPERAC",
   "name": "Z_QLDOPERC_QTDEPONTO_MES",
-  "value": 7221.0,
+  "value": 0.0,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "AGRO_QLD_OPERAC",
   "name": "Z_QLDOPERC_QTDEPONTO_ANO",
-  "value": 73616.0,
+  "value": 73737.0,
   "status": "ok"
  },
  {
@@ -584,14 +584,14 @@
   "ds": "BI_AGR_01_BASE",
   "table": "AGRO_QLD_OPERAC",
   "name": "Z_QLDOPERAC_IDCOR_SEMATUAL",
-  "value": 0,
+  "value": 1,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "AGRO_QLD_OPERAC",
   "name": "Z_QLDOPERAC_IDCOR_MES",
-  "value": 1,
+  "value": 0,
   "status": "ok"
  },
  {
@@ -605,7 +605,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_HISTPRD",
   "name": "Z_CTT_HISTPRD_ATR_ANO",
-  "value": 127.40440267640369,
+  "value": 127.52831050780706,
   "status": "ok"
  },
  {
@@ -633,7 +633,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_HISTPRD",
   "name": "Z_CTT_HISTPRD_KGVEGETAL",
-  "value": 90.36035139360632,
+  "value": 90.29947195560636,
   "status": "ok"
  },
  {
@@ -647,7 +647,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_META_MOAGEM",
   "name": "Z_CTT_META_TON_EFET",
-  "value": 2768542.426200001,
+  "value": 2768542.4262000094,
   "status": "ok"
  },
  {
@@ -808,7 +808,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_BROCA",
   "name": "Z_CTT_BROCA_TOTAL",
-  "value": 0.009066908822298417,
+  "value": 0.009192774355497398,
   "status": "ok"
  },
  {
@@ -864,7 +864,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_MATURADOR",
   "name": "Z_CTT_MATURA_DIASMED",
-  "value": 35.34288443170965,
+  "value": 35.536333802156584,
   "status": "ok"
  },
  {
@@ -878,21 +878,21 @@
   "ds": "BI_AGR_01_BASE",
   "table": "ENERGIA_SOLAR",
   "name": "Z_ENERGIA_SOLAR_QTKWH_ESTEMES",
-  "value": 17026.0,
+  "value": 17239.0,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_MATURADOR",
   "name": "Z_CTT_MATURA_PREATR",
-  "value": 123.14502319890728,
+  "value": 124.09325548500385,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_MATURADOR",
   "name": "Z_CTT_MATURA_PREATR_ULTAMOST",
-  "value": "06/04/2026",
+  "value": "09/04/2026",
   "status": "ok"
  },
  {
@@ -920,7 +920,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_CARGAS_ENTRADA",
   "name": "Z_CTT_ENTRADA_CARGASPATIO",
-  "value": 26.0,
+  "value": 36.0,
   "status": "ok"
  },
  {
@@ -983,7 +983,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_CARGAS_SAIDA",
   "name": "Z_CTT_SAIDA_CARGPATIO_FTOTAL2",
-  "value": 26.0,
+  "value": 36.0,
   "status": "ok"
  },
  {
@@ -1011,35 +1011,35 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_TAH",
   "name": "Z_CTT_TAH_TAH",
-  "value": 8.920979848721293,
+  "value": 8.918138378083869,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_TAH",
   "name": "Z_CTT_TAH_IDADE",
-  "value": 74.35809540460849,
+  "value": 72.94086675845669,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "CARREADORES",
   "name": "Z_CARREADOR_AREA_TOTAL",
-  "value": 2163.65,
+  "value": 2161.2,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "CARREADORES",
   "name": "Z_CARREADOR_DIAS",
-  "value": 2070.6215145702863,
+  "value": 2017.5199518785857,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_TAH",
   "name": "Z_CTT_TAH_PRODUTIVIDADE",
-  "value": 70.2400943240159,
+  "value": 70.091701205995,
   "status": "ok"
  },
  {
@@ -1053,7 +1053,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_TCH",
   "name": "Z_CTT_TCH_REAL",
-  "value": 70.03987502674698,
+  "value": 69.89783669478572,
   "status": "ok"
  },
  {
@@ -1067,7 +1067,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_TCH",
   "name": "Z_CTT_TCH_VAR_0",
-  "value": -0.1051515027583001,
+  "value": -0.1069662231280568,
   "status": "ok"
  },
  {
@@ -1088,14 +1088,14 @@
   "ds": "BI_AGR_01_BASE",
   "table": "PREPARO",
   "name": "Z_PREPARO_SALDO_HA",
-  "value": -6296.222999999802,
+  "value": -5983.04099999983,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "AGRO_QLD_OPERAC",
   "name": "Z_QLDOPERC_ADER",
-  "value": 0.777921104129989,
+  "value": 0.7776210044026496,
   "status": "ok"
  },
  {
@@ -1207,7 +1207,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "ADEREN_ESTRVERM",
   "name": "Z_ADEREN_ESTRVERM_IDADE_STATUS",
-  "value": 8.378100097671409,
+  "value": 8.320521640328533,
   "status": "ok"
  },
  {
@@ -1221,14 +1221,14 @@
   "ds": "BI_AGR_01_BASE",
   "table": "PLANT_DATA",
   "name": "Z_PLANT_DATA_TXT_META",
-  "value": "29/06/26  |  5.198,4 ha",
+  "value": "30/06/26  |  5.209,9 ha",
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "PLANT_DATA",
   "name": "Z_PLANT_DATA_TXT_REAL",
-  "value": "29/06/26  |  4.829,0 ha",
+  "value": "30/06/26  |  4.829,0 ha",
   "status": "ok"
  },
  {
@@ -1270,7 +1270,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_META_REUNIAO",
   "name": "Z_CTT_META_R_TON_EFET",
-  "value": 2768542.426200001,
+  "value": 2768542.4262000094,
   "status": "ok"
  },
  {
@@ -1312,14 +1312,14 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_META_REUNIAO",
   "name": "Z_CTT_META_R_VARMOAGEM",
-  "value": -1962058.436200001,
+  "value": -1950129.986200001,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_INDISPONIB_CALC",
   "name": "Z_INDISP_CALC_DIAEFET",
-  "value": 313.9820833333333,
+  "value": 313.97083333333336,
   "status": "ok"
  },
  {
@@ -1389,7 +1389,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_DATA",
   "name": "Z_CTT_DATA_META",
-  "value": "30/06/26  |  12.767,4 ha",
+  "value": "01/07/26  |  13.004,0 ha",
   "status": "ok"
  },
  {
@@ -1403,28 +1403,28 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_DATA",
   "name": "Z_CTT_DATA_PROJETADO",
-  "value": "15/12/26  |  35.326,5 ha",
+  "value": "13/12/26  |  35.326,5 ha",
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_DATA",
   "name": "Z_CTT_DATA_REAL",
-  "value": "30/06/26  |  10.824,4 ha",
+  "value": "01/07/26  |  11.149,0 ha",
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "ADEREN_ATIVIDADES",
   "name": "Z_ADEREN_ATIV_DIAS_REALIZADOS",
-  "value": 24.43857803712305,
+  "value": 24.620066800048455,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "ADEREN_ATIVIDADES",
   "name": "Z_ADEREN_ATIV_DIAS_SALDO",
-  "value": 36.66400438232129,
+  "value": 30.79004246910806,
   "status": "ok"
  },
  {
@@ -1487,56 +1487,56 @@
   "ds": "BI_AGR_01_BASE",
   "table": "PREPARO",
   "name": "Z_PREPARO_AREALIZAR",
-  "value": 6296.222999999802,
+  "value": 5983.04099999983,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "PREPARO",
   "name": "Z_PREPARO_OPER_SISTEMATIZA",
-  "value": 511.9300000000003,
+  "value": 487.27000000000044,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "PREPARO",
   "name": "Z_PREPARO_OPER_AREATALHO",
-  "value": 5482.189999999997,
+  "value": 5457.529999999996,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "PREPARO",
   "name": "Z_PREPARO_OPER_CORRETIVO",
-  "value": 1503.1300000000028,
+  "value": 1429.1500000000033,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "PREPARO",
   "name": "Z_PREPARO_OPER_ARADOSUBOLAG",
-  "value": 487.3700000000017,
+  "value": 462.71000000000186,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "PREPARO",
   "name": "Z_PREPARO_OPER_DESSECA",
-  "value": 280.2700000000059,
+  "value": 255.61000000000604,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "PREPARO",
   "name": "Z_PREPARO_OPER_GMEDIA",
-  "value": 809.8199999999997,
+  "value": 785.1599999999999,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "COMPOSTO_ESTOQ_DT",
   "name": "QT_TRANSPORTADO",
-  "value": 7037.240000000001,
+  "value": 7158.54,
   "status": "ok"
  },
  {
@@ -2194,7 +2194,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_INDISPONIB",
   "name": "Z_CTT_INDISP_DIASPARADO_ANO_R",
-  "value": 52.01791666666666,
+  "value": 52.02916666666665,
   "status": "ok"
  },
  {
@@ -2215,7 +2215,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_INDISPONIB",
   "name": "Z_CTT_INDISP_DIASEFET_ANO",
-  "value": 248.98208333333335,
+  "value": 248.97083333333336,
   "status": "ok"
  },
  {
@@ -2257,7 +2257,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_INDISPONIB_CALC",
   "name": "Z_INDISP_CALC_VARMOAG_ANO",
-  "value": 3084503.459710719,
+  "value": 3084364.0895863427,
   "status": "ok"
  },
  {
@@ -2299,7 +2299,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_HISTPRD",
   "name": "Z_CTT_HISTPRD_PRD_ANO",
-  "value": 806483.99,
+  "value": 818412.44,
   "status": "ok"
  },
  {
@@ -2341,7 +2341,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_HISTPRD",
   "name": "Z_CTT_HISTPRD_PRD_ANO_FORNEC",
-  "value": 114676.62,
+  "value": 116864.27,
   "status": "ok"
  },
  {
@@ -2362,7 +2362,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_HISTPRD",
   "name": "Z_CTT_HISTPRD_PRD_ANO_PROPRIO",
-  "value": 691807.37,
+  "value": 701548.17,
   "status": "ok"
  },
  {
@@ -2425,7 +2425,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_HISTPRD",
   "name": "Z_CTT_HISTPRD_PRDDIA_ANO",
-  "value": 3239.1245956452685,
+  "value": 3287.181992535939,
   "status": "ok"
  },
  {
@@ -2446,7 +2446,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_HISTPRD",
   "name": "Z_CTT_HISTPRD_PRDDIA_ANO_FORNEC",
-  "value": 460.58181562595695,
+  "value": 469.38939969541275,
   "status": "ok"
  },
  {
@@ -2467,7 +2467,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_HISTPRD",
   "name": "Z_CTT_HISTPRD_PRDDIA_ANO_PROPRIO",
-  "value": 2778.542780019312,
+  "value": 2817.7925928405266,
   "status": "ok"
  },
  {
@@ -2572,7 +2572,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_BROCA",
   "name": "Z_CTT_BROCA_TOTAL_ANO",
-  "value": 0.009066908822298417,
+  "value": 0.009085741369452806,
   "status": "ok"
  },
  {
@@ -2614,7 +2614,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "PREPARO_S",
   "name": "Z_PREPARO_S_PROJ",
-  "value": "09/03/2027  |  5.536,0 ha",
+  "value": "08/03/2027  |  5.536,0 ha",
   "status": "ok"
  },
  {
@@ -2628,14 +2628,14 @@
   "ds": "BI_AGR_01_BASE",
   "table": "ADEREN_ATIVIDADES_AGRONO",
   "name": "Z_ADEREN_ATIV_AGRO_DIAS_REALIZADOS",
-  "value": 3877.5933166696013,
+  "value": 3828.152786242295,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "ADEREN_ATIVIDADES_AGRONO",
   "name": "Z_ADEREN_ATIV_AGRO_DIAS_SALDO",
-  "value": -94.56219048418569,
+  "value": -96.80034924016766,
   "status": "ok"
  },
  {
@@ -2649,14 +2649,14 @@
   "ds": "BI_AGR_01_BASE",
   "table": "ADEREN_ATIVIDADES_MATURAC",
   "name": "Z_ADEREN_ATIV_MATUR_DIAS_REALIZADOS",
-  "value": -29.138366846447195,
+  "value": -28.94857770880739,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "ADEREN_ATIVIDADES_MATURAC",
   "name": "Z_ADEREN_ATIV_MATUR_DIAS_SALDO",
-  "value": -77.11870641216174,
+  "value": -76.98552653834568,
   "status": "ok"
  },
  {
@@ -2677,7 +2677,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_HISTPRD",
   "name": "Z_CTT_HISTPRD_KGTERRA_ANO",
-  "value": 9.853431120901428,
+  "value": 9.932695638150324,
   "status": "ok"
  },
  {
@@ -2705,7 +2705,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_HISTPRD",
   "name": "Z_CTT_HISTPRD_KGVEGETAL_ANO",
-  "value": 90.36035139360632,
+  "value": 90.29947195560636,
   "status": "ok"
  },
  {
@@ -2866,7 +2866,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_OC_ABERTA",
   "name": "PERC_REALIZADO",
-  "value": 0.5585197934595525,
+  "value": 0.49972344424479004,
   "status": "ok"
  },
  {
@@ -2880,7 +2880,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "PREPARO",
   "name": "Z_PREPARO_OPER_PPI",
-  "value": 588.4499999999998,
+  "value": 571.25,
   "status": "ok"
  },
  {
@@ -2957,7 +2957,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_MATURADOR",
   "name": "Z_CTT_MATURA_PERIODO_ANO_SEM_MATURADOR",
-  "value": 64483.85,
+  "value": 64405.64,
   "status": "ok"
  },
  {
@@ -2971,21 +2971,21 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_MATURADOR",
   "name": "Z_CTT_MATURA_PERIODO_ANO_ADERENTE",
-  "value": 280685.42,
+  "value": 281849.0,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_MATURADOR",
   "name": "Z_CTT_MATURA_PERIODO_ANO_ACIMA",
-  "value": 171914.53,
+  "value": 172767.0,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "CTT_MATURADOR",
   "name": "Z_CTT_MATURA_PERIODO_ANO_FORNEC",
-  "value": 116321.47,
+  "value": 118509.11,
   "status": "ok"
  },
  {
@@ -3055,14 +3055,14 @@
   "ds": "BI_AGR_01_BASE",
   "table": "PLANT_DATA",
   "name": "Z_PLANT_DATA_PRD_PROJ",
-  "value": 6952.235260000001,
+  "value": 6914.066265000001,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "PLANT_DATA",
   "name": "Z_PLANT_DATA_DTREF",
-  "value": 46202,
+  "value": 46203,
   "status": "ok"
  },
  {
@@ -3118,7 +3118,7 @@
   "ds": "BI_AGR_01_BASE",
   "table": "Z_LEGENDAS",
   "name": "Z_LEG_CONTAGEM_REGRESSIVA_MOAGEM",
-  "value": "Falta (m) -117 dia (s)!\n\nPrevisão Início de Safra\n05/03/2026",
+  "value": "Falta (m) -118 dia (s)!\n\nPrevisão Início de Safra\n05/03/2026",
   "status": "ok"
  },
  {
@@ -3153,28 +3153,28 @@
   "ds": "BI_AGR_01_BASE",
   "table": "CARREADOR_TLH",
   "name": "Z_CARREADOR_DIAS_PENDENTES",
-  "value": 16.30537046601248,
+  "value": 16.15802713816431,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "CARREADOR_TLH",
   "name": "Z_CARREADOR_DIAS_REALIZADO",
-  "value": 10.25899487505463,
+  "value": 10.126483508766455,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "CATAÇÃO_TLH",
   "name": "Z_CATAÇÃO_DIAS_PENDENTE_CALC",
-  "value": 44.2770996312075,
+  "value": 43.68439122963395,
   "status": "ok"
  },
  {
   "ds": "BI_AGR_01_BASE",
   "table": "CATAÇÃO_TLH",
   "name": "Z_CATAÇÃO_DIAS_REALIZADO_CALC",
-  "value": 17.05703406412196,
+  "value": 16.57077749340172,
   "status": "ok"
  },
  {
@@ -3188,7 +3188,7 @@
   "ds": "BI_AGR_01_CST",
   "table": "FUNC_99_BI",
   "name": "Z_FUNC_BI_SALDO",
-  "value": -8559.3,
+  "value": -8609.300000000003,
   "status": "ok"
  },
  {
@@ -3230,7 +3230,7 @@
   "ds": "BI_AGR_01_CST",
   "table": "CST",
   "name": "Z_CST_UNIT_REAL",
-  "value": 154.66079130374882,
+  "value": 154.66079130374885,
   "status": "ok"
  },
  {
@@ -3244,7 +3244,7 @@
   "ds": "BI_AGR_01_CST",
   "table": "CST",
   "name": "Z_CST_VARUNIT",
-  "value": -90.14371463631531,
+  "value": -90.14371463631568,
   "status": "ok"
  },
  {
@@ -3279,7 +3279,7 @@
   "ds": "BI_AGR_01_CST",
   "table": "CST",
   "name": "Z_CST_UNITREC_REAL",
-  "value": 154.66079130374882,
+  "value": 154.66079130374865,
   "status": "ok"
  },
  {
@@ -3307,21 +3307,21 @@
   "ds": "BI_AGR_01_CTRL",
   "table": "CTRL_ESTOQ_SALDO",
   "name": "Z_CTRL_ESTOQ_SALDO_QTSALDO",
-  "value": -13429.279999999999,
+  "value": -3913.779999999999,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Disponível Agora",
-  "value": 866,
+  "value": 859,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Parados",
-  "value": 75,
+  "value": 82,
   "status": "ok"
  },
  {
@@ -3335,14 +3335,14 @@
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Delta Equipamentos",
-  "value": 75,
+  "value": 82,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Disponível Agora (%)",
-  "value": 0.9202975557917109,
+  "value": 0.9128586609989373,
   "status": "ok"
  },
  {
@@ -3356,70 +3356,70 @@
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Requisições de Compra",
-  "value": 28279,
+  "value": 28280,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Leadtime de Aprovação RC",
-  "value": 0.15454184743685526,
+  "value": 0.15525321775860149,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Leadtime de Criação do Pedido",
-  "value": 5.11936919447012,
+  "value": 5.132341305215574,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Leadtime 1ª Aprovação do Pedido",
-  "value": 0.15454184743685526,
+  "value": 0.15525321775860149,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Leadtime 2ª Aprovação do Pedido",
-  "value": 1.4819077268261425,
+  "value": 1.4765066026627827,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Leadtime de Atendimento Pedido",
-  "value": 30.724343044594725,
+  "value": 30.731588277530825,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Leadtime Total",
-  "value": 33.906022062172795,
+  "value": 33.91081105809794,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Valor Total",
-  "value": 9821155.958761016,
+  "value": 9828475.388761016,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "RC Valor Total",
-  "value": 9821155.958761016,
+  "value": 9828475.388761016,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Pedidos Valor Total",
-  "value": 9820492.458761016,
+  "value": 9827811.888761016,
   "status": "ok"
  },
  {
@@ -3433,35 +3433,35 @@
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Delta Prazo Faturamento",
-  "value": 40722.193514578306,
+  "value": 40726.83134610537,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Quantidade Itens",
-  "value": 1098272.62,
+  "value": 1099117.3199999998,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Leadtime de Transporte",
-  "value": 9.763935179864383,
+  "value": 9.76672798344447,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Leadtime de Geração RC",
-  "value": 10.807680199404606,
+  "value": 10.78305374325544,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Lubrificante Volume (l)",
-  "value": 63485.1,
+  "value": 63451.1,
   "status": "ok"
  },
  {
@@ -3482,35 +3482,35 @@
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Diesel Hora Eixo Y Mês",
-  "value": 22.355999999999998,
+  "value": 22.359599999999997,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Diesel Hora Eixo Y Semana",
-  "value": 22.355999999999998,
+  "value": 22.359599999999997,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Diesel Tonelada Eixo Y Mês",
-  "value": 3740.6387999999997,
+  "value": 3740.8188,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Diesel Tonelada Eixo Y Semana",
-  "value": 3740.6387999999997,
+  "value": 3740.8188,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Diesel Volume (l)",
-  "value": 17727811.434,
+  "value": 17697477.45,
   "status": "ok"
  },
  {
@@ -3538,7 +3538,7 @@
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Tempo Distancia (h/km)",
-  "value": 244038680.00000006,
+  "value": 243860614.00000003,
   "status": "ok"
  },
  {
@@ -3573,14 +3573,14 @@
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Consumo Diesel Att (%)",
-  "value": 0.738488271068636,
+  "value": 0.7391304347826089,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Consumo Diesel (l/t)",
-  "value": 1.151,
+  "value": 1.15,
   "status": "ok"
  },
  {
@@ -3594,70 +3594,70 @@
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Produção Equipamentos Volume (t)",
-  "value": 15403553.82,
+  "value": 15395038.38,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Quantidade Cana (t)",
-  "value": 15403553.82,
+  "value": 15395038.38,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Valor (R$/h)",
-  "value": 0.09139534793568062,
+  "value": 0.09136997208890907,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Valor (R$/t)",
-  "value": 1.4479775465454392,
+  "value": 1.447319385946489,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "TON/FACA",
-  "value": 969.3256447045497,
+  "value": 968.7897791202568,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "TON/FACAO",
-  "value": 2811.8937239868565,
+  "value": 2810.339244249726,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "TON/H",
-  "value": 0.049008310362930976,
+  "value": 0.04894687356114013,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "TCH",
-  "value": 69.79113481639001,
+  "value": 69.65694544201665,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Leadtime de Emissão da Nota",
-  "value": 26.350987059163778,
+  "value": 26.359370121417783,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Leadtime Total 2",
-  "value": 53.832963054602736,
+  "value": 53.82850619151324,
   "status": "ok"
  },
  {
@@ -3678,14 +3678,14 @@
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Valor Total Aplicado",
-  "value": 32429487.77552066,
+  "value": 32372399.548920657,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Quantidade Itens Aplicados",
-  "value": 693467.2783999998,
+  "value": 691794.2783999998,
   "status": "ok"
  },
  {
@@ -3699,7 +3699,7 @@
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Consumo Diesel Meta (l/t) MAX",
-  "value": 1.2661000000000002,
+  "value": 1.265,
   "status": "ok"
  },
  {
@@ -3748,7 +3748,7 @@
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Lubrificante Volume (tambor)",
-  "value": 317.4255,
+  "value": 317.2555,
   "status": "ok"
  },
  {
@@ -3783,14 +3783,14 @@
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Realizado KM Veículos",
-  "value": 920645.6000000003,
+  "value": 925099.6000000003,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Orçamento KM Veículos Att",
-  "value": 0.2247139298552357,
+  "value": 0.22580107548822978,
   "status": "ok"
  },
  {
@@ -3811,7 +3811,7 @@
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Quantidade Realizado Veículos",
-  "value": 2474.0,
+  "value": 2479.0,
   "status": "ok"
  },
  {
@@ -3825,7 +3825,7 @@
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Orçado KM Veículos Delta",
-  "value": 3176321.599999995,
+  "value": 3171867.599999995,
   "status": "ok"
  },
  {
@@ -3839,7 +3839,7 @@
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Valor Realizado Veículos",
-  "value": 292755.6856000002,
+  "value": 293884.7716000002,
   "status": "ok"
  },
  {
@@ -3909,7 +3909,7 @@
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Óleo Motor Volume (l)",
-  "value": 2337.7,
+  "value": 2334.7,
   "status": "ok"
  },
  {
@@ -4028,49 +4028,49 @@
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Horas",
-  "value": 244038680.00000006,
+  "value": 243860614.00000003,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Diesel Volume Semana (l)",
-  "value": 83329.659,
+  "value": 97092.982,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Diesel Volume Mês (l)",
-  "value": 751169.477,
+  "value": 2063.81,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Horas Mês",
-  "value": 7314199.5,
+  "value": 2153.0,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Horas Semana",
-  "value": 816799.3,
+  "value": 826594.0,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Consumo Diesel Semana (l/h)",
-  "value": 0.102,
+  "value": 0.117,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Consumo Diesel Mês (l/h)",
-  "value": 0.103,
+  "value": 0.959,
   "status": "ok"
  },
  {
@@ -4126,7 +4126,7 @@
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Diesel MAX Gráfico (l)",
-  "value": 21273373.7208,
+  "value": 21236972.939999998,
   "status": "ok"
  },
  {
@@ -4140,7 +4140,7 @@
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Diesel Volume ST",
-  "value": "PERÍODO: 17.727.811 de 6.584.617 | 269,2% | Var. 11.143.195 ⛔",
+  "value": "PERÍODO: 17.697.477 de 6.584.617 | 268,8% | Var. 11.112.861 ⛔",
   "status": "ok"
  },
  {
@@ -4154,7 +4154,7 @@
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Tempo Distancia ST",
-  "value": "PERÍODO: 268.134.876 de 6.271.138 | 4275,7% | Var. 261.863.738 ⛔",
+  "value": "PERÍODO: 268.050.512 de 6.271.138 | 4274,4% | Var. 261.779.373 ⛔",
   "status": "ok"
  },
  {
@@ -4168,14 +4168,14 @@
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Tempo Distancia MAX",
-  "value": 321761851.67999995,
+  "value": 321660614.03999984,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Tempo Distancia 2 (h/km)",
-  "value": 268134876.39999995,
+  "value": 268050511.6999999,
   "status": "ok"
  },
  {
@@ -4189,21 +4189,21 @@
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Reparos Emergenciais",
-  "value": 92396,
+  "value": 92478,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Downtime (%)",
-  "value": 0.05155781421085448,
+  "value": 0.051562133084320894,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Ocorrências",
-  "value": 101760,
+  "value": 101918,
   "status": "ok"
  },
  {
@@ -4217,42 +4217,42 @@
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Tempo Manutenção (h)",
-  "value": 3107512.128888549,
+  "value": 3106277.712777414,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Tempo Manutenção Não Planejado (h)",
-  "value": 1447413,
+  "value": 1448662,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Tempo Manutenção Planejado (h)",
-  "value": 1619485,
+  "value": 1616892,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "MTBF",
-  "value": 333.5224719504473,
+  "value": 333.21168817929276,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "MTTR",
-  "value": 16.719413709358584,
+  "value": 16.71945807023524,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Ordens Em Aberto",
-  "value": 74,
+  "value": 81,
   "status": "ok"
  },
  {
@@ -4273,21 +4273,21 @@
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "Saldo R$",
-  "value": -4780892.292506065,
+  "value": -4723804.065906059,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "MaxOrçado",
-  "value": 35672436.553072795,
+  "value": 35609639.50381279,
   "status": "ok"
  },
  {
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "CRM",
-  "value": 0.13288667097986562,
+  "value": 0.132749602397543,
   "status": "ok"
  },
  {
@@ -4301,7 +4301,7 @@
   "ds": "MANUT_umoe_dataset",
   "table": "medidas",
   "name": "CRM Delta",
-  "value": 4.406337754889892,
+  "value": 4.406474823472214,
   "status": "ok"
  },
  {
