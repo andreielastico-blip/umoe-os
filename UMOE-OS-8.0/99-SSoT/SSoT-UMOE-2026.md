@@ -1441,3 +1441,117 @@ BASE DE DADOS UMOE_2026.xlsx agora com 30 colunas:
 ### Historico Anual (mm)
 2011: 943mm | 2012: 1729mm | 2013: 1760mm | 2014: 1072mm | 2015: 1985mm | 2016: 1491mm | 2017: 1498mm | 2018: 1674mm | 2019: 1163mm | 2020: 1544mm | 2021: 1136mm | 2022: 1548mm | 2023: 1536mm | 2024: 1453mm | 2025: 1412mm | 2026: 930mm
 
+
+
+---
+
+## FITOSSANIDADE — MATOLOGIA (LEVANTAMENTO PLANTAS DANINHAS)
+### Fonte: Historico levantamento Matologia 2019 a 2026.xlsx + Parametros e Calculo de infestacoes_Matologia.pptx
+### Atualizado: 2026-07-01 | Origem: Fitotecnia / Excelencia Agricola
+
+---
+
+### Metodologia (Fonte: PPTX Parametros)
+- Amostragem: caminhamento dentro do canavial por talhao
+- Avaliacao: nota de 0 a 5 por especie de planta daninha (20 especies monitoradas)
+- Nota carreador: avaliacao separada da situacao das bordaduras/carreadores
+
+| NOTA | Criterio |
+|------|----------|
+| 0 | Nenhuma planta do taxon observada na vistoria |
+| 1 | Poucas plantas do taxon (frequencia < 50%) |
+| 2 | Poucas plantas do taxon (frequencia > 50%) |
+| 3 | Muitas plantas do taxon (frequencia < 50%) |
+| 4 | Muitas plantas do taxon (frequencia > 50%) |
+| 5 | Muitas plantas do taxon (frequencia = 100%) |
+
+**Indice de Infestacao/ha** = soma ponderada das notas por especie x fator de prevalencia (calculado por talhao)
+
+---
+
+### Evolucao Historica do Levantamento (2019-2026)
+
+| Ano | Registros | Area (ha) | Fazendas | Indice Medio | NOTA 0 Limpo | NOTA 3-5 Critico |
+|-----|-----------|-----------|----------|-------------|--------------|-----------------|
+| 2019 | 105 | 1.352 | 26 | 22,7 | 12,4% | 30,5% |
+| 2020 | 2.307 | 36.041 | -- | 16,6 | 12,0% | 33,6% |
+| 2021 | 2.880 | 31.825 | -- | 14,6 | 42,2% | 28,8% |
+| 2022 | 1.917 | 4.436 | -- | 15,6 | 42,9% | 17,7% |
+| 2023 | 1.706 | 29.716 | -- | 13,9 | 68,7% | 0,5% |
+| 2024 | 1.733 | 27.916 | -- | 11,0 | 70,2% | 5,7% |
+| 2025 | 1.697 | 33.086 | 125 | 9,7 | 74,2% | 3,7% |
+| 2026 | 1.474 | 31.877 | 126 | 10,0 | 81,3% | 3,7% |
+
+---
+
+### Tendencias Principais (2019-2026)
+
+- **Indice de Infestacao medio: -56%** (22,7 em 2019 -> 10,0 em 2026) — EVOLUCAO POSITIVA CONSISTENTE
+- **NOTA 0 (talhoes limpos): +557%** (12,4% -> 81,3%) — maturidade do programa fitossanitario
+- **NOTA 3-5 (areas criticas): -88%** (30,5% -> 3,7%) — controle efetivo das infestacoes graves
+- Cobertura do levantamento: 26 fazendas (2019) -> 126 fazendas (2026) = **+385% de abrangencia**
+- P75 do indice: 30 (2019) -> 15 (2026) — indica melhora mesmo nos talhoes mais infestados
+- Safra 2026 mantem patamar de 2025 (indice 10,0 vs 9,7): programa estabilizou em nivel controlado
+
+---
+
+### Especies de Plantas Daninhas Monitoradas (20 especies)
+
+| Codigo | Nome Cientifico | Nome Popular | Grupo |
+|--------|----------------|-------------|-------|
+| BRASS | Urochloa spp. | Braquiaria | Graminea |
+| PANMA | Panicum maximum | Coloniao | Graminea |
+| CYPRO | Cyperus rotundus | Tiririca | Ciperacea |
+| CYNDA | Cynodon dactylon | Grama-seda | Graminea |
+| DIGSS | Digitaria spp. | Capim-colchao | Graminea |
+| BRAPL | Brachiaria plantaginea | Marmelada | Graminea |
+| IPOSS | Ipomoea spp. | Corda-de-viola | Folha Larga |
+| MRRSS | Merremia spp. | Merremia | Folha Larga |
+| CASOB | Senna obtusifolia | Fedegoso | Folha Larga |
+| SIDSS | Sida spp. | Guanxuma | Folha Larga |
+| CCHEC | Cenchrus echinatus | Carrapicho-de-carneiro | Folha Larga |
+| AMASS | Amaranthus spp. | Caruru | Folha Larga |
+| ELEIN | Eleusine indica | Pe-de-galinha | Graminea |
+| FL | Diversas | Outras Folha Larga | Folha Larga |
+| FE | Diversas | Outras Folha Estreita | Graminea |
+| RIICO | Ricinus communis | Mamona | Folha Larga |
+| MUCAT | Mucuna spp. | Mucuna | Folha Larga |
+| SORHA | Sorghum halepense | Massambarao | Graminea |
+| SORAR | Sorghum arundinaceum | Falso-massambarao | Graminea |
+| ROOEX | Rottboellia exaltata | Camalote | Graminea |
+
+---
+
+### Prevalencia das Principais Especies por Ano (% talhoes com presenca)
+
+| Especie | 2019 | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 | 2026 | Tendencia |
+|---------|------|------|------|------|------|------|------|------|-----------|
+| BRASS (Braquiaria) | 46,7% | 40,9% | 36,6% | 46,8% | 49,9% | 31,9% | 24,8% | 17,6% | REDUZINDO |
+| PANMA (Coloniao) | 30,5% | 19,6% | 19,2% | 31,7% | 33,6% | 24,5% | 24,1% | 27,1% | ESTAVEL |
+| DIGSS (Colchao) | 26,7% | 39,6% | 45,8% | 47,4% | 64,3% | 21,2% | 12,5% | 17,0% | PICO 2023 -> CONTROLE |
+| IPOSS (Corda-de-viola) | 20,0% | 28,2% | 22,3% | 27,4% | 45,0% | 26,9% | 27,4% | 18,8% | PICO 2023 -> ATENCAO |
+| CASOB (Fedegoso) | 17,1% | 16,3% | -- | 28,6% | 43,1% | 26,1% | 24,5% | 25,2% | CRESCIMENTO PREOCUPANTE |
+| SIDSS (Guanxuma) | -- | -- | -- | -- | -- | 18,6% | 14,0% | 18,7% | EMERGENTE 2024+ |
+| FL (Outras Folha Larga) | 81,9% | 74,8% | 62,4% | 67,9% | 67,6% | 46,7% | 35,2% | 38,9% | REDUZINDO CONSISTENTE |
+
+---
+
+### Alertas Fitossanitarios — Safra 2026/27
+
+- **CASOB (Fedegoso)**: 25,2% dos talhoes em 2026 — nivel elevado e estavel ha 4 anos. Monitorar resistencia a herbicidas pos-emergentes
+- **PANMA (Coloniao)**: 27,1% — leve alta vs 2025 (24,1%). Especie de alto vigor, requer manejo precoce
+- **SIDSS (Guanxuma)**: 18,7% em 2026 — especie emergente, ausente nos levantamentos ate 2022. Possivelmente resistencia a herbicidas
+- **IPOSS (Corda-de-viola)**: 18,8% — ligeira reducao, mas presenca historica consistente desde 2019
+- **BRASS (Braquiaria)**: 17,6% em 2026 — menor historico desde 2019. Programa de controle efetivo
+- **Nivel critico (NOTA 3-5)**: 3,7% dos registros — meta operacional recomendada: < 5% — ATINGIDA
+
+---
+
+### Resumo Executivo — Matologia SF2026/27
+
+- Programa fitossanitario de plantas daninhas em evolucao POSITIVA consistente (7 anos de dados)
+- Reducao de 56% no indice de infestacao medio: nível atual (10,0) representa controle efetivo
+- 81,3% dos registros com NOTA 0 (sem infestacao): benchmark de excelencia agricola
+- 126 fazendas monitoradas — cobertura ampla do universo UMOE
+- Especies de atencao para SF2026/27: CASOB, PANMA, SIDSS (emergente), IPOSS
+- Especie controlada com sucesso: BRASS (queda de 47% -> 18% em 7 anos)
